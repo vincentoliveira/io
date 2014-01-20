@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}Innov'Order{% endblock %}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        {% block meta %}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% endblock %}
+        
+        {% block stylesheets %}
+            {% stylesheets 
+                'bundles/iomenu/css/bootstrap.css'
+                'bundles/iomenu/css/bootstrap-theme.css'
+                'bundles/iomenu/css/main.css'
+                filter='yui_css' 
+                output='css/main.css' %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+        {% endblock %}
+
+        <link rel="icon" type="image/x-icon" ref="{{ asset('favicon.ico') }}">
+    </head>
+    <body>
+        <div class="container">
+            {% block navbar %}{% include "IOMenuBundle::navbar.html.twig" %}{% endblock %}
+            
+            {% for message in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {% autoescape false %}{{ message }}{% endautoescape %}
+                </div>
+            {% endfor %}
+                
+            {% for message in app.session.flashbag.get('success') %}
+                <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {% autoescape false %}{{ message }}{% endautoescape %}
+                </div>
+            {% endfor %}
+
+            {% block content %}{% endblock %}
+        </div>
+        {% block javascripts %}
+            {% javascripts 
+                '@IOMenuBundle/Resources/public/js/jquery.js'
+                '@IOMenuBundle/Resources/public/js/bootstrap.js'
+                '@IOMenuBundle/Resources/public/js/main.js'
+                filter='yui_js'
+                output='js/main.js' %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,15 @@
+io_user:
+    resource: "@IOUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+io_import:
+    resource: "@IOImportBundle/Resources/config/routing.yml"
+    prefix:   /import
+
+io_menu:
+    resource: "@IOMenuBundle/Resources/config/routing.yml"
+    prefix:   /
+
+
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"

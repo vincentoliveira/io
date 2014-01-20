@@ -1,0 +1,17 @@
+{% extends "IOMenuBundle::layout.html.twig" %}
+
+{% block content %}
+    <form class="form-signin" role="form" action="{{ path("fos_user_security_check") }}" method="POST">
+        <h2 class="form-signin-heading">Innov'Order</h2>
+        {% if error %}
+            <div>{{ error|trans }}</div>
+        {% endif %}
+        <input name="_username" type="text" class="form-control" placeholder="Adresse Email" required autofocus>
+        <input name="_password" type="password" class="form-control" placeholder="Mot de passe" required>
+        <label class="checkbox">
+            <input name="_remember_me" value="on" type="checkbox" value="remember-me"> Se souvenir de moi
+        </label>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Se connecter</button>
+    </form>
+{% endblock content %}

@@ -1,0 +1,9 @@
+io_import_homepage:
+    pattern:  /
+    defaults: { _controller: IOImportBundle:Import:index }
+    
+io_import_job:
+    pattern:  /job
+    defaults: { _controller: IOImportBundle:Import:import }
+    requirements:
+        _method: POST

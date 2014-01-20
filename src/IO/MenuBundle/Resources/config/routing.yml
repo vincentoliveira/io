@@ -1,0 +1,7 @@
+io_menu_homepage:
+    pattern:  /
+    defaults: { _controller: IOMenuBundle:Commande:commandeEnCours }
+
+io_menu_commande_en_cours:
+    pattern:  /
+    defaults: { _controller: IOMenuBundle:Commande:commandeEnCours }

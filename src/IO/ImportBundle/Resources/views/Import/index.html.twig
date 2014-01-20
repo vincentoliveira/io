@@ -1,0 +1,20 @@
+{% extends "IOMenuBundle::layout.html.twig" %}
+
+{% block content %}
+    {% if results is not defined or not results.success %}
+        <form class="form-import" role="form" action="{{ path('io_import_job') }}" method="POST">
+            <h2 class="form-signin-heading">Séléctionnez un restaurant</h2>
+            {{ form_widget(form.restaurant) }}
+
+            {{ form_rest(form) }}
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Importer</button>
+        </form>
+    {% endif %}
+
+    {% if results is defined and results.logs %}
+        <p class="imprt-logs">
+            <h3>Logs</h3>
+            <pre>{{ results.logs|nl2br }}</pre>
+        </p>
+    {% endif %}
+{% endblock %}
