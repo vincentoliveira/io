@@ -171,6 +171,20 @@ class ImportService
             $this->em->persist($dish);
         }
         
+        // remove deleted categories
+        foreach ($categories as $category) {
+            if (!isset($newCategories[$category->getWpId()])) {
+                $this->em->remove($category);
+            }
+        }
+        
+        // remove deleted dishes
+        foreach ($dishes as $dish) {
+            if (!isset($newDishes[$dish->getWpId()])) {
+                $this->em->remove($dish);
+            }
+        }
+        
         $this->em->flush();
         
         return array(
@@ -218,6 +232,7 @@ class ImportService
         $dish->setRestaurant($restaurant);
         $dish->setName($wpDish['title']);
         $dish->setDescription($wpDish['excerpt']);
+        $dish->setTags(implode(';', $wpDish['tags']));
         
         $imageUrlPattern = "/src=(\"\'??)(.*)(\"\'??)/Ui";
         if (preg_match($imageUrlPattern, $wpDish['content'], $matches)) {

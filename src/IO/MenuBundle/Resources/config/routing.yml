@@ -5,3 +5,11 @@ io_menu_homepage:
 io_menu_commande_en_cours:
     pattern:  /
     defaults: { _controller: IOMenuBundle:Commande:commandeEnCours }
+
+io_menu_api_get_categories:
+    pattern:  /api/categories
+    defaults: { _controller: IOMenuBundle:Api:getCategories }
+
+io_menu_api_get_dishes:
+    pattern:  /api/dishes
+    defaults: { _controller: IOMenuBundle:Api:getDishes }
