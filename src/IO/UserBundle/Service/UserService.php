@@ -29,7 +29,7 @@ class UserService
     /**
      * Get loggued user
      *
-     * @return null|\IO\UserBundle\Entity\User
+     * @return \IO\UserBundle\Entity\User|null
      */
     public function getUser()
     {

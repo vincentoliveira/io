@@ -1,21 +1,11 @@
 {% extends "IOMenuBundle::layout.html.twig" %}
 
-{% import _self as macro %}
-
 {% block content %}
-    <div class="categories list-group">
-        {% for category in categories %}
-            {{ macro.display_category(category) }}
-        {% endfor %}
-        </ul>
-    </div>
-{% endblock %}
+        <form class="form-import" role="form" method="POST">
+            <h2 class="form-signin-heading">Séléctionnez un restaurant</h2>
+            {{ form_widget(form.restaurant) }}
 
-{% macro display_category(category) %}
-    <div class="list-group-item category">
-        <a href="{{ path('menu_commande_menu_show_category', {id:category.id}) }}">{{ category.name }}</a>
-        {% for category in category.children %}
-            {{ _self.display_category(category) }}
-        {% endfor %}
-    </div>
-{% endmacro %}
+            {{ form_rest(form) }}
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Voir la carte</button>
+        </form>
+{% endblock %}

@@ -1,16 +1,20 @@
 menu_homepage:
     pattern:  /
-    defaults: { _controller: IOMenuBundle:Commande:commandeEnCours }
+    defaults: { _controller: IOMenuBundle:Default:index }
 
 menu_commande_en_cours:
-    pattern:  /
+    pattern:  /encours
     defaults: { _controller: IOMenuBundle:Commande:commandeEnCours }
 
 menu_commande_menu:
     pattern:  /menu
     defaults: { _controller: IOMenuBundle:Menu:index }
     
-menu_commande_menu_show_category:
+menu_commande_show_menu:
+    pattern:  /menu/{id}
+    defaults: { _controller: IOMenuBundle:Menu:showMenu }
+    
+menu_commande_show_category:
     pattern:  /menu/cat/{id}
     defaults: { _controller: IOMenuBundle:Menu:showCategory }
 

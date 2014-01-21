@@ -31,7 +31,7 @@ class ImportFormType extends AbstractType
      */
     public function getName()
     {
-        return 'import';
+        return 'select';
     }
 
 }

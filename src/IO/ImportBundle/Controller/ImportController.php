@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Request;
-use IO\ImportBundle\Form\ImportFormType;
+use IO\MenuBundle\Form\SelectRestaurantType;
 
 /**
  * 
@@ -21,7 +21,7 @@ class ImportController extends Controller
      */
     public function indexAction()
     {
-        $form = $this->createForm(new ImportFormType());
+        $form = $this->createForm(new SelectRestaurantType());
         return array(
             'form' => $form->createView(),
         );
@@ -36,7 +36,7 @@ class ImportController extends Controller
      */
     public function importAction(Request $request)
     {
-        $form = $this->createForm(new ImportFormType());
+        $form = $this->createForm(new SelectRestaurantType());
         $form->bind($request);
         
         if ($form->isValid()) {
