@@ -13,7 +13,7 @@
 
 {% macro display_category(category) %}
     <div class="list-group-item category">
-        <a href="#">{{ category.name }}</a>
+        <a href="{{ path('menu_commande_menu_show_category', {id:category.id}) }}">{{ category.name }}</a>
         {% for category in category.children %}
             {{ _self.display_category(category) }}
         {% endfor %}

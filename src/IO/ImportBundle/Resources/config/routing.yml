@@ -1,8 +1,8 @@
-io_import_homepage:
+import_homepage:
     pattern:  /
     defaults: { _controller: IOImportBundle:Import:index }
     
-io_import_job:
+import_job:
     pattern:  /job
     defaults: { _controller: IOImportBundle:Import:import }
     requirements:

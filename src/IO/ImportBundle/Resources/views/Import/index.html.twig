@@ -2,7 +2,7 @@
 
 {% block content %}
     {% if results is not defined or not results.success %}
-        <form class="form-import" role="form" action="{{ path('io_import_job') }}" method="POST">
+        <form class="form-import" role="form" action="{{ path('import_job') }}" method="POST">
             <h2 class="form-signin-heading">Séléctionnez un restaurant</h2>
             {{ form_widget(form.restaurant) }}
 

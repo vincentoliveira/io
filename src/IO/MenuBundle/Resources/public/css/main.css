@@ -131,3 +131,8 @@ h1 span {
 .category .list-group-item { 
     border: none; 
 }
+
+.dish { clear: both; margin-bottom: 20px; height: 100px; }
+.dish img { float: left; width: 100px; height: 100px; }
+.dish strong { margin-left: 150px; display: block; }
+.dish em { margin-left: 150px; display: block; }
