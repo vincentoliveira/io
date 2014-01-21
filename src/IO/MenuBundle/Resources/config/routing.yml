@@ -6,6 +6,10 @@ io_menu_commande_en_cours:
     pattern:  /
     defaults: { _controller: IOMenuBundle:Commande:commandeEnCours }
 
+io_menu_commande_menu:
+    pattern:  /menu
+    defaults: { _controller: IOMenuBundle:Menu:index }
+
 io_menu_api_get_categories:
     pattern:  /api/categories
     defaults: { _controller: IOMenuBundle:Api:getCategories }

@@ -9,11 +9,19 @@
     <div class="masthead">
         <h1>Innov'Order <span>Bienvenue {{ app.user.username }}{% if app.user.restaurant %}<br/>{{ app.user.restaurant.name }}{% endif %}</span></h1>
         <ul class="nav nav-justified">
-            <li{% if currentPath == path('io_menu_commande_en_cours') %} class="active"{% endif %}><a href="{{ path('io_menu_commande_en_cours') }}">Commande en cours</a></li>
-            <li><a href="#">Mon menu</a></li>
-            <li><a href="#">Historiques</a></li>
+            <li{% if currentPath == path('io_menu_commande_en_cours') %} class="active"{% endif %}>
+                <a href="{{ path('io_menu_commande_en_cours') }}">Commande en cours</a>
+            </li>
+            <li{% if currentPath == path('io_menu_commande_menu') %} class="active"{% endif %}>
+                <a href="{{ path('io_menu_commande_menu') }}">Menu</a>
+            </li>
+            <li>
+                <a href="#">Historique</a>
+            </li>
             {% if is_granted("ROLE_ADMIN") %}
-                <li{% if currentPath == path('io_import_homepage') %} class="active"{% endif %}><a href="{{ path('io_import_homepage') }}">Import</a></li>
+                <li{% if currentPath == path('io_import_homepage') %} class="active"{% endif %}>
+                    <a href="{{ path('io_import_homepage') }}">Import</a>
+                </li>
             {% endif %}
         </ul>
     </div>

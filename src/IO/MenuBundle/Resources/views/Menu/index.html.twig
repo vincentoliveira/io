@@ -1,0 +1,21 @@
+{% extends "IOMenuBundle::layout.html.twig" %}
+
+{% import _self as macro %}
+
+{% block content %}
+    <div class="categories list-group">
+        {% for category in categories %}
+            {{ macro.display_category(category) }}
+        {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% macro display_category(category) %}
+    <div class="list-group-item category">
+        <a href="#">{{ category.name }}</a>
+        {% for category in category.children %}
+            {{ _self.display_category(category) }}
+        {% endfor %}
+    </div>
+{% endmacro %}

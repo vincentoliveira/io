@@ -18,7 +18,12 @@ class ApiController extends Controller
     public function getCategoriesAction()
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $categories = $em->getRepository('IOMenuBundle:Category')->createQueryBuilder('category')->select('category, parent')->leftJoin('category.parent', 'parent')->getQuery()->getArrayResult();
+        $categories = $em->getRepository('IOMenuBundle:Category')
+                ->createQueryBuilder('category')
+                ->select('category, parent')
+                ->leftJoin('category.parent', 'parent')
+                ->getQuery()
+                ->getArrayResult();
         
         return new JsonResponse($categories);
     }
@@ -31,7 +36,12 @@ class ApiController extends Controller
     public function getDishesAction()
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $categories = $em->getRepository('IOMenuBundle:Dish')->createQueryBuilder('dish')->select('dish, category')->leftJoin('dish.category', 'category')->getQuery()->getArrayResult();
+        $categories = $em->getRepository('IOMenuBundle:Dish')
+                ->createQueryBuilder('dish')
+                ->select('dish, category')
+                ->leftJoin('dish.category', 'category')
+                ->getQuery()
+                ->getArrayResult();
         
         return new JsonResponse($categories);
     }

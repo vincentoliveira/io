@@ -127,3 +127,7 @@ h1 span {
     font-size: 16px;
     text-align: right;
 }
+
+.category .list-group-item { 
+    border: none; 
+}
