@@ -14,8 +14,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $this->newUser($manager, 'admin', 'admin@innovorder.fr', array('ROLE_ADMIN'));
         $this->newUser($manager, 'resto', 'resto@innovorder.fr', array('ROLE_RESTAURATEUR'), 'Restaurant');
         $this->newUser($manager, 'cuisto', 'cuisto@innovorder.fr', array('ROLE_CUISINIER'), 'Restaurant');
-        $this->newUser($manager, 'resto2', 'resto2@innovorder.fr', array('ROLE_RESTAURATEUR'), 'Restaurant2');
-        $this->newUser($manager, 'cuisto2', 'cuisto2@innovorder.fr', array('ROLE_CUISINIER'), 'Restaurant2');
     }
 
     protected function newUser(ObjectManager $manager, $username, $email, array $roles, $restaurantName = null)

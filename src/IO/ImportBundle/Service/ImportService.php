@@ -100,7 +100,7 @@ class ImportService
             throw new \Exception("Le service a besoin de l'extension CURL pour fonctionner", 1);
         }
         
-        $url = $baseUrl . '/?json=get_posts&count=50';
+        $url = $baseUrl . '?json=get_posts&count=50';
         $proxy = $this->getProxy();
         
         $curl = curl_init();
@@ -201,7 +201,7 @@ class ImportService
      * @param \IO\MenuBundle\Entity\Restaurant $restaurant
      * @return null|Dish
      */
-    private function findOrCreateDish(array $wpDish, array $dishes, Restaurant $restaurant)
+    private function findOrCreateDish(array $wpDish, array &$dishes, Restaurant $restaurant)
     {
         if (empty($wpDish)) {
             return null;
@@ -214,7 +214,9 @@ class ImportService
         }
         
         $dish = new Dish();
-        return $this->setDishData($dish, $wpDish, $restaurant);
+        $dish = $this->setDishData($dish, $wpDish, $restaurant);
+        $dishes[] = $dish;
+        return $dish;
     }
 
     /**
@@ -251,7 +253,7 @@ class ImportService
      * @param \IO\MenuBundle\Entity\Restaurant $restaurant
      * @return null|\IO\MenuBundle\Entity\Category
      */
-    private function findOrCreateCategory(array $wpCategory, array $categories, Restaurant $restaurant)
+    private function findOrCreateCategory(array $wpCategory, array &$categories, Restaurant $restaurant)
     {
         if (empty($wpCategory)) {
             return null;
@@ -264,7 +266,9 @@ class ImportService
         }
         
         $category = new Category();
-        return $this->setCategoryData($category, $wpCategory, $categories, $restaurant);
+        $category = $this->setCategoryData($category, $wpCategory, $categories, $restaurant);
+        $categories[] = $category;
+        return $category;
     }
     
     /**
