@@ -9,7 +9,7 @@
 
 {% if is_granted("IS_AUTHENTICATED_FULLY") %}
     <div class="masthead">
-        <h1>Innov'Order <span>Bienvenue {{ app.user.username }}{% if app.user.restaurant %} (<a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>)<br/>{{ app.user.restaurant.name }}{% endif %}</span></h1>
+        <h1>Innov'Order <span>Bienvenue {{ app.user.username }} (<a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>){% if app.user.restaurant %}<br/>{{ app.user.restaurant.name }}{% endif %}</span></h1>
         
         {% if is_granted("ROLE_RESTAURATEUR") %}
             <ul class="nav nav-justified">
