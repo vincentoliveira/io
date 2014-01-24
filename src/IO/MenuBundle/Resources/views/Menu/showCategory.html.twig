@@ -1,7 +1,7 @@
 {% extends "IOMenuBundle::layout.html.twig" %}
 
 {% block content %}
-    <h3>{{ category.name }}</h3>
+    <h3>{{ category.name|raw }}</h3>
     <div class="dishes list-group">
         {% for dish in dishes %}
             <div class="dish dishlist-group-item">

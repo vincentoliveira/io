@@ -243,7 +243,7 @@ class ImportService
     {
         $dish->setWpId($wpDish['id']);
         $dish->setRestaurant($restaurant);
-        $dish->setName($wpDish['title']);
+        $dish->setName(html_entity_decode($wpDish['title'], ENT_NOQUOTES, 'UTF-8'));
         $dish->setDescription($wpDish['excerpt']);
         $dish->setTags(implode(';', $wpDish['tags']));
         
@@ -295,7 +295,7 @@ class ImportService
     {
         $category->setWpId($wpCategory['id']);
         $category->setRestaurant($restaurant);
-        $category->setName($wpCategory['title']);
+        $category->setName(html_entity_decode($wpCategory['title']));
         
         $parentWpId = $wpCategory['parent'];
         if ($parentWpId && ($category->getParent() === null || $category->getParent()->getWpId() !== $parentWpId)) {
