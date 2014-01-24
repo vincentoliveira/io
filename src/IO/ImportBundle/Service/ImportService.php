@@ -50,34 +50,45 @@ class ImportService
         $results['success'] = false;
         
         try {
-            $results['logs'] = 'Connection to : ' . $restaurant->getWpBaseUrl();
-            $jsonPosts = $this->requestWordpress($restaurant->getWpBaseUrl());
-            $results['logs'] .= '... OK' . "\n\n" . 'Results : ' . "\n" . $jsonPosts;
-             
-            if ($jsonPosts === false) {
-                $results['message'] = 'Echec de la récupération des données';
-                return $results;
+            $results['logs'] = 'Start...' . "\n\n";
+            
+            $maxPage = 1;
+            for ($page = 1; $page <= $maxPage; $page++) {
+                $results['logs'] .= 'Connection to : ' . $restaurant->getWpBaseUrl();
+                $jsonPosts = $this->requestWordpress($restaurant->getWpBaseUrl(), $page);
+                $results['logs'] .= '... page ' . $page . ': OK';
+                $results['logs'] .= "\n" . 'Results : ' . "\n" . $jsonPosts;
+
+                if ($jsonPosts === false) {
+                    $results['message'] = 'Echec de la récupération des données';
+                    return $results;
+                }
+
+                $posts = json_decode($jsonPosts, true);
+                if ($posts['status'] !== 'ok') {
+                    $results['message'] = 'Echec de la récupération des données';
+                    return $results;
+                }
+                
+                $maxPage = intval($posts['pages']);
+
+                $data = $this->updateMenu($restaurant, $posts);
+
+                $results['logs'] .= "\n\n" . 'Categories found : ' . "\n";
+                foreach ($data['categories'] as $cat) {
+                    $results['logs'] .= "\t" . $cat->getWpId() . ' => ' . $cat->getName() . "\n";
+                }
+
+                $results['logs'] .= "\n\n" . 'Dishes found : ' . "\n";
+                foreach ($data['dishes'] as $dish) {
+                    $results['logs'] .= "\t" . $dish->getWpId() . ' => ' . $dish->getName() . "\n";
+                }
+                
+                $results['logs'] .= "\n\n+------------------------------------------------------------------------------+\n\n";
             }
             
-            $posts = json_decode($jsonPosts, true);
-            if ($posts['status'] !== 'ok') {
-                $results['message'] = 'Echec de la récupération des données';
-                return $results;
-            }
             
-            $data = $this->updateMenu($restaurant, $posts);
-            
-            $results['logs'] .= "\n\n" . 'Categories found : ' . "\n";
-            foreach ($data['categories'] as $cat) {
-                $results['logs'] .= "\t" . $cat->getWpId() . ' => ' . $cat->getName() . "\n";
-            }
-            
-            $results['logs'] .= "\n\n" . 'Dishes found : ' . "\n";
-            foreach ($data['dishes'] as $dish) {
-                $results['logs'] .= "\t" . $dish->getWpId() . ' => ' . $dish->getName() . "\n";
-            }
-            
-            $results['logs'] .= "\n\nEnd.";
+            $results['logs'] .= 'End.';
             
             $results['success'] = true;
         } catch (\Exception $e) {
@@ -94,13 +105,13 @@ class ImportService
      * @return string|false
      * @throws \Exception
      */
-    private function requestWordpress($baseUrl)
+    private function requestWordpress($baseUrl, $page = 1)
     {
         if (!function_exists('curl_version')) {
             throw new \Exception("Le service a besoin de l'extension CURL pour fonctionner", 1);
         }
         
-        $url = $baseUrl . '?json=get_posts&count=50';
+        $url = $baseUrl . '?json=get_posts&count=50&page=' . $page;
         $proxy = $this->getProxy();
         
         $curl = curl_init();
@@ -171,19 +182,19 @@ class ImportService
             $this->em->persist($dish);
         }
         
-        // remove deleted categories
-        foreach ($categories as $category) {
-            if (!isset($newCategories[$category->getWpId()])) {
-                $this->em->remove($category);
-            }
-        }
-        
-        // remove deleted dishes
-        foreach ($dishes as $dish) {
-            if (!isset($newDishes[$dish->getWpId()])) {
-                $this->em->remove($dish);
-            }
-        }
+//        // remove deleted categories
+//        foreach ($categories as $category) {
+//            if (!isset($newCategories[$category->getWpId()])) {
+//                $this->em->remove($category);
+//            }
+//        }
+//        
+//        // remove deleted dishes
+//        foreach ($dishes as $dish) {
+//            if (!isset($newDishes[$dish->getWpId()])) {
+//                $this->em->remove($dish);
+//            }
+//        }
         
         $this->em->flush();
         
