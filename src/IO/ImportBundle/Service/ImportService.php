@@ -244,7 +244,7 @@ class ImportService
         $dish->setWpId($wpDish['id']);
         $dish->setRestaurant($restaurant);
         $dish->setName(html_entity_decode($wpDish['title'], ENT_NOQUOTES, 'UTF-8'));
-        $dish->setDescription($wpDish['excerpt']);
+        $dish->setDescription(html_entity_decode(strip_tags($wpDish['excerpt']), ENT_NOQUOTES, 'UTF-8'));
         $dish->setTags(implode(';', $wpDish['tags']));
         
         $imageUrlPattern = "/src=(\"\'??)(.*)(\"\'??)/Ui";

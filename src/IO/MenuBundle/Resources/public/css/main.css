@@ -137,3 +137,7 @@ h1 span {
 .dish img { float: left; width: 100px; height: 100px; }
 .dish a { float: right; vertical-align: middle; }
 .dish strong, .dish em, .dish span { margin: 0 150px; display: block; }
+.dish .glyphicon-edit { margin: 0; }
+
+.edit-form { max-width: 500px; }
+.edit-form textarea { resize: vertical; }
