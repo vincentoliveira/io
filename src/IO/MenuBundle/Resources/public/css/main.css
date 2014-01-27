@@ -132,7 +132,8 @@ h1 span {
     border: none; 
 }
 
-.dish { clear: both; margin-bottom: 20px; height: 100px; }
+.dish { clear: both; padding: 10px 2px; height: 100px; }
+.dish:hover { background-color:#ddd; }
 .dish img { float: left; width: 100px; height: 100px; }
-.dish strong { margin-left: 150px; display: block; }
-.dish em { margin-left: 150px; display: block; }
+.dish a { float: right; vertical-align: middle; }
+.dish strong, .dish em, .dish span { margin: 0 150px; display: block; }

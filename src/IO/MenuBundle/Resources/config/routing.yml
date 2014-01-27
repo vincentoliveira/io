@@ -2,10 +2,12 @@ menu_homepage:
     pattern:  /
     defaults: { _controller: IOMenuBundle:Default:index }
 
+# Commande ne cours
 menu_commande_en_cours:
     pattern:  /encours
     defaults: { _controller: IOMenuBundle:Commande:commandeEnCours }
 
+# Menu
 menu_commande_menu:
     pattern:  /menu
     defaults: { _controller: IOMenuBundle:Menu:index }
@@ -18,6 +20,16 @@ menu_commande_show_category:
     pattern:  /menu/cat/{id}
     defaults: { _controller: IOMenuBundle:Menu:showCategory }
 
+# Dish
+menu_commande_dish_edit:
+    pattern:  /dish/{id}
+    defaults: { _controller: IOMenuBundle:Dish:edit }
+    
+menu_commande_dish_update:
+    pattern:  /dish/{id}/update
+    defaults: { _controller: IOMenuBundle:Dish:update }
+
+# API
 menu_api_get_categories:
     pattern:  /api/categories
     defaults: { _controller: IOMenuBundle:Api:getCategories }
@@ -25,3 +37,4 @@ menu_api_get_categories:
 menu_api_get_dishes:
     pattern:  /api/dishes
     defaults: { _controller: IOMenuBundle:Api:getDishes }
+    

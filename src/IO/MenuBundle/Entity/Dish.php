@@ -72,6 +72,14 @@ class Dish
      */
     private $category;
     
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="price", type="decimal", precision=7, scale=2, nullable=false)
+     */
+    private $price;
+    
     /**
      * Get id
      *
@@ -241,5 +249,28 @@ class Dish
     public function getCategory()
     {
         return $this->category;
+    }
+
+    /**
+     * Set price
+     *
+     * @param float $price
+     * @return Dish
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return float 
+     */
+    public function getPrice()
+    {
+        return $this->price;
     }
 }
