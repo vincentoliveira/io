@@ -76,7 +76,7 @@ class Dish
     /**
      * @var integer
      *
-     * @ORM\Column(name="price", type="decimal", precision=7, scale=2, nullable=false)
+     * @ORM\Column(name="price", type="decimal", precision=7, scale=2, nullable=true)
      */
     private $price;
     
