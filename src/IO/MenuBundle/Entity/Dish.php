@@ -5,7 +5,7 @@ namespace IO\MenuBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Content
+ * Dish
  *
  * @ORM\Table(name="dish")
  * @ORM\Entity()
@@ -71,7 +71,6 @@ class Dish
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
-    
     
     /**
      * @var integer

@@ -5,7 +5,7 @@ namespace IO\MenuBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Content
+ * Restaurant
  *
  * @ORM\Table(name="restaurant")
  * @ORM\Entity()

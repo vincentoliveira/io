@@ -5,7 +5,7 @@ namespace IO\MenuBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Content
+ * Category
  *
  * @ORM\Table(name="category")
  * @ORM\Entity()
@@ -64,6 +64,13 @@ class Category
      * @ORM\OneToMany(targetEntity="IO\MenuBundle\Entity\Dish", mappedBy="category", cascade={"remove", "persist"})
      */
     private $dishes;
+    
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="IO\MenuBundle\Entity\Menu", mappedBy="category", cascade={"remove", "persist"})
+     */
+    private $menus;
 
 
     /**
@@ -73,6 +80,7 @@ class Category
     {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->dishes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->menus = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -241,5 +249,38 @@ class Category
     public function getDishes()
     {
         return $this->dishes;
+    }
+
+    /**
+     * Add menus
+     *
+     * @param \IO\MenuBundle\Entity\Menu $menus
+     * @return Category
+     */
+    public function addMenu(\IO\MenuBundle\Entity\Menu $menus)
+    {
+        $this->menus[] = $menus;
+    
+        return $this;
+    }
+
+    /**
+     * Remove menus
+     *
+     * @param \IO\MenuBundle\Entity\Menu $menus
+     */
+    public function removeMenu(\IO\MenuBundle\Entity\Menu $menus)
+    {
+        $this->menus->removeElement($menus);
+    }
+
+    /**
+     * Get menus
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMenus()
+    {
+        return $this->menus;
     }
 }
