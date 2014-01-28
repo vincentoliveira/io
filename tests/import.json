@@ -1,0 +1,104 @@
+{
+    "status": "ok",
+    "count": 4,
+    "count_total": 4,
+    "pages": 1,
+    "posts": [
+    {
+        "id": 1,
+        "type": "post",
+        "slug": "oeufs-mayo",
+        "url": "#",
+        "status": "publish",
+        "title": "Oeufs mayo",
+        "title_plain": "Oeufs mayo",
+        "content": "<p>Deux oeufs bien frais accompagné d&rsquo;une délicate mayonnaise maison. Toto<img class=\"alignleft\" alt=\"\" src=\"http://blogs.cotemaison.fr/cuisinetemeraire/wp-content/blogs.dir/909/files/2012/05/Oeufs-Durs-Mayonnaise.jpg\" width=\"600\" height=\"450\" /></p>\n",
+        "excerpt": "<p>Deux oeufs bien frais accompagné d&rsquo;une délicate mayonnaise maison. Toto</p>\n",
+        "date": "2014-01-06 22:33:25",
+        "modified": "2014-01-16 16:36:07",
+        "categories": [
+        {
+            "id": 3,
+            "slug": "entree",
+            "title": "Entrée",
+            "description": "",
+            "parent": 2,
+            "post_count": 2
+        }
+        ],
+        "tags": ["vegetarien"]
+    },
+    {
+        "id": 2,
+        "type": "post",
+        "slug": "carpaccio-de-boeuf",
+        "url": "#",
+        "status": "publish",
+        "title": "Carpaccio de bœuf",
+        "title_plain": "Carpaccio de bœuf",
+        "content": "<p>Délicieuses tranches de bœuf finement tranchées accompagné de parmesan et fines herbes</p>\n<p><img class=\"alignnone\" alt=\"\" src=\"http://tartare-et-carpaccio.com/wp-content/themes/delicacy/images/carpaccio-de-boeuf.jpg\" width=\"424\" height=\"283\" /></p>\n",
+        "excerpt": "<p>Délicieuses tranches de bœuf finement tranchées accompagné de parmesan et fines herbes</p>\n",
+        "date": "2014-01-06 22:35:46",
+        "modified": "2014-01-06 22:35:46",
+        "categories": [
+        {
+            "id": 3,
+            "slug": "entree",
+            "title": "Entrée",
+            "description": "",
+            "parent": 2,
+            "post_count": 2
+        }
+        ],
+        "tags": []
+    },
+    {
+        "id": 3,
+        "type": "post",
+        "slug": "hamburger-maison",
+        "url": "http://37.187.65.120/wordpress/blog/2014/01/06/hamburger-maison/",
+        "status": "publish",
+        "title": "Hamburger maison",
+        "title_plain": "Hamburger maison",
+        "content": "<p>Steak haché de boeuf (provenance Limousin) accompagné de  sa sauce américaine<img class=\"alignnone\" alt=\"\" src=\"http://www.guide-irlande.com/wp-content/uploads/2010/10/burger-maison.jpg\" width=\"1024\" height=\"765\" /></p>\n",
+        "excerpt": "<p>Steak haché de boeuf (provenance Limousin) accompagné de  sa sauce américaine</p>\n",
+        "date": "2014-01-06 22:58:10",
+        "modified": "2014-01-06 22:58:10",
+        "categories": [
+        {
+            "id": 4,
+            "slug": "plat",
+            "title": "Plat",
+            "description": "",
+            "parent": 2,
+            "post_count": 2
+        }
+        ],
+        "tags": ["vegetarien"]
+    },
+    {
+        "id": 4,
+        "type": "post",
+        "slug": "filet-de-cabillaud-au-four",
+        "url": "#",
+        "status": "publish",
+        "title": "Filet de cabillaud au four",
+        "title_plain": "Filet de cabillaud au four",
+        "content": "<p>Selon pêche, assaisonné au curry.</p>\n<p><img class=\"alignnone\" alt=\"\" src=\"http://recettessimples.fr/images/Queue_de_Cabillaud_part_t.jpg\" width=\"400\" height=\"356\" /></p>\n",
+        "excerpt": "<p>Selon pêche, assaisonné au curry.</p>\n",
+        "date": "2014-01-13 11:01:35",
+        "modified": "2014-01-13 11:03:27",
+        "categories": [
+        {
+            "id": 4,
+            "slug": "plat",
+            "title": "Plat",
+            "description": "",
+            "parent": 2,
+            "post_count": 2
+        }
+        ],
+        "tags": ["vegetarien"]
+    }
+    ]
+}
