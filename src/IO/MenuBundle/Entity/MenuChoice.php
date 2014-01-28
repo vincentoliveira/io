@@ -40,7 +40,7 @@ class MenuChoice
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\MenuBundle\Entity\Menu", inversedBy="menuChoices")
-     * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="menu_id", referencedColumnName="id")
      */
     private $menu;
 
