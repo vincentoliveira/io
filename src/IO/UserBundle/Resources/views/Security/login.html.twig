@@ -1,5 +1,7 @@
 {% extends "IOMenuBundle::layout.html.twig" %}
 
+{% trans_default_domain 'FOSUserBundle' %}
+
 {% block content %}
     <form class="form-signin" role="form" action="{{ path("fos_user_security_check") }}" method="POST">
         <h2 class="form-signin-heading">Innov'Order</h2>
@@ -12,6 +14,6 @@
             <input name="_remember_me" value="on" type="checkbox" value="remember-me"> Se souvenir de moi
         </label>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Se connecter</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" id="_submit">Se connecter</button>
     </form>
 {% endblock content %}
