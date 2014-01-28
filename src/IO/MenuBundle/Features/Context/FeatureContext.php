@@ -39,4 +39,23 @@ class FeatureContext extends MinkContext
         $this->useContext('User', new UserContext($parameters));
         $this->useContext('Database', new DatabaseContext($parameters));
     }
+    
+
+    /**
+     * Remplis un champ caché
+     * 
+     * @Given /^je remplis le champ caché "([^"]*)" avec "([^"]*)"$/
+     * @param type $field
+     * @param type $value
+     */
+    public function jeRemplisLeChampCacheAvec($field, $value)
+    {
+        $page = $this->getSession()->getPage();
+        $node = $page->find('css', $field);
+        if ($node === null) {
+            $node = $page->find('css', 'input[name="' . $field . '"]');
+        }
+
+        $node->setValue($value);
+    }
 }

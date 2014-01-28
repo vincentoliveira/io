@@ -1,8 +1,9 @@
 # language: fr
-@user
+@import
 Fonctionnalité: Import wordpress
 
 
+@3.1
 Scénario: 03.1 - Import Wordpress : Authorisations
     Soit je suis sur "/import/"
     Alors je ne devrais pas voir "Importer"
@@ -23,8 +24,31 @@ Scénario: 03.1 - Import Wordpress : Authorisations
     Alors je devrais voir "Importer"
 
 
-Scénario: 03.2 - Import : Echet
-    Soit le restaurant "Restaurant test" existe avec l'url "http://urlquinexistepas.fr"
+@3.2
+Scénario: 03.2 - Import : Echec
+    Soit l'utilisateur "admin" existe et a le role "ROLE_ADMIN"
+    Et je suis connecté en tant que "admin"
+    Et je suis sur "/import/"    
+    Soit je remplis le champ caché "import[_token]" avec "-"
+    Et je presse "Importer"
+    Alors je devrais voir "Ce restaurant n'existe pas"
+
+    Et le restaurant "Restaurant test" existe avec l'url "/tests/aucun_fichier.json"
+    Soit je suis sur "/import/"
+    Soit je sélectionne "Restaurant test" depuis "import[restaurant]"
+    Et je presse "Importer"
+    Alors je devrais voir "Echec de la récupération des données"
+
+    Soit le restaurant "Restaurant test" existe avec l'url "/tests/import_ko.json"
+    Soit je suis sur "/import/"
+    Soit je sélectionne "Restaurant test" depuis "import[restaurant]"
+    Et je presse "Importer"
+    Alors je devrais voir "Echec de la récupération des données"
+
+
+@3.3
+Scénario: 03.3 - Import Wordpress
+    Soit le restaurant "Restaurant test" existe avec l'url "/tests/import.json"
     Soit je supprime tous les "IOMenuBundle:Category"
     Soit l'utilisateur "admin" existe et a le role "ROLE_ADMIN"
     Soit je suis connecté en tant que "admin"
@@ -32,17 +56,4 @@ Scénario: 03.2 - Import : Echet
 
     Soit je sélectionne "Restaurant test" depuis "import[restaurant]"
     Et je presse "Importer"
-    Alors je devrais voir "Echec de la récupération des données"
-
-
-#Scénario: 03.3 - Import Wordpress
-#    Soit le restaurant "Restaurant test" existe avec l'url "/tests/import.json"
-#    Soit je supprime tous les "IOMenuBundle:Category"
-#    Soit l'utilisateur "admin" existe et a le role "ROLE_ADMIN"
-#    Soit je suis connecté en tant que "admin"
-#    Soit je suis sur "/import/"
-
-#    Soit je sélectionne "Restaurant test" depuis "import[restaurant]"
-#    Et je presse "Importer"
-#    Et imprimer la dernière réponse
-#    Alors je devrais voir "L'import s'est exécuté avec succès"
+    Alors je devrais voir "L'import s'est exécuté avec succès"

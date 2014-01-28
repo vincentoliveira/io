@@ -59,14 +59,14 @@ class ImportService
                 $results['logs'] .= '... page ' . $page . ': OK';
                 $results['logs'] .= "\n" . 'Results : ' . "\n" . $jsonPosts;
 
-                if ($jsonPosts === false) {
-                    $results['message'] = 'Echec de la récupération des données';
+                if ($jsonPosts == false) {
+                    $results['message'] = 'Echec de la récupération des données (no result)';
                     return $results;
                 }
 
                 $posts = json_decode($jsonPosts, true);
-                if ($posts['status'] !== 'ok') {
-                    $results['message'] = 'Echec de la récupération des données';
+                if (!isset($posts['status']) || $posts['status'] !== 'ok') {
+                    $results['message'] = 'Echec de la récupération des données (status: ko)';
                     return $results;
                 }
                 
@@ -87,7 +87,6 @@ class ImportService
                 $results['logs'] .= "\n\n+------------------------------------------------------------------------------+\n\n";
             }
             
-            
             $results['logs'] .= 'End.';
             
             $results['success'] = true;
@@ -107,6 +106,14 @@ class ImportService
      */
     private function requestWordpress($baseUrl, $page = 1)
     {
+        if ($this->container->get('kernel')->getEnvironment() === 'test') {
+            $filepath = $this->container->get('kernel')->getRootDir() . '/../' . $baseUrl;
+            if (!file_exists($filepath)) {
+                return false;
+            }
+            return file_get_contents($filepath);
+        }
+        
         if (!function_exists('curl_version')) {
             throw new \Exception("Le service a besoin de l'extension CURL pour fonctionner", 1);
         }
@@ -120,7 +127,6 @@ class ImportService
         if ($proxy) {
             curl_setopt($curl, CURLOPT_PROXY, $proxy);
         }
-
 
         $result = curl_exec($curl);
 
@@ -162,9 +168,6 @@ class ImportService
         foreach ($posts['posts'] as $wpDish) {
             // get dish
             $dish = $this->findOrCreateDish($wpDish, $dishes, $restaurant);
-            if ($dish === null) {
-                continue;
-            }
             
             $newDishes[$dish->getWpId()] = $dish;
             
@@ -214,10 +217,6 @@ class ImportService
      */
     private function findOrCreateDish(array $wpDish, array &$dishes, Restaurant $restaurant)
     {
-        if (empty($wpDish)) {
-            return null;
-        }
-        
         foreach ($dishes as $dish) {
             if (intval($dish->getWpId()) === intval($wpDish['id'])) {
                 return $this->setDishData($dish, $wpDish, $restaurant);
@@ -266,10 +265,6 @@ class ImportService
      */
     private function findOrCreateCategory(array $wpCategory, array &$categories, Restaurant $restaurant)
     {
-        if (empty($wpCategory)) {
-            return null;
-        }
-        
         foreach ($categories as $category) {
             if (intval($category->getWpId()) === intval($wpCategory['id'])) {
                 return $this->setCategoryData($category, $wpCategory, $categories, $restaurant);
