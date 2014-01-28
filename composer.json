@@ -22,7 +22,12 @@
         
         "jms/security-extra-bundle": "1.5.*@dev",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "friendsofsymfony/user-bundle": "dev-master"
+        "friendsofsymfony/user-bundle": "dev-master",
+        
+        "behat/behat": "*@stable",
+        "behat/symfony2-extension": "*@stable",
+        "behat/mink-extension": "*@stable",
+        "behat/mink-browserkit-driver": "*@stable"
     },
     "scripts": {
         "post-install-cmd": [
