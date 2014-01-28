@@ -2,10 +2,10 @@
 
 {% block content %}
 <h3>
-    <small><a href="{{ path('menu_commande_show_category', {id:dish.category.id}) }}" title="Retour au menu"><span class="glyphicon glyphicon-arrow-left"></span></a></small>
+    <small><a href="{{ path('menu_show_category', {id:dish.category.id}) }}" title="Retour au menu"><span class="glyphicon glyphicon-arrow-left"></span></a></small>
     {{ dish.name|raw }}
 </h3>
-<form class="edit-form" role="form" action="{{ path('menu_commande_dish_update', {id:dish.id}) }}" method="POST">
+<form class="edit-form" role="form" action="{{ path('menu_dish_update', {id:dish.id}) }}" method="POST">
     <div class="form-group">
         {{ form_row(form.name) }}
     </div>

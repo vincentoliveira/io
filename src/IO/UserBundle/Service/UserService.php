@@ -36,11 +36,7 @@ class UserService
         $token = $this->container->get('security.context')->getToken();
         $user = $token !== null ? $token->getUser() : null;
 
-        if (!$user instanceof User) {
-            return null;
-        }
-
-        return $user;
+        return $user instanceof User ? $user : null;
     }
 
 }

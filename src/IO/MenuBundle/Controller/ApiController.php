@@ -17,7 +17,7 @@ class ApiController extends Controller
      */
     public function getCategoriesAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $categories = $em->getRepository('IOMenuBundle:Category')
                 ->createQueryBuilder('category')
                 ->select('category, parent')
@@ -35,7 +35,7 @@ class ApiController extends Controller
      */
     public function getDishesAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $categories = $em->getRepository('IOMenuBundle:Dish')
                 ->createQueryBuilder('dish')
                 ->select('dish, category')

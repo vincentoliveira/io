@@ -16,9 +16,9 @@ use IO\MenuBundle\Entity\Restaurant;
 use IO\MenuBundle\Entity\Dish;
 
 /**
- * Menu Controller
+ * Carte Controller
  */
-class MenuController extends Controller
+class CarteController extends Controller
 {
     /**
      * Display menu
@@ -33,7 +33,7 @@ class MenuController extends Controller
         $userSv = new UserService($this->container);
         $user = $userSv->getUser();
         if ($user->hasRole('ROLE_ADMIN') === false) {
-            return $this->redirect($this->generateUrl('menu_commande_show_menu', array('id' => $user->getRestaurant()->getId())));
+            return $this->redirect($this->generateUrl('menu_show_carte', array('id' => $user->getRestaurant()->getId())));
         }
         
         $form = $this->createForm(new SelectRestaurantType());
@@ -41,7 +41,7 @@ class MenuController extends Controller
             $form->bind($request);
             if ($form->isValid()) {
                 $data = $form->getData();
-                return $this->redirect($this->generateUrl('menu_commande_show_menu', array('id' => $data['restaurant']->getId())));
+                return $this->redirect($this->generateUrl('menu_show_carte', array('id' => $data['restaurant']->getId())));
             }
         }
         
@@ -59,7 +59,7 @@ class MenuController extends Controller
      * @ParamConverter("restaurant", class="IOMenuBundle:Restaurant", options={"id" = "id"})
      * @Secure(roles="ROLE_RESTAURATEUR")
      */
-    public function showMenuAction(Restaurant $restaurant)
+    public function showCarteAction(Restaurant $restaurant)
     {
         $userSv = new UserService($this->container);
         $user = $userSv->getUser();
@@ -67,7 +67,7 @@ class MenuController extends Controller
             return $this->createNotFoundException('Vous ne pouvez pas voir ce menu.');
         }
         
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $categories = $em->getRepository('IOMenuBundle:Category')
                 ->findBy(array('restaurant' => $restaurant, 'parent' => null));
         
@@ -88,7 +88,7 @@ class MenuController extends Controller
      */
     public function showCategoryAction(Category $category)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $dishes = $em->getRepository('IOMenuBundle:Dish')->findBy(array('category' => $category));
         
         return array(

@@ -45,4 +45,23 @@ class UserContext extends AbstractContext
         $steps[] = new Step\Given('je presse "_submit"');
         return $steps;
     }
+     /**
+     * @Given /^"([^"]*)" a pour restaurant "([^"]*)"$/
+     */
+    public function aPourRestaurant($username, $restaurantName)
+    {
+        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+        
+        $user = $em->getRepository('IOUserBundle:User')->findOneBy(array('username' => $username));
+        assertNotNull($user, sprintf('L\'utilisateur %s n\'existe pas', $username));
+
+        $restaurant = $em->getRepository('IOMenuBundle:Restaurant')->findOneBy(array('name' => $restaurantName));
+        assertNotNull($restaurant, sprintf('Le restaurant %s n\'existe pas', $restaurantName));
+        
+        $user->setRestaurant($restaurant);
+        $em->persist($user);
+        $em->flush();
+    }
+
+    
 }

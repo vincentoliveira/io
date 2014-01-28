@@ -63,11 +63,11 @@ class DishController extends Controller
         $form->bind($request);
         
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $em->persist($dish);
             $em->flush();
             
-            return $this->redirect($this->generateUrl('menu_commande_show_category', array('id' => $dish->getCategory()->getId())));
+            return $this->redirect($this->generateUrl('menu_show_category', array('id' => $dish->getCategory()->getId())));
         }
 
         return array(

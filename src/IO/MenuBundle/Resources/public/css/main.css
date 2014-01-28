@@ -141,3 +141,6 @@ h1 span {
 
 .edit-form { max-width: 500px; }
 .edit-form textarea { resize: vertical; }
+
+.actionbar { margin: 10px 0; }
+.recherche { margin: 50px 0; }
