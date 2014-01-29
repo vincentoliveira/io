@@ -1,5 +1,5 @@
-ioapi:
-    resource: "@IOAPIBundle/Resources/config/routing.yml"
+io_menu:
+    resource: "@IOMenuBundle/Resources/config/routing.yml"
     prefix:   /
 
 io_user:
@@ -9,10 +9,10 @@ io_user:
 io_import:
     resource: "@IOImportBundle/Resources/config/routing.yml"
     prefix:   /import
-
-io_menu:
-    resource: "@IOMenuBundle/Resources/config/routing.yml"
-    prefix:   /
+  
+io_api:
+    resource: "@IOAPIBundle/Resources/config/routing.yml"
+    prefix:   /api
 
 
 fos_user_security:

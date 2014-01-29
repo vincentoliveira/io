@@ -10,17 +10,42 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use IO\UserBundle\Security\Authentication\Token\WsseUserToken;
 
+/**
+ * Wsse Listener
+ */
 class WsseListener implements ListenerInterface
 {
+    /**
+     *Security context
+     * 
+     * @var SecurityContextInterface 
+     */
     protected $securityContext;
+    
+    /**
+     * Authentication manager
+     * 
+     * @var AuthenticationManagerInterface 
+     */
     protected $authenticationManager;
 
+    /**
+     * Constructor
+     * 
+     * @param \Symfony\Component\Security\Core\SecurityContextInterface $securityContext
+     * @param \Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface $authenticationManager
+     */
     public function __construct(SecurityContextInterface $securityContext, AuthenticationManagerInterface $authenticationManager)
     {
         $this->securityContext = $securityContext;
         $this->authenticationManager = $authenticationManager;
     }
 
+    /**
+     * Handle WSSE authentification
+     * 
+     * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
+     */
     public function handle(GetResponseEvent $event)
     {
         $request = $event->getRequest();
@@ -40,29 +65,16 @@ class WsseListener implements ListenerInterface
         try {
             $authToken = $this->authenticationManager->authenticate($token);
             $this->securityContext->setToken($authToken);
-
+            
             return;
         } catch (AuthenticationException $failed) {
             // ... you might log something here
 
-            // To deny the authentication clear the token. This will redirect to the login page.
-            // Make sure to only clear your token, not those of other authentication listeners.
-            // $token = $this->securityContext->getToken();
-            // if ($token instanceof WsseUserToken && $this->providerKey === $token->getProviderKey()) {
-            //     $this->securityContext->setToken(null);
-            // }
-            // return;
-
-            // Deny authentication with a '403 Forbidden' HTTP response
-            $response = new Response();
-            $response->setStatusCode(403);
-            $event->setResponse($response);
-
         }
-
-        // By default deny authorization
-        $response = new Response();
-        $response->setStatusCode(403);
-        $event->setResponse($response);
+        
+        // By default deny authorization with a '403 Forbidden' HTTP response
+//        $response = new Response();
+//        $response->setStatusCode(403);
+//        $event->setResponse($response);
     }
 }
