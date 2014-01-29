@@ -18,13 +18,13 @@ Scénario: 04.1 - Voir la carte : Authorisations
     Alors je ne devrais pas voir "La carte"
 
     Soit l'utilisateur "resto" existe et a le role "ROLE_RESTAURATEUR"
-    Soit "cuisto" a pour restaurant "Restaurant test"
+    Soit "resto" a pour restaurant "Restaurant test"
     Soit je suis connecté en tant que "resto"
     Soit je suis sur "/carte"
     Alors je devrais voir "La carte"
 
     Soit l'utilisateur "admin" existe et a le role "ROLE_ADMIN"
-    Soit "cuisto" a pour restaurant "Restaurant test"
+    Soit "admin" a pour restaurant "Restaurant test"
     Soit je suis connecté en tant que "admin"
     Soit je suis sur "/carte"
     Alors je devrais voir "La carte"
