@@ -1,3 +1,7 @@
+ioapi:
+    resource: "@IOAPIBundle/Resources/config/routing.yml"
+    prefix:   /
+
 io_user:
     resource: "@IOUserBundle/Resources/config/routing.yml"
     prefix:   /
