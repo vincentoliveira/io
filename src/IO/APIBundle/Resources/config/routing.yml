@@ -5,3 +5,7 @@ api_salt:
 api_check_login:
     pattern:  /check_login
     defaults: { _controller: IOAPIBundle:User:checkLogin }
+
+menu_api_get_categories:
+    pattern:  /categories
+    defaults: { _controller: IOAPIBundle:Category:getCategories }

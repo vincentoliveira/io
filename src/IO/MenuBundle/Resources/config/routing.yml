@@ -31,10 +31,10 @@ menu_dish_update:
 
 # API
 menu_api_get_categories:
-    pattern:  /api/categories
+    pattern:  /api_old/categories
     defaults: { _controller: IOMenuBundle:Api:getCategories }
 
 menu_api_get_dishes:
-    pattern:  /api/dishes
+    pattern:  /api_old/dishes
     defaults: { _controller: IOMenuBundle:Api:getDishes }
     

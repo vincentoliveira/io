@@ -2,7 +2,7 @@ parameters:
 #    io_user.example.class: IO\UserBundle\Example
 
 services:
-    io_user.user_service:
+    user.user_service:
         class: IO\UserBundle\Service\UserService
         arguments: ["@service_container"]
 
