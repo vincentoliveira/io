@@ -8,23 +8,23 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 /**
- * API Category controller
+ * API Dish controller
  */
-class CategoryController extends Controller
+class DishController extends Controller
 {
     /**
-     * Get restaurant categories
+     * Get restaurant dishes
      * WSSE : <strong>ON</strong>
      * Parameters :
      * - <strong>GET</strong> <em>restaurant</em> restaurant name
      * 
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getCategoriesAction(Request $request)
+    public function getDishesAction(Request $request)
     {
         $user = $this->get('user.user_service')->getUser();
         if ($user === null) {
-            throw $this->createNotFoundException('getCategoriesAction: Unauthentified');
+            throw $this->createNotFoundException('getDishesAction: Unauthentified');
         }
         
         if ($user->hasRole('ROLE_ADMIN')) {
@@ -37,7 +37,7 @@ class CategoryController extends Controller
             return new JsonResponse(array('status' => 'ko'));
         }
         
-        $results = $this->get('menu.category')->getRestaurantCategories($restaurantName);
+        $results = $this->get('menu.dish')->getRestaurantDishes($restaurantName);
         
         return new JsonResponse(array(
             'status' => 'ok',

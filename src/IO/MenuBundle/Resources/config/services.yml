@@ -5,3 +5,8 @@ services:
     menu.category:
         class: IO\MenuBundle\Service\CategoryService
         arguments: ["@doctrine.orm.entity_manager"]
+        
+    menu.dish:
+        class: IO\MenuBundle\Service\DishService
+        arguments: ["@doctrine.orm.entity_manager"]
+

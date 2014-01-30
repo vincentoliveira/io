@@ -3,7 +3,6 @@
 namespace IO\MenuBundle\Service;
 
 use Doctrine\ORM\EntityManager;
-use IO\MenuBundle\Entity\Restaurant;
 
 /**
  * Category Service
@@ -49,7 +48,17 @@ class CategoryService
             $results[] = array(
                 'id' => $category->getId(),
                 'name' => $category->getName(),
+                'parent' => 0,
             );
+            
+            // add children (only 2 levels ?)
+            foreach ($category->getChildren() as $children) {
+                $results[] = array(
+                    'id' => $children->getId(),
+                    'name' => $children->getName(),
+                    'parent' => $category->getId(),
+                );
+            }
         }
         
         return $results;

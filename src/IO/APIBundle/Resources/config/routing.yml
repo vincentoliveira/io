@@ -9,3 +9,7 @@ api_check_login:
 menu_api_get_categories:
     pattern:  /categories
     defaults: { _controller: IOAPIBundle:Category:getCategories }
+    
+menu_api_get_dishes:
+    pattern:  /dishes
+    defaults: { _controller: IOAPIBundle:Dish:getDishes }
