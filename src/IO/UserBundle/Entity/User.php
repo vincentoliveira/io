@@ -44,6 +44,19 @@ class User extends BaseUser
     }
 
     /**
+     * Set salt
+     * 
+     * @param String $salt
+     * @return \IO\UserBundle\Entity\User
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+        
+        return $this;
+    }
+    
+    /**
      * Set restaurant
      *
      * @param \IO\MenuBundle\Entity\Restaurant $restaurant

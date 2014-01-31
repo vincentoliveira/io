@@ -20,12 +20,19 @@ class Menu
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="_order", type="integer", nullable=false)
+     */
+    private $order;
 
     /**
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\MenuBundle\Entity\Restaurant")
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
      */
     private $restaurant;
     
@@ -61,16 +68,17 @@ class Menu
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="IO\MenuBundle\Entity\MenuChoice", mappedBy="menu", cascade={"remove", "persist"})
+     * @ORM\OneToMany(targetEntity="IO\MenuBundle\Entity\MenuCategory", mappedBy="menu", cascade={"remove", "persist"})
+     * @ORM\OrderBy({"order" = "ASC"})
      */
-    private $menuChoices;
+    private $menuCategories;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->menuChoices = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->menuCategories = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -81,6 +89,29 @@ class Menu
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set order
+     *
+     * @param integer $order
+     * @return Menu
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return integer 
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 
     /**
@@ -199,35 +230,35 @@ class Menu
     }
 
     /**
-     * Add menuChoices
+     * Add menuCategories
      *
-     * @param \IO\MenuBundle\Entity\MenuChoice $menuChoices
+     * @param \IO\MenuBundle\Entity\MenuCategory $menuCategories
      * @return Menu
      */
-    public function addMenuChoice(\IO\MenuBundle\Entity\MenuChoice $menuChoices)
+    public function addMenuCategorie(\IO\MenuBundle\Entity\MenuCategory $menuCategories)
     {
-        $this->menuChoices[] = $menuChoices;
+        $this->menuCategories[] = $menuCategories;
     
         return $this;
     }
 
     /**
-     * Remove menuChoices
+     * Remove menuCategories
      *
-     * @param \IO\MenuBundle\Entity\MenuChoice $menuChoices
+     * @param \IO\MenuBundle\Entity\MenuCategory $menuCategories
      */
-    public function removeMenuChoice(\IO\MenuBundle\Entity\MenuChoice $menuChoices)
+    public function removeMenuCategorie(\IO\MenuBundle\Entity\MenuCategory $menuCategories)
     {
-        $this->menuChoices->removeElement($menuChoices);
+        $this->menuCategories->removeElement($menuCategories);
     }
 
     /**
-     * Get menuChoices
+     * Get menuCategories
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getMenuChoices()
+    public function getMenuCategories()
     {
-        return $this->menuChoices;
+        return $this->menuCategories;
     }
 }

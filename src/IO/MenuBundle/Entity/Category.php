@@ -24,6 +24,13 @@ class Category
     /**
      * @var integer
      *
+     * @ORM\Column(name="_order", type="integer", nullable=false)
+     */
+    private $order;
+    
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="wp_id", type="integer",  nullable=false)
      */
     private $wpId;
@@ -32,7 +39,7 @@ class Category
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\MenuBundle\Entity\Restaurant")
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
      */
     private $restaurant;
     
@@ -55,6 +62,7 @@ class Category
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="IO\MenuBundle\Entity\Category", mappedBy="parent", cascade={"remove", "persist"})
+     * @ORM\OrderBy({"order" = "ASC"})
      */
     private $children;
     
@@ -62,6 +70,7 @@ class Category
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="IO\MenuBundle\Entity\Dish", mappedBy="category", cascade={"remove", "persist"})
+     * @ORM\OrderBy({"order" = "ASC"})
      */
     private $dishes;
     
@@ -282,5 +291,28 @@ class Category
     public function getMenus()
     {
         return $this->menus;
+    }
+
+    /**
+     * Set order
+     *
+     * @param integer $order
+     * @return Category
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return integer 
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 }

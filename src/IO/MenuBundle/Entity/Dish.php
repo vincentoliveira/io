@@ -20,12 +20,19 @@ class Dish
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="_order", type="integer", nullable=false)
+     */
+    private $order;
 
     /**
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\MenuBundle\Entity\Restaurant")
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
      */
     private $restaurant;
     
@@ -271,5 +278,28 @@ class Dish
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set order
+     *
+     * @param integer $order
+     * @return Dish
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return integer 
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 }

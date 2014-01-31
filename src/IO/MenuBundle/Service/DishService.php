@@ -38,7 +38,8 @@ class DishService
                 ->select('dish')
                 ->leftJoin('dish.restaurant', 'restaurant')
                 ->andWhere('restaurant.name = :restaurantName')
-                ->setParameter(':restaurantName', $restaurantName);
+                ->setParameter(':restaurantName', $restaurantName)
+                ->orderBy('dish.order', 'ASC');
         
         $dihes = $qb->getQuery()->getResult();
         

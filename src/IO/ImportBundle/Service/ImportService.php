@@ -25,6 +25,20 @@ class ImportService
      * @var Container 
      */
     protected $container;
+    
+    /**
+     * Current category order
+     *
+     * @var integer 
+     */
+    private $categoryOrder;
+    
+    /**
+     * Current dish order
+     *
+     * @var integer 
+     */
+    private $dishOrder;
 
     /**
      * Constructor
@@ -48,6 +62,9 @@ class ImportService
     {
         $results = array();
         $results['success'] = false;
+        
+        $this->categoryOrder = 1;
+        $this->dishOrder = 1;
         
         try {
             $results['logs'] = 'Start...' . "\n\n";
@@ -225,6 +242,9 @@ class ImportService
         
         $dish = new Dish();
         $dish = $this->setDishData($dish, $wpDish, $restaurant);
+        $dish->setOrder($this->dishOrder);
+        $this->dishOrder++;
+        
         $dishes[] = $dish;
         return $dish;
     }
@@ -273,6 +293,9 @@ class ImportService
         
         $category = new Category();
         $category = $this->setCategoryData($category, $wpCategory, $categories, $restaurant);
+        $category->setOrder($this->categoryOrder);
+        $this->categoryOrder++;
+        
         $categories[] = $category;
         return $category;
     }

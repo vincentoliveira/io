@@ -20,29 +20,36 @@ class MenuChoice
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="_order", type="integer", nullable=false)
+     */
+    private $order;
 
     /**
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\MenuBundle\Entity\Restaurant")
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
      */
     private $restaurant;
     
     /**
      * @var integer
      *
-     * @ORM\Column(name="price", type="decimal", precision=7, scale=2, nullable=true)
+     * @ORM\Column(name="extra_price", type="decimal", precision=7, scale=2, nullable=true)
      */
-    private $price;
+    private $extraPrice;
 
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="IO\MenuBundle\Entity\Menu", inversedBy="menuChoices")
-     * @ORM\JoinColumn(name="menu_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="IO\MenuBundle\Entity\Menu", inversedBy="menuCategory")
+     * @ORM\JoinColumn(name="menu_category_id", referencedColumnName="id")
      */
-    private $menu;
+    private $menuCategory;
 
     /**
      * @var string
@@ -51,7 +58,6 @@ class MenuChoice
      * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
      */
     private $dish;
-
 
     /**
      * Get id
@@ -64,26 +70,49 @@ class MenuChoice
     }
 
     /**
-     * Set price
+     * Set order
      *
-     * @param float $price
+     * @param integer $order
      * @return MenuChoice
      */
-    public function setPrice($price)
+    public function setOrder($order)
     {
-        $this->price = $price;
+        $this->order = $order;
     
         return $this;
     }
 
     /**
-     * Get price
+     * Get order
+     *
+     * @return integer 
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * Set extraPrice
+     *
+     * @param float $extraPrice
+     * @return MenuChoice
+     */
+    public function setExtraPrice($extraPrice)
+    {
+        $this->extraPrice = $extraPrice;
+    
+        return $this;
+    }
+
+    /**
+     * Get extraPrice
      *
      * @return float 
      */
-    public function getPrice()
+    public function getExtraPrice()
     {
-        return $this->price;
+        return $this->extraPrice;
     }
 
     /**
@@ -110,26 +139,26 @@ class MenuChoice
     }
 
     /**
-     * Set menu
+     * Set menuCategory
      *
-     * @param \IO\MenuBundle\Entity\Menu $menu
+     * @param \IO\MenuBundle\Entity\Menu $menuCategory
      * @return MenuChoice
      */
-    public function setMenu(\IO\MenuBundle\Entity\Menu $menu = null)
+    public function setMenuCategory(\IO\MenuBundle\Entity\Menu $menuCategory = null)
     {
-        $this->menu = $menu;
+        $this->menuCategory = $menuCategory;
     
         return $this;
     }
 
     /**
-     * Get menu
+     * Get menuCategory
      *
      * @return \IO\MenuBundle\Entity\Menu 
      */
-    public function getMenu()
+    public function getMenuCategory()
     {
-        return $this->menu;
+        return $this->menuCategory;
     }
 
     /**

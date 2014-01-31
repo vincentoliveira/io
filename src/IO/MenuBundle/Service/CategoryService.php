@@ -39,7 +39,8 @@ class CategoryService
                 ->leftJoin('category.restaurant', 'restaurant')
                 ->andWhere('category.parent IS NULL')
                 ->andWhere('restaurant.name = :restaurantName')
-                ->setParameter(':restaurantName', $restaurantName);
+                ->setParameter(':restaurantName', $restaurantName)
+                ->orderBy('category.order', 'ASC');
         
         $categories = $qb->getQuery()->getResult();
         

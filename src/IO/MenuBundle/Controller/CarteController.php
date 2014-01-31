@@ -69,7 +69,7 @@ class CarteController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $categories = $em->getRepository('IOMenuBundle:Category')
-                ->findBy(array('restaurant' => $restaurant, 'parent' => null));
+                ->findBy(array('restaurant' => $restaurant, 'parent' => null), array('order' => 'ASC'));
         
         return array(
             'categories' => $categories,
