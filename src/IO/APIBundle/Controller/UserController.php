@@ -47,13 +47,13 @@ class UserController extends Controller
     public function checkLoginAction()
     {
         $token = $this->container->get('security.context')->getToken();
-        if ($token !== null) {
-            return new JsonResponse(array('status' => 'ok', 'login' => false, 'reason' => 'no wsse token'));
+        if ($token === null) {
+            return new JsonResponse(array('status' => 'ok', 'login' => false));
         }
         
         $user = $token->getUser();
         if ($user === null || !$user instanceof \IO\UserBundle\Entity\User) {
-            return new JsonResponse(array('status' => 'ok', 'login' => false, 'reason' => 'user does not exist'));
+            return new JsonResponse(array('status' => 'ok', 'login' => false));
         }
         
         return new JsonResponse(array('status' => 'ok', 'login' => true));
