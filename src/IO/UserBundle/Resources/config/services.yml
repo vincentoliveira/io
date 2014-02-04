@@ -5,3 +5,11 @@ services:
     io_user.user_service:
         class: IO\UserBundle\Service\UserService
         arguments: ["@service_container"]
+
+    wsse.security.authentication.provider:
+        class:  IO\UserBundle\Security\Authentication\Provider\WsseProvider
+        arguments: ["", "%kernel.cache_dir%/security/nonces"]
+
+    wsse.security.authentication.listener:
+        class:  IO\UserBundle\Security\Firewall\WsseListener
+        arguments: ["@security.context", "@security.authentication.manager"]

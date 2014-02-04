@@ -1,0 +1,7 @@
+api_salt:
+    pattern:  /salt
+    defaults: { _controller: IOAPIBundle:User:salt }
+
+api_check_login:
+    pattern:  /check_login
+    defaults: { _controller: IOAPIBundle:User:checkLogin }
