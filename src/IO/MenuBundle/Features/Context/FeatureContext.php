@@ -77,7 +77,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
         $user = $em->getRepository('IOUserBundle:User')->findOneBy(array('username' => $username));
-        assertNotNull($user, sprintf('L\'utilisateur %s n\'existe pas', $username));
+        assertNotNull($user, sprintf('L\'utilisateur "%s" n\'existe pas', $username));
 
         $timestamp = gmdate('Y-m-d\TH:i:s\Z');
         $nonce = mt_rand();
@@ -110,7 +110,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             } elseif ($value === "TRUE") {
                 assertTrue($data[$key], sprintf('La clé "%" du json n\est pas "true"', $key));
             } else {
-                assertTrue(strpos($value, $data[$key]) !== false, sprintf('La clé "%" du json ne contient pas "%s"', $key, $value));
+                assertTrue(strpos($value, $data[$key]) !== false, sprintf('La clé "%s" du json ne contient pas "%s\n"', $key, $value, $data[$key]));
             }
         }
     }

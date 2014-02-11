@@ -1,6 +1,6 @@
 # language: fr
 @menu
-Fonctionnalité: Modifier les menus
+Fonctionnalité: Créer et modifier les menus
 
 
 @6.1

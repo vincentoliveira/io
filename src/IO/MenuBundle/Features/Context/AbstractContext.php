@@ -44,4 +44,12 @@ abstract class AbstractContext extends BehatContext implements KernelAwareInterf
     {
         $this->kernel = $kernel;
     }
+    /**
+     * 
+     * @return \Doctrine\ORM\EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->kernel->getContainer()->get('doctrine')->getManager();
+    }
 }

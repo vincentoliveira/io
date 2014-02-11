@@ -2,7 +2,7 @@
 @api @apilogin
 Fonctionnalité: API : Login
 
-Context:
+Contexte:
     Soit l'utilisateur "test" existe et a le role "ROLE_RESTAURATEUR"
     Soit l'utilisateur "test" a pour salt "saltdelutilisateurtest"
     Soit l'utilisateur "nouser" n'existe pas

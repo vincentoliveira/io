@@ -31,7 +31,7 @@ class SelectRestaurantType extends AbstractType
      */
     public function getName()
     {
-        return 'import';
+        return 'select';
     }
 
 }

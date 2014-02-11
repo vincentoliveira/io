@@ -31,7 +31,7 @@ class Category
     /**
      * @var integer
      *
-     * @ORM\Column(name="wp_id", type="integer",  nullable=false)
+     * @ORM\Column(name="wp_id", type="integer",  nullable=true)
      */
     private $wpId;
 

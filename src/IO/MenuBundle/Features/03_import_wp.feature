@@ -29,19 +29,19 @@ Scénario: 03.2 - Import : Echec
     Soit l'utilisateur "admin" existe et a le role "ROLE_ADMIN"
     Et je suis connecté en tant que "admin"
     Et je suis sur "/import/"    
-    Soit je remplis le champ caché "import[_token]" avec "-"
+    Soit je remplis le champ caché "select[_token]" avec "-"
     Et je presse "Importer"
     Alors je devrais voir "Ce restaurant n'existe pas"
 
     Et le restaurant "Restaurant test" existe avec l'url "/tests/aucun_fichier.json"
     Soit je suis sur "/import/"
-    Soit je sélectionne "Restaurant test" depuis "import[restaurant]"
+    Soit je sélectionne "Restaurant test" depuis "select[restaurant]"
     Et je presse "Importer"
     Alors je devrais voir "Echec de la récupération des données"
 
     Soit le restaurant "Restaurant test" existe avec l'url "/tests/import_ko.json"
     Soit je suis sur "/import/"
-    Soit je sélectionne "Restaurant test" depuis "import[restaurant]"
+    Soit je sélectionne "Restaurant test" depuis "select[restaurant]"
     Et je presse "Importer"
     Alors je devrais voir "Echec de la récupération des données"
 
@@ -54,6 +54,6 @@ Scénario: 03.3 - Import Wordpress
     Soit je suis connecté en tant que "admin"
     Soit je suis sur "/import/"
 
-    Soit je sélectionne "Restaurant test" depuis "import[restaurant]"
+    Soit je sélectionne "Restaurant test" depuis "select[restaurant]"
     Et je presse "Importer"
     Alors je devrais voir "L'import s'est exécuté avec succès"

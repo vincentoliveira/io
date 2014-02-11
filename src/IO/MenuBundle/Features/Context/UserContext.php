@@ -17,7 +17,7 @@ class UserContext extends AbstractContext
     public function lUtilisateurExisteEtALeRole($username, $role)
     {
         $email = $username . '@innovorder.fr';
-        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+        $em = $this->getEntityManager();
         
         $user = $em->getRepository('IOUserBundle:User')->findOneBy(array('username' => $username));
         if ($user === null) {
@@ -51,7 +51,7 @@ class UserContext extends AbstractContext
      */
     public function lUtilisateurAPourSalt($username, $salt)
     {
-        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+        $em = $this->getEntityManager();
         
         $user = $em->getRepository('IOUserBundle:User')->findOneBy(array('username' => $username));
         assertNotNull($user, sprintf('L\'utilisateur %s n\'existe pas', $username));
@@ -66,7 +66,7 @@ class UserContext extends AbstractContext
      */
     public function lUtilisateurNExistePas($username)
     {
-        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+        $em = $this->getEntityManager();
         
         $user = $em->getRepository('IOUserBundle:User')->findOneBy(array('username' => $username));
         if ($user !== null) {
@@ -75,13 +75,12 @@ class UserContext extends AbstractContext
         }
     }
 
-    
      /**
      * @Given /^l\'utilisateur "([^"]*)" a pour restaurant "([^"]*)"$/
      */
     public function aPourRestaurant($username, $restaurantName)
     {
-        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+        $em = $this->getEntityManager();
         
         $user = $em->getRepository('IOUserBundle:User')->findOneBy(array('username' => $username));
         assertNotNull($user, sprintf('L\'utilisateur %s n\'existe pas', $username));
@@ -93,6 +92,5 @@ class UserContext extends AbstractContext
         $em->persist($user);
         $em->flush();
     }
-
     
 }
