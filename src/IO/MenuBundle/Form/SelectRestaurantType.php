@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class SelectRestaurantType extends AbstractType
 {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -18,7 +19,7 @@ class SelectRestaurantType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
-        
+
         $builder->add('restaurant', 'entity', array(
             'class' => 'IOMenuBundle:Restaurant',
             'property' => 'name',

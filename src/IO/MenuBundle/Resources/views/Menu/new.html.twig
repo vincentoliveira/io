@@ -2,10 +2,10 @@
 
 {% block content %}
 <h3>
-    <small><a href="{{ path('show_category', {id:dish.category.id}) }}" title="Retour à la carte"><span class="glyphicon glyphicon-arrow-left"></span></a></small>
-    {{ dish.name|raw }}
+    <small><a href="{{ path('carte') }}" title="Retour à la carte"><span class="glyphicon glyphicon-arrow-left"></span></a></small>
+    Créer un menu
 </h3>
-<form class="edit-form" role="form" action="{{ path('dish_update', {id:dish.id}) }}" method="POST">
+<form class="edit-form" role="form" action="{{ path('menu_create') }}" method="POST">
     <div class="form-group">
         {{ form_row(form.name) }}
     </div>
@@ -16,6 +16,6 @@
         {{ form_row(form.price) }}
     </div>
     {{ form_rest(form) }}
-    <button class="btn btn-success" type="submit">Modifier</button>
+    <button class="btn btn-success" type="submit">Créer un menu</button>
 </form>
 {% endblock %}

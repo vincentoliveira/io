@@ -15,6 +15,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->redirect($this->generateUrl('menu_commande_en_cours'));
+        return $this->redirect($this->generateUrl('commande_en_cours'));
     }
 }

@@ -1,40 +1,43 @@
-menu_homepage:
+homepage:
     pattern:  /
     defaults: { _controller: IOMenuBundle:Default:index }
 
+
 # Commande ne cours
-menu_commande_en_cours:
+commande_en_cours:
     pattern:  /encours
     defaults: { _controller: IOMenuBundle:Commande:commandeEnCours }
 
-# Menu
-menu_carte:
+
+# Carte
+carte:
     pattern:  /carte
     defaults: { _controller: IOMenuBundle:Carte:index }
     
-menu_show_carte:
+show_carte:
     pattern:  /carte/{id}
     defaults: { _controller: IOMenuBundle:Carte:showCarte }
     
-menu_show_category:
+show_category:
     pattern:  /carte/c/{id}
     defaults: { _controller: IOMenuBundle:Carte:showCategory }
 
+
 # Dish
-menu_dish_edit:
+dish_edit:
     pattern:  /plat/{id}
     defaults: { _controller: IOMenuBundle:Dish:edit }
     
-menu_dish_update:
+dish_update:
     pattern:  /plat/{id}/update
     defaults: { _controller: IOMenuBundle:Dish:update }
 
-# API
-menu_api_get_categories:
-    pattern:  /api_old/categories
-    defaults: { _controller: IOMenuBundle:Api:getCategories }
 
-menu_api_get_dishes:
-    pattern:  /api_old/dishes
-    defaults: { _controller: IOMenuBundle:Api:getDishes }
+# Menu
+menu_new:
+    pattern:  /menu/new
+    defaults: { _controller: IOMenuBundle:Menu:new }
     
+menu_create:
+    pattern:  /menu/create
+    defaults: { _controller: IOMenuBundle:Menu:create }

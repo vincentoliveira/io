@@ -33,7 +33,7 @@ class CarteController extends Controller
         $userSv = new UserService($this->container);
         $user = $userSv->getUser();
         if ($user->hasRole('ROLE_ADMIN') === false) {
-            return $this->redirect($this->generateUrl('menu_show_carte', array('id' => $user->getRestaurant()->getId())));
+            return $this->redirect($this->generateUrl('show_carte', array('id' => $user->getRestaurant()->getId())));
         }
         
         $form = $this->createForm(new SelectRestaurantType());
@@ -41,7 +41,7 @@ class CarteController extends Controller
             $form->bind($request);
             if ($form->isValid()) {
                 $data = $form->getData();
-                return $this->redirect($this->generateUrl('menu_show_carte', array('id' => $data['restaurant']->getId())));
+                return $this->redirect($this->generateUrl('show_carte', array('id' => $data['restaurant']->getId())));
             }
         }
         

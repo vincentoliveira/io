@@ -6,10 +6,10 @@ api_check_login:
     pattern:  /check_login
     defaults: { _controller: IOAPIBundle:User:checkLogin }
 
-menu_api_get_categories:
+api_get_categories:
     pattern:  /categories
     defaults: { _controller: IOAPIBundle:Category:getCategories }
     
-menu_api_get_dishes:
+api_get_dishes:
     pattern:  /dishes
     defaults: { _controller: IOAPIBundle:Dish:getDishes }

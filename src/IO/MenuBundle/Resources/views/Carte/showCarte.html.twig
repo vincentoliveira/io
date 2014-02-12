@@ -5,7 +5,7 @@
 {% block content %}
     <div class="actionbar">
         <a href="#" role="button" class="btn btn-primary" title="Ajouter un sous-menu">Ajouter une catégorie</a>
-        <a href="#" role="button" class="btn btn-primary" title="Ajouter un menu">Ajouter un menu</a>
+        <a href="{{ path('menu_new') }}" role="button" class="btn btn-primary" title="Ajouter un menu">Ajouter un menu</a>
         <a href="#" role="button" class="btn btn-primary" title="Ajouter un plat">Ajouter un plat</a>
     </div>
 
@@ -30,7 +30,7 @@
 
 {% macro display_category(category) %}
     <div class="list-group-item category">
-        <a href="{{ path('menu_show_category', {id:category.id}) }}">{{ category.name }}</a>
+        <a href="{{ path('show_category', {id:category.id}) }}">{{ category.name }}</a>
         {% for category in category.children %}
             {{ _self.display_category(category) }}
         {% endfor %}

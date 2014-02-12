@@ -8,7 +8,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 use IO\MenuBundle\Entity\Restaurant;
 
-class DishType extends AbstractType
+/**
+ * Menu Type
+ */
+class MenuType extends AbstractType
 {
 
     /**
@@ -39,20 +42,23 @@ class DishType extends AbstractType
         parent::buildForm($builder, $options);
 
         $restaurantId = $this->restaurant !== null ? $this->restaurant->getId() : null;
-        
+
         $builder
                 ->add('name', 'text', array(
-                    'label' => 'Nom du plat',
+                    'label' => 'Nom du menu',
                     'attr' => array('class' => 'form-control'),
+                    'required' => true,
                 ))
-                ->add('description', 'textarea', array(
-                    'label' => 'Description',
+                ->add('description', 'text', array(
+                    'label' => 'Description (optionnel)',
                     'attr' => array('class' => 'form-control'),
+                    'required' => true,
                 ))
                 ->add('price', 'number', array(
-                    'label' => 'Prix (€)',
+                    'label' => 'Prix de base (en EUR)',
                     'precision' => 2,
                     'attr' => array('class' => 'form-control'),
+                    'required' => true,
                 ))
                 ->add('category', 'entity', array(
                     'class' => 'IOMenuBundle:Category',
@@ -60,8 +66,18 @@ class DishType extends AbstractType
                         return $er->getRestaurantCategoryQueryBuilder($restaurantId);
                     },
                     'property' => 'name',
-                    'attr' => array('class' => 'form-control')
+                    'attr' => array('class' => 'form-control'),
+                    'required' => true,
                 ));
+//                ->add('menuCategories', 'collection', array(
+//                    'type' => 'text',
+//                    'allow_add' => true,
+//                    'allow_delete' => true,
+//                    'options' => array(
+//                        'required' => true,
+//                        'attr' => array('class' => 'email-box')
+//                    ),
+//                ));
     }
 
     /**
@@ -70,7 +86,7 @@ class DishType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'IO\MenuBundle\Entity\Dish'
+            'data_class' => 'IO\MenuBundle\Entity\Menu'
         ));
     }
 
@@ -79,7 +95,7 @@ class DishType extends AbstractType
      */
     public function getName()
     {
-        return 'dish';
+        return 'menu';
     }
 
 }

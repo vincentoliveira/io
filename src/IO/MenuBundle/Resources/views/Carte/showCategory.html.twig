@@ -2,13 +2,13 @@
 
 {% block content %}
 <h3>
-    <small><a href="{{ path('menu_show_carte', {id:category.restaurant.id}) }}" title="Retour au menu"><span class="glyphicon glyphicon-arrow-left"></span></a></small>
+    <small><a href="{{ path('show_carte', {id:category.restaurant.id}) }}" title="Retour à la carte"><span class="glyphicon glyphicon-arrow-left"></span></a></small>
     {{ category.name|raw }}
 </h3>
 <div class="dishes list-group">
     {% for dish in dishes %}
     <div class="dish dishlist-group-item">                
-        <a href="{{ path('menu_dish_edit', {id:dish.id}) }}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-edit"></span></a>
+        <a href="{{ path('dish_edit', {id:dish.id}) }}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-edit"></span></a>
         <img class="img-rounded" src="{{ dish.imageUrl }}" alt="#" />
         <strong>{{ dish.name }}</strong>
         <em>{{ dish.price }} &#8364;</em>

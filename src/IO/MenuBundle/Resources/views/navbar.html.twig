@@ -13,8 +13,8 @@
         
         {% if is_granted("ROLE_RESTAURATEUR") %}
             <ul class="nav nav-justified">
-                {{ navbar.display_navitem(currentPath, 'Commande en cours', path('menu_commande_en_cours')) }}
-                {{ navbar.display_navitem(currentPath, 'Carte', path('menu_carte')) }}
+                {{ navbar.display_navitem(currentPath, 'Commande en cours', path('commande_en_cours')) }}
+                {{ navbar.display_navitem(currentPath, 'Carte', path('carte')) }}
                 {{ navbar.display_navitem(currentPath, 'Historique', '#') }}
                 {% if is_granted("ROLE_ADMIN") %}
                     {{ navbar.display_navitem(currentPath, 'Import', path('import_homepage')) }}

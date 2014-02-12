@@ -12,22 +12,25 @@ Contexte:
 @4.1
 Scénario: 04.1 - Voir la carte : Authorisations - Non connecté
     Soit je suis sur "/carte"
-    Alors je ne devrais pas voir "La carte"
+    Alors je ne devrais pas voir "Carte"
+    Et je ne devrais pas voir "Entrée"
 
 @4.2
 Scénario: 04.2 - Voir la carte : Authorisations - Cuisinier
     Soit l'utilisateur "cuisto" existe et a le role "ROLE_CUISINIER"
     Soit l'utilisateur "cuisto" a pour restaurant "Restaurant test"
     Soit je suis connecté en tant que "cuisto"
-    Alors je ne devrais pas voir "Carte"
+    Soit je suis sur "/carte"
+    Alors le code de status de la réponse devrait être 403
+    Et je ne devrais pas voir "Entrée"
+    
 
 @4.3
 Scénario: 04.3 - Voir la carte : Authorisations - Restaurateur
     Soit l'utilisateur "resto" existe et a le role "ROLE_RESTAURATEUR"
     Soit l'utilisateur "resto" a pour restaurant "Restaurant test"
     Soit je suis connecté en tant que "resto"
-    Alors je devrais voir "Carte"
-    Soit je suis "Carte"
+    Soit je suis sur "/carte"
     Et je devrais voir "Entrée"
     Soit je suis "Entrée"
     Alors je devrais voir "Salade"
@@ -38,7 +41,6 @@ Scénario: 04.4 - Voir la carte : Authorisations - Admin
     Soit l'utilisateur "admin" a pour restaurant "Restaurant test"
     Soit je suis connecté en tant que "admin"
     Soit je suis sur "/carte"
-    Soit je suis "Carte"
     Alors je devrais voir "Restaurant test"
     Soit je sélectionne "Restaurant test" depuis "select[restaurant]"
     Et je presse "Voir la carte"

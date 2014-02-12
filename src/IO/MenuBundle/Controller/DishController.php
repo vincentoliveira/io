@@ -34,7 +34,10 @@ class DishController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(new DishType(), $dish);
+        $userSv = new UserService($this->container);
+        $formType = new DishType();
+        $formType->setRestaurant($userSv->getUser()->getRestaurant());
+        $form = $this->createForm($formType, $dish);
 
         return array(
             'dish' => $dish,
@@ -59,7 +62,10 @@ class DishController extends Controller
             throw $this->createNotFoundException();
         }
         
-        $form = $this->createForm(new DishType(), $dish);
+        $userSv = new UserService($this->container);
+        $formType = new DishType();
+        $formType->setRestaurant($userSv->getUser()->getRestaurant());
+        $form = $this->createForm($formType, $dish);
         $form->bind($request);
         
         if ($form->isValid()) {
@@ -67,7 +73,7 @@ class DishController extends Controller
             $em->persist($dish);
             $em->flush();
             
-            return $this->redirect($this->generateUrl('menu_show_category', array('id' => $dish->getCategory()->getId())));
+            return $this->redirect($this->generateUrl('show_category', array('id' => $dish->getCategory()->getId())));
         }
 
         return array(
