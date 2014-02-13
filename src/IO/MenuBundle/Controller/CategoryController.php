@@ -48,12 +48,12 @@ class CategoryController extends Controller
     public function newAction()
     {
         $userSv = new UserService($this->container);
-        $entity = new Category();
-        $entity->setRestaurant($userSv->getUserRestaurant());
-        $form = $this->createCreateForm($entity);
+        $category = new Category();
+        $category->setRestaurant($userSv->getUserRestaurant());
+        $form = $this->createCreateForm($category);
 
         return array(
-            'entity' => $entity,
+            'category' => $category,
             'form' => $form->createView(),
         );
     }
@@ -67,22 +67,24 @@ class CategoryController extends Controller
     public function createAction(Request $request)
     {
         $userSv = new UserService($this->container);
-        $entity = new Category();
-        $entity->setRestaurant($userSv->getUserRestaurant());
-        $form = $this->createCreateForm($entity);
+        $category = new Category();
+        $category->setRestaurant($userSv->getUserRestaurant());
+        $form = $this->createCreateForm($category);
         $form->handleRequest($request);
 
+        $session = $this->container->get('session');
         if ($form->isValid()) {
-            $entity->setOrder(0);
+            $category->setOrder(0);
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            $em->persist($category);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('category_show', array('id' => $entity->getId())));
+            $session->getFlashBag()->add('success', 'La categorie à bien été ajoutée');
+            return $this->redirect($this->generateUrl('category_show', array('id' => $category->getId())));
         }
 
         return array(
-            'entity' => $entity,
+            'category' => $category,
             'form' => $form->createView(),
         );
     }
@@ -90,77 +92,68 @@ class CategoryController extends Controller
     /**
      * Displays a form to edit an existing Category entity.
      *
+     * @Template("IOMenuBundle:Category:edit.html.twig")
+     * @ParamConverter("category", class="IOMenuBundle:Category", options={"id" = "id"})
+     * @Secure(roles="ROLE_RESTAURATEUR")
      */
-    public function editAction($id)
+    public function editAction(Category $category)
     {
-        $em = $this->getDoctrine()->getManager();
+        $editForm = $this->createEditForm($category);
 
-        $entity = $em->getRepository('IOMenuBundle:Category')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Category entity.');
-        }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('IOMenuBundle:Category:edit.html.twig', array(
-                    'entity' => $entity,
-                    'edit_form' => $editForm->createView(),
-                    'delete_form' => $deleteForm->createView(),
-                ));
+        return array(
+            'category' => $category,
+            'edit_form' => $editForm->createView(),
+        );
     }
 
     /**
      * Edits an existing Category entity.
      *
+     * @Template("IOMenuBundle:Category:edit.html.twig")
+     * @ParamConverter("category", class="IOMenuBundle:Category", options={"id" = "id"})
+     * @Secure(roles="ROLE_RESTAURATEUR")
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, Category $category)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('IOMenuBundle:Category')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Category entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($category);
         $editForm->handleRequest($request);
 
+        $session = $this->container->get('session');
         if ($editForm->isValid()) {
+            $em->persist($category);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('category_edit', array('id' => $id)));
+            $session->getFlashBag()->add('success', 'La categorie à bien été modifiée');
+            return $this->redirect($this->generateUrl('category_show', array('id' => $category->getId())));
         }
 
-        return $this->render('IOMenuBundle:Category:edit.html.twig', array(
-                    'entity' => $entity,
-                    'edit_form' => $editForm->createView(),
-                    'delete_form' => $deleteForm->createView(),
-                ));
+        return array(
+            'category' => $category,
+            'edit_form' => $editForm->createView(),
+        );
     }
 
     /**
      * Deletes a Category entity.
      *
+     * @Template()
+     * @ParamConverter("category", class="IOMenuBundle:Category", options={"id" = "id"})
+     * @Secure(roles="ROLE_RESTAURATEUR")
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, Category $category)
     {
-        $form = $this->createDeleteForm($id);
+        $form = $this->createDeleteForm($category->getId());
         $form->handleRequest($request);
-
+        
+        $session = $this->container->get('session');
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('IOMenuBundle:Category')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Category entity.');
-            }
-
-            $em->remove($entity);
+            $em->remove($category);
             $em->flush();
+            
+            $session->getFlashBag()->add('success', 'La categorie à bien été supprimée');
         }
 
         return $this->redirect($this->generateUrl('carte'));
@@ -169,20 +162,20 @@ class CategoryController extends Controller
     /**
      * Creates a form to create a Category entity.
      *
-     * @param Category $entity The entity
+     * @param Category $category The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Category $entity)
+    private function createCreateForm(Category $category)
     {
-        $form = $this->createForm(new CategoryType(), $entity, array(
+        $form = $this->createForm(new CategoryType(), $category, array(
             'action' => $this->generateUrl('category_create'),
             'attr' => array('class' => 'edit-form'),
             'method' => 'POST',
                 ));
 
         $form->add('submit', 'submit', array(
-            'label' => 'Créer',
+            'label' => 'Ajouter',
             'attr' => array('class' => 'btn btn-success'),
         ));
 
@@ -192,14 +185,14 @@ class CategoryController extends Controller
     /**
      * Creates a form to edit a Category entity.
      *
-     * @param Category $entity The entity
+     * @param Category $category The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(Category $entity)
+    private function createEditForm(Category $category)
     {
-        $form = $this->createForm(new CategoryType(), $entity, array(
-            'action' => $this->generateUrl('category_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new CategoryType(), $category, array(
+            'action' => $this->generateUrl('category_update', array('id' => $category->getId())),
             'attr' => array('class' => 'edit-form'),
             'method' => 'PUT',
                 ));

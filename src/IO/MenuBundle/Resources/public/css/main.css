@@ -145,6 +145,7 @@ a .glyphicon { color: #888; }
 .dish .glyphicon-edit { margin: 0; }
 
 .edit-form { max-width: 500px; }
+.edit-form .btn { margin-top: 20px; }
 .edit-form textarea { resize: vertical; }
 
 .actionbar { margin: 10px 0; }

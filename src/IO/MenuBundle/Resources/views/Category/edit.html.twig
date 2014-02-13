@@ -1,16 +1,12 @@
-{% extends '::base.html.twig' %}
+{% extends "IOMenuBundle::layout.html.twig" %}
 
-{% block body -%}
-    <h1>Category edit</h1>
+{% block content -%}
+    <h3>
+        <small><a href="{{ path('category_show', {id:category.id}) }}" title="Retour à la carte"><span class="glyphicon glyphicon-arrow-left"></span></a></small>
+        {{ category.name|raw }}
+    </h3>
 
     {{ form(edit_form) }}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('category') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
 </ul>
 {% endblock %}
