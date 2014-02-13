@@ -28,13 +28,10 @@ class MenuController extends Controller
     public function newAction()
     {
         $userSv = new UserService($this->container);
-        $formType = new MenuType();
-        $formType->setRestaurant($userSv->getUser()->getRestaurant());
-
+        
         $menu = new Menu();
         $menu->setRestaurant($userSv->getUser()->getRestaurant());
-
-        $form = $this->createForm($formType, $menu);
+        $form = $this->createForm(new MenuType(), $menu);
 
         return array(
             'form' => $form->createView(),
@@ -53,13 +50,10 @@ class MenuController extends Controller
     public function updateAction(Request $request)
     {
         $userSv = new UserService($this->container);
-        $formType = new DishType();
-        $formType->setRestaurant($userSv->getUser()->getRestaurant());
-
+        
         $menu = new Menu();
         $menu->setRestaurant($userSv->getUser()->getRestaurant());
-
-        $form = $this->createForm($formType, $menu);
+        $form = $this->createForm(new MenuType(), $menu);
         $form->bind($request);
 
         if ($form->isValid()) {

@@ -1,0 +1,24 @@
+{% extends "IOMenuBundle::layout.html.twig" %}
+
+{% block content %}
+<h3>
+    <small><a href="{{ path('carte') }}" title="Retour à la carte"><span class="glyphicon glyphicon-arrow-left"></span></a></small>
+    Ajouter un plat
+</h3>
+<form class="edit-form" role="form" action="{{ path('dish_create') }}" method="POST">
+    <div class="form-group">
+        {{ form_row(form.name) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(form.price) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(form.description) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(form.category) }}
+    </div>
+    {{ form_rest(form) }}
+    <button class="btn btn-success" type="submit">Ajouter</button>
+</form>
+{% endblock %}

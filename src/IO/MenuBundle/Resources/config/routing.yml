@@ -24,6 +24,16 @@ show_category:
 
 
 # Dish
+dish_new:
+    pattern:  /plat/new
+    defaults: { _controller: IOMenuBundle:Dish:new }
+    
+dish_create:
+    pattern:  /plat/create
+    defaults: { _controller: IOMenuBundle:Dish:create }
+    requirements:
+        _method: POST
+    
 dish_edit:
     pattern:  /plat/{id}
     defaults: { _controller: IOMenuBundle:Dish:edit }
@@ -31,6 +41,8 @@ dish_edit:
 dish_update:
     pattern:  /plat/{id}/update
     defaults: { _controller: IOMenuBundle:Dish:update }
+    requirements:
+        _method: POST
 
 
 # Menu
@@ -41,3 +53,5 @@ menu_new:
 menu_create:
     pattern:  /menu/create
     defaults: { _controller: IOMenuBundle:Menu:create }
+    requirements:
+        _method: POST

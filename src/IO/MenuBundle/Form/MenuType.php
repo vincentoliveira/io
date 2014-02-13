@@ -5,8 +5,7 @@ namespace IO\MenuBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
-use IO\MenuBundle\Entity\Restaurant;
+use IO\MenuBundle\Form\EventListener\RestaurantSubscriber;
 
 /**
  * Menu Type
@@ -15,33 +14,12 @@ class MenuType extends AbstractType
 {
 
     /**
-     * Current user
-     * 
-     * @var Restaurant
-     */
-    private $restaurant;
-
-    /**
-     * Set restaurant
-     * 
-     * @param Restaurant $restaurant
-     * @return \IO\MenuBundle\Form\MenuType
-     */
-    public function setRestaurant(Restaurant $restaurant)
-    {
-        $this->restaurant = $restaurant;
-        return $this;
-    }
-
-    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
-
-        $restaurantId = $this->restaurant !== null ? $this->restaurant->getId() : null;
 
         $builder
                 ->add('name', 'text', array(
@@ -59,15 +37,6 @@ class MenuType extends AbstractType
                     'precision' => 2,
                     'attr' => array('class' => 'form-control'),
                     'required' => true,
-                ))
-                ->add('category', 'entity', array(
-                    'class' => 'IOMenuBundle:Category',
-                    'query_builder' => function(EntityRepository $er) use ($restaurantId) {
-                        return $er->getRestaurantCategoryQueryBuilder($restaurantId);
-                    },
-                    'property' => 'name',
-                    'attr' => array('class' => 'form-control'),
-                    'required' => true,
                 ));
 //                ->add('menuCategories', 'collection', array(
 //                    'type' => 'text',
@@ -78,6 +47,8 @@ class MenuType extends AbstractType
 //                        'attr' => array('class' => 'email-box')
 //                    ),
 //                ));
+
+        $builder->addEventSubscriber(new RestaurantSubscriber());
     }
 
     /**

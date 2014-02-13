@@ -18,6 +18,63 @@ class DishController extends Controller
 {
 
     /**
+     * Displays a form to create an new Dish entity.
+     * 
+     * @Template("IOMenuBundle:Dish:new.html.twig")
+     * @Secure(roles="ROLE_RESTAURATEUR")
+     * 
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function newAction()
+    {
+        $userSv = new UserService($this->container);
+        $user = $userSv->getUser();
+        
+        $dish = new Dish();
+        $dish->setRestaurant($user->getRestaurant());
+        $form = $this->createForm(new DishType(), $dish);
+
+        return array(
+            'dish' => $dish,
+            'form' => $form->createView(),
+        );
+    }
+
+    /**
+     * Edits an existing Dish entity.
+     *
+     * @Template("IOMenuBundle:Dish:new.html.twig")
+     * @Secure(roles="ROLE_RESTAURATEUR")
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function createAction(Request $request)
+    {
+        $userSv = new UserService($this->container);
+        $user = $userSv->getUser();
+        
+        $dish = new Dish();
+        $dish->setRestaurant($user->getRestaurant());
+        $form = $this->createForm(new DishType(), $dish);
+        $form->bind($request);
+        
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($dish);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('show_category', array('id' => $dish->getCategory()->getId())));
+        }
+
+        return array(
+            'dish' => $dish,
+            'form' => $form->createView(),
+        );
+    }
+
+    /**
      * Displays a form to edit an existing Dish entity.
      * 
      * @Template("IOMenuBundle:Dish:edit.html.twig")
@@ -34,10 +91,7 @@ class DishController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $userSv = new UserService($this->container);
-        $formType = new DishType();
-        $formType->setRestaurant($userSv->getUser()->getRestaurant());
-        $form = $this->createForm($formType, $dish);
+        $form = $this->createForm(DishType(), $dish);
 
         return array(
             'dish' => $dish,
@@ -62,10 +116,7 @@ class DishController extends Controller
             throw $this->createNotFoundException();
         }
         
-        $userSv = new UserService($this->container);
-        $formType = new DishType();
-        $formType->setRestaurant($userSv->getUser()->getRestaurant());
-        $form = $this->createForm($formType, $dish);
+        $form = $this->createForm(DishType(), $dish);
         $form->bind($request);
         
         if ($form->isValid()) {
