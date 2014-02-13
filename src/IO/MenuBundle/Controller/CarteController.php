@@ -75,25 +75,4 @@ class CarteController extends Controller
             'categories' => $categories,
         );
     }
-    
-    
-    /**
-     * Display menu category
-     * 
-     * @param Category $category
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @Template()
-     * @ParamConverter("category", class="IOMenuBundle:Category", options={"id" = "id"})
-     * @Secure(roles="ROLE_RESTAURATEUR")
-     */
-    public function showCategoryAction(Category $category)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $dishes = $em->getRepository('IOMenuBundle:Dish')->findBy(array('category' => $category));
-        
-        return array(
-            'category' => $category,
-            'dishes' => $dishes,
-        );
-    }
 }

@@ -132,6 +132,11 @@ h1 span {
     border: none; 
 }
 
+a .glyphicon { color: #888; }
+.delete-form { display: inline-block; float: right; }
+.delete-form .btn { display: inline-block; }
+
+
 .dish { clear: both; padding: 10px 2px; height: 100px; }
 .dish:hover { background-color:#ddd; }
 .dish img { float: left; width: 100px; height: 100px; }

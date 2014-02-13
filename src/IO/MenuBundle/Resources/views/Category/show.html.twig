@@ -4,6 +4,7 @@
 <h3>
     <small><a href="{{ path('show_carte', {id:category.restaurant.id}) }}" title="Retour à la carte"><span class="glyphicon glyphicon-arrow-left"></span></a></small>
     {{ category.name|raw }}
+    <span class="delete-form"><a class="btn btn-primary" href="{{ path('category_edit', {id:category.id}) }}">Modifier</a>{{ form(delete_form) }}</span>
 </h3>
 <div class="dishes list-group">
     {% for dish in dishes %}

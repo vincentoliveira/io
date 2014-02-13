@@ -61,7 +61,7 @@ class MenuController extends Controller
             $em->persist($menu);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('show_category', array('id' => $menu->getCategory()->getId())));
+            return $this->redirect($this->generateUrl('category_show', array('id' => $menu->getCategory()->getId())));
         }
 
         return array(

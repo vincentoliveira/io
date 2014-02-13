@@ -38,5 +38,17 @@ class UserService
 
         return $user instanceof User ? $user : null;
     }
+    
+    /**
+     * Get loggued user restaurant
+     *
+     * @return \IO\UserBundle\Entity\User|null
+     */
+    public function getUserRestaurant()
+    {
+        $user = $this->getUser();
+
+        return $user instanceof User ? $user->getRestaurant() : null;
+    }
 
 }

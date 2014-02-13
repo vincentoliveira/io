@@ -34,22 +34,35 @@ class RestaurantSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $form = $event->getForm();
 
-        if (method_exists($data, 'getRestaurant')) {
-            $restaurant = $data->getRestaurant();
-            if ($restaurant !== null && $restaurant instanceof Restaurant) {
-                if (method_exists($data, 'getCategory')) {
-                    $form->add('category', 'entity', array(
-                        'label' => 'Categorie (parent)',
-                        'class' => 'IOMenuBundle:Category',
-                        'query_builder' => function(CategoryRepository $er) use ($restaurant) {
-                            return $er->getRestaurantCategoryQueryBuilder($restaurant->getId());
-                        },
-                        'property' => 'name',
-                        'attr' => array('class' => 'form-control'),
-                        'required' => false,
-                    ));
-                }
-            }
+        if (!method_exists($data, 'getRestaurant')) {
+            die('a');
+            return;
+        }
+        
+        $restaurant = $data->getRestaurant();
+        if ($restaurant === null || !($restaurant instanceof Restaurant)) {
+            return;
+        }
+        
+        $fieldName = false;
+        if (method_exists($data, 'getCategory')) {
+            $fieldName = 'category';
+        } else if (method_exists($data, 'getParent')) {
+            $fieldName = 'parent';
+        }
+
+        // add parent/category field
+        if ($fieldName) {
+            $form->add($fieldName, 'entity', array(
+                'label' => 'Categorie (parent)',
+                'class' => 'IOMenuBundle:Category',
+                'query_builder' => function(CategoryRepository $er) use ($restaurant) {
+                    return $er->getRestaurantCategoryQueryBuilder($restaurant->getId());
+                },
+                'property' => 'name',
+                'attr' => array('class' => 'form-control'),
+                'required' => false,
+            ));
         }
     }
 

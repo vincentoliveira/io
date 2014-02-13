@@ -65,7 +65,7 @@ class DishController extends Controller
             $em->persist($dish);
             $em->flush();
             
-            return $this->redirect($this->generateUrl('show_category', array('id' => $dish->getCategory()->getId())));
+            return $this->redirect($this->generateUrl('category_show', array('id' => $dish->getCategory()->getId())));
         }
 
         return array(
@@ -124,7 +124,7 @@ class DishController extends Controller
             $em->persist($dish);
             $em->flush();
             
-            return $this->redirect($this->generateUrl('show_category', array('id' => $dish->getCategory()->getId())));
+            return $this->redirect($this->generateUrl('category_show', array('id' => $dish->getCategory()->getId())));
         }
 
         return array(

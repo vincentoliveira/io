@@ -2,12 +2,10 @@ homepage:
     pattern:  /
     defaults: { _controller: IOMenuBundle:Default:index }
 
-
 # Commande ne cours
 commande_en_cours:
     pattern:  /encours
     defaults: { _controller: IOMenuBundle:Commande:commandeEnCours }
-
 
 # Carte
 carte:
@@ -17,10 +15,12 @@ carte:
 show_carte:
     pattern:  /carte/{id}
     defaults: { _controller: IOMenuBundle:Carte:showCarte }
-    
-show_category:
-    pattern:  /carte/c/{id}
-    defaults: { _controller: IOMenuBundle:Carte:showCategory }
+
+
+# Category
+IOMenuBundle_category:
+        resource: "@IOMenuBundle/Resources/config/routing/category.yml"
+        prefix:   /categorie
 
 
 # Dish

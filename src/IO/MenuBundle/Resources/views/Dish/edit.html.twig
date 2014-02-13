@@ -3,7 +3,7 @@
 {% block content %}
 
 <h3>
-    <small><a href="{{ path('show_category', {id:dish.category.id}) }}" title="Retour à la carte"><span class="glyphicon glyphicon-arrow-left"></span></a></small>
+    <small><a href="{{ path('category_show', {id:dish.category.id}) }}" title="Retour à la carte"><span class="glyphicon glyphicon-arrow-left"></span></a></small>
     {{ dish.name|raw }}
 </h3>
 
