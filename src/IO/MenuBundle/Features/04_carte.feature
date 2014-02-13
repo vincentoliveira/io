@@ -5,7 +5,7 @@ Fonctionnalité: Voir la carte
 Contexte:
     Soit le restaurant "Restaurant test" existe avec l'url "/tests/import.json"
     Soit je supprime tous les "IOMenuBundle:Category"
-    Soit je crée une category "Entrée" pour le restaurant "Restaurant test"
+    Soit je crée une catégorie "Entrée" pour le restaurant "Restaurant test"
     Soit je crée un plat "Salade" dans la category "Entrée" du "Restaurant test"
     
 

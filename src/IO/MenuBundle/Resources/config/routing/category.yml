@@ -1,5 +1,5 @@
 category_show:
-    pattern:  /{id}/voir
+    pattern:  /{id}/show
     defaults: { _controller: "IOMenuBundle:Category:show" }
 
 category_new:

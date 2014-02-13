@@ -27,7 +27,7 @@ class DatabaseContext extends AbstractContext
     }
     
     /**
-     * @Given /^je crée une category "([^"]*)" pour le restaurant "([^"]*)"$/
+     * @Given /^je crée une catégorie "([^"]*)" pour le restaurant "([^"]*)"$/
      */
     public function jeCreeUneCategoryPourLeRestaurant($categoryName, $restaurantName)
     {

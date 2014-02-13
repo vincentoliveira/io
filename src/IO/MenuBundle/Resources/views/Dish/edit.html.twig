@@ -5,6 +5,7 @@
 <h3>
     <small><a href="{{ path('category_show', {id:dish.category.id}) }}" title="Retour à la carte"><span class="glyphicon glyphicon-arrow-left"></span></a></small>
     {{ dish.name|raw }}
+    <span class="delete-form">{{ form(delete_form) }}</span>
 </h3>
 
 <form class="edit-form" role="form" action="{{ path('dish_update', {id:dish.id}) }}" method="POST">

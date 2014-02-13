@@ -22,27 +22,10 @@ IOMenuBundle_category:
         resource: "@IOMenuBundle/Resources/config/routing/category.yml"
         prefix:   /categorie
 
-
 # Dish
-dish_new:
-    pattern:  /plat/new
-    defaults: { _controller: IOMenuBundle:Dish:new }
-    
-dish_create:
-    pattern:  /plat/create
-    defaults: { _controller: IOMenuBundle:Dish:create }
-    requirements:
-        _method: POST
-    
-dish_edit:
-    pattern:  /plat/{id}
-    defaults: { _controller: IOMenuBundle:Dish:edit }
-    
-dish_update:
-    pattern:  /plat/{id}/update
-    defaults: { _controller: IOMenuBundle:Dish:update }
-    requirements:
-        _method: POST
+IOMenuBundle_dish:
+        resource: "@IOMenuBundle/Resources/config/routing/dish.yml"
+        prefix:   /plat
 
 
 # Menu

@@ -50,7 +50,7 @@ Scénario: 05.2 -  Créer une categorie
 
 @5.3
 Scénario: 05.3 -  Modifier une categorie    
-    Soit je crée une category "Entrées" pour le restaurant "Restaurant test"
+    Soit je crée une catégorie "Entrées" pour le restaurant "Restaurant test"
     Soit je suis connecté en tant que "resto"
 
     Soit je suis sur "/carte"
@@ -68,7 +68,7 @@ Scénario: 05.3 -  Modifier une categorie
 
 @5.4
 Scénario: 05.4 -  Supprimer une categorie    
-    Soit je crée une category "Entrées" pour le restaurant "Restaurant test"
+    Soit je crée une catégorie "Entrées" pour le restaurant "Restaurant test"
     Soit je suis connecté en tant que "resto"
 
     Soit je suis sur "/carte"

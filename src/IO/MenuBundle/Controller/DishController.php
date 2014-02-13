@@ -60,11 +60,14 @@ class DishController extends Controller
         $form = $this->createForm(new DishType(), $dish);
         $form->bind($request);
         
+        $session = $this->container->get('session');
         if ($form->isValid()) {
+            $dish->setOrder(0);
             $em = $this->getDoctrine()->getManager();
             $em->persist($dish);
             $em->flush();
             
+            $session->getFlashBag()->add('success', 'Le plat à bien été ajouté');
             return $this->redirect($this->generateUrl('category_show', array('id' => $dish->getCategory()->getId())));
         }
 
@@ -91,11 +94,13 @@ class DishController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(DishType(), $dish);
+        $form = $this->createForm(new DishType(), $dish);
+        $deleteForm = $this->createDeleteForm($dish->getId());
 
         return array(
             'dish' => $dish,
             'form' => $form->createView(),
+            'delete_form' => $deleteForm->createView(),
         );
     }
 
@@ -116,14 +121,16 @@ class DishController extends Controller
             throw $this->createNotFoundException();
         }
         
-        $form = $this->createForm(DishType(), $dish);
+        $form = $this->createForm(new DishType(), $dish);
         $form->bind($request);
         
+        $session = $this->container->get('session');
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($dish);
             $em->flush();
             
+            $session->getFlashBag()->add('success', 'Le plat à bien été modifié');
             return $this->redirect($this->generateUrl('category_show', array('id' => $dish->getCategory()->getId())));
         }
 
@@ -131,6 +138,36 @@ class DishController extends Controller
             'dish' => $dish,
             'form' => $form->createView(),
         );
+    }
+
+    /**
+     * Deletes a Category entity.
+     *
+     * @Template()
+     * @ParamConverter("dish", class="IOMenuBundle:Dish", options={"id" = "id"})
+     * @Secure(roles="ROLE_RESTAURATEUR")
+     */
+    public function deleteAction(Request $request, Dish $dish)
+    {
+        $form = $this->createDeleteForm($dish->getId());
+        $form->handleRequest($request);
+        
+        $category = $dish->getCategory();
+        
+        $session = $this->container->get('session');
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($dish);
+            $em->flush();
+            
+            $session->getFlashBag()->add('success', 'Le plat à bien été supprimé');
+        }
+
+        if ($category !== null) {
+            return $this->redirect($this->generateUrl('category_show', array('id' => $category->getId())));
+        } else {
+            return $this->redirect($this->generateUrl('carte'));
+        }
     }
     
     /**
@@ -144,6 +181,25 @@ class DishController extends Controller
         $userSv = new UserService($this->container);
         $user = $userSv->getUser();
         return $user->hasRole('ROLE_ADMIN') || $dish->getRestaurant() === $user->getRestaurant();
+    }
+
+    /**
+     * Creates a form to delete a Category entity by id.
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id)
+    {
+        return $this->createFormBuilder()
+                        ->setAction($this->generateUrl('dish_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array(
+                            'label' => 'Supprimer',
+                            'attr' => array('class' => 'btn btn-danger'),
+                        ))
+                        ->getForm();
     }
 
 }
