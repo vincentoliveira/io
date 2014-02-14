@@ -92,6 +92,48 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
     
     /**
+     * @Given /^j\'appelle du passé "([^"]*)" authentifié avec "([^"]*)"$/
+     */
+    public function jDuPasseAppelleAuthentifieAvec($url, $username)
+    {
+        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+        $user = $em->getRepository('IOUserBundle:User')->findOneBy(array('username' => $username));
+        assertNotNull($user, sprintf('L\'utilisateur "%s" n\'existe pas', $username));
+
+        $timestamp = gmdate('Y-m-d\TH:i:s\Z', time() - 3600);
+        $nonce = mt_rand();
+        $password = $user->getPassword();
+        
+        $digest = base64_encode(sha1($nonce.$timestamp.$password, true));
+        $wsseToken = sprintf('UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"', $username, $digest, base64_encode($nonce), $timestamp);
+        
+        $session = $this->getSession();
+        $session->setRequestHeader('HTTP_X_WSSE', $wsseToken);
+        $session->visit($url);
+    }
+    
+    /**
+     * @Given /^j\'appelle du futur "([^"]*)" authentifié avec "([^"]*)"$/
+     */
+    public function jDuFuturAppelleAuthentifieAvec($url, $username)
+    {
+        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+        $user = $em->getRepository('IOUserBundle:User')->findOneBy(array('username' => $username));
+        assertNotNull($user, sprintf('L\'utilisateur "%s" n\'existe pas', $username));
+
+        $timestamp = gmdate('Y-m-d\TH:i:s\Z', time() + 3600);
+        $nonce = mt_rand();
+        $password = $user->getPassword();
+        
+        $digest = base64_encode(sha1($nonce.$timestamp.$password, true));
+        $wsseToken = sprintf('UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"', $username, $digest, base64_encode($nonce), $timestamp);
+        
+        $session = $this->getSession();
+        $session->setRequestHeader('HTTP_X_WSSE', $wsseToken);
+        $session->visit($url);
+    }
+    
+    /**
      * @Given /^le json devrait convenir:$/
      */
     public function leJsonDevraitConvenir(TableNode $table)
