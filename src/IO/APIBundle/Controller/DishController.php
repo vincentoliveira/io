@@ -41,7 +41,7 @@ class DishController extends Controller
         
         return new JsonResponse(array(
             'status' => 'ok',
-            'categories' => $results
+            'dishes' => $results
         ));
     }
 }
