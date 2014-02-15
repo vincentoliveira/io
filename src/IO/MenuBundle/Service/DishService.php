@@ -51,7 +51,7 @@ class DishService
                 'description' => $dish->getDescription(),
                 'imageUrl' => $dish->getImageUrl(),
                 'category' => $dish->getCategory()->getId(),
-                'price' => $dish->getPrice(),
+                'price' => $dish->getPrice() ? $dish->getPrice() : 0,
             );
         }
         
