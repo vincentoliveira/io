@@ -1,0 +1,25 @@
+parameters:
+#    io_menu.example.class: IO\CarteBundle\Example
+
+services:
+    menu.form_error:
+        class: IO\CarteBundle\Service\FormErrorService
+        arguments: []
+        
+    menu.category:
+        class: IO\CarteBundle\Service\CategoryService
+        arguments: ["@doctrine.orm.entity_manager"]
+        
+    menu.dish:
+        class: IO\CarteBundle\Service\DishService
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    menu.media:
+        class: IO\CarteBundle\Service\MediaService
+        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
+        
+    menu.twig_extension:
+        class: IO\CarteBundle\Twig\CarteTwigExtension
+        arguments: ["@service_container"]
+        tags:
+            - { name: twig.extension }

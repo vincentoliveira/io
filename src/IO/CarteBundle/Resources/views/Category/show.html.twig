@@ -1,0 +1,22 @@
+{% extends "IOCarteBundle::layout.html.twig" %}
+
+{% block content %}
+<h3>
+    <small><a href="{{ path('show_carte', {id:category.restaurant.id}) }}" title="Retour à la carte"><span class="glyphicon glyphicon-arrow-left"></span></a></small>
+    {{ category.name|raw }}
+    <span class="delete-form"><a class="btn btn-primary" href="{{ path('category_edit', {id:category.id}) }}">Modifier</a>{{ form(delete_form) }}</span>
+</h3>
+<div class="dishes list-group">
+    {% for dish in dishes %}
+    <div class="dish dishlist-group-item">                
+        <a href="{{ path('dish_edit', {id:dish.id}) }}" class="btn btn-primary" role="button" title="Modifier {{ dish.name }}"><span class="glyphicon glyphicon-edit"></span></a>
+        {% if dish.media %}
+            <img title="Miniature {{ dish.name }}" class="img-rounded" src="{{ dish.media.thumbnailPath|imageLink }}" alt="#" />
+        {% endif %}
+        <strong>{{ dish.name }}</strong>
+        <em>{{ dish.price|number_format(2, ',', ' ') }} &#8364;</em>
+        <span>{{ dish.description|raw }}</span>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

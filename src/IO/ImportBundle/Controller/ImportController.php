@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Request;
-use IO\MenuBundle\Form\SelectRestaurantType;
+use IO\CarteBundle\Form\SelectRestaurantType;
 
 /**
  * 

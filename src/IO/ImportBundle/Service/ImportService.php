@@ -5,9 +5,9 @@ namespace IO\ImportBundle\Service;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\Container;
 
-use IO\MenuBundle\Entity\Restaurant;
-use IO\MenuBundle\Entity\Category;
-use IO\MenuBundle\Entity\Dish;
+use IO\CarteBundle\Entity\Restaurant;
+use IO\CarteBundle\Entity\Category;
+use IO\CarteBundle\Entity\Dish;
 
 /**
  * Import Service
@@ -43,7 +43,7 @@ class ImportService
     /**
      * Media service
      *
-     * @var \IO\MenuBundle\Service\MediaService
+     * @var \IO\CarteBundle\Service\MediaService
      */
     private $mediaSv;
 
@@ -63,7 +63,7 @@ class ImportService
     /**
      * Import $restaurant menu from Wordpress 
      * 
-     * @param \IO\MenuBundle\Entity\Restaurant $restaurant
+     * @param \IO\CarteBundle\Entity\Restaurant $restaurant
      * @return array
      */
     public function import(Restaurant $restaurant)
@@ -178,14 +178,14 @@ class ImportService
     /**
      * Update Menu
      * 
-     * @param \IO\MenuBundle\Entity\Restaurant $restaurant
+     * @param \IO\CarteBundle\Entity\Restaurant $restaurant
      * @param array $posts
      */
     private function updateMenu(Restaurant $restaurant, array $posts)
     {
         $criteria = array('restaurant' => $restaurant);
-        $categories = $this->em->getRepository('IOMenuBundle:Category')->findBy($criteria);
-        $dishes = $this->em->getRepository('IOMenuBundle:Dish')->findBy($criteria);
+        $categories = $this->em->getRepository('IOCarteBundle:Category')->findBy($criteria);
+        $dishes = $this->em->getRepository('IOCarteBundle:Dish')->findBy($criteria);
         
         $newCategories = array();
         $newDishes = array();
@@ -237,7 +237,7 @@ class ImportService
      * 
      * @param int $wpId
      * @param array $dishes
-     * @param \IO\MenuBundle\Entity\Restaurant $restaurant
+     * @param \IO\CarteBundle\Entity\Restaurant $restaurant
      * @return null|Dish
      */
     private function findOrCreateDish(array $wpDish, array &$dishes, Restaurant $restaurant)
@@ -260,11 +260,11 @@ class ImportService
     /**
      * Set dish data from wp data
      * 
-     * @param \IO\MenuBundle\Entity\Dish $dish
+     * @param \IO\CarteBundle\Entity\Dish $dish
      * @param array $wpDish
      * @param array $dishes
-     * @param \IO\MenuBundle\Entity\Restaurant $restaurant
-     * @return \IO\MenuBundle\Entity\Dish
+     * @param \IO\CarteBundle\Entity\Restaurant $restaurant
+     * @return \IO\CarteBundle\Entity\Dish
      */
     private function setDishData(Dish $dish, array $wpDish, Restaurant $restaurant)
     {
@@ -290,8 +290,8 @@ class ImportService
      * 
      * @param array $wpCategory
      * @param array $categories
-     * @param \IO\MenuBundle\Entity\Restaurant $restaurant
-     * @return null|\IO\MenuBundle\Entity\Category
+     * @param \IO\CarteBundle\Entity\Restaurant $restaurant
+     * @return null|\IO\CarteBundle\Entity\Category
      */
     private function findOrCreateCategory(array $wpCategory, array &$categories, Restaurant $restaurant)
     {
@@ -313,10 +313,10 @@ class ImportService
     /**
      * Set category data from wp data
      * 
-     * @param \IO\MenuBundle\Entity\Category $category
+     * @param \IO\CarteBundle\Entity\Category $category
      * @param array $wpCategory
      * @param array $categories
-     * @param \IO\MenuBundle\Entity\Restaurant $restaurant
+     * @param \IO\CarteBundle\Entity\Restaurant $restaurant
      * @return Category
      */
     private function setCategoryData(Category $category, array $wpCategory, array $categories, Restaurant $restaurant)
