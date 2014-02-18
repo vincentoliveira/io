@@ -2,12 +2,10 @@
 
 namespace IO\MenuBundle\Form;
 
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use IO\MenuBundle\Form\EventListener\RestaurantSubscriber;
 
-class DishType extends AbstractType
+class DishType extends CarteItemType
 {
     
     /**
@@ -19,21 +17,11 @@ class DishType extends AbstractType
         parent::buildForm($builder, $options);
 
         $builder
-                ->add('name', 'text', array(
-                    'label' => 'Nom du plat',
-                    'attr' => array('class' => 'form-control'),
-                ))
-                ->add('description', 'textarea', array(
-                    'label' => 'Description',
-                    'attr' => array('class' => 'form-control'),
-                ))
                 ->add('price', 'number', array(
                     'label' => 'Prix (€)',
                     'precision' => 2,
                     'attr' => array('class' => 'form-control'),
                 ));
-        
-        $builder->addEventSubscriber(new RestaurantSubscriber());
     }
 
     /**

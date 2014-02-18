@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="menu_category")
  * @ORM\Entity()
  */
-class MenuCategory
+class MenuCategory extends CarteItem
 {    
     /**
      * @var integer
@@ -20,28 +20,6 @@ class MenuCategory
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-    
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="_order", type="integer", nullable=false)
-     */
-    private $order;
-
-    /**
-     * @var string
-     *
-     * @ORM\ManyToOne(targetEntity="IO\MenuBundle\Entity\Restaurant")
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
-     */
-    private $restaurant;
-    
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="price", type="decimal", precision=7, scale=2, nullable=true)
-     */
-    private $price;
 
     /**
      * @var string
@@ -59,7 +37,14 @@ class MenuCategory
      */
     private $menuChoices;
 
-
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->menuChoices = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -71,56 +56,10 @@ class MenuCategory
     }
 
     /**
-     * Set price
-     *
-     * @param float $price
-     * @return MenuChoice
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-    
-        return $this;
-    }
-
-    /**
-     * Get price
-     *
-     * @return float 
-     */
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    /**
-     * Set restaurant
-     *
-     * @param \IO\MenuBundle\Entity\Restaurant $restaurant
-     * @return MenuChoice
-     */
-    public function setRestaurant(\IO\MenuBundle\Entity\Restaurant $restaurant = null)
-    {
-        $this->restaurant = $restaurant;
-    
-        return $this;
-    }
-
-    /**
-     * Get restaurant
-     *
-     * @return \IO\MenuBundle\Entity\Restaurant 
-     */
-    public function getRestaurant()
-    {
-        return $this->restaurant;
-    }
-
-    /**
      * Set menu
      *
      * @param \IO\MenuBundle\Entity\Menu $menu
-     * @return MenuChoice
+     * @return MenuCategory
      */
     public function setMenu(\IO\MenuBundle\Entity\Menu $menu = null)
     {
@@ -137,59 +76,6 @@ class MenuCategory
     public function getMenu()
     {
         return $this->menu;
-    }
-
-    /**
-     * Set dish
-     *
-     * @param \IO\MenuBundle\Entity\Dish $dish
-     * @return MenuChoice
-     */
-    public function setDish(\IO\MenuBundle\Entity\Dish $dish = null)
-    {
-        $this->dish = $dish;
-    
-        return $this;
-    }
-
-    /**
-     * Get dish
-     *
-     * @return \IO\MenuBundle\Entity\Dish 
-     */
-    public function getDish()
-    {
-        return $this->dish;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->menuChoices = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
-    /**
-     * Set order
-     *
-     * @param integer $order
-     * @return MenuCategory
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
-    
-        return $this;
-    }
-
-    /**
-     * Get order
-     *
-     * @return integer 
-     */
-    public function getOrder()
-    {
-        return $this->order;
     }
 
     /**

@@ -5,7 +5,7 @@ namespace IO\MenuBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Menu choice
+ * Menu choice (table de jointure)
  *
  * @ORM\Table(name="menu_choice")
  * @ORM\Entity()
@@ -20,21 +20,6 @@ class MenuChoice
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-    
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="_order", type="integer", nullable=false)
-     */
-    private $order;
-
-    /**
-     * @var string
-     *
-     * @ORM\ManyToOne(targetEntity="IO\MenuBundle\Entity\Restaurant")
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
-     */
-    private $restaurant;
     
     /**
      * @var integer
@@ -59,6 +44,8 @@ class MenuChoice
      */
     private $dish;
 
+   
+
     /**
      * Get id
      *
@@ -67,29 +54,6 @@ class MenuChoice
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set order
-     *
-     * @param integer $order
-     * @return MenuChoice
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
-    
-        return $this;
-    }
-
-    /**
-     * Get order
-     *
-     * @return integer 
-     */
-    public function getOrder()
-    {
-        return $this->order;
     }
 
     /**
@@ -113,29 +77,6 @@ class MenuChoice
     public function getExtraPrice()
     {
         return $this->extraPrice;
-    }
-
-    /**
-     * Set restaurant
-     *
-     * @param \IO\MenuBundle\Entity\Restaurant $restaurant
-     * @return MenuChoice
-     */
-    public function setRestaurant(\IO\MenuBundle\Entity\Restaurant $restaurant = null)
-    {
-        $this->restaurant = $restaurant;
-    
-        return $this;
-    }
-
-    /**
-     * Get restaurant
-     *
-     * @return \IO\MenuBundle\Entity\Restaurant 
-     */
-    public function getRestaurant()
-    {
-        return $this->restaurant;
     }
 
     /**

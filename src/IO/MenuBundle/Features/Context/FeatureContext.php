@@ -71,6 +71,17 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
     
     /**
+     * @Given /^je devrais voir l\'image "([^"]*)"$/
+     */
+    public function jeDevraisVoirLImage($imageName)
+    {
+        $page = $this->getSession()->getPage();
+        $node = $page->find('css', 'img[title="' . $imageName . '"]');
+        assertNotNull($node, sprintf('L\'image "%s" n\'est pas présente', $imageName));
+    }
+
+    
+    /**
      * @Given /^j\'appelle "([^"]*)" authentifié avec "([^"]*)"$/
      */
     public function jAppelleAuthentifieAvec($url, $username)

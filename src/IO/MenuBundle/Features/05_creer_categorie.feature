@@ -24,19 +24,28 @@ Scénario: 05.1 -  Créer une categorie : Authorisations
     Alors je devrais voir "Ajouter une catégorie"
     
 @5.2
-Scénario: 05.2 -  Créer une categorie
+Scénario: 05.2 -  Créer une categorie avec image
     Soit je suis connecté en tant que "resto"
 
     Soit je suis sur "/carte"
     Alors je ne devrais pas voir "Entrées"
+    Et je ne devrais pas voir "Icone de Entrées"
 
     Soit je suis sur "/categorie/new"
+    Et je presse "Ajouter"
+    Alors je devrais voir "Veuillez renseigner un nom"
     Et je remplis "category[name]" avec "Entrées"
+    Et je remplis "category[file]" avec "web/tests/import.json"
+    Et je presse "Ajouter"
+    Alors je devrais voir "Image non valide"
+
+    Et je remplis "category[file]" avec "web/tests/content.png"
     Et je presse "Ajouter"
     Alors je devrais voir "La categorie à bien été ajoutée"
 
     Soit je suis sur "/carte"
     Alors je devrais voir "Entrées"
+    Et je devrais voir l'image "Icone Entrées"
 
     Soit je suis sur "/categorie/new"
     Et je remplis "category[name]" avec "Salades"
@@ -47,9 +56,8 @@ Scénario: 05.2 -  Créer une categorie
     Soit je suis sur "/carte"
     Alors je devrais voir "Salades"
 
-
 @5.3
-Scénario: 05.3 -  Modifier une categorie    
+Scénario: 05.3 -  Modifier une categorie avec image
     Soit je crée une catégorie "Entrées" pour le restaurant "Restaurant test"
     Soit je suis connecté en tant que "resto"
 
@@ -58,12 +66,21 @@ Scénario: 05.3 -  Modifier une categorie
 
     Soit je suis "Entrées"
     Et je suis "Modifier"
+    Et je remplis "category[name]" avec ""
+    Et je presse "Modifier"
+    Alors je devrais voir "Veuillez renseigner un nom"
     Et je remplis "category[name]" avec "Desserts"
+    Et je remplis "category[file]" avec "web/tests/import.json"
+    Et je presse "Modifier"
+    Alors je devrais voir "Image non valide"
+
+    Et je remplis "category[file]" avec "web/tests/content.png"
     Et je presse "Modifier"
     Alors je devrais voir "La categorie à bien été modifiée"
 
     Soit je suis sur "/carte"
-    Alors je devrais voir "Desserts"
+    Alors je devrais voir "Desserts"    
+    Et je devrais voir l'image "Icone Desserts"
 
 
 @5.4

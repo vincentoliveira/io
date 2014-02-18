@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="menu")
  * @ORM\Entity()
  */
-class Menu
+class Menu extends CarteItem
 {    
     /**
      * @var integer
@@ -22,41 +22,12 @@ class Menu
     private $id;
     
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="_order", type="integer", nullable=false)
-     */
-    private $order;
-
-    /**
-     * @var string
-     *
-     * @ORM\ManyToOne(targetEntity="IO\MenuBundle\Entity\Restaurant")
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
-     */
-    private $restaurant;
-    
-    /**
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\MenuBundle\Entity\Category", inversedBy="dishes")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=63, nullable=false)
-     */
-    private $name;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=63, nullable=true)
-     */
-    private $description;
     
     /**
      * @var integer
@@ -92,75 +63,6 @@ class Menu
     }
 
     /**
-     * Set order
-     *
-     * @param integer $order
-     * @return Menu
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
-    
-        return $this;
-    }
-
-    /**
-     * Get order
-     *
-     * @return integer 
-     */
-    public function getOrder()
-    {
-        return $this->order;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Menu
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return Menu
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-    
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
      * Set price
      *
      * @param float $price
@@ -181,29 +83,6 @@ class Menu
     public function getPrice()
     {
         return $this->price;
-    }
-
-    /**
-     * Set restaurant
-     *
-     * @param \IO\MenuBundle\Entity\Restaurant $restaurant
-     * @return Menu
-     */
-    public function setRestaurant(\IO\MenuBundle\Entity\Restaurant $restaurant = null)
-    {
-        $this->restaurant = $restaurant;
-    
-        return $this;
-    }
-
-    /**
-     * Get restaurant
-     *
-     * @return \IO\MenuBundle\Entity\Restaurant 
-     */
-    public function getRestaurant()
-    {
-        return $this->restaurant;
     }
 
     /**

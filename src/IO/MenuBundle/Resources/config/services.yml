@@ -2,6 +2,10 @@ parameters:
 #    io_menu.example.class: IO\MenuBundle\Example
 
 services:
+    menu.form_error:
+        class: IO\MenuBundle\Service\FormErrorService
+        arguments: []
+        
     menu.category:
         class: IO\MenuBundle\Service\CategoryService
         arguments: ["@doctrine.orm.entity_manager"]
@@ -10,3 +14,11 @@ services:
         class: IO\MenuBundle\Service\DishService
         arguments: ["@doctrine.orm.entity_manager"]
 
+    menu.media:
+        class: IO\MenuBundle\Service\MediaService
+        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
+        
+    menu.twig_extension:
+        class: IO\MenuBundle\Twig\MenuTwigExtension
+        tags:
+            - { name: twig.extension }

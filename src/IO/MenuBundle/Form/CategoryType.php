@@ -2,32 +2,21 @@
 
 namespace IO\MenuBundle\Form;
 
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use IO\MenuBundle\Form\EventListener\RestaurantSubscriber;
 
 /**
  * Category Type
  */
-class CategoryType extends AbstractType
+class CategoryType extends CarteItemType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
-
-        $builder
-                ->add('name', 'text', array(
-                    'label' => 'Nom de la catégorie',
-                    'attr' => array('class' => 'form-control'),
-                ))
-        ;
-                
-        $builder->addEventSubscriber(new RestaurantSubscriber());
     }
     
     /**

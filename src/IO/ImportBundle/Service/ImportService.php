@@ -39,6 +39,13 @@ class ImportService
      * @var integer 
      */
     private $dishOrder;
+    
+    /**
+     * Media service
+     *
+     * @var \IO\MenuBundle\Service\MediaService
+     */
+    private $mediaSv;
 
     /**
      * Constructor
@@ -50,6 +57,7 @@ class ImportService
     {
         $this->em = $em;
         $this->container = $container;
+        $this->mediaSv = $container->get('menu.media');
     }
     
     /**
@@ -124,7 +132,7 @@ class ImportService
     private function requestWordpress($baseUrl, $page = 1)
     {
         if ($this->container->get('kernel')->getEnvironment() === 'test') {
-            $filepath = $this->container->get('kernel')->getRootDir() . '/../' . $baseUrl;
+            $filepath = $this->container->get('kernel')->getRootDir() . '/../web/' . $baseUrl;
             if (!file_exists($filepath)) {
                 return false;
             }
@@ -268,7 +276,9 @@ class ImportService
         
         $imageUrlPattern = "/src=(\"\'??)(.*)(\"\'??)/Ui";
         if (preg_match($imageUrlPattern, $wpDish['content'], $matches)) {
-            $dish->setImageUrl($matches[2]);
+            $url = $matches[2];
+            $media = $this->mediaSv->createMediaUrl($url);
+            $dish->setMedia($media);
         }
         
         return $dish;

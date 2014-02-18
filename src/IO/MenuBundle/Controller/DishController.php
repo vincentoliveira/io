@@ -33,7 +33,7 @@ class DishController extends Controller
         
         $dish = new Dish();
         $dish->setRestaurant($user->getRestaurant());
-        $form = $this->createForm(new DishType(), $dish);
+        $form = $this->createCreateForm($dish);
 
         return array(
             'dish' => $dish,
@@ -57,7 +57,7 @@ class DishController extends Controller
         
         $dish = new Dish();
         $dish->setRestaurant($user->getRestaurant());
-        $form = $this->createForm(new DishType(), $dish);
+        $form = $this->createCreateForm($dish);
         $form->bind($request);
         
         $session = $this->container->get('session');
@@ -69,6 +69,12 @@ class DishController extends Controller
             
             $session->getFlashBag()->add('success', 'Le plat à bien été ajouté');
             return $this->redirect($this->generateUrl('category_show', array('id' => $dish->getCategory()->getId())));
+        } else {
+            $formErrorSv = $this->container->get('menu.form_error');
+            $errors = $formErrorSv->getAllFormErrorMessages($editForm);
+            foreach ($errors as $error) {
+                $session->getFlashBag()->add('error', $error);
+            }
         }
 
         return array(
@@ -94,7 +100,7 @@ class DishController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(new DishType(), $dish);
+        $form = $this->createEditForm($dish);
         $deleteForm = $this->createDeleteForm($dish->getId());
 
         return array(
@@ -121,7 +127,7 @@ class DishController extends Controller
             throw $this->createNotFoundException();
         }
         
-        $form = $this->createForm(new DishType(), $dish);
+        $form = $this->createEditForm($dish);
         $form->bind($request);
         
         $session = $this->container->get('session');
@@ -132,6 +138,12 @@ class DishController extends Controller
             
             $session->getFlashBag()->add('success', 'Le plat à bien été modifié');
             return $this->redirect($this->generateUrl('category_show', array('id' => $dish->getCategory()->getId())));
+        } else {
+            $formErrorSv = $this->container->get('menu.form_error');
+            $errors = $formErrorSv->getAllFormErrorMessages($form);
+            foreach ($errors as $error) {
+                $session->getFlashBag()->add('error', $error);
+            }
         }
 
         return array(
@@ -149,6 +161,10 @@ class DishController extends Controller
      */
     public function deleteAction(Request $request, Dish $dish)
     {
+        if ($this->userCanEditDish($dish) === false) {
+            throw $this->createNotFoundException();
+        }
+        
         $form = $this->createDeleteForm($dish->getId());
         $form->handleRequest($request);
         
@@ -184,6 +200,52 @@ class DishController extends Controller
     }
 
     /**
+     * Creates a form to create a Category entity.
+     *
+     * @param Dish $dish The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCreateForm(Dish $dish)
+    {
+        $form = $this->createForm(new DishType(), $dish, array(
+            'action' => $this->generateUrl('dish_create'),
+            'attr' => array('class' => 'menu-form'),
+            'method' => 'POST',
+        ));
+
+        $form->add('submit', 'submit', array(
+            'label' => 'Ajouter',
+            'attr' => array('class' => 'btn btn-success'),
+        ));
+
+        return $form;
+    }
+
+    /**
+     * Creates a form to edit a Category entity.
+     *
+     * @param Dish $dish The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Dish $dish)
+    {
+        $form = $this->createForm(new DishType(), $dish, array(
+            'action' => $this->generateUrl('dish_update', array('id' => $dish->getId())),
+            'attr' => array('class' => 'menu-form'),
+            'method' => 'PUT',
+        ));
+
+        $form->add('submit', 'submit', array(
+            'label' => 'Modifier',
+            'attr' => array('class' => 'btn btn-success'),
+        ));
+
+        return $form;
+    }
+
+    /**
      * Creates a form to delete a Category entity by id.
      *
      * @param mixed $id The entity id
@@ -197,7 +259,7 @@ class DishController extends Controller
                         ->setMethod('DELETE')
                         ->add('submit', 'submit', array(
                             'label' => 'Supprimer',
-                            'attr' => array('class' => 'btn btn-danger'),
+                            'attr' => array('class' => 'btn btn-danger btn-delete'),
                         ))
                         ->getForm();
     }

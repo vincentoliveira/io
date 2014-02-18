@@ -29,7 +29,12 @@
 
 {% macro display_category(category) %}
     <div class="list-group-item category">
-        <a href="{{ path('category_show', {id:category.id}) }}">{{ category.name }}</a>
+        <a href="{{ path('category_show', {id:category.id}) }}">
+            {% if category.media %}
+                <img title="Icone {{ category.name }}" class="img-rounded" src="{{ category.media.iconPath|imageLink }}" alt="#" />
+            {% endif %}
+            {{ category.name }}
+        </a>
         {% for category in category.children %}
             {{ _self.display_category(category) }}
         {% endfor %}

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="category")
  * @ORM\Entity(repositoryClass="IO\MenuBundle\Repository\CategoryRepository")
  */
-class Category
+class Category extends CarteItem
 {    
     /**
      * @var integer
@@ -24,31 +24,16 @@ class Category
     /**
      * @var integer
      *
-     * @ORM\Column(name="_order", type="integer", nullable=false)
+     * @ORM\Column(name="wp_id", type="integer",  nullable=true)
      */
-    private $order;
+    private $wpId;
     
     /**
      * @var integer
      *
-     * @ORM\Column(name="wp_id", type="integer",  nullable=true)
+     * @ORM\Column(name="tree_lvl", type="integer",  nullable=true)
      */
-    private $wpId;
-
-    /**
-     * @var string
-     *
-     * @ORM\ManyToOne(targetEntity="IO\MenuBundle\Entity\Restaurant")
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
-     */
-    private $restaurant;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=63, nullable=false)
-     */
-    private $name;
+    private $treeLvl;
     
     /**
      * @var string
@@ -80,7 +65,6 @@ class Category
      * @ORM\OneToMany(targetEntity="IO\MenuBundle\Entity\Menu", mappedBy="category", cascade={"remove", "persist"})
      */
     private $menus;
-
 
     /**
      * Constructor
@@ -126,49 +110,26 @@ class Category
     }
 
     /**
-     * Set restaurant
+     * Set treeLvl
      *
-     * @param \IO\MenuBundle\Entity\Restaurant $restaurant
+     * @param integer $treeLvl
      * @return Category
      */
-    public function setRestaurant(\IO\MenuBundle\Entity\Restaurant $restaurant = null)
+    public function setTreeLvl($treeLvl)
     {
-        $this->restaurant = $restaurant;
+        $this->treeLvl = $treeLvl;
     
         return $this;
     }
 
     /**
-     * Get restaurant
+     * Get treeLvl
      *
-     * @return \IO\MenuBundle\Entity\Restaurant 
+     * @return integer 
      */
-    public function getRestaurant()
+    public function getTreeLvl()
     {
-        return $this->restaurant;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Category
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
+        return $this->treeLvl;
     }
 
     /**
@@ -187,7 +148,7 @@ class Category
     /**
      * Get parent
      *
-     * @return \IO\MenuBundle\Entity\Category
+     * @return \IO\MenuBundle\Entity\Category 
      */
     public function getParent()
     {
@@ -291,28 +252,5 @@ class Category
     public function getMenus()
     {
         return $this->menus;
-    }
-
-    /**
-     * Set order
-     *
-     * @param integer $order
-     * @return Category
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
-    
-        return $this;
-    }
-
-    /**
-     * Get order
-     *
-     * @return integer 
-     */
-    public function getOrder()
-    {
-        return $this->order;
     }
 }

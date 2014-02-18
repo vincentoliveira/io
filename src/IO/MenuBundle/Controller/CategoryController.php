@@ -71,16 +71,35 @@ class CategoryController extends Controller
         $category->setRestaurant($userSv->getUserRestaurant());
         $form = $this->createCreateForm($category);
         $form->handleRequest($request);
+            
 
         $session = $this->container->get('session');
         if ($form->isValid()) {
-            $category->setOrder(0);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($category);
-            $em->flush();
+            $mediaSv = $this->container->get('menu.media');
+            $file = $category->getFile();
+            if ($mediaSv->isFileValid($file)) {
+                $category->setOrder(0);
+            
+                if ($file !== null) {
+                    $media = $mediaSv->createMediaFromFile($file);
+                    $category->setMedia($media);
+                }
 
-            $session->getFlashBag()->add('success', 'La categorie à bien été ajoutée');
-            return $this->redirect($this->generateUrl('category_show', array('id' => $category->getId())));
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($category);
+                $em->flush();
+
+                $session->getFlashBag()->add('success', 'La categorie à bien été ajoutée');
+                return $this->redirect($this->generateUrl('category_show', array('id' => $category->getId())));
+            }
+            
+            $session->getFlashBag()->add('error', "Image non valide");
+        } else {
+            $formErrorSv = $this->container->get('menu.form_error');
+            $errors = $formErrorSv->getAllFormErrorMessages($form);
+            foreach ($errors as $error) {
+                $session->getFlashBag()->add('error', $error);
+            }
         }
 
         return array(
@@ -98,11 +117,15 @@ class CategoryController extends Controller
      */
     public function editAction(Category $category)
     {
+        if ($this->userCanEditCategory($category) === false) {
+            throw $this->createNotFoundException();
+        }
+        
         $editForm = $this->createEditForm($category);
 
         return array(
             'category' => $category,
-            'edit_form' => $editForm->createView(),
+            'form' => $editForm->createView(),
         );
     }
 
@@ -115,6 +138,10 @@ class CategoryController extends Controller
      */
     public function updateAction(Request $request, Category $category)
     {
+        if ($this->userCanEditCategory($category) === false) {
+            throw $this->createNotFoundException();
+        }
+        
         $em = $this->getDoctrine()->getManager();
 
         $editForm = $this->createEditForm($category);
@@ -122,16 +149,33 @@ class CategoryController extends Controller
 
         $session = $this->container->get('session');
         if ($editForm->isValid()) {
-            $em->persist($category);
-            $em->flush();
+            $mediaSv = $this->container->get('menu.media');
+            $file = $category->getFile();
+            if ($mediaSv->isFileValid($file)) {
+                if ($file !== null) {
+                    $media = $mediaSv->createMediaFromFile($file);
+                    $category->setMedia($media);
+                }
 
-            $session->getFlashBag()->add('success', 'La categorie à bien été modifiée');
-            return $this->redirect($this->generateUrl('category_show', array('id' => $category->getId())));
+                $em->persist($category);
+                $em->flush();
+
+                $session->getFlashBag()->add('success', 'La categorie à bien été modifiée');
+                return $this->redirect($this->generateUrl('category_show', array('id' => $category->getId())));
+            }
+    
+            $session->getFlashBag()->add('error', "Image non valide");
+        } else {
+            $formErrorSv = $this->container->get('menu.form_error');
+            $errors = $formErrorSv->getAllFormErrorMessages($editForm);
+            foreach ($errors as $error) {
+                $session->getFlashBag()->add('error', $error);
+            }
         }
 
         return array(
             'category' => $category,
-            'edit_form' => $editForm->createView(),
+            'form' => $editForm->createView(),
         );
     }
 
@@ -144,6 +188,10 @@ class CategoryController extends Controller
      */
     public function deleteAction(Request $request, Category $category)
     {
+        if ($this->userCanEditCategory($category) === false) {
+            throw $this->createNotFoundException();
+        }
+        
         $form = $this->createDeleteForm($category->getId());
         $form->handleRequest($request);
         
@@ -158,6 +206,19 @@ class CategoryController extends Controller
 
         return $this->redirect($this->generateUrl('carte'));
     }
+    
+    /**
+     * User can edit dish ?
+     * 
+     * @param \IO\MenuBundle\Entity\Dish $dish
+     * @return bolean
+     */
+    protected function userCanEditCategory(Category $category)
+    {
+        $userSv = new UserService($this->container);
+        $user = $userSv->getUser();
+        return $user->hasRole('ROLE_ADMIN') || $category->getRestaurant() === $user->getRestaurant();
+    }
 
     /**
      * Creates a form to create a Category entity.
@@ -170,9 +231,9 @@ class CategoryController extends Controller
     {
         $form = $this->createForm(new CategoryType(), $category, array(
             'action' => $this->generateUrl('category_create'),
-            'attr' => array('class' => 'edit-form'),
+            'attr' => array('class' => 'menu-form'),
             'method' => 'POST',
-                ));
+        ));
 
         $form->add('submit', 'submit', array(
             'label' => 'Ajouter',
@@ -193,9 +254,9 @@ class CategoryController extends Controller
     {
         $form = $this->createForm(new CategoryType(), $category, array(
             'action' => $this->generateUrl('category_update', array('id' => $category->getId())),
-            'attr' => array('class' => 'edit-form'),
+            'attr' => array('class' => 'menu-form'),
             'method' => 'PUT',
-                ));
+        ));
 
         $form->add('submit', 'submit', array(
             'label' => 'Modifier',
@@ -219,7 +280,7 @@ class CategoryController extends Controller
                         ->setMethod('DELETE')
                         ->add('submit', 'submit', array(
                             'label' => 'Supprimer',
-                            'attr' => array('class' => 'btn btn-danger'),
+                            'attr' => array('class' => 'btn btn-danger btn-delete'),
                         ))
                         ->getForm();
     }

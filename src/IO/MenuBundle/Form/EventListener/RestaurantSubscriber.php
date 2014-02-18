@@ -35,7 +35,6 @@ class RestaurantSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
 
         if (!method_exists($data, 'getRestaurant')) {
-            die('a');
             return;
         }
         

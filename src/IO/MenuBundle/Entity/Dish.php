@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="dish")
  * @ORM\Entity()
  */
-class Dish
-{    
+class Dish extends CarteItem
+{
     /**
      * @var integer
      *
@@ -24,45 +24,9 @@ class Dish
     /**
      * @var integer
      *
-     * @ORM\Column(name="_order", type="integer", nullable=false)
-     */
-    private $order;
-
-    /**
-     * @var string
-     *
-     * @ORM\ManyToOne(targetEntity="IO\MenuBundle\Entity\Restaurant")
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
-     */
-    private $restaurant;
-    
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="wp_id", type="integer", nullable=true)
      */
     private $wpId;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=63, nullable=false)
-     */
-    private $name;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=255, nullable=true)
-     */
-    private $description;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="image_url", type="string", length=255, nullable=true)
-     */
-    private $imageUrl;
     
     /**
      * @var string
@@ -86,6 +50,7 @@ class Dish
      */
     private $price;
     
+
     /**
      * Get id
      *
@@ -120,98 +85,6 @@ class Dish
     }
 
     /**
-     * Set restaurant
-     *
-     * @param \IO\MenuBundle\Entity\Restaurant $restaurant
-     * @return Dish
-     */
-    public function setRestaurant(\IO\MenuBundle\Entity\Restaurant $restaurant = null)
-    {
-        $this->restaurant = $restaurant;
-    
-        return $this;
-    }
-
-    /**
-     * Get restaurant
-     *
-     * @return \IO\MenuBundle\Entity\Restaurant 
-     */
-    public function getRestaurant()
-    {
-        return $this->restaurant;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Dish
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return Dish
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-    
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Set imageUrl
-     *
-     * @param string $imageUrl
-     * @return Dish
-     */
-    public function setImageUrl($imageUrl)
-    {
-        $this->imageUrl = $imageUrl;
-    
-        return $this;
-    }
-
-    /**
-     * Get imageUrl
-     *
-     * @return string 
-     */
-    public function getImageUrl()
-    {
-        return $this->imageUrl;
-    }
-
-    /**
      * Set tags
      *
      * @param string $tags
@@ -232,29 +105,6 @@ class Dish
     public function getTags()
     {
         return $this->tags;
-    }
-
-    /**
-     * Set category
-     *
-     * @param \IO\MenuBundle\Entity\Category $category
-     * @return Dish
-     */
-    public function setCategory(\IO\MenuBundle\Entity\Category $category = null)
-    {
-        $this->category = $category;
-    
-        return $this;
-    }
-
-    /**
-     * Get category
-     *
-     * @return \IO\MenuBundle\Entity\Category 
-     */
-    public function getCategory()
-    {
-        return $this->category;
     }
 
     /**
@@ -281,25 +131,25 @@ class Dish
     }
 
     /**
-     * Set order
+     * Set category
      *
-     * @param integer $order
+     * @param \IO\MenuBundle\Entity\Category $category
      * @return Dish
      */
-    public function setOrder($order)
+    public function setCategory(\IO\MenuBundle\Entity\Category $category = null)
     {
-        $this->order = $order;
+        $this->category = $category;
     
         return $this;
     }
 
     /**
-     * Get order
+     * Get category
      *
-     * @return integer 
+     * @return \IO\MenuBundle\Entity\Category 
      */
-    public function getOrder()
+    public function getCategory()
     {
-        return $this->order;
+        return $this->category;
     }
 }

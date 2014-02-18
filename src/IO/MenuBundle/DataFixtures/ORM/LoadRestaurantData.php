@@ -14,6 +14,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $this->newRestaurant($manager, 'Restaurant', 'http://37.187.65.120/wordpress/');
         $this->newRestaurant($manager, 'Sushi shop', 'http://37.187.65.120/wordpress/sushi/');
         $this->newRestaurant($manager, 'Cosy shop', 'http://37.187.65.120/wordpress/cosysushi/');
+        $this->newRestaurant($manager, 'Blend', 'http://37.187.65.120/wordpress/dlemb/');
     }
 
     protected function newRestaurant(ObjectManager $manager, $name, $wpBaseUrl)

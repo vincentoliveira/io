@@ -148,5 +148,7 @@ a .glyphicon { color: #888; }
 .edit-form .btn { margin-top: 20px; }
 .edit-form textarea { resize: vertical; }
 
+.menu-form .btn { margin: 15px; }
+
 .actionbar { margin: 10px 0; }
 .recherche { margin: 50px 0; }

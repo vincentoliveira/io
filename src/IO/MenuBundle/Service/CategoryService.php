@@ -50,6 +50,7 @@ class CategoryService
                 'id' => $category->getId(),
                 'name' => $category->getName(),
                 'parent' => 0,
+                'media' => $category->getMedia(),
             );
             
             // add children (only 2 levels ?)
@@ -58,6 +59,7 @@ class CategoryService
                     'id' => $children->getId(),
                     'name' => $children->getName(),
                     'parent' => $category->getId(),
+                    'media' => $children->getMedia(),
                 );
             }
         }

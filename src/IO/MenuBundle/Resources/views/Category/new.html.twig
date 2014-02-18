@@ -6,6 +6,17 @@
         Ajouter une catégorie
     </h3>
 
-    {{ form(form) }}
+    <form class="menu-form" action="{{ path('category_create') }}" method="POST" {{ form_enctype(form) }}>
+        <div class="col-md-6">
+            {{ form_row(form.name) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.parent) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.file) }}
+        </div>
+        <div class="clearfix"></div>
+        {{ form_rest(form) }}
+    </form>
 
 {% endblock %}

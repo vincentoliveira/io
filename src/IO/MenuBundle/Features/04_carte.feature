@@ -23,7 +23,6 @@ Scénario: 04.2 - Voir la carte : Authorisations - Cuisinier
     Soit je suis sur "/carte"
     Alors le code de status de la réponse devrait être 403
     Et je ne devrais pas voir "Entrée"
-    
 
 @4.3
 Scénario: 04.3 - Voir la carte : Authorisations - Restaurateur

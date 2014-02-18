@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManager;
  */
 class DishService
 {
+
     /**
      *
      * @var EntityManager
@@ -24,7 +25,7 @@ class DishService
     {
         $this->em = $em;
     }
-    
+
     /**
      * Get Restaurant dishes
      * 
@@ -40,21 +41,21 @@ class DishService
                 ->andWhere('restaurant.name = :restaurantName')
                 ->setParameter(':restaurantName', $restaurantName)
                 ->orderBy('dish.order', 'ASC');
-        
+
         $dihes = $qb->getQuery()->getResult();
-        
+
         $results = array();
         foreach ($dihes as $dish) {
             $results[] = array(
                 'id' => $dish->getId(),
                 'name' => $dish->getName(),
                 'description' => $dish->getDescription(),
-                'imageUrl' => $dish->getImageUrl(),
                 'category' => $dish->getCategory()->getId(),
                 'price' => $dish->getPrice(),
+                'media' => $dish->getMedia(),
             );
         }
-        
+
         return $results;
     }
 
