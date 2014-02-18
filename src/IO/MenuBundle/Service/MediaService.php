@@ -26,9 +26,22 @@ class MediaService
     const ICON_DIR = '/../web/media/icon/';
     const THUMBNAIL_DIR = '/../web/media/thumb/';
 
+    /*
+     * @var EntityManager
+     */
     protected $em;
+
+    /*
+     * @var Container
+     */
     protected $container;
 
+    /**
+     * Constructor
+     * 
+     * @param \Doctrine\ORM\EntityManager $em
+     * @param \Symfony\Component\DependencyInjection\Container $container
+     */
     public function __construct(EntityManager $em, Container $container)
     {
         $this->em = $em;

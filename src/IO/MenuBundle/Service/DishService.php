@@ -11,7 +11,6 @@ class DishService
 {
 
     /**
-     *
      * @var EntityManager
      */
     protected $em;

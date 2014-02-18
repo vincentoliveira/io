@@ -2,8 +2,26 @@
 
 namespace IO\MenuBundle\Twig;
 
+use Symfony\Component\DependencyInjection\Container;
+
 class MenuTwigExtension extends \Twig_Extension
 {
+
+    /*
+     * @var Container
+     */
+    protected $container;
+
+    /**
+     * Constructor
+     * 
+     * @param \Symfony\Component\DependencyInjection\Container $container
+     */
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -22,11 +40,13 @@ class MenuTwigExtension extends \Twig_Extension
      */
     public function imageLink($imagePath)
     {
-        if (substr($imagePath, 0, 5) == 'http') {
+        if (substr($imagePath, 0, 4) == 'http') {
             return $imagePath;
         }
-
-        return substr($imagePath, strpos($imagePath, 'web/') + 3);
+        
+        $assets = $this->container->get('templating.helper.assets');
+        $path = substr($imagePath, strpos($imagePath, 'web/') + 3);
+        return $assets->getUrl($path);
     }
 
     /**
