@@ -28,18 +28,26 @@ Scénario: 06.1 - Créer un plat : Authorisations
  
    
 @6.2
-Scénario: 06.2 -  Créer un plat
+Scénario: 06.2 - Créer un plat
     Soit je suis connecté en tant que "resto"
 
     Soit je suis sur "/carte"
     Et je suis "Entrées"
     Alors je ne devrais pas voir "Salade Caesar"
+    Et je ne devrais pas voir l'image "Miniature Salade Caesar"
 
     Soit je suis sur "/plat/new"
+    Et je presse "Ajouter"
+    Alors je devrais voir "Veuillez renseigner un nom"
+    Et je devrais voir "Veuillez renseigner un prix"
     Et je remplis "dish[name]" avec "Salade Caesar"
     Et je remplis "dish[description]" avec "Salade au poulet sauce Caesar"
     Et je remplis "dish[price]" avec "6,50"
     Et je sélectionne "Entrées" depuis "dish[category]"
+    Et je remplis "dish[file]" avec "web/tests/import.json"
+    Et je presse "Ajouter"
+    Alors je devrais voir "Image non valide"
+    Et je remplis "dish[file]" avec "web/tests/content.png"
     Et je presse "Ajouter"
     Alors je devrais voir "Le plat à bien été ajouté"
 
@@ -48,10 +56,11 @@ Scénario: 06.2 -  Créer un plat
     Alors je devrais voir "Salade Caesar"
     Et je devrais voir "Salade au poulet sauce Caesar"
     Et je devrais voir "6,50 €"
+    Et je devrais voir l'image "Miniature Salade Caesar"
 
 
 @6.3
-Scénario: 06.3 -  Modifier un plat    
+Scénario: 06.3 - Modifier un plat    
     Soit je crée un plat "Salade Nicoise" dans la category "Entrées" du "Restaurant test"
     Soit je suis connecté en tant que "resto"
 
@@ -61,9 +70,18 @@ Scénario: 06.3 -  Modifier un plat
     Et je ne devrais pas voir "Salade Caesar"
 
     Soit je suis "Modifier Salade Nicoise"
+    Et je remplis "dish[name]" avec ""
+    Et je remplis "dish[price]" avec ""
+    Et je presse "Modifier"
+    Alors je devrais voir "Veuillez renseigner un nom"
+    Et je devrais voir "Veuillez renseigner un prix"
     Et je remplis "dish[name]" avec "Salade Caesar"
     Et je remplis "dish[description]" avec "Salade au poulet sauce Caesar"
     Et je remplis "dish[price]" avec "6,50"
+    Et je remplis "dish[file]" avec "web/tests/import.json"
+    Et je presse "Modifier"
+    Alors je devrais voir "Image non valide"
+    Et je remplis "dish[file]" avec "web/tests/content.png"
     Et je presse "Modifier"
     Alors je devrais voir "Le plat à bien été modifié"
 
@@ -73,6 +91,7 @@ Scénario: 06.3 -  Modifier un plat
     Et je ne devrais pas voir "Salade Nicoise"
     Et je devrais voir "Salade au poulet sauce Caesar"
     Et je devrais voir "6,50 €"
+    Et je devrais voir l'image "Miniature Salade Caesar"
 
 
 @6.4

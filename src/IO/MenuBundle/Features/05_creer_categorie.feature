@@ -29,7 +29,7 @@ Scénario: 05.2 -  Créer une categorie avec image
 
     Soit je suis sur "/carte"
     Alors je ne devrais pas voir "Entrées"
-    Et je ne devrais pas voir "Icone de Entrées"
+    Et je ne devrais pas voir l'image "Icone de Entrées"
 
     Soit je suis sur "/categorie/new"
     Et je presse "Ajouter"

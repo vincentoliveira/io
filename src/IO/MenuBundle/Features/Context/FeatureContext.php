@@ -79,6 +79,17 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $node = $page->find('css', 'img[title="' . $imageName . '"]');
         assertNotNull($node, sprintf('L\'image "%s" n\'est pas présente', $imageName));
     }
+    
+    
+    /**
+     * @Given /^je ne devrais pas voir l\'image "([^"]*)"$/
+     */
+    public function jeNeDevraisPasVoirLImage($imageName)
+    {
+        $page = $this->getSession()->getPage();
+        $node = $page->find('css', 'img[title="' . $imageName . '"]');
+        assertNull($node, sprintf('L\'image "%s" est présente', $imageName));
+    }
 
     
     /**

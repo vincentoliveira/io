@@ -62,16 +62,27 @@ class DishController extends Controller
         
         $session = $this->container->get('session');
         if ($form->isValid()) {
-            $dish->setOrder(0);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($dish);
-            $em->flush();
-            
-            $session->getFlashBag()->add('success', 'Le plat à bien été ajouté');
-            return $this->redirect($this->generateUrl('category_show', array('id' => $dish->getCategory()->getId())));
+            $mediaSv = $this->container->get('menu.media');
+            $file = $dish->getFile();
+            if ($mediaSv->isFileValid($file)) {
+                if ($file !== null) {
+                    $media = $mediaSv->createMediaFromFile($file);
+                    $dish->setMedia($media);
+                } 
+                
+                $dish->setOrder(0);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($dish);
+                $em->flush();
+
+                $session->getFlashBag()->add('success', 'Le plat à bien été ajouté');
+                return $this->redirect($this->generateUrl('category_show', array('id' => $dish->getCategory()->getId())));
+            }
+    
+            $session->getFlashBag()->add('error', "Image non valide");
         } else {
             $formErrorSv = $this->container->get('menu.form_error');
-            $errors = $formErrorSv->getAllFormErrorMessages($editForm);
+            $errors = $formErrorSv->getAllFormErrorMessages($form);
             foreach ($errors as $error) {
                 $session->getFlashBag()->add('error', $error);
             }
@@ -132,12 +143,23 @@ class DishController extends Controller
         
         $session = $this->container->get('session');
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($dish);
-            $em->flush();
-            
-            $session->getFlashBag()->add('success', 'Le plat à bien été modifié');
-            return $this->redirect($this->generateUrl('category_show', array('id' => $dish->getCategory()->getId())));
+            $mediaSv = $this->container->get('menu.media');
+            $file = $dish->getFile();
+            if ($mediaSv->isFileValid($file)) {
+                if ($file !== null) {
+                    $media = $mediaSv->createMediaFromFile($file);
+                    $dish->setMedia($media);
+                } 
+                
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($dish);
+                $em->flush();
+
+                $session->getFlashBag()->add('success', 'Le plat à bien été modifié');
+                return $this->redirect($this->generateUrl('category_show', array('id' => $dish->getCategory()->getId())));
+            }
+    
+            $session->getFlashBag()->add('error', "Image non valide");
         } else {
             $formErrorSv = $this->container->get('menu.form_error');
             $errors = $formErrorSv->getAllFormErrorMessages($form);
@@ -145,10 +167,13 @@ class DishController extends Controller
                 $session->getFlashBag()->add('error', $error);
             }
         }
+        
+        $deleteForm = $this->createDeleteForm($dish->getId());
 
         return array(
             'dish' => $dish,
             'form' => $form->createView(),
+            'delete_form' => $deleteForm->createView(),
         );
     }
 

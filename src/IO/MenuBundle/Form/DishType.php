@@ -21,6 +21,10 @@ class DishType extends CarteItemType
                     'label' => 'Prix (€)',
                     'precision' => 2,
                     'attr' => array('class' => 'form-control'),
+                    'constraints' => new \Symfony\Component\Validator\Constraints\NotBlank(array(
+                        'message' => 'Veuillez renseigner un prix',
+                    )),
+                    'required' => true,
                 ));
     }
 
