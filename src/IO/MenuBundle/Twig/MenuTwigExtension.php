@@ -45,7 +45,7 @@ class MenuTwigExtension extends \Twig_Extension
         }
         
         $assets = $this->container->get('templating.helper.assets');
-        $path = substr($imagePath, strpos($imagePath, 'web/') + 3);
+        $path = substr($imagePath, strpos($imagePath, 'web/') + 4);
         return $assets->getUrl($path);
     }
 
