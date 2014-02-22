@@ -86,7 +86,7 @@ class DishService
             'id' => $dish->getId(),
             'name' => $dish->getName(),
             'description' => $dish->getDescription(),
-            'category' => $dish->getCategory()->getId(),
+            'category' => $dish->getCategory() !== null ? $dish->getCategory()->getId() : 0,
             'price' => $dish->getPrice() ? $dish->getPrice() : 0,
             'media' => $this->mediaSv->getJsonArray($dish->getMedia()),
         );
