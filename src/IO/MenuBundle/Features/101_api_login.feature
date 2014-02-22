@@ -7,8 +7,8 @@ Contexte:
     Soit l'utilisateur "test" a pour salt "saltdelutilisateurtest"
     Soit l'utilisateur "nouser" n'existe pas
 
-@100.1
-Scénario: 100.1 -  Get salt
+@101.1
+Scénario: 101.1 -  Get salt
     Lorsque je suis sur "/api/salt"
     Alors le json devrait convenir:
         | status    |
@@ -25,8 +25,8 @@ Scénario: 100.1 -  Get salt
         | ok        | saltdelutilisateurtest    |
 
 
-@100.2
-Scénario: 100.2 -  Login
+@101.2
+Scénario: 101.2 -  Login
     Lorsque je suis sur "/api/check_login"
     Alors le json devrait convenir:
         | status    | login |
@@ -35,12 +35,12 @@ Scénario: 100.2 -  Login
     Lorsque j'appelle du passé "/api/check_login" authentifié avec "test"
     Alors le json devrait convenir:
         | status    | login |
-        | ok        | FALSE  |
+        | ok        | FALSE |
 
     Lorsque j'appelle du futur "/api/check_login" authentifié avec "test"
     Alors le json devrait convenir:
         | status    | login |
-        | ok        | FALSE  |
+        | ok        | FALSE |
 
     Lorsque j'appelle "/api/check_login" authentifié avec "test"
     Alors le json devrait convenir:

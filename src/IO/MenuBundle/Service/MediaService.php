@@ -31,7 +31,7 @@ class MediaService
      */
     protected $em;
 
-    /*
+    /**
      * @var Container
      */
     protected $container;
@@ -47,6 +47,27 @@ class MediaService
         $this->em = $em;
         $this->container = $container;
     }
+    
+    /**
+     * Get json array
+     * 
+     * @param \IO\MenuBundle\Entity\Media $media
+     * @return array
+     */
+    public function getJsonArray(Media $media = null)
+    {
+        if ($media === null) {
+            return null;
+        }
+        
+        return array(
+            'id' => $media->getId(),
+            'path' => $media->getPath(),
+            'icon_path' => $media->getIconPath(),
+            'thumbnail_path' => $media->getThumbnailPath(),
+        );
+    }
+    
     /**
      * Is file valid ?
      * 
