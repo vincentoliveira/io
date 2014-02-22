@@ -65,16 +65,26 @@ class MediaService
             return null;
         }
         
+        return array(
+            'id' => $media->getId(),
+            'path' => $this->getMediaUrl($media->getPath()),
+            'icon_path' => $this->getMediaUrl($media->getIconPath()),
+            'thumbnail_path' => $this->getMediaUrl($media->getThumbnailPath()),
+        );
+    }
+    
+    
+    public function getMediaUrl($mediaUrl)
+    {
+        if (substr($mediaUrl, 0, 4) == 'http') {
+            return $mediaUrl;
+        }
+
         if ($this->assets === null) {
             $this->assets = $this->container->get('templating.helper.assets');
         }
-        
-        return array(
-            'id' => $media->getId(),
-            'path' => $this->assets->getUrl($media->getPath()),
-            'icon_path' => $this->assets->getUrl($media->getIconPath()),
-            'thumbnail_path' => $this->assets->getUrl($media->getThumbnailPath()),
-        );
+                $path = substr($mediaUrl, strpos($mediaUrl, 'web/') + 4);
+        return $this->assets->getUrl($path);
     }
     
     /**
