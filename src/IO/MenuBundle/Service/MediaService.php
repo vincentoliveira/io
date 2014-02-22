@@ -37,6 +37,11 @@ class MediaService
     protected $container;
 
     /**
+     * @var \Symfony\Component\Templating\Helper\CoreAssetsHelper
+     */
+    protected $assets;
+
+    /**
      * Constructor
      * 
      * @param \Doctrine\ORM\EntityManager $em
@@ -60,11 +65,15 @@ class MediaService
             return null;
         }
         
+        if ($this->assets === null) {
+            $this->assets = $this->container->get('templating.helper.assets');
+        }
+        
         return array(
             'id' => $media->getId(),
-            'path' => $media->getPath(),
-            'icon_path' => $media->getIconPath(),
-            'thumbnail_path' => $media->getThumbnailPath(),
+            'path' => $this->assets->getUrl($media->getPath()),
+            'icon_path' => $this->assets->getUrl($media->getIconPath()),
+            'thumbnail_path' => $this->assets->getUrl($media->getThumbnailPath()),
         );
     }
     
