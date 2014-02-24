@@ -3,6 +3,9 @@
 namespace IO\CarteBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\DependencyInjection\Container;
+use IO\MenuBundle\Entity\Dish;
+
 
 /**
  * Dish Service
@@ -16,13 +19,24 @@ class DishService
     protected $em;
 
     /**
+     * @var Container
+     */
+    protected $container;
+    
+    /**
+     * @var MediaService
+     */
+    protected $mediaSv;
+
+    /**
      * Constructor
      * 
      * @param EntityManager
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, Container $container)
     {
         $this->em = $em;
+        $this->container = $container;
     }
 
     /**
@@ -42,20 +56,40 @@ class DishService
                 ->orderBy('dish.order', 'ASC');
 
         $dihes = $qb->getQuery()->getResult();
-
+        
         $results = array();
         foreach ($dihes as $dish) {
-            $results[] = array(
-                'id' => $dish->getId(),
-                'name' => $dish->getName(),
-                'description' => $dish->getDescription(),
-                'category' => $dish->getCategory()->getId(),
-                'price' => $dish->getPrice() ? $dish->getPrice() : 0,
-                'media' => $dish->getMedia(),
-            );
+            $results[] = $this->getJsonArray($dish);
         }
 
         return $results;
     }
 
+       
+    /**
+     * Get json array
+     * 
+     * @param \IO\MenuBundle\Entity\Dish $dish
+     * @return array
+     */
+    public function getJsonArray(Dish $dish = null)
+    {
+        if ($dish === null) {
+            return null;
+        }
+        
+        if ($this->mediaSv === null) {
+            $this->mediaSv = $this->container->get('menu.media');
+        }
+        
+        return array(
+            'id' => $dish->getId(),
+            'name' => $dish->getName(),
+            'description' => $dish->getDescription(),
+            'category' => $dish->getCategory() !== null ? $dish->getCategory()->getId() : 0,
+            'price' => $dish->getPrice() ? $dish->getPrice() : 0,
+            'media' => $this->mediaSv->getJsonArray($dish->getMedia()),
+        );
+    }
+        
 }

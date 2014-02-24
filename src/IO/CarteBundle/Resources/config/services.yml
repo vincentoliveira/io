@@ -8,11 +8,11 @@ services:
         
     menu.category:
         class: IO\CarteBundle\Service\CategoryService
-        arguments: ["@doctrine.orm.entity_manager"]
+        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
         
     menu.dish:
         class: IO\CarteBundle\Service\DishService
-        arguments: ["@doctrine.orm.entity_manager"]
+        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
 
     menu.media:
         class: IO\CarteBundle\Service\MediaService

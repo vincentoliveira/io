@@ -5,6 +5,7 @@ namespace IO\APIBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 
 
 /**
@@ -19,6 +20,7 @@ class CategoryController extends Controller
      * - <strong>GET</strong> <em>restaurant</em> restaurant name
      * 
      * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Secure(roles="ROLE_TABLETTE")
      */
     public function getCategoriesAction(Request $request)
     {

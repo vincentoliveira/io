@@ -170,9 +170,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             
             assertTrue(isset($data[$key]), sprintf('La clé "%s" n\'est pas présente dans le json', $key));
             if ($value === "FALSE") {
-                assertFalse($data[$key], sprintf('La clé "%" du json n\est pas "false"', $key));
+                assertFalse($data[$key], sprintf('La clé "%s" du json n\est pas "false"', $key));
             } elseif ($value === "TRUE") {
-                assertTrue($data[$key], sprintf('La clé "%" du json n\est pas "true"', $key));
+                assertTrue($data[$key], sprintf('La clé "%s" du json n\est pas "true"', $key));
             } else {
                 assertTrue(strpos($value, $data[$key]) !== false, sprintf('La clé "%s" du json ne contient pas "%s\n"', $key, $value, $data[$key]));
             }
