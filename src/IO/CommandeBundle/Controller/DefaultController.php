@@ -1,18 +1,15 @@
 <?php
 
-namespace IO\CarteBundle\Controller;
+namespace IO\CommandeBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 
-/**
- * Commande Controller
- */
-class CommandeController extends Controller
-{
+class DefaultController extends Controller
+{    
     /**
-     * Display home
+     * Commande en cours
      * 
      * @return \Symfony\Component\HttpFoundation\Response
      * @Template()

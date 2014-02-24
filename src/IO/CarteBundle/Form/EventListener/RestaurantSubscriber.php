@@ -9,7 +9,7 @@ use IO\CarteBundle\Repository\CategoryRepository;
 use IO\CarteBundle\Entity\Restaurant;
 
 /**
- * 
+ * Restaurant Subscriber
  */
 class RestaurantSubscriber implements EventSubscriberInterface
 {

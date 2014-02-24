@@ -2,11 +2,6 @@ homepage:
     pattern:  /
     defaults: { _controller: IOCarteBundle:Default:index }
 
-# Commande ne cours
-commande_en_cours:
-    pattern:  /encours
-    defaults: { _controller: IOCarteBundle:Commande:commandeEnCours }
-
 # Carte
 carte:
     pattern:  /carte
@@ -27,14 +22,8 @@ IOCarteBundle_dish:
         resource: "@IOCarteBundle/Resources/config/routing/dish.yml"
         prefix:   /plat
 
-
 # Menu
-menu_new:
-    pattern:  /menu/new
-    defaults: { _controller: IOCarteBundle:Menu:new }
-    
-menu_create:
-    pattern:  /menu/create
-    defaults: { _controller: IOCarteBundle:Menu:create }
-    requirements:
-        _method: POST
+IOCarteBundle_menu:
+        resource: "@IOCarteBundle/Resources/config/routing/menu.yml"
+        prefix:   /menu
+

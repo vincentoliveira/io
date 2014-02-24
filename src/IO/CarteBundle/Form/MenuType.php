@@ -2,15 +2,13 @@
 
 namespace IO\CarteBundle\Form;
 
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use IO\CarteBundle\Form\EventListener\RestaurantSubscriber;
 
 /**
  * Menu Type
  */
-class MenuType extends AbstractType
+class MenuType extends CarteItemType
 {
 
     /**
@@ -22,33 +20,23 @@ class MenuType extends AbstractType
         parent::buildForm($builder, $options);
 
         $builder
-                ->add('name', 'text', array(
-                    'label' => 'Nom du menu',
-                    'attr' => array('class' => 'form-control'),
-                    'required' => true,
-                ))
-                ->add('description', 'text', array(
-                    'label' => 'Description (optionnel)',
-                    'attr' => array('class' => 'form-control'),
-                    'required' => true,
-                ))
                 ->add('price', 'number', array(
                     'label' => 'Prix de base (en EUR)',
                     'precision' => 2,
                     'attr' => array('class' => 'form-control'),
                     'required' => true,
+                ))
+                ->add('menuCategories', 'collection', array(
+                    'type' => new MenuCategoryType(),
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                    'options' => array(
+                        'required' => true,
+                    ),
                 ));
-//                ->add('menuCategories', 'collection', array(
-//                    'type' => 'text',
-//                    'allow_add' => true,
-//                    'allow_delete' => true,
-//                    'options' => array(
-//                        'required' => true,
-//                        'attr' => array('class' => 'email-box')
-//                    ),
-//                ));
-
-        $builder->addEventSubscriber(new RestaurantSubscriber());
+        
+        $builder->addEventSubscriber(new EventListener\MenuSubscriber());
     }
 
     /**

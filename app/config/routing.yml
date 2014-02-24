@@ -1,3 +1,7 @@
+io_commande:
+    resource: "@IOCommandeBundle/Resources/config/routing.yml"
+    prefix:   /
+
 io_carte:
     resource: "@IOCarteBundle/Resources/config/routing.yml"
     prefix:   /
