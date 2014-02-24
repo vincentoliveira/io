@@ -35,12 +35,12 @@ Scénario: 101.2 -  Login
     Lorsque j'appelle du passé "/api/check_login" authentifié avec "test"
     Alors le json devrait convenir:
         | status    | login |
-        | ok        | FALSE  |
+        | ok        | FALSE |
 
     Lorsque j'appelle du futur "/api/check_login" authentifié avec "test"
     Alors le json devrait convenir:
         | status    | login |
-        | ok        | FALSE  |
+        | ok        | FALSE |
 
     Lorsque j'appelle "/api/check_login" authentifié avec "test"
     Alors le json devrait convenir:
