@@ -56,7 +56,7 @@ class MediaService
     /**
      * Get json array
      * 
-     * @param \IO\MenuBundle\Entity\Media $media
+     * @param \IO\CarteBundle\Entity\Media $media
      * @return array
      */
     public function getJsonArray(Media $media = null)

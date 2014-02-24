@@ -4,7 +4,7 @@ namespace IO\CarteBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\Container;
-use IO\MenuBundle\Entity\Category;
+use IO\CarteBundle\Entity\Category;
 
 
 /**
@@ -75,7 +75,7 @@ class CategoryService
      * Get json array
      * 
      * 
-     * @param \IO\MenuBundle\Service\Category $category
+     * @param \IO\CarteBundle\Service\Category $category
      * @param int $level
      * @return array
      */

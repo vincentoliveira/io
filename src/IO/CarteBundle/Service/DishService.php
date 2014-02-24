@@ -4,7 +4,7 @@ namespace IO\CarteBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\Container;
-use IO\MenuBundle\Entity\Dish;
+use IO\CarteBundle\Entity\Dish;
 
 
 /**
@@ -69,7 +69,7 @@ class DishService
     /**
      * Get json array
      * 
-     * @param \IO\MenuBundle\Entity\Dish $dish
+     * @param \IO\CarteBundle\Entity\Dish $dish
      * @return array
      */
     public function getJsonArray(Dish $dish = null)
