@@ -14,7 +14,7 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 class DishController extends Controller
 {
     /**
-     * Get restaurant dishes
+     * Get all restaurant dishes
      * WSSE : <strong>ON</strong>
      * Parameters :
      * - <strong>GET</strong> <em>restaurant</em> restaurant name
@@ -22,7 +22,7 @@ class DishController extends Controller
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @Secure(roles="ROLE_TABLETTE")
      */
-    public function getDishesAction(Request $request)
+    public function getAllDishesAction(Request $request)
     {
         $user = $this->get('user.user_service')->getUser();
         if ($user === null) {

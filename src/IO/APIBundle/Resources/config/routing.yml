@@ -6,10 +6,21 @@ api_check_login:
     pattern:  /check_login
     defaults: { _controller: IOAPIBundle:User:checkLogin }
 
-api_get_categories:
+api_categorie_getall:
     pattern:  /categories
-    defaults: { _controller: IOAPIBundle:Category:getCategories }
+    defaults: { _controller: IOAPIBundle:Category:getAllCategories }
     
-api_get_dishes:
+api_dish_getall:
     pattern:  /dishes
-    defaults: { _controller: IOAPIBundle:Dish:getDishes }
+    defaults: { _controller: IOAPIBundle:Dish:getAllDishes }
+
+
+# Order
+api_order_get:
+    pattern:  /order
+    defaults: { _controller: IOAPIBundle:Order:getOrder }
+
+api_order_add:
+    pattern:  /order/add
+    defaults: { _controller: IOAPIBundle:Order:add }
+    requirements: { _method: post }

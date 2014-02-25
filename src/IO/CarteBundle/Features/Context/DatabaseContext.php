@@ -5,6 +5,7 @@ namespace IO\CarteBundle\Features\Context;
 use IO\CarteBundle\Entity\Restaurant;
 use IO\CarteBundle\Entity\Category;
 use IO\CarteBundle\Entity\Dish;
+use IO\OrderBundle\Entity\Order;
 
 /**
  * Database context.
@@ -81,5 +82,40 @@ class DatabaseContext extends AbstractContext
         $em->persist($restaurant);
         $em->flush();
     }
+    
+    
+    /**
+     * @Given /^il n\'y a aucune commande$/
+     */
+    public function ilNYAAucuneCommande()
+    {
+        $em = $this->getEntityManager();
+        $entities = $em->getRepository('IOOrderBundle:Order')->findAll();
 
+        foreach ($entities as $entity) {
+            $em->remove($entity);
+        }
+
+        $em->flush();
+        
+        $connection = $em->getConnection();
+        $connection->exec("ALTER TABLE order_item AUTO_INCREMENT = 1;");
+    }
+
+
+    /**
+     * @Given /^il y a une commande en cours pour "([^"]*)"$/
+     */
+    public function ilYAUneCommandeEnCoursPour($restaurantName)
+    {
+        $em = $this->getEntityManager();
+        $restaurant = $em->getRepository('IOCarteBundle:Restaurant')->findOneBy(array('name' => $restaurantName));
+        assertNotNull($restaurant, sprintf('Le restaurant "%s" n\'existe pas', $restaurantName));
+        
+        $order = new Order();
+        $order->setRestaurant($restaurant);
+        
+        $em->persist($order);
+        $em->flush();
+    }
 }

@@ -1,0 +1,7 @@
+parameters:
+#    io_commande.example.class: IO\OrderBundle\Example
+
+services:
+    order.order:
+        class: IO\OrderBundle\Service\OrderService
+        arguments: ["@doctrine.orm.entity_manager", "@service_container"]

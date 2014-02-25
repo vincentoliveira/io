@@ -1,5 +1,5 @@
 io_commande:
-    resource: "@IOCommandeBundle/Resources/config/routing.yml"
+    resource: "@IOOrderBundle/Resources/config/routing.yml"
     prefix:   /
 
 io_carte:

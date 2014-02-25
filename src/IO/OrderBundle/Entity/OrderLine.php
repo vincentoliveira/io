@@ -1,16 +1,16 @@
 <?php
 
-namespace IO\CommandeBundle\Entity;
+namespace IO\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CarteItem
  *
- * @ORM\Table(name="commande_line")
- * @ORM\Entity(repositoryClass="IO\CommandeBundle\Repository\CommandeLineRepository")
+ * @ORM\Table(name="order_line")
+ * @ORM\Entity(repositoryClass="IO\OrderBundle\Repository\OrderLineRepository")
  */
-class CommandeLine
+class OrderLine
 {
 
     /**
@@ -25,10 +25,10 @@ class CommandeLine
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="IO\CommandeBundle\Entity\Commande", inversedBy="commandeLines")
-     * @ORM\JoinColumn(name="commande_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="IO\OrderBundle\Entity\Order", inversedBy="orderLines")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      */
-    private $commande;
+    private $order;
 
     /**
      * @var string
@@ -65,7 +65,7 @@ class CommandeLine
      * Set itemId
      *
      * @param integer $itemId
-     * @return CommandeLine
+     * @return OrderLine
      */
     public function setItemId($itemId)
     {
@@ -88,7 +88,7 @@ class CommandeLine
      * Set itemType
      *
      * @param string $itemType
-     * @return CommandeLine
+     * @return OrderLine
      */
     public function setItemType($itemType)
     {
@@ -111,7 +111,7 @@ class CommandeLine
      * Set itemPrice
      *
      * @param float $itemPrice
-     * @return CommandeLine
+     * @return OrderLine
      */
     public function setItemPrice($itemPrice)
     {
@@ -131,26 +131,26 @@ class CommandeLine
     }
 
     /**
-     * Set commande
+     * Set order
      *
-     * @param \IO\CommandeBundle\Entity\Commande $commande
-     * @return CommandeLine
+     * @param \IO\OrderBundle\Entity\Order $order
+     * @return OrderLine
      */
-    public function setCommande(\IO\CommandeBundle\Entity\Commande $commande = null)
+    public function setOrder(\IO\OrderBundle\Entity\Order $order = null)
     {
-        $this->commande = $commande;
+        $this->order = $order;
 
         return $this;
     }
 
     /**
-     * Get commande
+     * Get order
      *
-     * @return \IO\CommandeBundle\Entity\Commande 
+     * @return \IO\OrderBundle\Entity\Order 
      */
-    public function getCommande()
+    public function getOrder()
     {
-        return $this->commande;
+        return $this->order;
     }
 
 }

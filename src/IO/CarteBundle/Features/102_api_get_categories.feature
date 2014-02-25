@@ -1,5 +1,5 @@
 # language: fr
-@api @apigetcategories
+@api @apigetallcategories
 Fonctionnalité: API : Get categories
 
 Contexte:
@@ -8,7 +8,7 @@ Contexte:
     Soit l'utilisateur "test" a pour restaurant "Restaurant test"
 
 @102.1
-Scénario: 102.1 -  Get categories
+Scénario: 102.1 -  Get all categories
     Lorsque je suis sur "/api/categories"
     Alors le code de status de la réponse ne devrait pas être 403
 

@@ -14,7 +14,7 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 class CategoryController extends Controller
 {
     /**
-     * Get restaurant categories
+     * Get all restaurant categories
      * WSSE : <strong>ON</strong>
      * Parameters :
      * - <strong>GET</strong> <em>restaurant</em> restaurant name
@@ -22,7 +22,7 @@ class CategoryController extends Controller
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @Secure(roles="ROLE_TABLETTE")
      */
-    public function getCategoriesAction(Request $request)
+    public function getAllCategoriesAction(Request $request)
     {
         $user = $this->get('user.user_service')->getUser();
         if ($user === null) {

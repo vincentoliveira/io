@@ -1,16 +1,17 @@
 <?php
 
-namespace IO\CommandeBundle\Entity;
+namespace IO\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CarteItem
  *
- * @ORM\Table(name="commande")
- * @ORM\Entity(repositoryClass="IO\CommandeBundle\Repository\CommandeRepository")
+ * @ORM\Table(name="order_item")
+ * @ORM\Entity(repositoryClass="IO\OrderBundle\Repository\OrderRepository")
+ * @ORM\HasLifecycleCallbacks
  */
-class Commande
+class Order
 {
 
     /**
@@ -40,16 +41,16 @@ class Commande
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="IO\CommandeBundle\Entity\CommandeLine", mappedBy="commande", cascade={"remove", "persist"})
+     * @ORM\OneToMany(targetEntity="IO\OrderBundle\Entity\OrderLine", mappedBy="order", cascade={"remove", "persist"})
      */
-    private $commandeLines;
+    private $orderLines;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->commandeLines = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->orderLines = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -66,12 +67,15 @@ class Commande
      * Set date
      *
      * @param \DateTime $date
-     * @return Commande
+     * @return Order
+     * 
+     * @ORM\PrePersist
      */
-    public function setDate($date)
+    public function setDate()
     {
-        $this->date = $date;
-
+        if ($this->date === null) {
+            $this->date = new \DateTime();
+        }
         return $this;
     }
 
@@ -89,7 +93,7 @@ class Commande
      * Set restaurant
      *
      * @param \IO\CarteBundle\Entity\Restaurant $restaurant
-     * @return Commande
+     * @return Order
      */
     public function setRestaurant(\IO\CarteBundle\Entity\Restaurant $restaurant)
     {
@@ -109,36 +113,36 @@ class Commande
     }
 
     /**
-     * Add commandeLines
+     * Add orderLines
      *
-     * @param \IO\CommandeBundle\Entity\CommandeLine $commandeLines
-     * @return Commande
+     * @param \IO\OrderBundle\Entity\OrderLine $orderLines
+     * @return Order
      */
-    public function addCommandeLine(\IO\CommandeBundle\Entity\CommandeLine $commandeLines)
+    public function addOrderLine(\IO\OrderBundle\Entity\OrderLine $orderLines)
     {
-        $this->commandeLines[] = $commandeLines;
+        $this->orderLines[] = $orderLines;
 
         return $this;
     }
 
     /**
-     * Remove commandeLines
+     * Remove orderLines
      *
-     * @param \IO\CommandeBundle\Entity\CommandeLine $commandeLines
+     * @param \IO\OrderBundle\Entity\OrderLine $orderLines
      */
-    public function removeCommandeLine(\IO\CommandeBundle\Entity\CommandeLine $commandeLines)
+    public function removeOrderLine(\IO\OrderBundle\Entity\OrderLine $orderLines)
     {
-        $this->commandeLines->removeElement($commandeLines);
+        $this->orderLines->removeElement($orderLines);
     }
 
     /**
-     * Get commandeLines
+     * Get orderLines
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getCommandeLines()
+    public function getOrderLines()
     {
-        return $this->commandeLines;
+        return $this->orderLines;
     }
 
 }

@@ -1,5 +1,5 @@
 # language: fr
-@api @apigetdishes
+@api @apigetalldishes
 Fonctionnalité: API : Get dishes
 
 Contexte:
@@ -8,7 +8,7 @@ Contexte:
     Soit l'utilisateur "test" a pour restaurant "Restaurant test"
 
 @103.1
-Scénario: 103.1 -  Get dishes
+Scénario: 103.1 -  Get all dishes
     Lorsque je suis sur "/api/dishes"
     Alors le code de status de la réponse ne devrait pas être 403
 

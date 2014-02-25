@@ -1,4 +1,0 @@
-# Commande ne cours
-commande_en_cours:
-    pattern:  /encours
-    defaults: { _controller: IOCommandeBundle:Default:commandeEnCours }

@@ -1,7 +1,0 @@
-parameters:
-#    io_commande.example.class: IO\CommandeBundle\Example
-
-services:
-#    io_commande.example:
-#        class: %io_commande.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
