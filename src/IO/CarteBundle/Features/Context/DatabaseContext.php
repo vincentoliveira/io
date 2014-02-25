@@ -85,6 +85,25 @@ class DatabaseContext extends AbstractContext
     
     
     /**
+     * @Given /^il n\'y a aucun plat/
+     */
+    public function ilNYAAucunPlat()
+    {
+        $em = $this->getEntityManager();
+        $entities = $em->getRepository('IOCarteBundle:Dish')->findAll();
+
+        foreach ($entities as $entity) {
+            $em->remove($entity);
+        }
+
+        $em->flush();
+        
+        $connection = $em->getConnection();
+        $connection->exec("ALTER TABLE dish AUTO_INCREMENT = 1;");
+    }
+    
+    
+    /**
      * @Given /^il n\'y a aucune commande$/
      */
     public function ilNYAAucuneCommande()

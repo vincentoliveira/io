@@ -18,12 +18,13 @@ require_once 'PHPUnit/Framework/Assert/Functions.php';
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
+
     /**
      *
      * @var \Symfony\Component\HttpKernel\Kernel 
      */
     protected $kernel;
-    
+
     /**
      * Initializes context.
      * Every scenario gets it's own context object.
@@ -66,10 +67,10 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         }
 
         assertNotNull($node, sprintf('Le champ caché "%s" n\'est pas présent', $field));
-        
+
         $node->setValue($value);
     }
-    
+
     /**
      * @Given /^je devrais voir l\'image "([^"]*)"$/
      */
@@ -79,8 +80,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $node = $page->find('css', 'img[title="' . $imageName . '"]');
         assertNotNull($node, sprintf('L\'image "%s" n\'est pas présente', $imageName));
     }
-    
-    
+
     /**
      * @Given /^je ne devrais pas voir l\'image "([^"]*)"$/
      */
@@ -91,83 +91,119 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         assertNull($node, sprintf('L\'image "%s" est présente', $imageName));
     }
 
-    
     /**
      * @Given /^j\'appelle "([^"]*)" authentifié avec "([^"]*)"$/
      */
     public function jAppelleAuthentifieAvec($url, $username)
     {
-        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user = $em->getRepository('IOUserBundle:User')->findOneBy(array('username' => $username));
-        assertNotNull($user, sprintf('L\'utilisateur "%s" n\'existe pas', $username));
+        $wsseToken = $this->generateWsseToken($username);
 
-        $timestamp = gmdate('Y-m-d\TH:i:s\Z');
-        $nonce = mt_rand();
-        $password = $user->getPassword();
-        
-        $digest = base64_encode(sha1($nonce.$timestamp.$password, true));
-        $wsseToken = sprintf('UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"', $username, $digest, base64_encode($nonce), $timestamp);
-        
         $session = $this->getSession();
         $session->setRequestHeader('HTTP_X_WSSE', $wsseToken);
         $session->visit($url);
     }
-    
+
     /**
      * @Given /^j\'appelle du passé "([^"]*)" authentifié avec "([^"]*)"$/
      */
     public function jDuPasseAppelleAuthentifieAvec($url, $username)
     {
-        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user = $em->getRepository('IOUserBundle:User')->findOneBy(array('username' => $username));
-        assertNotNull($user, sprintf('L\'utilisateur "%s" n\'existe pas', $username));
+        $wsseToken = $this->generateWsseToken($username, gmdate('Y-m-d\TH:i:s\Z', time() - 3600));
 
-        $timestamp = gmdate('Y-m-d\TH:i:s\Z', time() - 3600);
-        $nonce = mt_rand();
-        $password = $user->getPassword();
-        
-        $digest = base64_encode(sha1($nonce.$timestamp.$password, true));
-        $wsseToken = sprintf('UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"', $username, $digest, base64_encode($nonce), $timestamp);
-        
         $session = $this->getSession();
         $session->setRequestHeader('HTTP_X_WSSE', $wsseToken);
         $session->visit($url);
     }
-    
+
     /**
      * @Given /^j\'appelle du futur "([^"]*)" authentifié avec "([^"]*)"$/
      */
     public function jDuFuturAppelleAuthentifieAvec($url, $username)
     {
-        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user = $em->getRepository('IOUserBundle:User')->findOneBy(array('username' => $username));
-        assertNotNull($user, sprintf('L\'utilisateur "%s" n\'existe pas', $username));
+        $wsseToken = $this->generateWsseToken($username, gmdate('Y-m-d\TH:i:s\Z', time() + 3600));
 
-        $timestamp = gmdate('Y-m-d\TH:i:s\Z', time() + 3600);
-        $nonce = mt_rand();
-        $password = $user->getPassword();
-        
-        $digest = base64_encode(sha1($nonce.$timestamp.$password, true));
-        $wsseToken = sprintf('UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"', $username, $digest, base64_encode($nonce), $timestamp);
-        
         $session = $this->getSession();
         $session->setRequestHeader('HTTP_X_WSSE', $wsseToken);
         $session->visit($url);
     }
-    
+
+    /**
+     * Generate Wsse token
+     * 
+     * @param String $username
+     * @param String $password
+     * @param String $timestamp
+     * @param String $nonce
+     * @return String
+     */
+    private function generateWsseToken($username, $timestamp = null, $nonce = null, $password = null)
+    {
+        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+        $user = $em->getRepository('IOUserBundle:User')->findOneBy(array('username' => $username));
+        assertNotNull($user, sprintf('L\'utilisateur "%s" n\'existe pas', $username));
+
+        if ($timestamp === null) {
+            $timestamp = gmdate('Y-m-d\TH:i:s\Z');
+        }
+        if ($nonce === null) {
+            $nonce = mt_rand();
+        }
+        if ($password === null) {
+            $password = $user->getPassword();
+        }
+
+        $digest = base64_encode(sha1($nonce . $timestamp . $password, true));
+        return sprintf('UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"', $username, $digest, base64_encode($nonce), $timestamp);
+    }
+
+    /**
+     * @Given /^je post sur "([^"]*)" authentifié avec "([^"]*)" :$/
+     */
+    public function jePostSurAuthentifieAvec($url, $username, TableNode $table)
+    {
+        $data = array();
+        foreach ($table->getHash() as $hash) {
+            $key = $hash['key'];
+            $value = $hash['value'];
+            
+            if (isset($data[$key])) {
+                if (!is_array($data[$key])) {
+                    $data[$key] = array($data[$key]);
+                }
+                $data[$key][] = $value;
+            } else {
+                $data[$key] = $value;
+            }
+        }
+
+        $wsseToken = $this->generateWsseToken($username);
+        $session = $this->getSession();
+        $session->setRequestHeader('HTTP_X_WSSE', $wsseToken);
+
+        $driver = $session->getDriver();
+        $client = $driver->getClient();
+
+        $class = new \ReflectionClass($driver);
+        $prepareUrl = $class->getMethod('prepareUrl');
+        $prepareUrl->setAccessible(true);
+        $client->request('POST', $prepareUrl->invokeArgs($driver, array($url)), $data);
+    }
+
     /**
      * @Given /^le json devrait convenir:$/
      */
     public function leJsonDevraitConvenir(TableNode $table)
     {
         $page = $this->getSession()->getDriver()->getContent();
-        
+
+        //print_r($page);
+
         $data = json_decode($page, true);
         assertNotNull($data, "Cannot parse json");
-        
+
         $hash = $table->getHash();
         foreach ($hash[0] as $key => $value) {
-            
+
             assertTrue(isset($data[$key]), sprintf('La clé "%s" n\'est pas présente dans le json', $key));
             if ($value === "FALSE") {
                 assertFalse($data[$key], sprintf('La clé "%s" du json n\est pas "false"', $key));
@@ -178,4 +214,5 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             }
         }
     }
+
 }

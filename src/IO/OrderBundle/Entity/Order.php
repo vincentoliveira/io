@@ -5,7 +5,7 @@ namespace IO\OrderBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CarteItem
+ * Order
  *
  * @ORM\Table(name="order_item")
  * @ORM\Entity(repositoryClass="IO\OrderBundle\Repository\OrderRepository")
@@ -30,6 +30,13 @@ class Order
      * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
      */
     private $restaurant;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="table_name", type="string", nullable=true)
+     */
+    private $tableName;
 
     /**
      * @var \DateTime
@@ -145,4 +152,27 @@ class Order
         return $this->orderLines;
     }
 
+
+    /**
+     * Set tableName
+     *
+     * @param string $tableName
+     * @return Order
+     */
+    public function setTableName($tableName)
+    {
+        $this->tableName = $tableName;
+    
+        return $this;
+    }
+
+    /**
+     * Get tableName
+     *
+     * @return string 
+     */
+    public function getTableName()
+    {
+        return $this->tableName;
+    }
 }

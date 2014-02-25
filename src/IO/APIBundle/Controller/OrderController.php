@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use \IO\OrderBundle\Entity\Order;
+use \IO\OrderBundle\Entity\OrderLine;
 
 /**
  * API Order controller
@@ -64,7 +66,7 @@ class OrderController extends Controller
      * Get restaurant categories
      * WSSE : <strong>ON</strong>
      * Parameters :
-     * - <strong>POST</strong> {commande:{table_name:"table_name","items":[{id:"item_id"},{id:"item_id"},...]}
+     * - <strong>POST</strong> {order:{table_name:"table_name","items":[{id:"item_id"},{id:"item_id"},...]}
      * 
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @Secure(roles="ROLE_TABLETTE")
@@ -76,18 +78,52 @@ class OrderController extends Controller
             throw $this->createNotFoundException('getCategoriesAction: Unauthentified');
         }
 
-        $data = json_decode($request->getContent(), true);
-        if ($data === null) {
-            return new JsonResponse(array(
-                        'status' => 'ko',
-                        'reason' => 'Cannot parse JSON',
-                    ));
+        $tableName = $request->request->get('table_name');
+        $items = $request->request->get('items');
+
+        if ($items === null || empty($items)) {
+            return new JsonResponse(array('status' => 'ko', 'reason' => 'Nothing to order'));
         }
 
-        //$restaurantName = $user->getRestaurant()->getName();
+        $order = new Order();
+        $order->setRestaurant($user->getRestaurant());
+        $order->setTableName($tableName);
 
+        $em = $this->getDoctrine()->getManager();
+
+        foreach ($items as $item) {
+            $data = explode(':', $item, 2);
+            if (count($data) !== 2) {
+                return new JsonResponse(array('status' => 'ko', 'reason' => 'Bad item'));
+            }
+
+            $itemType = $data[0];
+            $itemId = $data[1];
+
+            if (!(OrderLine::$itemTypeToEntity[$itemType])) {
+                return new JsonResponse(array('status' => 'ko', 'reason' => 'Bad item'));
+            }
+            $entityName = OrderLine::$itemTypeToEntity[$itemType];
+            $itemEntity = $em->getRepository($entityName)->find($itemId);
+            if ($itemEntity === null) {
+                return new JsonResponse(array('status' => 'ko', 'reason' => 'Bad item'));
+            }
+
+            $line = new OrderLine();
+            $line->setOrder($order);
+            $line->setItemId($itemId);
+            $line->setItemType($itemType);
+            $line->setItemPrice($itemEntity->getPrice());
+            $em->persist($line);
+        }
+
+        $em->persist($order);
+        $em->flush();
+
+        $orderSv = $this->container->get('order.order');
         return new JsonResponse(array(
                     'status' => 'ok',
+                    'order' => $orderSv->getJsonArray($order),
                 ));
     }
 

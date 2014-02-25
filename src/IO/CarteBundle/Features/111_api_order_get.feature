@@ -1,6 +1,6 @@
 # language: fr
 @api @apigetorder
-Fonctionnalité: API : Get dishes
+Fonctionnalité: API : Get gorder
 
 Contexte:
     Soit l'utilisateur "test" existe et a le role "ROLE_RESTAURATEUR"

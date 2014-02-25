@@ -12,6 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OrderLine
 {
+    public static $itemTypeToEntity = array(
+        'dish' => 'IOCarteBundle:Dish',
+        'menu' => 'IOCarteBundle:Menu',
+    );
 
     /**
      * @var integer
