@@ -13,7 +13,26 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Order
 {
-
+    const WAITING = 1;
+    const STARTER = 2;
+    const STARTER_SERVED = 3;
+    const DISH = 4;
+    const DISH_SERVED = 5;
+    const DESSERT = 6;
+    const DESSERT_SERVED = 7;
+    const PAID = 8;
+    
+    public static $typeLotAdmin = array(
+        self::WAITING => "En attente",
+        self::STARTER => "Préparation des entrées",
+        self::STARTER_SERVED => "Entrées servis",
+        self::DISH => "Préparation des plats",
+        self::DISH_SERVED => "Plat servis",
+        self::DESSERT => "Préparation des desserts",
+        self::DESSERT_SERVED => "Dessert servis",
+        self::PAID => "Payé",
+    );
+    
     /**
      * @var integer
      *
@@ -22,6 +41,13 @@ class Order
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="status", type="integer", nullable=true)
+     */
+    private $status;
 
     /**
      * @var string
@@ -41,9 +67,16 @@ class Order
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetime", nullable=false)
+     * @ORM\Column(name="order_date", type="datetime", nullable=false)
      */
-    private $date;
+    private $orderDate;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime", nullable=false)
+     */
+    private $updateDate;
 
     /**
      * @var ArrayCollection
@@ -68,32 +101,6 @@ class Order
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set date
-     *
-     * @param \DateTime $date
-     * @return Order
-     * 
-     * @ORM\PrePersist
-     */
-    public function setDate()
-    {
-        if ($this->date === null) {
-            $this->date = new \DateTime();
-        }
-        return $this;
-    }
-
-    /**
-     * Get date
-     *
-     * @return \DateTime 
-     */
-    public function getDate()
-    {
-        return $this->date;
     }
 
     /**
@@ -174,5 +181,78 @@ class Order
     public function getTableName()
     {
         return $this->tableName;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     * @return Order
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set orderDate
+     *
+     * @param \DateTime $orderDate
+     * @return Order
+     * @ORM\PrePersist
+     */
+    public function setOrderDate()
+    {
+        if ($this->orderDate === null) {
+            $this->orderDate = new \DateTime();
+        }
+    
+        return $this;
+    }
+
+    /**
+     * Get orderDate
+     *
+     * @return \DateTime 
+     */
+    public function getOrderDate()
+    {
+        return $this->orderDate;
+    }
+
+    /**
+     * Set updateDate
+     *
+     * @param \DateTime $updateDate
+     * @return Order
+     * @ORM\PrePersist
+     */
+    public function setUpdateDate()
+    {
+        $this->updateDate = new \DateTime();
+    
+        return $this;
+    }
+    
+    /**
+     * Get updateDate
+     *
+     * @return \DateTime 
+     */
+    public function getUpdateDate()
+    {
+        return $this->updateDate;
     }
 }

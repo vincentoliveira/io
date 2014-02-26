@@ -88,6 +88,7 @@ class OrderController extends Controller
         $order = new Order();
         $order->setRestaurant($user->getRestaurant());
         $order->setTableName($tableName);
+        $order->setStatus(Order::WAITING);
 
         $em = $this->getDoctrine()->getManager();
 
