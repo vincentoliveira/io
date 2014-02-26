@@ -12,4 +12,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class OrderRepository extends EntityRepository
 {
+    /**
+     * 
+     * @param int $restaurantId
+     * @return array orders in progress
+     */
+    public function getOrdersInProgress($restaurantId)
+    {
+        $qb = $this->createQueryBuilder('_order');
+        $qb->select('_order')
+                ->where('_order.status < :paidStatus')
+                ->andWhere('_order.restaurant = :restaurantId')
+                ->setParameter(':paidStatus', \IO\OrderBundle\Entity\Order::PAID)
+                ->setParameter(':restaurantId', $restaurantId)
+                ->orderBy('_order.updateDate', 'ASC');
+        
+        return $qb->getQuery()->getResult();
+    }
 }

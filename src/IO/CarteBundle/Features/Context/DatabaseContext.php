@@ -133,6 +133,7 @@ class DatabaseContext extends AbstractContext
         
         $order = new Order();
         $order->setRestaurant($restaurant);
+        $order->setStatus(Order::WAITING);
         
         $em->persist($order);
         $em->flush();

@@ -1,5 +1,14 @@
 {% extends "IOCarteBundle::layout.html.twig" %}
 
 {% block content %}
- -
+    {% for order in orders %}
+        <div class="col-md-2">
+            <strong>{{ order.status|orderStatus }}</strong>
+            <h3>{{ order.tableName }}</h3>
+            <p>Mise à jour : <em>{{ order.updateDate|date('h:i') }}</em></p>
+            <p>Créé à : <em>{{ order.orderDate|date('h:i') }}</em></p>
+        </div>
+    {% else %}
+        <strong>Aucune commande en cours</strong>
+    {% endfor %}
 {% endblock %}

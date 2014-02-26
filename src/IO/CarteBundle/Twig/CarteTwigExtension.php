@@ -54,6 +54,6 @@ class CarteTwigExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'menu_twig_extension';
+        return 'carte_twig_extension';
     }
 }

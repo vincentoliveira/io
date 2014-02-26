@@ -16,7 +16,15 @@ class DefaultController extends Controller
      * @Secure(roles="ROLE_CUISINIER")
      */
     public function commandeEnCoursAction()
-    {        
-        return array();
+    {
+        $userSv = $this->get('user.user_service');
+        $restaurant = $userSv->getUserRestaurant();
+        
+        $repo = $this->getDoctrine()->getRepository('IOOrderBundle:Order');
+        $orders = $repo->getOrdersInProgress($restaurant);
+        
+        return array(
+            'orders' => $orders,
+        );
     }
 }

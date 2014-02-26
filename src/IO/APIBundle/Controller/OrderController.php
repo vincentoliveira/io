@@ -55,7 +55,7 @@ class OrderController extends Controller
                     ));
         }
 
-        $orderSv = $this->container->get('order.order');
+        $orderSv = $this->container->get('order.order_service');
         return new JsonResponse(array(
                     'status' => 'ok',
                     'order' => $orderSv->getJsonArray($order),
@@ -121,7 +121,7 @@ class OrderController extends Controller
         $em->persist($order);
         $em->flush();
 
-        $orderSv = $this->container->get('order.order');
+        $orderSv = $this->container->get('order.order_service');
         return new JsonResponse(array(
                     'status' => 'ok',
                     'order' => $orderSv->getJsonArray($order),

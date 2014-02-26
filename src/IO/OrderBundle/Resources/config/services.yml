@@ -2,6 +2,12 @@ parameters:
 #    io_commande.example.class: IO\OrderBundle\Example
 
 services:
-    order.order:
+    order.order_service:
         class: IO\OrderBundle\Service\OrderService
         arguments: ["@doctrine.orm.entity_manager", "@service_container"]
+    
+    order.twig_extension:
+        class: IO\OrderBundle\Twig\OrderTwigExtension
+        arguments: ["@service_container"]
+        tags:
+            - { name: twig.extension }
