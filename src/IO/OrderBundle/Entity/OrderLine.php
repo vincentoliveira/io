@@ -26,7 +26,7 @@ class OrderLine
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\OrderBundle\Entity\Order", inversedBy="orderLines")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $order;
 
@@ -34,7 +34,7 @@ class OrderLine
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\CarteBundle\Entity\Dish")
-     * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="dish_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $dish;
 
@@ -42,7 +42,7 @@ class OrderLine
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\OrderBundle\Entity\OrderMenu", inversedBy="orderLines")
-     * @ORM\JoinColumn(name="menu_order_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="menu_order_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $orderMenu;
 

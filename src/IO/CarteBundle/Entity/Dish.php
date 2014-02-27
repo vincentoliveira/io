@@ -39,7 +39,7 @@ class Dish extends CarteItem
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\CarteBundle\Entity\Category", inversedBy="dishes")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $category;
     

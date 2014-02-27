@@ -45,7 +45,7 @@ class CarteItem
      * @var string
      *
      * @ORM\OneToOne(targetEntity="IO\CarteBundle\Entity\Media", cascade={"persist"})
-     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private $media;
 

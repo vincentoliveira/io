@@ -32,7 +32,7 @@ class MenuChoice
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\CarteBundle\Entity\Menu", inversedBy="menuCategory")
-     * @ORM\JoinColumn(name="menu_category_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="menu_category_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $menuCategory;
 

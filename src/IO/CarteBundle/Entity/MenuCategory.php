@@ -25,7 +25,7 @@ class MenuCategory extends CarteItem
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\CarteBundle\Entity\Menu", inversedBy="menuChoices")
-     * @ORM\JoinColumn(name="menu_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="menu_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $menu;
 

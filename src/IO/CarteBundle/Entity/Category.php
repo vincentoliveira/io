@@ -39,7 +39,7 @@ class Category extends CarteItem
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\CarteBundle\Entity\Category", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $parent;
     
