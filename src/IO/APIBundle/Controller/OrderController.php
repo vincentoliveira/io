@@ -92,29 +92,17 @@ class OrderController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        foreach ($items as $item) {
-            $data = explode(':', $item, 2);
-            if (count($data) !== 2) {
-                return new JsonResponse(array('status' => 'ko', 'reason' => 'Bad item'));
-            }
-
-            $itemType = $data[0];
-            $itemId = $data[1];
-
-            if (!(OrderLine::$itemTypeToEntity[$itemType])) {
-                return new JsonResponse(array('status' => 'ko', 'reason' => 'Bad item'));
-            }
-            $entityName = OrderLine::$itemTypeToEntity[$itemType];
-            $itemEntity = $em->getRepository($entityName)->find($itemId);
-            if ($itemEntity === null) {
+        foreach ($items as $itemId) {
+            $dish = $em->getRepository('IOCarteBundle:Dish')->find($itemId);
+            if ($dish === null) {
                 return new JsonResponse(array('status' => 'ko', 'reason' => 'Bad item'));
             }
 
             $line = new OrderLine();
             $line->setOrder($order);
-            $line->setItemId($itemId);
-            $line->setItemType($itemType);
-            $line->setItemPrice($itemEntity->getPrice());
+            $line->setDish($dish);
+            $line->setItemPrice($dish->getPrice());
+            $line->setOrderMenu();
             $em->persist($line);
         }
 
@@ -123,9 +111,9 @@ class OrderController extends Controller
 
         $orderSv = $this->container->get('order.order_service');
         return new JsonResponse(array(
-                    'status' => 'ok',
-                    'order' => $orderSv->getJsonArray($order),
-                ));
+            'status' => 'ok',
+            'order' => $orderSv->getJsonArray($order),
+        ));
     }
 
 }

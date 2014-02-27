@@ -7,6 +7,17 @@
 
     {{ form_start(edit_form) }}
         <div class="col-md-6">
+            <ul class="orderLines" data-prototype="{{ form_widget(edit_form.orderLines.vars.prototype)|e }}">
+                {% for orderLines in edit_form.orderLines %}
+                    <li>
+                        {{ form_row(orderLines) }}
+                        {{ orderLines.vars.name }}
+                        {#<a class="btn btn-danger btn-delete-dish">x</a>#}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-6">
             <div class="form-group">
                 {{ form_row(edit_form.tableName) }}
             </div>
@@ -18,4 +29,15 @@
         
         {{ form_rest(edit_form) }}
     {{ form_end(edit_form) }}
+        
+    <h3>Plats</h3>
+    {% for category in categories %}
+        <h5>{{ category.name }}</h5>
+        {% for dish in category.dishes %}
+            <a class="btn btn-default btn-dish" href="#" data-id="{{ dish.id }}" data-price="{{ dish.price }}"  data-name="{{ dish.name}}">
+                <img src="{{ dish.media.thumbnailPath|imageLink }}" alt="#" />
+                {{ dish.name }}
+            </a>
+        {% endfor %}
+    {% endfor %}
 {% endblock %}

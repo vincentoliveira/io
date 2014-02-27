@@ -27,4 +27,22 @@ class CategoryRepository extends EntityRepository
         return $queryBuilder;
     }
 
+    /**
+     * 
+     * @param int $restaurantId
+     * @return array
+     */
+    public function getRestaurantFinalCategory($restaurantId)
+    {
+        $queryBuilder = $this->createQueryBuilder('category');
+
+        $queryBuilder->select('category')
+                ->where('category.restaurant = :restaurant')
+                ->andWhere('category.children IS EMPTY')
+                ->setParameter(':restaurant', $restaurantId)
+                ->orderBy('category.order', 'ASC');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
 }

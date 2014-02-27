@@ -52,10 +52,14 @@ class OrderController extends Controller
         $entity = new Order();
         $entity->setRestaurant($user->getRestaurant());
         $form = $this->createCreateForm($entity);
+        
+        $repo = $this->getDoctrine()->getRepository('IOCarteBundle:Category');
+        $categories = $repo->getRestaurantFinalCategory($user->getRestaurant()->getId());
 
         return array(
             'entity' => $entity,
             'form' => $form->createView(),
+            'categories' => $categories,
         );
     }
 
@@ -77,15 +81,25 @@ class OrderController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            
+            foreach ($entity->getOrderLines() as $orderLine) {
+                $orderLine->setOrder($entity);
+                $em->persist($orderLine);
+            }
+            
             $em->persist($entity);
             $em->flush();
 
             return $this->redirect($this->generateUrl('commande_en_cours'));
         }
+        
+        $repo = $this->getDoctrine()->getRepository('IOCarteBundle:Category');
+        $categories = $repo->getRestaurantFinalCategory($user->getRestaurant()->getId());
 
         return array(
             'entity' => $entity,
             'form' => $form->createView(),
+            'categories' => $categories,
         );
     }
 
@@ -98,19 +112,25 @@ class OrderController extends Controller
      */
     public function editAction($id)
     {
+        $userSv = $this->get('user.user_service');
+        $user = $userSv->getUser();
+        
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('IOOrderBundle:Order')->find($id);
 
-        if (!$entity) {
+        if (!$entity || $entity->getRestaurant() !== $user->getRestaurant()) {
             throw $this->createNotFoundException('Unable to find Order entity.');
         }
 
         $editForm = $this->createEditForm($entity);
+        
+        $repo = $this->getDoctrine()->getRepository('IOCarteBundle:Category');
+        $categories = $repo->getRestaurantFinalCategory($user->getRestaurant()->getId());
 
         return array(
             'entity' => $entity,
             'edit_form' => $editForm->createView(),
+            'categories' => $categories,
         );
     }
 
@@ -123,11 +143,13 @@ class OrderController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
+        $userSv = $this->get('user.user_service');
+        $user = $userSv->getUser();
+        
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('IOOrderBundle:Order')->find($id);
 
-        if (!$entity) {
+        if (!$entity || $entity->getRestaurant() !== $user->getRestaurant()) {
             throw $this->createNotFoundException('Unable to find Order entity.');
         }
 
@@ -135,14 +157,24 @@ class OrderController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            
+            foreach ($entity->getOrderLines() as $orderLine) {
+                $orderLine->setOrder($entity);
+                $em->persist($orderLine);
+            }
+            
             $em->flush();
 
             return $this->redirect($this->generateUrl('commande_en_cours'));
         }
+        
+        $repo = $this->getDoctrine()->getRepository('IOCarteBundle:Category');
+        $categories = $repo->getRestaurantFinalCategory($user->getRestaurant()->getId());
 
         return array(
             'entity' => $entity,
             'edit_form' => $editForm->createView(),
+            'categories' => $categories,
         );
     }
 
@@ -156,12 +188,13 @@ class OrderController extends Controller
     private function createCreateForm(Order $entity)
     {
         $form = $this->createForm(new OrderType(), $entity, array(
+            'em' => $this->getDoctrine()->getManager(),
             'action' => $this->generateUrl('order_create'),
             'method' => 'POST',
         ));
 
         $form->add('submit', 'submit', array(
-            'label' => 'Ajouter',
+            'label' => 'Envoyer en cuisine',
             'attr' => array('class' => 'btn btn-success'),
         ));
 
@@ -178,12 +211,13 @@ class OrderController extends Controller
     private function createEditForm(Order $entity)
     {
         $form = $this->createForm(new OrderType(), $entity, array(
+            'em' => $this->getDoctrine()->getManager(),
             'action' => $this->generateUrl('order_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
         $form->add('submit', 'submit', array(
-            'label' => 'Modifier',
+            'label' => 'Modifier la commande',
             'attr' => array('class' => 'btn btn-success'),
         ));
 

@@ -39,8 +39,8 @@ Scénario: 92.1 -  Get order
     Soit je post sur "/api/order/add" authentifié avec "test" :
         | key           | value         |
         | table_name    | table test    |
-        | items         | dish:1        |
-        | items         | dish:2        |
+        | items         | 1             |
+        | items         | 2             |
     Alors le json devrait convenir:
         | status |
         | ok     |

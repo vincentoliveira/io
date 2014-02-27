@@ -152,3 +152,7 @@ h1 span {
 .order h3 { margin: 0; }
 .order h3 .btn { float: right; }
 .order .btn .glyphicon-edit { margin: 0; }
+.order ul.lines em { float: right; }
+
+.btn-dish { width: 140px; }
+.btn-dish img { margin: 10px 20px; width: 100px; height: 100px; display: block; }

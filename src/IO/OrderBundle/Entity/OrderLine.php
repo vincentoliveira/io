@@ -12,10 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OrderLine
 {
-    public static $itemTypeToEntity = array(
-        'dish' => 'IOCarteBundle:Dish',
-        'menu' => 'IOCarteBundle:Menu',
-    );
 
     /**
      * @var integer
@@ -37,16 +33,18 @@ class OrderLine
     /**
      * @var string
      *
-     * @ORM\Column(name="item_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="IO\CarteBundle\Entity\Dish")
+     * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
      */
-    private $itemId;
+    private $dish;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="item_type", type="string")
+     * @ORM\ManyToOne(targetEntity="IO\OrderBundle\Entity\OrderMenu", inversedBy="orderLines")
+     * @ORM\JoinColumn(name="menu_order_id", referencedColumnName="id")
      */
-    private $itemType;
+    private $orderMenu;
 
     /**
      * @var integer
@@ -54,6 +52,7 @@ class OrderLine
      * @ORM\Column(name="item_price", type="decimal", precision=7, scale=2, nullable=true)
      */
     private $itemPrice;
+
 
     /**
      * Get id
@@ -66,52 +65,6 @@ class OrderLine
     }
 
     /**
-     * Set itemId
-     *
-     * @param integer $itemId
-     * @return OrderLine
-     */
-    public function setItemId($itemId)
-    {
-        $this->itemId = $itemId;
-
-        return $this;
-    }
-
-    /**
-     * Get itemId
-     *
-     * @return integer 
-     */
-    public function getItemId()
-    {
-        return $this->itemId;
-    }
-
-    /**
-     * Set itemType
-     *
-     * @param string $itemType
-     * @return OrderLine
-     */
-    public function setItemType($itemType)
-    {
-        $this->itemType = $itemType;
-
-        return $this;
-    }
-
-    /**
-     * Get itemType
-     *
-     * @return string 
-     */
-    public function getItemType()
-    {
-        return $this->itemType;
-    }
-
-    /**
      * Set itemPrice
      *
      * @param float $itemPrice
@@ -120,7 +73,7 @@ class OrderLine
     public function setItemPrice($itemPrice)
     {
         $this->itemPrice = $itemPrice;
-
+    
         return $this;
     }
 
@@ -143,7 +96,7 @@ class OrderLine
     public function setOrder(\IO\OrderBundle\Entity\Order $order = null)
     {
         $this->order = $order;
-
+    
         return $this;
     }
 
@@ -157,4 +110,49 @@ class OrderLine
         return $this->order;
     }
 
+    /**
+     * Set dish
+     *
+     * @param \IO\CarteBundle\Entity\Dish $dish
+     * @return OrderLine
+     */
+    public function setDish(\IO\CarteBundle\Entity\Dish $dish = null)
+    {
+        $this->dish = $dish;
+    
+        return $this;
+    }
+
+    /**
+     * Get dish
+     *
+     * @return \IO\CarteBundle\Entity\Dish 
+     */
+    public function getDish()
+    {
+        return $this->dish;
+    }
+
+    /**
+     * Set orderMenu
+     *
+     * @param \IO\OrderBundle\Entity\OrderMenu $orderMenu
+     * @return OrderLine
+     */
+    public function setOrderMenu(\IO\OrderBundle\Entity\OrderMenu $orderMenu = null)
+    {
+        $this->orderMenu = $orderMenu;
+    
+        return $this;
+    }
+
+    /**
+     * Get orderMenu
+     *
+     * @return \IO\OrderBundle\Entity\OrderMenu 
+     */
+    public function getOrderMenu()
+    {
+        return $this->orderMenu;
+    }
 }

@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class OrderType extends AbstractType
 {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -15,11 +16,30 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('status')
-            ->add('tableName')
+                ->add('status', 'choice', array(
+                    'label' => 'Etat',
+                    'attr' => array('class' => 'form-control'),
+                    'choices' => \IO\OrderBundle\Entity\Order::$typeLotAdmin,
+                ))
+                ->add('tableName', 'text', array(
+                    'label' => 'Table',
+                    'attr' => array('class' => 'form-control'),
+                    'required' => false,
+                ))
+                ->add('orderLines', 'collection', array(
+                    'label' => false,
+                    'type' => new OrderLineType(),
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                    'options' => array(
+                        'required' => true,
+                        'em' => $options['em'],
+                    ),
+                ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
@@ -27,6 +47,14 @@ class OrderType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'IO\OrderBundle\Entity\Order'
+        ));
+
+        $resolver->setRequired(array(
+            'em',
+        ));
+
+        $resolver->setAllowedTypes(array(
+            'em' => 'Doctrine\Common\Persistence\ObjectManager',
         ));
     }
 
@@ -37,4 +65,5 @@ class OrderType extends AbstractType
     {
         return 'order';
     }
+
 }
