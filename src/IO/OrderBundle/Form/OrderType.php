@@ -35,6 +35,7 @@ class OrderType extends AbstractType
                     'options' => array(
                         'required' => true,
                         'em' => $options['em'],
+                        'label' => false,
                     ),
                 ))
         ;

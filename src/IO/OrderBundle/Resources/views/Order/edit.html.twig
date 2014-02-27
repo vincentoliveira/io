@@ -11,7 +11,7 @@
                 {% for orderLines in edit_form.orderLines %}
                     <li>
                         {{ form_row(orderLines) }}
-                        {{ orderLines.vars.name }}
+                        {{ orderLines.vars.data.dish.name }}
                         {#<a class="btn btn-danger btn-delete-dish">x</a>#}
                     </li>
                 {% endfor %}
