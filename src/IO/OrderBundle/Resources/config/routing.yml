@@ -2,3 +2,7 @@
 commande_en_cours:
     pattern:  /encours
     defaults: { _controller: IOOrderBundle:Default:commandeEnCours }
+    
+IOOrderBundle_order:
+    resource: "@IOOrderBundle/Resources/config/routing/order.yml"
+    prefix:   /order

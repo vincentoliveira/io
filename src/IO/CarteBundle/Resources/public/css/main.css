@@ -128,14 +128,10 @@ h1 span {
     text-align: right;
 }
 
-.category .list-group-item { 
-    border: none; 
-}
+.category .list-group-item { border: none; }
 
-a .glyphicon { color: #888; }
 .delete-form { display: inline-block; float: right; }
-.delete-form .btn { display: inline-block; }
-
+.delete-form form, .delete-form .btn { display: inline-block; margin-left: 5px; }
 
 .dish { clear: both; padding: 10px 2px; height: 100px; }
 .dish:hover { background-color:#ddd; }
@@ -152,3 +148,6 @@ a .glyphicon { color: #888; }
 
 .actionbar { margin: 10px 0; }
 .recherche { margin: 50px 0; }
+
+.order h3 .btn { float: right; }
+.order .btn .glyphicon-edit { margin: 0; }

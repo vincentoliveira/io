@@ -238,6 +238,7 @@ class Order
      * @param \DateTime $updateDate
      * @return Order
      * @ORM\PrePersist
+     * @ORM\PreUpdate
      */
     public function setUpdateDate()
     {

@@ -1,0 +1,30 @@
+order:
+    pattern:  /
+    defaults: { _controller: "IOOrderBundle:Order:index" }
+
+order_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "IOOrderBundle:Order:show" }
+
+order_new:
+    pattern:  /new
+    defaults: { _controller: "IOOrderBundle:Order:new" }
+
+order_create:
+    pattern:  /create
+    defaults: { _controller: "IOOrderBundle:Order:create" }
+    requirements: { _method: post }
+
+order_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "IOOrderBundle:Order:edit" }
+
+order_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "IOOrderBundle:Order:update" }
+    requirements: { _method: post|put }
+
+order_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "IOOrderBundle:Order:delete" }
+    requirements: { _method: post|delete }
