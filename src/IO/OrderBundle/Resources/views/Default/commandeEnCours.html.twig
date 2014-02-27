@@ -7,7 +7,7 @@
 
     <div class="orders">
         {% for order in orders %}
-            <div class="col-md-2 order">
+            <div class="col-md-2 order well">
                 <h3>#{{ order.id }} ({{ order.tableName }})
                     <a href="{{ path('order_edit', {id:order.id}) }}" class="btn btn-primary" role="button" title="Modifier #{{ order.id }}"><span class="glyphicon glyphicon-edit"></span></a>
                 </h3>

@@ -149,5 +149,6 @@ h1 span {
 .actionbar { margin: 10px 0; }
 .recherche { margin: 50px 0; }
 
+.order h3 { margin: 0; }
 .order h3 .btn { float: right; }
 .order .btn .glyphicon-edit { margin: 0; }
