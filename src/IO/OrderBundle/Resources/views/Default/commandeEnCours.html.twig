@@ -16,7 +16,7 @@
                 </h3>
                 <strong>{{ order.status|orderStatus }}</strong>
                 <p>
-                    MAJ : <em>{{ order.updateDate|date('H:i') }}</em> (<em>{{ order.orderDate|date('h:i') }}</em>)
+                    MAJ : <em>{{ order.updateDate|date('H:i') }}</em> (<em>{{ order.orderDate|date('H:i') }}</em>)
                 </p>
                 <ul class="lines">
                     {% for line in order.orderLines %}

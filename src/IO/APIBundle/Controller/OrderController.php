@@ -79,7 +79,7 @@ class OrderController extends Controller
         }
 
         $tableName = $request->request->get('table_name');
-        $orderId = $request->request->get('table_name');
+        $orderId = $request->request->get('order_id');
         $items = $request->request->get('items');
 
         if ($items === null || empty($items)) {
