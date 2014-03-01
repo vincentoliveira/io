@@ -79,18 +79,21 @@ class OrderController extends Controller
         }
 
         $tableName = $request->request->get('table_name');
+        $orderId = $request->request->get('table_name');
         $items = $request->request->get('items');
 
         if ($items === null || empty($items)) {
             return new JsonResponse(array('status' => 'ko', 'reason' => 'Nothing to order'));
         }
 
-        $order = new Order();
-        $order->setRestaurant($user->getRestaurant());
-        $order->setTableName($tableName);
-        $order->setStatus(Order::WAITING);
-
         $em = $this->getDoctrine()->getManager();
+        $order = $em->getRepository('IOOrderBundle:Order')->find($orderId);
+        if ($order === null) {
+            $order = new Order();
+            $order->setRestaurant($user->getRestaurant());
+            $order->setTableName($tableName);
+        }
+        $order->setStatus(Order::WAITING);
 
         foreach ($items as $itemId) {
             $dish = $em->getRepository('IOCarteBundle:Dish')->find($itemId);
