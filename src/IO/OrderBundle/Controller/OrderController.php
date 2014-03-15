@@ -84,6 +84,7 @@ class OrderController extends Controller
             
             foreach ($entity->getOrderLines() as $orderLine) {
                 $orderLine->setOrder($entity);
+                $orderLine->setItemPrice($orderLine->getDish()->getPrice());
                 $em->persist($orderLine);
             }
             
@@ -160,6 +161,7 @@ class OrderController extends Controller
             
             foreach ($entity->getOrderLines() as $orderLine) {
                 $orderLine->setOrder($entity);
+                $orderLine->setItemPrice($orderLine->getDish()->getPrice());
                 $em->persist($orderLine);
             }
             

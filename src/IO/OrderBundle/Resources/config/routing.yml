@@ -6,3 +6,14 @@ commande_en_cours:
 IOOrderBundle_order:
     resource: "@IOOrderBundle/Resources/config/routing/order.yml"
     prefix:   /order
+
+
+# Historique
+historique:
+    pattern:  /historique
+    defaults: { _controller: IOOrderBundle:Historique:index }
+    
+historique_export:
+    pattern:  /historique/export
+    defaults: { _controller: IOOrderBundle:Historique:export }
+

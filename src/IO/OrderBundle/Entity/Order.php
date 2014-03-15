@@ -256,4 +256,19 @@ class Order
     {
         return $this->updateDate;
     }
+    
+    /**
+     * Get total price
+     *
+     * @return integer 
+     */
+    public function getPrice()
+    {
+        $price = 0;
+        foreach ($this->getOrderLines() as $orderLine) {
+            $price += $orderLine->getItemPrice();
+        }
+        
+        return $price;
+    }
 }

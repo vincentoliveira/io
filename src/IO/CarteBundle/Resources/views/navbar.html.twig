@@ -15,7 +15,7 @@
             <ul class="nav nav-justified">
                 {{ navbar.display_navitem(currentPath, 'Commande en cours', path('commande_en_cours')) }}
                 {{ navbar.display_navitem(currentPath, 'Carte', path('carte')) }}
-                {{ navbar.display_navitem(currentPath, 'Historique', '#') }}
+                {{ navbar.display_navitem(currentPath, 'Historique', path('historique')) }}
                 {% if is_granted("ROLE_ADMIN") %}
                     {{ navbar.display_navitem(currentPath, 'Import', path('import_homepage')) }}
                 {% endif %}

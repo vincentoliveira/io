@@ -34,6 +34,16 @@ class OrderTwigExtension extends \Twig_Extension
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getFunctions()
+    {
+        return array(
+            'date_difference_minutes' => new \Twig_Function_Method($this, 'dateDifferenceMinutes'),
+        );
+    }
+
+    /**
      * Get status name
      * 
      * @param String $imagePath
@@ -47,6 +57,20 @@ class OrderTwigExtension extends \Twig_Extension
         return ucfirst(Order::$typeLotAdmin[$status]);
     }
 
+    
+    /**
+     * Calculate diffrence between two dates
+     * 
+     * @param \DateTime $date1
+     * @param \DateTime $date2
+     * @return 
+     */
+    public function dateDifferenceMinutes(\DateTime $date1, \DateTime $date2)
+    {
+        $diffInSec = $date1->getTimestamp() - $date2->getTimestamp();
+        return intval($diffInSec / 60);
+    }
+    
     /**
      * {@inheritdoc}
      */
