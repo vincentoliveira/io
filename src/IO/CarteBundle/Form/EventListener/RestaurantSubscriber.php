@@ -59,7 +59,7 @@ class RestaurantSubscriber implements EventSubscriberInterface
                     return $er->getRestaurantCategoryQueryBuilder($restaurant->getId());
                 },
                 'property' => 'name',
-                'attr' => array('class' => 'form-control'),
+                'attr' => array('class' => 'form-control input-sm'),
                 'required' => false,
             ));
         }

@@ -263,8 +263,8 @@ class DishController extends Controller
         ));
 
         $form->add('submit', 'submit', array(
-            'label' => 'Modifier',
-            'attr' => array('class' => 'btn btn-success'),
+            'label' => 'Valider',
+            'attr' => array('class' => 'btn btn-primary'),
         ));
 
         return $form;

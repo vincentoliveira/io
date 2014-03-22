@@ -1,10 +1,10 @@
 {% extends "IOCarteBundle::layout.html.twig" %}
 
 {% block content %}
-    <h3>
-        <small><a href="{{ path('carte') }}" title="Retour à la carte"><span class="glyphicon glyphicon-arrow-left"></span></a></small>
-        Ajouter un plat
-    </h3>
+
+    <div class="content-header">
+        <h3>Ajouter un plat</h3>
+    </div>
 
     {{ form_start(form) }}
         <div class="col-md-6">
@@ -25,6 +25,10 @@
             {{ form_row(form.file) }}
         </div>
         <div class="clearfix"></div>
-        {{ form_rest(form) }}
+        
+        <div class="col-md-12">
+            {{ form_rest(form) }}
+        </div>
+        <div class="clearfix"></div>
     {{ form_end(form) }}
 {% endblock %}

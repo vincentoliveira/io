@@ -2,11 +2,13 @@
 
 {% block content %}
 
-    <h3>
-        <small><a href="{{ path('category_show', {id:dish.category.id}) }}" title="Retour à la carte"><span class="glyphicon glyphicon-arrow-left"></span></a></small>
-        {{ dish.name|raw }}
-        <span class="delete-form">{{ form(delete_form) }}</span>
-    </h3>
+    <div class="content-header">
+        <h3>{{ dish.name|raw }}</h3>
+        <span class="actionbar">
+            <a class="btn btn-danger" href="#"><i class="fa fa-trash-o"></i> </a>
+        </span>
+        <div class="clearfix"></div>
+    </div>
 
     {{ form_start(form) }}
         <div class="col-md-6">
@@ -37,7 +39,11 @@
 
         </div>
         <div class="clearfix"></div>
-        {{ form_rest(form) }}
+        
+        <div class="col-md-12">
+            {{ form_rest(form) }}
+        </div>
+        <div class="clearfix"></div>
     {{ form_end(form) }}
 
 {% endblock %}
