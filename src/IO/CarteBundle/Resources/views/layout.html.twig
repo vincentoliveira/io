@@ -10,8 +10,9 @@
         {% block stylesheets %}
             {% stylesheets 
                 'bundles/iocarte/css/bootstrap.css'
-                'bundles/iocarte/css/bootstrap-theme.css'
-                'bundles/iocarte/css/main.css'
+                'bundles/iocarte/css/spacelab.css'
+                'bundles/iocarte/css/font-awesome.min.css'
+                'bundles/iocarte/css/animate.css'
                 filter='yui_css' 
                 output='css/main.css' %}
                 <link rel="stylesheet" href="{{ asset_url }}" />
@@ -21,25 +22,78 @@
         <link rel="icon" type="image/x-icon" ref="{{ asset('favicon.ico') }}">
     </head>
     <body>
-        <div class="container">
-            {% block navbar %}{% include "IOCarteBundle::navbar.html.twig" %}{% endblock %}
-            
-            {% for message in app.session.flashbag.get('error') %}
-                <div class="alert alert-danger">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {% autoescape false %}{{ message }}{% endautoescape %}
-                </div>
-            {% endfor %}
-                
-            {% for message in app.session.flashbag.get('success') %}
-                <div class="alert alert-success">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {% autoescape false %}{{ message }}{% endautoescape %}
-                </div>
-            {% endfor %}
+        
+    <section id="container">
+        <header id="header">
+            <!--logo start-->
+            <div class="brand">
+                <a href="{{ path('homepage') }}" class="logo"><span>Innov</span>Order</a>
+            </div>
+            <div class="user-nav">
+                <ul>
+                    <li class="profile-photo">
+                        <img src="assets/img/avatar.png" alt="" class="img-circle">
+                    </li>
+                    <li class="dropdown settings">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        {{ app.user.username }} <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu animated fadeInDown">
+                            <li>
+                                <a href="#"><i class="fa fa-user"></i> Profil</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-power-off"></i> Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </header>
+    </section>
+        
+        <!--sidebar left start-->
+        <aside class="sidebar">
+            <div id="leftside-navigation" class="nano">
+                <ul class="nano-content">
+                    <li class="active">
+                        <a href="#"><i class="fa fa-dashboard"></i><span>Tableau de bord</span></a>
+                    </li>
+                    <li>
+                        <a href="{{ path('commande_en_cours') }}"><i class="fa fa-cutlery"></i><span>Commandes en cours</span></a>
+                    </li>
+                    <li>
+                        <a href="{{ path('carte') }}"><i class="fa fa-edit"></i><span>Modifier la carte</span></a>
+                    </li>
+                    <li>
+                        <a href="{{ path('historique') }}"><i class="fa fa-list"></i><span>Historique</span></a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <!--sidebar left end-->
+        
+        <!--main content start-->
+        <section class="main-content-wrapper">
+            <section id="main-content">
+                {% for message in app.session.flashbag.get('error') %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {% autoescape false %}{{ message }}{% endautoescape %}
+                    </div>
+                {% endfor %}
 
-            {% block content %}{% endblock %}
-        </div>
+                {% for message in app.session.flashbag.get('success') %}
+                    <div class="alert alert-success">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {% autoescape false %}{{ message }}{% endautoescape %}
+                    </div>
+                {% endfor %}
+
+                {% block content %}{% endblock %}
+            </section>
+        </section>
+        
         {% block javascripts %}
             {% javascripts 
                 '@IOCarteBundle/Resources/public/js/jquery.js'
