@@ -1,19 +1,49 @@
-{% extends "IOCarteBundle::layout.html.twig" %}
+{% extends "IOCarteBundle::empty_layout.html.twig" %}
 
 {% trans_default_domain 'FOSUserBundle' %}
 
-{% block content %}
-    <form class="form-signin" role="form" action="{{ path("fos_user_security_check") }}" method="POST">
-        <h2 class="form-signin-heading">Innov'Order</h2>
-        {% if error %}
-            <div>{{ error|trans }}</div>
-        {% endif %}
-        <input name="_username" type="text" class="form-control" placeholder="Adresse Email" required autofocus>
-        <input name="_password" type="password" class="form-control" placeholder="Mot de passe" required>
-        <label class="checkbox">
-            <input name="_remember_me" value="on" type="checkbox" value="remember-me"> Se souvenir de moi
-        </label>
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-        <button class="btn btn-lg btn-primary btn-block" type="submit" id="_submit">Se connecter</button>
-    </form>
-{% endblock content %}
+{% block body %}
+    <section id="login-container">
+
+        <div class="row">
+            <div class="col-md-3" id="login-wrapper">
+                <div class="panel panel-primary animated flipInY">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">     
+                           Connexion
+                        </h3>      
+                    </div>
+                    <div class="panel-body">
+                        {% if error %}
+                            <p class="error">{{ error|trans }}</p>
+                        {% else %}
+                            <p> Authentifiez-vous pour accéder à votre compte.</p>
+                        {% endif %}
+                        <form class="form-horizontal" role="form" action="{{ path("fos_user_security_check") }}" method="POST">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" id="email" name="_username" placeholder="Login">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                               <div class="col-md-12">
+                                    <input type="password" class="form-control" id="password" name="_password" placeholder="Mot de passe">
+                                    <i class="fa fa-lock"></i>
+                                    <a href="javascript:void(0)" class="help-block">Mot de passe oublié ?</a>
+                                </div>
+                            </div>
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                            <div class="form-group">
+                               <div class="col-md-12">
+                                    <button id="_submit" class="btn btn-primary btn-block">Connexion</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+{% endblock body %}
