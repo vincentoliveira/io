@@ -8,6 +8,11 @@
             <div class="brand">
                 <a href="{{ path('homepage') }}" class="logo"><span>Innov</span>Order</a>
             </div>
+            <div class="toggle-navigation toggle-left">
+                <button type="button" class="btn btn-default" id="toggle-left" data-toggle="tooltip" data-placement="right" title="Toggle Navigation">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
             <div class="toggle-datetime toggle-left">
                 {{ "now"|date("d/m/Y, h:i") }}
             </div>
@@ -36,46 +41,54 @@
         </header>
     </section>
         
-        <!--sidebar left start-->
-        <aside class="sidebar">
-            <div id="leftside-navigation" class="nano">
-                <ul class="nano-content">
-                    <li class="active">
-                        <a href="#"><i class="fa fa-dashboard"></i><span>Tableau de bord</span></a>
-                    </li>
-                    <li>
-                        <a href="{{ path('commande_en_cours') }}"><i class="fa fa-cutlery"></i><span>Commandes en cours</span></a>
-                    </li>
-                    <li>
-                        <a href="{{ path('carte') }}"><i class="fa fa-edit"></i><span>Modifier la carte</span></a>
-                    </li>
-                    <li>
-                        <a href="{{ path('historique') }}"><i class="fa fa-list"></i><span>Historique</span></a>
-                    </li>
-                </ul>
-            </div>
-        </aside>
-        <!--sidebar left end-->
-        
-        <!--main content start-->
-        <section class="main-content-wrapper">
-            <section id="main-content">
-                {% for message in app.session.flashbag.get('error') %}
-                    <div class="alert alert-danger">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        {% autoescape false %}{{ message }}{% endautoescape %}
-                    </div>
-                {% endfor %}
+    <!--sidebar left start-->
+    {% if is_granted("ROLE_RESTAURATEUR") %}
+    <aside class="sidebar">
+        <div id="leftside-navigation" class="nano">
+            <ul class="nano-content">
+                <li class="active">
+                    <a href="#"><i class="fa fa-dashboard"></i><span>Tableau de bord</span></a>
+                </li>
+                <li class="sub-menu">
+                    <a href="{{ path('commande_en_cours') }}"><i class="fa fa-cutlery"></i><span>Commandes en cours</span></a>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:void(0);"><i class="fa fa-edit"></i><span>Modifier la carte</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                    <ul>
+                        <li><a href="{{ path('category_new') }}">Ajouter une categorie</a></li>
+                        {% for category in restaurantCategories() %}
+                        <li><a href="{{ path('category_show', {id:category.id}) }}">{{ category.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="{{ path('historique') }}"><i class="fa fa-list"></i><span>Historique</span></a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    {% endif %}
+    <!--sidebar left end-->
 
-                {% for message in app.session.flashbag.get('success') %}
-                    <div class="alert alert-success">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        {% autoescape false %}{{ message }}{% endautoescape %}
-                    </div>
-                {% endfor %}
+    <!--main content start-->
+    <section class="main-content-wrapper">
+        <section id="main-content">
+            {% for message in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {% autoescape false %}{{ message }}{% endautoescape %}
+                </div>
+            {% endfor %}
 
-                {% block content %}{% endblock %}
-            </section>
+            {% for message in app.session.flashbag.get('success') %}
+                <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {% autoescape false %}{{ message }}{% endautoescape %}
+                </div>
+            {% endfor %}
+
+            {% block content %}{% endblock %}
         </section>
+    </section>
 
 {% endblock %}
