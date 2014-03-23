@@ -154,11 +154,34 @@ class OrderController extends Controller
             throw $this->createNotFoundException('Unable to find Order entity.');
         }
 
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
+        $originalDishes = array();
+        foreach ($entity->getOrderLines() as $tag) {
+            $originalDishes[] = $tag;
+        }
 
+        $editForm = $this->createEditForm($entity);
+        $editForm->bind($request);
         if ($editForm->isValid()) {
             
+            // filtre $originalDishes pour ne contenir que les plats
+            // n'étant plus présents
+            foreach ($entity->getOrderLines() as $dish) {
+                foreach ($originalDishes as $key => $toDel) {
+                    if ($toDel->getId() === $dish->getId()) {
+                        unset($originalDishes[$key]);
+                        break;
+                    }
+                }
+            }
+
+            // supprime la relation entre les plat annulés
+            foreach ($originalDishes as $dish) {
+                $dish->getOrder()->removeOrderLine($dish);
+                $em->persist($dish);
+                $em->remove($dish);
+            }
+            
+            // persist les plats commandés
             foreach ($entity->getOrderLines() as $orderLine) {
                 $orderLine->setOrder($entity);
                 $orderLine->setItemPrice($orderLine->getDish()->getPrice());

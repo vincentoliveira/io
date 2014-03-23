@@ -1,6 +1,7 @@
 #header .brand { background: #1abc9c url('../img/logo.png') no-repeat 25px 23px; }
 #header .toggle-datetime.toggle-left { margin: 32px 0 0 20px; display: inline-block; }
 #header .logo { padding: 23px 0 0 56px; }
+#header .user-nav { display: inline-block; }
 
 .error { color: #a94442; font-weight: bold;}
 
@@ -21,6 +22,12 @@ a.btn-danger { color: #fff; }
 .dish span { margin: 10px 150px 0; }
 .dish .glyphicon-edit { margin: 0; }
 
+.btn-dish { width: 140px; }
+.btn-dish img { margin: 0px 5px; width: 100px; height: 100px; display: block; }
+.orderLines div { display: inline-block; }
+.orderLines .btn-danger { padding: 0px 4px; margin-right: 10px; }
+
+
 /*
 .category .list-group-item { border: none; }
 
@@ -37,7 +44,4 @@ a.btn-danger { color: #fff; }
 .order h3 .btn { float: right; }
 .order .btn .glyphicon-edit { margin: 0; }
 .order ul.lines em { float: right; }
-
-.btn-dish { width: 140px; }
-.btn-dish img { margin: 10px 20px; width: 100px; height: 100px; display: block; }
 */

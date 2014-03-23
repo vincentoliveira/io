@@ -32,7 +32,7 @@
     {% for category in categories %}
         <h5>{{ category.name }}</h5>
         {% for dish in category.dishes %}
-            <a class="btn btn-default btn-dish" href="#" data-id="{{ dish.id }}" data-price="{{ dish.price }}"  data-name="{{ dish.name}}">
+            <a class="btn btn-primary btn-dish" href="#" data-id="{{ dish.id }}" data-price="{{ dish.price }}"  data-name="{{ dish.name}}">
                 <img src="{{ dish.media.thumbnailPath|imageLink }}" alt="#" />
                 {{ dish.name }}
             </a>
