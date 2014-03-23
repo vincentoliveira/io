@@ -27,6 +27,11 @@ a.btn-danger { color: #fff; }
 .orderLines div { display: inline-block; }
 .orderLines .btn-danger { padding: 0px 4px; margin-right: 10px; }
 
+.order h3 { margin: 0; }
+.order h3 .btn { float: right; }
+.order .btn .glyphicon-edit { margin: 0; }
+.order ul.lines em { float: right; }
+
 
 /*
 .category .list-group-item { border: none; }
@@ -39,9 +44,4 @@ a.btn-danger { color: #fff; }
 .menu-form .btn { margin: 15px; }
 
 .recherche { margin: 50px 0; }
-
-.order h3 { margin: 0; }
-.order h3 .btn { float: right; }
-.order .btn .glyphicon-edit { margin: 0; }
-.order ul.lines em { float: right; }
 */
