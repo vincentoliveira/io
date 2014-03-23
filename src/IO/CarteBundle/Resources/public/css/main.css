@@ -27,6 +27,7 @@ a.btn-danger { color: #fff; }
 .orderLines div { display: inline-block; }
 .orderLines .btn-danger { padding: 0px 4px; margin-right: 10px; }
 
+.order ul { padding-left: 15px; }
 .order h3 { margin: 0; }
 .order h3 .btn { float: right; }
 .order .btn .glyphicon-edit { margin: 0; }
