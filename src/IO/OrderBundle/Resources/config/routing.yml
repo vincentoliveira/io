@@ -7,7 +7,12 @@ IOOrderBundle_order:
     resource: "@IOOrderBundle/Resources/config/routing/order.yml"
     prefix:   /order
 
-
+# Dashboard
+dashboard:
+    pattern:  /dashboard
+    defaults: { _controller: IOOrderBundle:Dashboard:index }
+    
+    
 # Historique
 historique:
     pattern:  /historique

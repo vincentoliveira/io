@@ -1,0 +1,25 @@
+{% extends "IOCarteBundle::layout.html.twig" %}
+
+{% block content %}
+
+<div class="content-header">
+    <h3>Tableau de bord</h3>
+</div>
+
+<div class="indicateurs">
+    {% for indicateur in indicateurs %}
+    <div class="col-md-3 col-sm-6">
+        <div class="dashboard-tile detail {{ indicateur.class }}">
+            <div class="content">
+                <h1 class="text-left timer" data-from="0" data-to="180" data-speed="2500">{{ indicateur.value }}</h1>
+                <p>{{ indicateur.title }}</p>
+            </div>
+            <div class="icon">
+                <i class="{{ indicateur.icon }}"></i>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
