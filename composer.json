@@ -27,7 +27,9 @@
         "behat/behat": "*@stable",
         "behat/symfony2-extension": "*@stable",
         "behat/mink-extension": "*@stable",
-        "behat/mink-browserkit-driver": "*@stable"
+        "behat/mink-browserkit-driver": "*@stable",
+        
+        "ob/highcharts-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

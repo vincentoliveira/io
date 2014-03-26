@@ -23,6 +23,8 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             
+            new Ob\HighchartsBundle\ObHighchartsBundle(),
+            
             new IO\CarteBundle\IOCarteBundle(),
             new IO\ImportBundle\IOImportBundle(),
             new IO\UserBundle\IOUserBundle(),
