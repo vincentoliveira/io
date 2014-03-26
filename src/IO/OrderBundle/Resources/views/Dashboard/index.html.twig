@@ -22,4 +22,19 @@
     {% endfor %}
 </div>
 
+
+<div class="col-md-6">
+    <div id="ca_chart" style="height: 400px; margin: 0 auto"></div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+{{ parent() }}
+<script type="text/javascript">
+    $(document).ready(function(){
+        {{ chart(ca_chart) }}
+    });
+</script>
 {% endblock %}
