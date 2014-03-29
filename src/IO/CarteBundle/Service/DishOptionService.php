@@ -31,7 +31,7 @@ class DishOptionService
      * 
      * @return array
      */
-    public function getList($restaurantId)
+    public function findAll($restaurantId)
     {
         $repo = $this->em->getRepository('IOCarteBundle:DishOption');
         $queryBuilder = $repo->createQueryBuilder('option')
@@ -40,7 +40,7 @@ class DishOptionService
 
 
         $list = $queryBuilder->getQuery()->getResult();
-        
+
         return $list;
     }
 

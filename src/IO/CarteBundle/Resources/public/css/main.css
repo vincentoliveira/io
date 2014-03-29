@@ -33,6 +33,7 @@ a.btn-danger { color: #fff; }
 .order .btn .glyphicon-edit { margin: 0; }
 .order ul.lines em { float: right; }
 
+.panel-info .panel-heading a { color:#31708f; }
 
 /*
 .category .list-group-item { border: none; }

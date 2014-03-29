@@ -59,6 +59,7 @@
                         {% for category in restaurantCategories() %}
                         <li><a href="{{ path('category_show', {id:category.id}) }}">{{ category.name }}</a></li>
                         {% endfor %}
+                        <li><a href="{{ path('options') }}">Options</a></li>
                     </ul>
                 </li>
                 <li class="sub-menu">

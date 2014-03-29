@@ -27,3 +27,6 @@ IOCarteBundle_menu:
         resource: "@IOCarteBundle/Resources/config/routing/menu.yml"
         prefix:   /menu
 
+IOCarteBundle_options:
+        resource: "@IOCarteBundle/Resources/config/routing/dishoption.yml"
+        prefix:   /options

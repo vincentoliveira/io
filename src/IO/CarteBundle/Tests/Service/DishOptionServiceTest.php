@@ -53,13 +53,13 @@ class DishOptionServiceTest extends IOTestCase
             $this->createDishOption($option);
         }
 
-        $list = $this->service->getList($this->restaurant);
+        $list = $this->service->findAll($this->restaurant);
 
         $this->assertSame($expected, $list);
     }
 
 
-    public  function getListCases()
+    public function getListCases()
     {
         return array(
             array(
