@@ -44,4 +44,83 @@ class DishOption
      */
     private $options;
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set restaurant
+     *
+     * @param \IO\CarteBundle\Entity\Restaurant $restaurant
+     * @return DishOption
+     */
+    public function setRestaurant(\IO\CarteBundle\Entity\Restaurant $restaurant)
+    {
+        $this->restaurant = $restaurant;
+    
+        return $this;
+    }
+
+    /**
+     * Get restaurant
+     *
+     * @return \IO\CarteBundle\Entity\Restaurant 
+     */
+    public function getRestaurant()
+    {
+        return $this->restaurant;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return DishOption
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set options
+     *
+     * @param array $options
+     * @return DishOption
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+    
+        return $this;
+    }
+
+    /**
+     * Get options
+     *
+     * @return array 
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
 }
