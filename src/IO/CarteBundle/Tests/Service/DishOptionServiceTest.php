@@ -11,42 +11,67 @@ use IO\CarteBundle\Tests\IOTestCase;
  */
 class DishOptionServiceTest extends IOTestCase
 {
+
     /**
      * @var \IO\CarteBundle\Services\DishOptionService
      */
     protected $service;
-    
+
     /**
      * @var \IO\CarteBundle\Entity\Restaurant
      */
     protected $restaurant;
-    
+
+    /**
+     * @var \IO\CarteBundle\Entity\Restaurant
+     */
+    protected $restaurant2;
+
     public function setUp()
     {
         parent::setUp();
-        
+
         $this->service = $this->container->get('menu.dish_option');
         $this->truncate("IOCarteBundle:DishOption");
         $this->restaurant = $this->getRestaurantTest();
+        $this->restaurant2 = $this->getRestaurantTest2();
     }
-    
-    public function testGetListEmpty()
+
+
+    /**
+     * @dataProvider getListCases
+     */
+    public function testGetList($list1, $list2)
     {
-        $list = $this->service->getPaginatedList();
-        
-        $this->assertSame(array(), $list);
-    }
-    
-    public function testGetListOneRestaurant()
-    {
-        $optionsList = array(array($this->restaurant, 'cuisson', array('Bleu', 'Saignant', 'A point', 'Bien cuit')));
         $expected = array();
-        foreach ($optionsList as $option) {
+        foreach ($list1 as $option) {
+            $option[0] = $this->restaurant;
             $expected[] = $this->createDishOption($option);
         }
-        
-        $list = $this->service->getPaginatedList();
-        
+        foreach ($list2 as $option) {
+            $option[0] = $this->restaurant2;
+            $this->createDishOption($option);
+        }
+
+        $list = $this->service->getList($this->restaurant);
+
         $this->assertSame($expected, $list);
     }
+
+
+    public  function getListCases()
+    {
+        return array(
+            array(
+                array(),
+                array(),
+            ),
+            array(
+                array(array(null, 'cuisson', array('Bleu', 'Saignant', 'A point', 'Bien cuit'))),
+                array(),
+            ),
+        );
+    }
+
+
 }

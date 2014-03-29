@@ -40,6 +40,28 @@ class IOTestCase extends WebTestCase
     protected function getRestaurantTest()
     {
         $restaurantName = 'phpunittest';
+        return $this->getRestaurant($restaurantName);
+    }
+
+    /**
+     * Get restaurant2 for testing
+     * 
+     * @return \IO\CarteBundle\Entity\Restaurant
+     */
+    protected function getRestaurantTest2()
+    {
+        $restaurantName = 'phpunittest2';
+        return $this->getRestaurant($restaurantName);
+    }
+
+
+    /**
+     * Get restaurant
+     * 
+     * @return \IO\CarteBundle\Entity\Restaurant
+     */
+    protected function getRestaurant($restaurantName)
+    {
         $repo = $this->em->getRepository('IOCarteBundle:Restaurant');
 
         $restaurant = $repo->findOneBy(array('name' => $restaurantName));
@@ -52,7 +74,6 @@ class IOTestCase extends WebTestCase
 
         return $restaurant;
     }
-
 
     /**
      * Remove all occurence of $entityName
