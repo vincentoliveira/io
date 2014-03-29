@@ -70,6 +70,10 @@ class DishOptionServiceTest extends IOTestCase
                 array(array(null, 'cuisson', array('Bleu', 'Saignant', 'A point', 'Bien cuit'))),
                 array(),
             ),
+            array(
+                array(array(null, 'cuisson', array('Bleu', 'Saignant', 'A point', 'Bien cuit'))),
+                array(array(null, 'sauce', array('Ketchup', 'Mayo'))),
+            ),
         );
     }
 
