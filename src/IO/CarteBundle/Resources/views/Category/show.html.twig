@@ -4,8 +4,8 @@
 <div class="content-header">
     <h3>{{ category.name|raw }}</h3>
     <span class="actionbar">
-        <a class="btn btn-primary" href="{{ path('category_edit', {id:category.id}) }}"><i class="fa fa-edit"></i> </a>
-        <a class="btn btn-danger" href="#"><i class="fa fa-trash-o"></i> </a>
+        <a class="btn btn-primary" href="{{ path('category_edit', {id:category.id}) }}" title="Modifier {{ category.name|raw }}"><i class="fa fa-edit"></i> </a>
+        <a class="btn btn-danger" href="#" title="Supprimer {{ category.name|raw }}"><i class="fa fa-trash-o"></i> </a>
     </span>
     <div class="clearfix"></div>
 </div>

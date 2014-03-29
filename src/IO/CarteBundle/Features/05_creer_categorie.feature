@@ -2,11 +2,13 @@
 @categorie
 Fonctionnalité: Créer et modifier des categories
 
+
 Contexte:
     Soit le restaurant "Restaurant test" existe avec l'url "/tests/import.json"
     Soit je supprime tous les "IOCarteBundle:Category"
     Soit l'utilisateur "resto" existe et a le role "ROLE_RESTAURATEUR"
     Et l'utilisateur "resto" a pour restaurant "Restaurant test"
+
 
 @5.1
 Scénario: 05.1 -  Créer une categorie : Authorisations
@@ -23,11 +25,12 @@ Scénario: 05.1 -  Créer une categorie : Authorisations
     Et je suis sur "/categorie/new"
     Alors je devrais voir "Ajouter une catégorie"
     
+
 @5.2
 Scénario: 05.2 -  Créer une categorie avec image
     Soit je suis connecté en tant que "resto"
 
-    Soit je suis sur "/carte"
+    Soit je suis sur "/"
     Alors je ne devrais pas voir "Entrées"
     Et je ne devrais pas voir l'image "Icone de Entrées"
 
@@ -56,26 +59,27 @@ Scénario: 05.2 -  Créer une categorie avec image
     Soit je suis sur "/carte"
     Alors je devrais voir "Salades"
 
+
 @5.3
 Scénario: 05.3 -  Modifier une categorie avec image
     Soit je crée une catégorie "Entrées" pour le restaurant "Restaurant test"
     Soit je suis connecté en tant que "resto"
 
-    Soit je suis sur "/carte"
+    Soit je suis sur "/"
     Alors je devrais voir "Entrées"
-
     Soit je suis "Entrées"
-    Et je suis "Modifier"
+
+    Et je suis "Modifier Entrées"
     Et je remplis "category[name]" avec ""
-    Et je presse "Modifier"
+    Et je presse "Valider"
     Alors je devrais voir "Veuillez renseigner un nom"
     Et je remplis "category[name]" avec "Desserts"
     Et je remplis "category[file]" avec "web/tests/import.json"
-    Et je presse "Modifier"
+    Et je presse "Valider"
     Alors je devrais voir "Image non valide"
 
     Et je remplis "category[file]" avec "web/tests/content.png"
-    Et je presse "Modifier"
+    Et je presse "Valider"
     Alors je devrais voir "La categorie à bien été modifiée"
 
     Soit je suis sur "/carte"
@@ -88,11 +92,11 @@ Scénario: 05.4 -  Supprimer une categorie
     Soit je crée une catégorie "Entrées" pour le restaurant "Restaurant test"
     Soit je suis connecté en tant que "resto"
 
-    Soit je suis sur "/carte"
+    Soit je suis sur "/"
     Alors je devrais voir "Entrées"
 
     Soit je suis "Entrées"
-    Et je presse "Supprimer"
+    Et je presse "Supprimer Entrées"
     Alors je devrais voir "La categorie à bien été supprimée"
 
     Soit je suis sur "/carte"

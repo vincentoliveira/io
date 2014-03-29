@@ -17,7 +17,7 @@ Scénario: 02.2 - Connexion / Déconnexion
     Et je remplis "_username" avec "admin"
     Et je remplis "_password" avec "admin"
     Lorsque je presse "_submit"
-    Alors je devrais voir "Bienvenue admin"
+    Alors je devrais voir "Déconnexion"
 
     Lorsque je suis "Déconnexion"
     Alors je ne devrais pas voir "Bienvenue admin"
