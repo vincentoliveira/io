@@ -14,8 +14,8 @@ services:
         class: IO\CarteBundle\Service\DishService
         arguments: ["@doctrine.orm.entity_manager", "@service_container"]
         
-    menu.menu_option:
-        class: IO\CarteBundle\Service\MenuOptionService
+    menu.dish_option:
+        class: IO\CarteBundle\Service\DishOptionService
         arguments: []
 
     menu.media:
