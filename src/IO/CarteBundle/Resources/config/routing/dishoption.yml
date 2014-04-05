@@ -23,4 +23,3 @@ options_update:
 options_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "IOCarteBundle:DishOption:delete" }
-    requirements: { _method: post|delete }

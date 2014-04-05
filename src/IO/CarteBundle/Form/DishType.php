@@ -25,6 +25,15 @@ class DishType extends CarteItemType
                         'message' => 'Veuillez renseigner un prix',
                     )),
                     'required' => true,
+                ))
+                ->add('dishOptions', 'entity', array(
+                    'label' => 'Options',
+                    'class' => 'IOCarteBundle:DishOption',
+                    'property' => 'name',
+                    'attr' => array('class' => 'form-control'),
+                    'required' => false,
+                    'multiple' => true,
+                    'expanded' => true,
                 ));
     }
 

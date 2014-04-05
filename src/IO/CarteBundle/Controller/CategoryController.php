@@ -30,12 +30,9 @@ class CategoryController extends Controller
         $em = $this->getDoctrine()->getManager();
         $dishes = $em->getRepository('IOCarteBundle:Dish')->findBy(array('category' => $category));
 
-        $deleteForm = $this->createDeleteForm($category->getId());
-
         return array(
             'category' => $category,
             'dishes' => $dishes,
-            'delete_form' => $deleteForm->createView(),
         );
     }
 
@@ -186,23 +183,19 @@ class CategoryController extends Controller
      * @ParamConverter("category", class="IOCarteBundle:Category", options={"id" = "id"})
      * @Secure(roles="ROLE_RESTAURATEUR")
      */
-    public function deleteAction(Request $request, Category $category)
+    public function deleteAction(Category $category)
     {
         if ($this->userCanEditCategory($category) === false) {
             throw $this->createNotFoundException();
         }
         
-        $form = $this->createDeleteForm($category->getId());
-        $form->handleRequest($request);
-        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($category);
+        $em->flush();
+
         $session = $this->container->get('session');
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($category);
-            $em->flush();
-            
-            $session->getFlashBag()->add('success', 'La categorie à bien été supprimée');
-        }
+        $session->getFlashBag()->add('success', 'La categorie à bien été supprimée');
+
 
         return $this->redirect($this->generateUrl('carte'));
     }
@@ -264,25 +257,6 @@ class CategoryController extends Controller
         ));
 
         return $form;
-    }
-
-    /**
-     * Creates a form to delete a Category entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('category_delete', array('id' => $id)))
-                        ->setMethod('DELETE')
-                        ->add('submit', 'submit', array(
-                            'label' => 'Supprimer',
-                            'attr' => array('class' => 'btn btn-danger btn-delete'),
-                        ))
-                        ->getForm();
     }
 
 }

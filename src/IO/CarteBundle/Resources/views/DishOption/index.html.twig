@@ -1,6 +1,8 @@
 {% extends "IOCarteBundle::layout.html.twig" %}
 
 {% block content %}
+    {% include 'IOCarteBundle::delete_confirm.html.twig' with {title: "Attention", body:"Vous êtes sur le point de supprimer une option. Cela risque d'impacter votre carte. Voulez-vous continuer ?", action_url: "#delete-url#" } %}
+
     <div class="content-header">
         <h3>Options</h3>
         <span class="actionbar">
@@ -15,10 +17,9 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">{{ option.name }}</h3>
                     <div class="actions pull-right">
-                        <a href="#" title="Supprimer {{ option.name }}"><i class="fa fa-trash-o"></i> </a>
+                        <a href="#" action-url="{{ path('options_delete', {id:option.id}) }}" title="Supprimer {{ option.name }}" class="confirm-delete" data-toggle="modal" data-target="#deleteConfirm"><i class="fa fa-trash-o"></i> </a>
                         <a href="{{ path('options_edit', {id:option.id}) }}" title="Modifier {{ option.name }}"><i class="fa fa-edit"></i> </a>
                         <i class="fa fa-chevron-down"></i>
-                        <i class="fa fa-times"></i>
                     </div>
                 </div>
                 <div class="panel-body">

@@ -27,7 +27,7 @@ class DishOptionType extends AbstractType
                 ->add(
                         $builder->create('options', 'text', array(
                             'label' => 'Liste des choix possible séparés par des points-virgules',
-                            'attr' => array('class' => 'form-control'),
+                            'attr' => array('class' => 'radio'),
                             'constraints' => new \Symfony\Component\Validator\Constraints\NotBlank(array(
                                 'message' => 'Veuillez renseigner un nom',
                                     )),

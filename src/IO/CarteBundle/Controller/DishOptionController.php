@@ -5,7 +5,6 @@ namespace IO\CarteBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use IO\CarteBundle\Entity\DishOption;
 use IO\CarteBundle\Form\DishOptionType;
@@ -74,6 +73,9 @@ class DishOptionController extends Controller
             $em->persist($entity);
             $em->flush();
 
+            $session = $this->container->get('session');
+            $session->getFlashBag()->add('success', 'L\'option à bien été ajoutée');
+
             return $this->redirect($this->generateUrl('options'));
         }
 
@@ -87,80 +89,88 @@ class DishOptionController extends Controller
     /**
      * Displays a form to edit an existing DishOption entity.
      *
+     * @Template()
+     * @Secure(roles="ROLE_RESTAURATEUR")
      */
     public function editAction($id)
     {
         $em = $this->getDoctrine()->getManager();
+        $userSv = $this->container->get('user.user_service');
+        $restaurantId = $userSv->getUser()->getRestaurant()->getId();
 
-        $entity = $em->getRepository('IOCarteBundle:DishOption')->find($id);
+        $entity = $em->getRepository('IOCarteBundle:DishOption')->findWithRestaurant($id, $restaurantId);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find DishOption entity.');
         }
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('IOCarteBundle:DishOption:edit.html.twig', array(
-                    'entity' => $entity,
-                    'edit_form' => $editForm->createView(),
-                    'delete_form' => $deleteForm->createView(),
-        ));
+        return array(
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
+        );
     }
 
 
     /**
      * Edits an existing DishOption entity.
      *
+     * @Template("IOCarteBundle:DishOption:edit.html.twig")
+     * @Secure(roles="ROLE_RESTAURATEUR")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
+        $userSv = $this->container->get('user.user_service');
+        $restaurantId = $userSv->getUser()->getRestaurant()->getId();
 
-        $entity = $em->getRepository('IOCarteBundle:DishOption')->find($id);
+        $entity = $em->getRepository('IOCarteBundle:DishOption')->findWithRestaurant($id, $restaurantId);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find DishOption entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
+            $session = $this->container->get('session');
+            $session->getFlashBag()->add('success', 'L\'option à bien été modifiée');
             return $this->redirect($this->generateUrl('options'));
         }
 
-        return $this->render('IOCarteBundle:DishOption:edit.html.twig', array(
-                    'entity' => $entity,
-                    'edit_form' => $editForm->createView(),
-                    'delete_form' => $deleteForm->createView(),
-        ));
+        return array(
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
+        );
     }
 
 
     /**
      * Deletes a DishOption entity.
-     *
+     * 
+     * @Secure(roles="ROLE_RESTAURATEUR")
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction($id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $userSv = $this->container->get('user.user_service');
+        $restaurantId = $userSv->getUser()->getRestaurant()->getId();
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('IOCarteBundle:DishOption')->find($id);
+        $entity = $em->getRepository('IOCarteBundle:DishOption')->findWithRestaurant($id, $restaurantId);
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find DishOption entity.');
-            }
-
-            $em->remove($entity);
-            $em->flush();
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find DishOption entity.');
         }
+
+        $session = $this->container->get('session');
+        $session->getFlashBag()->add('success', 'L\'option à bien été supprimée');
+
+        $em->remove($entity);
+        $em->flush();
 
         return $this->redirect($this->generateUrl('options'));
     }
@@ -211,24 +221,6 @@ class DishOptionController extends Controller
         ));
 
         return $form;
-    }
-
-
-    /**
-     * Creates a form to delete a DishOption entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('options_delete', array('id' => $id)))
-                        ->setMethod('DELETE')
-                        ->add('submit', 'submit', array('label' => 'Delete'))
-                        ->getForm()
-        ;
     }
 
 
