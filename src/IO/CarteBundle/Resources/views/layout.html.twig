@@ -32,7 +32,7 @@
                                 <a href="#"><i class="fa fa-user"></i> Profil</a>
                             </li>
                             <li>
-                                <a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-power-off"></i> Logout</a>
+                                <a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-power-off"></i> Déconnexion</a>
                             </li>
                         </ul>
                     </li>
@@ -59,6 +59,7 @@
                         {% for category in restaurantCategories() %}
                         <li><a href="{{ path('category_show', {id:category.id}) }}">{{ category.name }}</a></li>
                         {% endfor %}
+                        <li><a href="{{ path('options') }}">Options</a></li>
                     </ul>
                 </li>
                 <li class="sub-menu">

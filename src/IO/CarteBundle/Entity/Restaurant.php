@@ -31,7 +31,7 @@ class Restaurant
     /**
      * @var string
      *
-     * @ORM\Column(name="wp_base_url", type="string", length=255, nullable=false)
+     * @ORM\Column(name="wp_base_url", type="string", length=255, nullable=true)
      */
     private $wpBaseUrl;
 

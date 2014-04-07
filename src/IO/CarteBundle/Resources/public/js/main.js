@@ -139,16 +139,6 @@ function addTagFormDeleteLink($tagFormLi) {
         
 $(document).ready(function() {
     app.init();
-    
-    $('.btn-delete').click(function(e) {
-        var message = "Cette action est immédiate en non-réversible. Voulez-vous continuer ?";
-        if (confirm(message)) {
-            return true;
-        } else {
-            e.preventDefault();
-            return false;
-        }
-    });
 
     // Order
     nextNumber = $('ul.orderLines').children().length;
@@ -160,5 +150,10 @@ $(document).ready(function() {
     $('.btn-dish').on('click', function(e) {
         e.preventDefault();
         addDishToOrderForm(this);
+    });
+    
+    $(".confirm-delete").click(function(e){
+        e.preventDefault();
+        $("#deleteConfirm .btn-delete").attr("href", $(this).attr("action-url"));
     });
 });

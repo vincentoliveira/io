@@ -1,0 +1,25 @@
+options:
+    pattern:  /
+    defaults: { _controller: "IOCarteBundle:DishOption:index" }
+
+options_new:
+    pattern:  /new
+    defaults: { _controller: "IOCarteBundle:DishOption:new" }
+
+options_create:
+    pattern:  /create
+    defaults: { _controller: "IOCarteBundle:DishOption:create" }
+    requirements: { _method: post }
+
+options_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "IOCarteBundle:DishOption:edit" }
+
+options_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "IOCarteBundle:DishOption:update" }
+    requirements: { _method: post|put }
+
+options_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "IOCarteBundle:DishOption:delete" }

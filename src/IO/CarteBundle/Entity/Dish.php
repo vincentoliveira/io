@@ -50,6 +50,17 @@ class Dish extends CarteItem
      */
     private $price;
     
+    
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="IO\CarteBundle\Entity\DishOption")
+     * @ORM\JoinTable(name="dish_dish_option",
+     *      joinColumns={@ORM\JoinColumn(name="dish_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="option_id", referencedColumnName="id")}
+     *      )
+     */
+    private $dishOptions;
 
     /**
      * Get id
@@ -151,5 +162,45 @@ class Dish extends CarteItem
     public function getCategory()
     {
         return $this->category;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->dishOptions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add dishOptions
+     *
+     * @param \IO\CarteBundle\Entity\DishOption $dishOptions
+     * @return Dish
+     */
+    public function addDishOption(\IO\CarteBundle\Entity\DishOption $dishOptions)
+    {
+        $this->dishOptions[] = $dishOptions;
+    
+        return $this;
+    }
+
+    /**
+     * Remove dishOptions
+     *
+     * @param \IO\CarteBundle\Entity\DishOption $dishOptions
+     */
+    public function removeDishOption(\IO\CarteBundle\Entity\DishOption $dishOptions)
+    {
+        $this->dishOptions->removeElement($dishOptions);
+    }
+
+    /**
+     * Get dishOptions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDishOptions()
+    {
+        return $this->dishOptions;
     }
 }

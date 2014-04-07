@@ -31,7 +31,7 @@ Scénario: 06.1 - Créer un plat : Authorisations
 Scénario: 06.2 - Créer un plat
     Soit je suis connecté en tant que "resto"
 
-    Soit je suis sur "/carte"
+    Soit je suis sur "/"
     Et je suis "Entrées"
     Alors je ne devrais pas voir "Salade Caesar"
     Et je ne devrais pas voir l'image "Miniature Salade Caesar"
@@ -64,7 +64,7 @@ Scénario: 06.3 - Modifier un plat
     Soit je crée un plat "Salade Nicoise" dans la category "Entrées" du "Restaurant test"
     Soit je suis connecté en tant que "resto"
 
-    Soit je suis sur "/carte"
+    Soit je suis sur "/"
     Et je suis "Entrées"
     Alors je devrais voir "Salade Nicoise"
     Et je ne devrais pas voir "Salade Caesar"
@@ -72,20 +72,20 @@ Scénario: 06.3 - Modifier un plat
     Soit je suis "Modifier Salade Nicoise"
     Et je remplis "dish[name]" avec ""
     Et je remplis "dish[price]" avec ""
-    Et je presse "Modifier"
+    Et je presse "Valider"
     Alors je devrais voir "Veuillez renseigner un nom"
     Et je devrais voir "Veuillez renseigner un prix"
     Et je remplis "dish[name]" avec "Salade Caesar"
     Et je remplis "dish[description]" avec "Salade au poulet sauce Caesar"
     Et je remplis "dish[price]" avec "6,50"
     Et je remplis "dish[file]" avec "web/tests/import.json"
-    Et je presse "Modifier"
+    Et je presse "Valider"
     Alors je devrais voir "Image non valide"
     Et je remplis "dish[file]" avec "web/tests/content.png"
-    Et je presse "Modifier"
+    Et je presse "Valider"
     Alors je devrais voir "Le plat à bien été modifié"
 
-    Soit je suis sur "/carte"
+    Soit je suis sur "/"
     Et je suis "Entrées"
     Alors je devrais voir "Salade Caesar"
     Et je ne devrais pas voir "Salade Nicoise"
@@ -99,7 +99,7 @@ Scénario: 06.4 -  Supprimer un plat
     Soit je crée un plat "Salade Nicoise" dans la category "Entrées" du "Restaurant test"
     Soit je suis connecté en tant que "resto"
 
-    Soit je suis sur "/carte"
+    Soit je suis sur "/"
     Et je suis "Entrées"
     Alors je devrais voir "Salade Nicoise"
 
@@ -107,7 +107,7 @@ Scénario: 06.4 -  Supprimer un plat
     Et je presse "Supprimer"
     Alors je devrais voir "Le plat à bien été supprimé"
 
-    Soit je suis sur "/carte"
+    Soit je suis sur "/"
     Et je suis "Entrées"
     Alors je ne devrais pas voir "Salade Nicoise"
 
