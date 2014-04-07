@@ -1,0 +1,7 @@
+parameters:
+#    io_admin.example.class: IO\AdminBundle\Example
+
+services:
+#    io_admin.example:
+#        class: %io_admin.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

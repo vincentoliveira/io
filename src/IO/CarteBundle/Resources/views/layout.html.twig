@@ -42,10 +42,10 @@
     </section>
         
     <!--sidebar left start-->
-    {% if is_granted("ROLE_RESTAURATEUR") %}
     <aside class="sidebar">
         <div id="leftside-navigation" class="nano">
             <ul class="nano-content">
+                {% if is_granted("ROLE_RESTAURATEUR") %}
                 <li class="active">
                     <a href="{{ path('dashboard') }}"><i class="fa fa-dashboard"></i><span>Tableau de bord</span></a>
                 </li>
@@ -65,10 +65,19 @@
                 <li class="sub-menu">
                     <a href="{{ path('historique') }}"><i class="fa fa-list"></i><span>Historique</span></a>
                 </li>
+                {% endif %}
+                {% if is_granted("ROLE_ADMIN") %}
+                <li class="sub-menu">
+                    <a href="javascript:void(0);"><i class="fa fa-lock"></i><span>Administration</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                    <ul>
+                        <li><a href="{{ path('admin_restaurants') }}">Restaurants</a></li>
+                        <li><a href="{{ path('admin_users') }}">Utilisateurs</a></li>
+                    </ul>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </aside>
-    {% endif %}
     <!--sidebar left end-->
 
     <!--main content start-->

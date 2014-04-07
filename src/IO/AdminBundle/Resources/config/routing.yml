@@ -1,0 +1,11 @@
+admin_homepage:
+    pattern:  /
+    defaults: { _controller: IOAdminBundle:Default:index }
+
+admin_restaurants:
+    pattern:  /restaurants
+    defaults: { _controller: IOAdminBundle:Restaurant:index }
+
+admin_users:
+    pattern:  /users
+    defaults: { _controller: IOAdminBundle:User:index }

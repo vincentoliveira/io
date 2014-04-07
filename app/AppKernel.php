@@ -29,6 +29,7 @@ class AppKernel extends Kernel
             new IO\UserBundle\IOUserBundle(),
             new IO\APIBundle\IOAPIBundle(),
             new IO\OrderBundle\IOOrderBundle(),
+            new IO\AdminBundle\IOAdminBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

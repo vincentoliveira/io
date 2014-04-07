@@ -1,3 +1,7 @@
+io_admin:
+    resource: "@IOAdminBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
 io_commande:
     resource: "@IOOrderBundle/Resources/config/routing.yml"
     prefix:   /

@@ -1,0 +1,17 @@
+{% extends "IOCarteBundle::layout.html.twig" %}
+
+{% block content %}
+    <div class="content-header">
+        <h3>Utilisateurs</h3>
+        <span class="actionbar">
+            <a class="btn btn-primary" href="#" title="Ajouter un utilisateur"><i class="fa fa-plus"></i> </a>
+        </span>
+        <div class="clearfix"></div>
+    </div>
+
+    <ul class="list-group">
+    {% for user in users %}
+            <li class="list-group-item">{{ user.username }} <em>{{ user.restaurant.name|default() }}</em></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
