@@ -10,10 +10,6 @@ io_user:
     resource: "@IOUserBundle/Resources/config/routing.yml"
     prefix:   /
 
-io_import:
-    resource: "@IOImportBundle/Resources/config/routing.yml"
-    prefix:   /import
-  
 io_api:
     resource: "@IOAPIBundle/Resources/config/routing.yml"
     prefix:   /api

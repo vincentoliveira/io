@@ -26,7 +26,6 @@ class AppKernel extends Kernel
             new Ob\HighchartsBundle\ObHighchartsBundle(),
             
             new IO\CarteBundle\IOCarteBundle(),
-            new IO\ImportBundle\IOImportBundle(),
             new IO\UserBundle\IOUserBundle(),
             new IO\APIBundle\IOAPIBundle(),
             new IO\OrderBundle\IOOrderBundle(),

@@ -1,7 +1,0 @@
-parameters:
-#    io_import.example.class: IO\ImportBundle\Example
-
-services:
-    io_import.import_service:
-        class: IO\ImportBundle\Service\ImportService
-        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
