@@ -1,0 +1,73 @@
+<?php
+
+namespace IO\UserBundle\Form;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+/**
+ * UserType
+ *
+ */
+class UserType extends AbstractType
+{
+
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        parent::buildForm($builder, $options);
+
+        $builder->add('username', 'text', array(
+                    'label' => 'Username',
+                    'attr' => array('class' => 'form-control'),
+                ))
+                ->add('email', 'text', array(
+                    'label' => 'Email',
+                    'attr' => array('class' => 'form-control'),
+                ))
+                ->add('plainPassword', 'password', array(
+                    'label' => 'Password',
+                    'attr' => array('class' => 'form-control'),
+                ))
+                ->add('roles', 'choice', array(
+                    'label' => 'Role',
+                    'attr' => array('class' => 'form-control'),
+                    'choices' => array(
+                        'ROLE_CUISINIER' => 'Cuisinier',
+                        'ROLE_SERVEUR' => 'Serveur',
+                        'ROLE_RESTAURATEUR' => 'Restaurateur',
+                    ),
+                    'multiple' => false,
+                    'expanded' => false,
+                ))
+                ->add('restaurant', 'entity', array(
+                    'label' => 'Restaurant',
+                    'class' => 'IOCarteBundle:Restaurant',
+                    'property' => 'name',
+                    'attr' => array('class' => 'form-control')
+                ));
+    }
+
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'IO\USerBundle\Entity\User'
+        ));
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'user';
+    }
+
+}

@@ -25,7 +25,7 @@
                     #}
                     <li class="dropdown settings">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        {{ app.user.username }} <i class="fa fa-angle-down"></i>
+                        {{ app.user.username }} {% if app.user.restaurant %}({{ app.user.restaurant.name }}){% endif %} <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu animated fadeInDown">
                             <li>

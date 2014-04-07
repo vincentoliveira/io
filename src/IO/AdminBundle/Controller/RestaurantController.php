@@ -25,7 +25,7 @@ class RestaurantController extends Controller
     }
     
     /**
-     * Admin restaurant index
+     * Admin add restaurant
      * 
      * @return type
      * @Template()

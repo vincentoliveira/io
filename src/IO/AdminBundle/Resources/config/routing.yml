@@ -13,3 +13,7 @@ admin_restaurant_new:
 admin_users:
     pattern:  /users
     defaults: { _controller: IOAdminBundle:User:index }
+
+admin_user_new:
+    pattern:  /user/new
+    defaults: { _controller: IOAdminBundle:User:new }
