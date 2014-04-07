@@ -6,6 +6,10 @@ admin_restaurants:
     pattern:  /restaurants
     defaults: { _controller: IOAdminBundle:Restaurant:index }
 
+admin_restaurant_new:
+    pattern:  /restaurant/new
+    defaults: { _controller: IOAdminBundle:Restaurant:new }
+
 admin_users:
     pattern:  /users
     defaults: { _controller: IOAdminBundle:User:index }
