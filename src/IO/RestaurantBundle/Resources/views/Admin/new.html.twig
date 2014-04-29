@@ -1,0 +1,15 @@
+{% extends "IODefaultBundle::layout.html.twig" %}
+
+{% block content %}
+<div class="content-header">
+    <h3>Nouveau restaurant</h3>
+    <div class="clearfix"></div>
+</div>
+
+<form action="#" method="POST">
+    <div class="form-group">
+        {{ form_row(form.name) }}
+    </div>
+    <button type="submit" class="btn btn-success">Valider</button>
+</form>
+{% endblock %}

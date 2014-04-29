@@ -37,16 +37,17 @@ class UserType extends AbstractType
                     'label' => 'Role',
                     'attr' => array('class' => 'form-control'),
                     'choices' => array(
+                        'ROLE_TABLET' => 'Tablette',
                         'ROLE_CUISINIER' => 'Cuisinier',
                         'ROLE_SERVEUR' => 'Serveur',
-                        'ROLE_RESTAURATEUR' => 'Restaurateur',
+                        'ROLE_MANAGER' => 'Manager',
                     ),
-                    'multiple' => false,
+                    'multiple' => true,
                     'expanded' => false,
                 ))
                 ->add('restaurant', 'entity', array(
                     'label' => 'Restaurant',
-                    'class' => 'IOCarteBundle:Restaurant',
+                    'class' => 'IORestaurantBundle:Restaurant',
                     'property' => 'name',
                     'attr' => array('class' => 'form-control')
                 ));
