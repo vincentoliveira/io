@@ -8,5 +8,7 @@ then
 else
     echo "Test sans couverture de code"
     echo "Pour activer la couverture: $0 cc"
-    bin/behat @IOCarteBundle $@
+    bin/behat @IODefaultBundle $@
+    bin/behat @IORestaurantBundle $@
+    bin/behat @IOUserBundle $@
 fi

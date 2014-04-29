@@ -4,17 +4,17 @@ namespace IO\DefaultBundle\Features\Context;
 
 use Behat\Behat\Context\Step;
 use IO\UserBundle\Entity\User;
+use IO\RestaurantBundle\Entity\Restaurant;
 
 /**
  * User context.
  */
 class UserContext extends AbstractContext
 {
-
     /**
-     * @Given /^l\'utilisateur "([^"]*)" existe et a le role "([^"]*)"$/
+     * @Given /^l\'utilisateur "([^"]*)" existe et a le role "([^"]*)" du restaurant "([^"]*)"$/
      */
-    public function lUtilisateurExisteEtALeRole($username, $role)
+    public function lUtilisateurExisteEtALeRoleDuRestaurant($username, $role, $restaurantName)
     {
         $email = $username . '@innovorder.fr';
         $em = $this->getEntityManager();
@@ -24,10 +24,18 @@ class UserContext extends AbstractContext
             $user = new User();
             $user->setUsername($username);
         }
+          
+        $restaurant = $em->getRepository('IORestaurantBundle:Restaurant')->findOneBy(array('name' => $restaurantName));
+        if ($restaurant === null) {
+            $restaurant = new Restaurant();
+            $restaurant->setName($restaurantName);
+            $em->persist($restaurant);
+        }
         
         $user->setEmail($email);
         $user->setPlainPassword($username);
         $user->setRoles(array($role));
+        $user->setRestaurant($restaurant);
         $user->setEnabled(true);
         
         $em->persist($user);
@@ -85,7 +93,7 @@ class UserContext extends AbstractContext
         $user = $em->getRepository('IOUserBundle:User')->findOneBy(array('username' => $username));
         assertNotNull($user, sprintf('L\'utilisateur %s n\'existe pas', $username));
 
-        $restaurant = $em->getRepository('IOCarteBundle:Restaurant')->findOneBy(array('name' => $restaurantName));
+        $restaurant = $em->getRepository('IORestaurantBundle:Restaurant')->findOneBy(array('name' => $restaurantName));
         assertNotNull($restaurant, sprintf('Le restaurant %s n\'existe pas', $restaurantName));
         
         $user->setRestaurant($restaurant);

@@ -27,6 +27,14 @@ class CategoryController extends CarteItemController
      * @var \IO\UserBundle\Service\UserService
      */
     public $userSv;
+    
+    /**
+     * Session
+     * 
+     * @Inject("session")
+     * @var \Symfony\Component\HttpFoundation\Session\Session
+     */
+    public $session;
 
     /**
      * Displays a form to create a new CarteItem entity.
@@ -36,11 +44,19 @@ class CategoryController extends CarteItemController
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
+        
         $entity = new CarteItem();
         $entity->setRestaurant($this->userSv->getUserRestaurant());
         $entity->setItemType(ItemTypeEnum::TYPE_CATEGORY);
+        
+        $parentId = $request->query->get('parent', null);
+        if ($parentId !== null) {
+            $parent = $this->getEntity($parentId);
+            $entity->setParent($parent);
+        }
+        
         $form = $this->createForm(new CategoryType(), $entity);
 
         return array(
@@ -72,6 +88,7 @@ class CategoryController extends CarteItemController
             $em->persist($entity);
             $em->flush();
 
+            $this->session->getFlashBag()->add('success', sprintf('La categorie "%s" a bien été ajoutée', $entity->getName()));
             return $this->redirect($this->generateUrl('category_show', array('id' => $entity->getId())));
         }
 
@@ -92,12 +109,7 @@ class CategoryController extends CarteItemController
      */
     public function showAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('IORestaurantBundle:CarteItem')->find($id);
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find CarteItem entity.');
-        }
+        $entity = $this->getEntity($id);
 
         return array(
             'entity' => $entity,
@@ -114,13 +126,7 @@ class CategoryController extends CarteItemController
      */
     public function editAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('IORestaurantBundle:CarteItem')->find($id);
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find CarteItem entity.');
-        }
-
+        $entity = $this->getEntity($id);
         $editForm = $this->createForm(new CategoryType(), $entity);
 
         return array(
@@ -135,24 +141,20 @@ class CategoryController extends CarteItemController
      *
      * @Route("/{id}/update", name="category_update")
      * @Method("POST")
-     * @Template("IORestaurantBundle:CarteItem:edit.html.twig")
+     * @Template("IORestaurantBundle:Category:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('IORestaurantBundle:CarteItem')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find CarteItem entity.');
-        }
-
+        $entity = $this->getEntity($id);
         $editForm = $this->createForm(new CategoryType(), $entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
             $em->flush();
-
+            
+            $this->session->getFlashBag()->add('success', sprintf('La categorie "%s" a bien été modifiée', $entity->getName()));
             return $this->redirect($this->generateUrl('category_edit', array('id' => $id)));
         }
 
@@ -170,17 +172,32 @@ class CategoryController extends CarteItemController
      */
     public function deleteAction($id)
     {
+        $entity = $this->getEntity($id);
+        
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('IORestaurantBundle:CarteItem')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find CarteItem entity.');
-        }
-
         $em->remove($entity);
         $em->flush();
+        $this->session->getFlashBag()->add('success', sprintf('La categorie "%s" a bien été supprimée', $entity->getName()));
 
         return $this->redirect($this->generateUrl('homepage'));
+    }
+    
+    /**
+     * Get Entity
+     * 
+     * @param integer $id
+     * @return CarteItem
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    protected function getEntity($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('IORestaurantBundle:CarteItem')->find($id);
+        if (!$entity || $entity->getRestaurant()->getId() !== $this->userSv->getUserRestaurant()->getId()) {
+            throw $this->createNotFoundException('Unable to find CarteItem entity.');
+        }
+        
+        return $entity;
     }
 
 

@@ -13,9 +13,9 @@ use IO\OrderBundle\Entity\Order;
 class DatabaseContext extends AbstractContext
 {
     /**
-     * @Given /^je supprime tous les "([^"]*)"$/
+     * @Given /^je vide les entités "([^"]*)"$/
      */
-    public function jeSupprimeTousLes($entityName)
+    public function jeVideLesEntites($entityName)
     {
         $em = $this->getEntityManager();
         $entities = $em->getRepository($entityName)->findAll();
@@ -27,6 +27,7 @@ class DatabaseContext extends AbstractContext
         $em->flush();
         
         $connection = $em->getConnection();
-        $connection->exec("ALTER TABLE order_item AUTO_INCREMENT = 1;");
+        $cmd = $em->getClassMetadata($entityName);
+        $connection->exec(sprintf("ALTER TABLE %s AUTO_INCREMENT = 1;", $cmd->getTableName()));
     }
 }

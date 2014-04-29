@@ -3,6 +3,9 @@
 namespace IO\DefaultBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Behat\Behat\Console\BehatApplication;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * Description of IOTestCase
@@ -29,6 +32,30 @@ class IOTestCase extends WebTestCase
 
         $this->container = static::$kernel->getContainer();
         $this->em = $this->container->get('doctrine.orm.entity_manager');
+        
+        $this->client = static::createClient(array('environment' => 'test'));
+        $this->client->followRedirects();
+    }
+    
+    /**
+     * Behavior Test Suite
+     * 
+     * @param type $bundle
+     */
+    protected function behaviorTestSuite($bundleName = '@IODefaultBundle')
+    {
+        $input = new ArrayInput(array(
+                    '--ansi' => '',
+                    '--verbose' => '',
+                    '--format' => 'progress',
+                    'features' => $bundleName,
+                ));
+        $output = new ConsoleOutput();
+        $app = new BehatApplication('DEV');
+        $app->setAutoExit(false);
+        $result = $app->run($input, $output);
+        
+        $this->assertEquals(0, $result);
     }
 
     /**
