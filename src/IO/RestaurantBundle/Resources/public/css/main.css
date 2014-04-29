@@ -1,0 +1,49 @@
+#header .brand { background: #1abc9c url('../img/logo.png') no-repeat 25px 23px; }
+#header .toggle-datetime.toggle-left { margin: 32px 0 0 20px; display: inline-block; }
+#header .logo { padding: 23px 0 0 56px; }
+#header .user-nav { display: inline-block; }
+
+.error { color: #a94442; font-weight: bold;}
+
+a.btn-danger { color: #fff; }
+.content-header h3 { display: inline-block; }
+.content-header { border-bottom: 1px solid #293949; margin-bottom: 20px; }
+.actionbar { isplay: inline-block; float: right; margin-top: 10px; }
+
+.menu-form { background-color: #fff; padding: 10px 0; }
+.menu-form .btn { margin: 20px 0 0; }
+
+
+.dish { clear: both; padding: 10px 2px; height: 100px; }
+.dish:hover { background-color:#ddd; }
+.dish img { float: left; width: 100px; height: 100px; }
+.dish a { float: right; vertical-align: middle; }
+.dish strong, .dish em, .dish span { margin: 0 150px; display: block; }
+.dish span { margin: 10px 150px 0; }
+.dish .glyphicon-edit { margin: 0; }
+
+.btn-dish { width: 140px; }
+.btn-dish img { margin: 0px 5px; width: 100px; height: 100px; display: block; }
+.orderLines div { display: inline-block; }
+.orderLines .btn-danger { padding: 0px 4px; margin-right: 10px; }
+
+.order ul { padding-left: 15px; }
+.order h3 { margin: 0; }
+.order h3 .btn { float: right; }
+.order .btn .glyphicon-edit { margin: 0; }
+.order ul.lines em { float: right; }
+
+.panel-info .panel-heading a { color:#31708f; }
+
+/*
+.category .list-group-item { border: none; }
+
+.delete-form { display: inline-block; float: right; }
+.delete-form form, .delete-form .btn { display: inline-block; margin-left: 5px; }
+
+
+
+.menu-form .btn { margin: 15px; }
+
+.recherche { margin: 50px 0; }
+*/

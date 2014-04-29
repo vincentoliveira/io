@@ -20,16 +20,13 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
-            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             
-            new Ob\HighchartsBundle\ObHighchartsBundle(),
+            //new Ob\HighchartsBundle\ObHighchartsBundle(),
             
-            new IO\CarteBundle\IOCarteBundle(),
             new IO\UserBundle\IOUserBundle(),
-            new IO\APIBundle\IOAPIBundle(),
-            new IO\OrderBundle\IOOrderBundle(),
-            new IO\AdminBundle\IOAdminBundle(),
+            new IO\RestaurantBundle\IORestaurantBundle(),
+            new IO\DefaultBundle\IODefaultBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

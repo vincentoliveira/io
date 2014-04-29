@@ -1,23 +1,17 @@
-io_admin:
-    resource: "@IOAdminBundle/Resources/config/routing.yml"
-    prefix:   /admin
-
-io_commande:
-    resource: "@IOOrderBundle/Resources/config/routing.yml"
+io_default:
+    resource: "@IODefaultBundle/Controller/"
+    type:     annotation
     prefix:   /
 
-io_carte:
-    resource: "@IOCarteBundle/Resources/config/routing.yml"
+io_restaurant:
+    resource: "@IORestaurantBundle/Controller/"
+    type:     annotation
     prefix:   /
 
 io_user:
-    resource: "@IOUserBundle/Resources/config/routing.yml"
+    resource: "@IOUserBundle/Controller/"
+    type:     annotation
     prefix:   /
-
-io_api:
-    resource: "@IOAPIBundle/Resources/config/routing.yml"
-    prefix:   /api
-
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"

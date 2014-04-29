@@ -27,7 +27,7 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="IO\CarteBundle\Entity\Restaurant")
+     * @ORM\ManyToOne(targetEntity="IO\RestaurantBundle\Entity\Restaurant")
      * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
      */
     private $restaurant;
@@ -59,10 +59,10 @@ class User extends BaseUser
     /**
      * Set restaurant
      *
-     * @param \IO\CarteBundle\Entity\Restaurant $restaurant
+     * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
      * @return User
      */
-    public function setRestaurant(\IO\CarteBundle\Entity\Restaurant $restaurant = null)
+    public function setRestaurant(\IO\RestaurantBundle\Entity\Restaurant $restaurant = null)
     {
         $this->restaurant = $restaurant;
     
@@ -72,7 +72,7 @@ class User extends BaseUser
     /**
      * Get restaurant
      *
-     * @return \IO\CarteBundle\Entity\Restaurant 
+     * @return \IO\RestaurantBundle\Entity\Restaurant 
      */
     public function getRestaurant()
     {
