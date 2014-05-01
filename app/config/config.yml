@@ -72,3 +72,10 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: IO\UserBundle\Entity\User
+
+
+# JSM DI
+jms_di_extra:
+    locations:
+        all_bundles: true
+        directories: ["%kernel.root_dir%/../src"]

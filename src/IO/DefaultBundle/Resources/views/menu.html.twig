@@ -6,23 +6,17 @@
                 <li class="active">
                     <a href="{{ path('homepage') }}"><i class="fa fa-dashboard"></i><span>Tableau de bord</span></a>
                 </li>
-                {#
                 {% if is_granted("ROLE_MANAGER") %}
-                <li class="sub-menu">
-                    <a href="{{ path('commande_en_cours') }}"><i class="fa fa-cutlery"></i><span>Commandes en cours</span></a>
-                </li>
                 <li class="sub-menu">
                     <a href="javascript:void(0);"><i class="fa fa-edit"></i><span>Modifier la carte</span><i class="arrow fa fa-angle-right pull-right"></i></a>
                     <ul>
-                        <li><a href="{{ path('category_new') }}">Ajouter une categorie</a></li>
+                        <li><a href="{{ path('category_new') }}"><i class="fa fa-plus"></i> Ajouter une categorie</a></li>
                         {% for category in restaurantCategories() %}
-                        <li><a href="{{ path('category_show', {id:category.id}) }}">{{ category.name }}</a></li>
+                        <li><a href="{{ path('category_show', {id:category.id}) }}"><i class="fa {% if category.visible %}fa-eye{% else %}fa-eye-slash{% endif %}"></i> {{ category.name }}</a></li>
                         {% endfor %}
-                        <li><a href="{{ path('options') }}">Options</a></li>
                     </ul>
                 </li>
                 {% endif %}
-                #}
                 {% if is_granted("ROLE_ADMIN") %}
                 <li class="sub-menu">
                     <a href="javascript:void(0);"><i class="fa fa-lock"></i><span>Administration</span><i class="arrow fa fa-angle-right pull-right"></i></a>

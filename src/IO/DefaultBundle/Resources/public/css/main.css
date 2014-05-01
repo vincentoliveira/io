@@ -10,7 +10,7 @@ a.btn-danger { color: #fff; }
 .content-header { border-bottom: 1px solid #293949; margin-bottom: 20px; }
 .actionbar { isplay: inline-block; float: right; margin-top: 10px; }
 
-.menu-form { background-color: #fff; padding: 10px 0; }
+.menu-form { padding: 10px; }
 .menu-form .btn { margin: 20px 0 0; }
 
 

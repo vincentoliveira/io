@@ -1,0 +1,42 @@
+{% extends "IODefaultBundle::layout.html.twig" %}
+
+{% block content %}
+
+<div class="content-header">
+    <h3>{{ entity.name|raw }}</h3>
+    <span class="actionbar">
+        <a class="btn btn-primary" href="{{ path('category_edit', {id:entity.id}) }}" title="Modifier {{ entity.name|raw }}"><i class="fa fa-edit"></i> </a>
+        <a class="btn btn-danger confirm-delete" href="{{ path('category_delete', {id:entity.id}) }}" title="Supprimer {{ entity.name|raw }}"><i class="fa fa-trash-o"></i> </a>
+    </span>
+    <div class="clearfix"></div>
+</div>
+
+<a href="#" role="button" class="btn btn-primary btn-trans" title="Ajouter un plat"><i class="fa fa-plus"></i> Ajouter un plat</a>
+<a href="{{ path('category_new', {parent:entity.id}) }}" role="button" class="btn btn-primary btn-trans" title="Ajouter une sous-catégorie"><i class="fa fa-plus"></i> Ajouter une sous-catégorie</a>
+
+<div class="dishes list-group">
+    {% for child in entity.children %}
+        {% if child.itemType|itemType == 'category' %}
+        <div>
+            <a href="{{ path('category_show', {id:child.id}) }}" title="Voir {{ child.name|raw }}">
+                <strong>{{ child.name }}</strong>
+                <span>{{ child.description|raw }}</span>
+            </a>
+        </div>
+        {% endif %}
+    {% endfor %}
+    {#
+    {% for dish in dishes %}
+    <div class="dish dishlist-group-item">                
+        <a href="{{ path('dish_edit', {id:dish.id}) }}" class="btn btn-primary" role="button" title="Modifier {{ dish.name }}"><i class="fa fa-edit"></i> </a>
+        {% if dish.media %}
+            <img title="Miniature {{ dish.name }}" class="img-rounded" src="{{ dish.media.thumbnailPath|imageLink }}" alt="#" />
+        {% endif %}
+        <strong>{{ dish.name }}</strong>
+        <em>{{ dish.price|number_format(2, ',', ' ') }} &#8364;</em>
+        <span>{{ dish.description|raw }}</span>
+    </div>
+    {% endfor %}
+    #}
+</div>
+{% endblock %}

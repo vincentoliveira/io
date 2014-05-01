@@ -2,29 +2,26 @@
 
 namespace IO\UserBundle\Service;
 
+use JMS\DiExtraBundle\Annotation\Service;
+use JMS\DiExtraBundle\Annotation\Inject;
 use Symfony\Component\DependencyInjection\Container;
 use IO\UserBundle\Entity\User;
 
 /**
  * User Service
+ * 
+ * @Service("io.user_service")
  */
 class UserService
 {
-    /**
-     *
-     * @var Container
-     */
-    protected $container;
 
     /**
-     * Constructor
+     * Container
      * 
-     * @param \Symfony\Component\DependencyInjection\Container $container
+     * @Inject("service_container")
+     * @var Container
      */
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
+    public $container;
     
     /**
      * Get loggued user
@@ -42,7 +39,7 @@ class UserService
     /**
      * Get loggued user restaurant
      *
-     * @return \IO\UserBundle\Entity\User|null
+     * @return \IO\RestaurantBundle\Entity\User|null
      */
     public function getUserRestaurant()
     {
