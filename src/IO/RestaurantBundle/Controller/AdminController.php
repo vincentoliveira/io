@@ -46,16 +46,17 @@ class AdminController extends Controller
         $form = $this->createForm(new RestaurantType(), $restaurant);
         
         if ($request->isMethod("POST")) {
-            $form->bind($request);
-            
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($restaurant);
-            $em->flush();
-            
-            $session = $this->container->get('session');
-            $session->getFlashBag()->add('success', 'Le restaurant à bien été crée.');
-            
-            return $this->redirect($this->generateUrl('admin_restaurant_index'));
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($restaurant);
+                $em->flush();
+
+                $session = $this->container->get('session');
+                $session->getFlashBag()->add('success', sprintf('Le restaurant "%s" a bien été ajouté.', $restaurant->getName()));
+
+                return $this->redirect($this->generateUrl('admin_restaurant_index'));
+            }
         }
         
         return array('form' => $form->createView());

@@ -47,7 +47,9 @@ class CarteItemType extends AbstractType
                     'attr' => array('class' => 'form-control'),
                     'required' => false,
                 ))
-                //->add('media')
+                ->add('media', new MediaType(), array(
+                    'label' => false,
+                ))
         ;
         
         

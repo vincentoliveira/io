@@ -12,6 +12,14 @@ use IO\RestaurantBundle\Entity\Restaurant;
 class UserContext extends AbstractContext
 {
     /**
+     * @Given /^l\'utilisateur "([^"]*)" existe et a le role "([^"]*)"$/
+     */
+    public function lUtilisateurExisteEtALeRole($username, $role)
+    {
+        $this->lUtilisateurExisteEtALeRoleDuRestaurant($username, $role, null);
+    }
+    
+    /**
      * @Given /^l\'utilisateur "([^"]*)" existe et a le role "([^"]*)" du restaurant "([^"]*)"$/
      */
     public function lUtilisateurExisteEtALeRoleDuRestaurant($username, $role, $restaurantName)
@@ -24,19 +32,21 @@ class UserContext extends AbstractContext
             $user = new User();
             $user->setUsername($username);
         }
-          
-        $restaurant = $em->getRepository('IORestaurantBundle:Restaurant')->findOneBy(array('name' => $restaurantName));
-        if ($restaurant === null) {
-            $restaurant = new Restaurant();
-            $restaurant->setName($restaurantName);
-            $em->persist($restaurant);
-        }
         
         $user->setEmail($email);
         $user->setPlainPassword($username);
         $user->setRoles(array($role));
-        $user->setRestaurant($restaurant);
         $user->setEnabled(true);
+        
+        if ($restaurantName !== null) {
+            $restaurant = $em->getRepository('IORestaurantBundle:Restaurant')->findOneBy(array('name' => $restaurantName));
+            if ($restaurant === null) {
+                $restaurant = new Restaurant();
+                $restaurant->setName($restaurantName);
+                $em->persist($restaurant);
+            }
+            $user->setRestaurant($restaurant);
+        }
         
         $em->persist($user);
         $em->flush();

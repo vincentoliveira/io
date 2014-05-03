@@ -18,16 +18,10 @@ class DatabaseContext extends AbstractContext
     public function jeVideLesEntites($entityName)
     {
         $em = $this->getEntityManager();
-        $entities = $em->getRepository($entityName)->findAll();
-
-        foreach ($entities as $entity) {
-            $em->remove($entity);
-        }
-
-        $em->flush();
-        
         $connection = $em->getConnection();
         $cmd = $em->getClassMetadata($entityName);
-        $connection->exec(sprintf("ALTER TABLE %s AUTO_INCREMENT = 1;", $cmd->getTableName()));
+        $connection->exec('SET foreign_key_checks = 0;');
+        $connection->exec(sprintf("TRUNCATE TABLE %s;", $cmd->getTableName()));
+        $connection->exec('SET foreign_key_checks = 1;');
     }
 }

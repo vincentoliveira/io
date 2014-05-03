@@ -45,18 +45,20 @@ class AdminController extends Controller
         $form = $this->createForm(new UserType(), $user);
         
         if ($request->isMethod("POST")) {
-            $form->bind($request);
+            $form->handleRequest($request);
             
-            $user->setEnabled(true);
-            
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($user);
-            $em->flush();
-            
-            $session = $this->container->get('session');
-            $session->getFlashBag()->add('success', 'L\'utilisateur à bien été crée.');
-            
-            return $this->redirect($this->generateUrl('admin_user_index'));
+            if ($form->isValid()) {
+                $user->setEnabled(true);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                $session = $this->container->get('session');
+                $session->getFlashBag()->add('success', sprintf('L\'utilisateur "%s" a bien été ajouté.', $user->getUsername()));
+
+                return $this->redirect($this->generateUrl('admin_user_index'));
+            }
         }
         
         return array('form' => $form->createView());

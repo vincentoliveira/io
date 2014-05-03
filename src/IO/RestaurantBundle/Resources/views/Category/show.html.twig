@@ -11,6 +11,14 @@
     <div class="clearfix"></div>
 </div>
 
+<div class="description">
+    {% if entity.media %}
+    <img src="{{ asset('media/' ~ entity.media.path) }}" alt="Media" />
+    <p>{{ entity.description }}</p>
+    {% endif %}
+    
+</div>
+
 <a href="#" role="button" class="btn btn-primary btn-trans" title="Ajouter un plat"><i class="fa fa-plus"></i> Ajouter un plat</a>
 <a href="{{ path('category_new', {parent:entity.id}) }}" role="button" class="btn btn-primary btn-trans" title="Ajouter une sous-catégorie"><i class="fa fa-plus"></i> Ajouter une sous-catégorie</a>
 

@@ -5,6 +5,7 @@ namespace IO\UserBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * UserType
@@ -24,7 +25,9 @@ class UserType extends AbstractType
         $builder->add('username', 'text', array(
                     'label' => 'Username',
                     'attr' => array('class' => 'form-control'),
-                ))
+                    'constraints' => array(
+                        new NotBlank(array('message' => 'Veuillez renseigner le username')),
+                )))
                 ->add('email', 'text', array(
                     'label' => 'Email',
                     'attr' => array('class' => 'form-control'),
@@ -44,12 +47,14 @@ class UserType extends AbstractType
                     ),
                     'multiple' => true,
                     'expanded' => false,
+                    'required' => false,
                 ))
                 ->add('restaurant', 'entity', array(
                     'label' => 'Restaurant',
                     'class' => 'IORestaurantBundle:Restaurant',
                     'property' => 'name',
-                    'attr' => array('class' => 'form-control')
+                    'attr' => array('class' => 'form-control'),
+                    'required' => false,
                 ));
     }
 

@@ -5,13 +5,11 @@ namespace IO\RestaurantBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * RestaurantType
- *
+ * MediaType
  */
-class RestaurantType extends AbstractType
+class MediaType extends AbstractType
 {
 
     /**
@@ -22,11 +20,10 @@ class RestaurantType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('name', 'text', array(
-            'label' => 'Nom du restaurant',
+        $builder->add('file', 'file', array(
+            'label' => 'Image',
             'attr' => array('class' => 'form-control'),
-            'required' => true,
-            'constraints' => new NotBlank(array('message' => 'Veuillez renseigner le nom du restaurant')),
+            'required' => false,
         ));
     }
 
@@ -36,7 +33,7 @@ class RestaurantType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'IO\RestaurantBundle\Entity\Restaurant'
+            'data_class' => 'IO\RestaurantBundle\Entity\Media'
         ));
     }
 
@@ -45,7 +42,7 @@ class RestaurantType extends AbstractType
      */
     public function getName()
     {
-        return 'restaurant';
+        return 'media';
     }
 
 }

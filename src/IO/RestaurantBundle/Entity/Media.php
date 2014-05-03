@@ -16,9 +16,9 @@ class Media
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="string", length=15, nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -35,6 +35,34 @@ class Media
      * @ORM\Column(name="path", type="string", length=127, nullable=false)
      */
     private $path;
+    
+    /**
+     *
+     * @var \Symfony\Component\HttpFoundation\File\UploadedFile 
+     */
+    private $file;
+    
+    /**
+     * Set file
+     * 
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $file
+     * @return \IO\RestaurantBundle\Entity\Media
+     */
+    public function setFile(\Symfony\Component\HttpFoundation\File\UploadedFile $file = null)
+    {
+        $this->file = $file;
+        return $this;
+    }
+    
+    /**
+     * Get file
+     * 
+     * @return type
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
 
     /**
      * Set id

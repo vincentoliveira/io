@@ -27,6 +27,14 @@ class CategoryController extends CarteItemController
      * @var \IO\UserBundle\Service\UserService
      */
     public $userSv;
+
+    /**
+     * User Service
+     * 
+     * @Inject("io.media_service")
+     * @var \IO\UserBundle\Service\MediaService
+     */
+    public $mediaSv;
     
     /**
      * Session
@@ -84,6 +92,8 @@ class CategoryController extends CarteItemController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $this->mediaSv->handleMedia($entity);
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -150,12 +160,14 @@ class CategoryController extends CarteItemController
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $this->mediaSv->handleMedia($entity);
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
             
             $this->session->getFlashBag()->add('success', sprintf('La categorie "%s" a bien été modifiée', $entity->getName()));
-            return $this->redirect($this->generateUrl('category_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('category_show', array('id' => $id)));
         }
 
         return array(
