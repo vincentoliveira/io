@@ -48,6 +48,10 @@ class MediaService
     public function handleMedia(CarteItem $item)
     {
         if ($item->getMedia() === null || !$this->fileIsValid($item->getMedia()->getFile())) {
+            if ($item->getMedia() !== null && !$item->getMedia()->getId()) {
+                $item->setMedia(null);
+            }
+            
             return null;
         }
         
@@ -92,11 +96,6 @@ class MediaService
     protected function fileIsValid(UploadedFile $file = null)
     {
         return $file !== null && $this->mimeTypeIsValid($file->getMimeType());
-    }
-    
-    protected function downloadFileIsValid($path)
-    {
-        return $this->mimeTypeIsValid(mime_content_type($path));
     }
     
     protected function mimeTypeIsValid($mimeType)

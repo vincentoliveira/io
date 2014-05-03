@@ -65,19 +65,6 @@ class Media
     }
 
     /**
-     * Set id
-     *
-     * @param string $id
-     * @return Media
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    
-        return $this;
-    }
-
-    /**
      * Get id
      *
      * @return integer 

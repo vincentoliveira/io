@@ -1,6 +1,6 @@
 # language: fr
-@carte @categorie
-Fonctionnalité: Création/modification/suppression des categories
+@carte @categorie @C1
+Fonctionnalité: C1 - Création/modification/suppression des categories
 
 
 Contexte:
@@ -9,8 +9,8 @@ Contexte:
     Soit je suis connecté en tant que "restotest"
 
 
-@C1
-Scénario: C1 -  Création/modification/suppression d'une categorie
+@C1.1
+Scénario: C1.1 -  Création/modification/suppression d'une categorie
     # La categorie n'existe pas
     Soit je suis sur la page d'accueil
     Alors je ne devrais pas voir "Categorie Test"
@@ -47,8 +47,8 @@ Scénario: C1 -  Création/modification/suppression d'une categorie
     Alors je ne devrais pas voir "Categorie Test"
 
 
-@C2
-Scénario: C2 -  Création d'une sous-categorie
+@C1.2
+Scénario: C1.2 -  Création d'une sous-categorie
     # Creation de la categorie
     Soit je suis sur la page d'accueil
     Soit je suis "Ajouter une categorie"

@@ -160,7 +160,7 @@ class CategoryController extends CarteItemController
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $this->mediaSv->handleMedia($entity);
+            $media = $this->mediaSv->handleMedia($entity);
             
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);

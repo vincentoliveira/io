@@ -1,5 +1,5 @@
 # language: fr
-@admin
+@admin @A1
 Fonctionnalité: Administration des utilisateurs
 
 
@@ -9,8 +9,8 @@ Contexte:
     Soit je suis connecté en tant que "admin"
 
 
-@A1
-Scénario: A1 -  Création d'un utilisateur
+@A1.1
+Scénario: A1.1 -  Création d'un utilisateur
     # L'utilisateur n'existe pas
     Soit je suis sur la page d'accueil
     Et je suis "Administration des utilisateurs"

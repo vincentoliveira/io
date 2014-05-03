@@ -1,5 +1,5 @@
 # language: fr
-@admin
+@admin @A2
 Fonctionnalité: Administration des restaurants
 
 
@@ -9,8 +9,8 @@ Contexte:
     Soit je suis connecté en tant que "admin"
 
 
-@A2
-Scénario: A2 -  Création d'un restaurant
+@A2.1
+Scénario: A2.1 -  Création d'un restaurant
     # Le restaurant n'existe pas
     Soit je suis sur la page d'accueil
     Et je suis "Administration des restaurants"
