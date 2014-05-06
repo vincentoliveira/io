@@ -17,7 +17,7 @@ security:
         wsse_secured:
             pattern:   /api/.*
             stateless: true
-            wsse:      { lifetime: 86400 }
+            wsse:      { }
             anonymous: true
 
         main:

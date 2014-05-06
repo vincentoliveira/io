@@ -11,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 /**
  * API User controller
  * 
- * @Route("/api/")
+ * @Route("/api")
  */
 class APIController extends Controller
 {

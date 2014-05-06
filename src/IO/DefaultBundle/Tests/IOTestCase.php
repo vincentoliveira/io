@@ -14,6 +14,11 @@ class IOTestCase extends WebTestCase
 {
 
     /**
+     * @var \Symfony\Bundle\FrameworkBundle\Client
+     */
+    protected $client;
+
+    /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
     protected $container;
