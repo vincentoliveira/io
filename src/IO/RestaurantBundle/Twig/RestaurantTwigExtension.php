@@ -43,17 +43,6 @@ class RestaurantTwigExtension extends \Twig_Extension
     }
     
     /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
-    {
-        return array(
-            'itemType' => new \Twig_SimpleFilter('itemType', array($this, 'itemTypeFilter')),
-        );
-    }
-    
-    
-    /**
      * Return restaurant categories
      * 
      * @return array
@@ -65,16 +54,6 @@ class RestaurantTwigExtension extends \Twig_Extension
         return $repositorty->getRestaurantMainCategory($restaurant->getId());
     }
     
-    public function itemTypeFilter($type)
-    {
-        if ($type === ItemTypeEnum::TYPE_CATEGORY) {
-            return 'category';
-        } elseif ($type === ItemTypeEnum::TYPE_DISH) {
-            return 'dish';
-        }
-        return null;
-    }
-
     /**
      * {@inheritdoc}
      */

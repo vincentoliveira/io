@@ -18,7 +18,7 @@ Scénario: C1.1 -  Création/modification/suppression d'une categorie
     # Creation de la categorie
     Soit je suis "Ajouter une categorie"
     Et je presse "Ajouter"
-    Alors je ne devrais pas voir "La categorie \"Categorie Test\" a bien été ajoutée"
+    Alors je devrais voir "Veuillez renseigner un nom"
     Lorsque je remplis "category[name]" avec "Categorie Test"
     Et je presse "Ajouter"
     Alors je devrais voir "La categorie \"Categorie Test\" a bien été ajoutée"
@@ -30,7 +30,7 @@ Scénario: C1.1 -  Création/modification/suppression d'une categorie
     Et je suis "Modifier Categorie Test"
     Lorsque je remplis "category[name]" avec ""
     Et je presse "Valider"
-    Alors je ne devrais pas voir "La categorie \"Categorie Test\" a bien été modifiée"
+    Alors je devrais voir "Veuillez renseigner un nom"
     Lorsque je remplis "category[name]" avec "Categorie Nouveau Test"
     Et je presse "Valider"
     Alors je devrais voir "La categorie \"Categorie Nouveau Test\" a bien été modifiée"

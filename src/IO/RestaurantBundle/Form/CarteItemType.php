@@ -18,7 +18,7 @@ class CarteItemType extends AbstractType
         
         $builder
                 ->add('name', 'text', array(
-                    'label' => 'Nom de la catégorie',
+                    'label' => 'Nom',
                     'attr' => array('class' => 'form-control'),
                     'constraints' => new \Symfony\Component\Validator\Constraints\NotBlank(array(
                         'message' => 'Veuillez renseigner un nom',

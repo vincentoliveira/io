@@ -3,6 +3,7 @@
 namespace IO\UserBundle\Tests\Controller;
 
 use IO\DefaultBundle\Tests\IOTestCase;
+use IO\UserBundle\Entity\User;
 
 class ApiControllerTest extends IOTestCase
 {
@@ -13,7 +14,7 @@ class ApiControllerTest extends IOTestCase
 
         $user = $this->em->getRepository('IOUserBundle:User')->findOneByUsername('usertest');
         if ($user === null) {
-            $user = new IO\UserBundle\Entity\User();
+            $user = new User();
             $user->setUsername('usertest');
             $user->setEmail('usertest@io.fr');
             $user->setPlainPassword('usertest');

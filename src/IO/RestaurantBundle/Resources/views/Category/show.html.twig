@@ -19,17 +19,32 @@
     
 </div>
 
-<a href="#" role="button" class="btn btn-primary btn-trans" title="Ajouter un plat"><i class="fa fa-plus"></i> Ajouter un plat</a>
+<a href="{{ path('dish_new', {parent:entity.id}) }}" role="button" class="btn btn-primary btn-trans" title="Ajouter un plat"><i class="fa fa-plus"></i> Ajouter un plat</a>
 <a href="{{ path('category_new', {parent:entity.id}) }}" role="button" class="btn btn-primary btn-trans" title="Ajouter une sous-catégorie"><i class="fa fa-plus"></i> Ajouter une sous-catégorie</a>
 
 <div class="dishes list-group">
     {% for child in entity.children %}
-        {% if child.itemType|itemType == 'category' %}
+        {% if child.itemType == 'CATEGORY' %}
         <div>
-            <a href="{{ path('category_show', {id:child.id}) }}" title="Voir {{ child.name|raw }}">
-                <strong>{{ child.name }}</strong>
-                <span>{{ child.description|raw }}</span>
+            <a href="{{ path('category_edit', {id:child.id}) }}" title="Modifier {{ child.name|raw }}">
+                <i class="fa fa-edit"></i>
             </a>
+            <a href="{{ path('category_delete', {id:child.id}) }}" title="Supprimer {{ child.name|raw }}">
+                <i class="fa fa-trash-o"></i>
+            </a>
+            <strong>{{ child.name }}</strong>
+            <span>{{ child.description|raw }}</span>
+        </div>
+        {% elseif child.itemType == 'DISH' %}
+        <div>
+            <a href="{{ path('dish_edit', {id:child.id}) }}" title="Modifier {{ child.name|raw }}">
+                <i class="fa fa-edit"></i>
+            </a>
+            <a href="{{ path('dish_delete', {id:child.id}) }}" title="Supprimer {{ child.name|raw }}">
+                <i class="fa fa-trash-o"></i>
+            </a>
+            <strong>{{ child.name }}</strong>
+            <span>{{ child.description|raw }}</span>
         </div>
         {% endif %}
     {% endfor %}

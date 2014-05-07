@@ -1,0 +1,18 @@
+{% extends "IODefaultBundle::layout.html.twig" %}
+
+{% block content %}
+    <div class="content-header">
+        <h3>Ajouter une plat</h3>
+        <div class="clearfix"></div>
+    </div>
+
+    <form class="menu-form" action="{{ path('dish_create') }}" method="POST" {{ form_enctype(form) }}>
+        {{ form_rest(form) }}
+        <div class="clearfix"></div>
+        
+        <div>
+            <button class="btn btn-primary">Ajouter</button>
+        </div>
+    </form>
+
+{% endblock %}
