@@ -7,6 +7,9 @@ use Behat\Behat\Console\BehatApplication;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
+use IO\UserBundle\Entity\User;
+use IO\RestaurantBundle\Entity\Restaurant;
+
 /**
  * Description of IOTestCase
  */
@@ -105,6 +108,69 @@ class IOTestCase extends WebTestCase
         }
     }
 
+    /**
+     * Find or create user and its restaurant
+     * @param string $username
+     * @param string $restaurantName
+     * @param string $role
+     * @return User
+     */
+    public function userExists($username, $restaurantName = null, $role = null)
+    {
+        $user = $this->em->getRepository('IOUserBundle:User')->findOneByUsername($username);
+        if ($user === null) {
+            $user = new User();
+            $user->setUsername($username);
+            $user->setEmail($username . '@io.fr');
+            $user->setPlainPassword($username);
+        }
+        
+        if ($restaurantName != null) {
+            $restaurant = $this->em->getRepository('IORestaurantBundle:Restaurant')->findOneByName($restaurantName);
+            if ($restaurant === null) {
+                $restaurant = new Restaurant();
+                $restaurant->setName($restaurantName);
+                $this->em->persist($restaurant);
+            }
+            $user->setRestaurant($restaurant);
+        }
+        
+        if ($role != null) {
+            $user->addRole($role);
+        }
+        
+        $this->em->persist($user);
+        $this->em->flush();
+        
+        return $user;
+    }
+
+    /**
+     * Generate Wsse token
+     * 
+     * @param String $username
+     * @param String $password
+     * @param String $timestamp
+     * @param String $nonce
+     * @return String
+     */
+    protected function generateWsseToken($username, $password = null, $timestamp = null, $nonce = null)
+    {
+        if ($password === null) {
+            $user = $this->em->getRepository('IOUserBundle:User')->findOneByUsername($username);
+            $password = $user->getPassword();
+        }
+        
+        if ($timestamp === null) {
+            $timestamp = gmdate('Y-m-d\TH:i:s\Z');
+        }
+        if ($nonce === null) {
+            $nonce = mt_rand();
+        }
+
+        $digest = base64_encode(sha1($nonce . $timestamp . $password, true));
+        return sprintf('UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"', $username, $digest, base64_encode($nonce), $timestamp);
+    }
 
 }
 
