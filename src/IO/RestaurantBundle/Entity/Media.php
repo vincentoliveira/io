@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
  */
-class Media
+class Media implements CarteItemElement
 {
     /**
      * @var integer
@@ -41,6 +41,16 @@ class Media
      * @var \Symfony\Component\HttpFoundation\File\UploadedFile 
      */
     private $file;
+
+    /**
+     * Accept Carte Item Visitor
+     * 
+     * @param \IO\RestaurantBundle\Service\Visitor\CarteItemVisitor $visitor
+     */
+    public function accept(\IO\RestaurantBundle\Service\Visitor\CarteItemVisitor $visitor)
+    {
+        $visitor->visitMedia($this);
+    }
     
     /**
      * Set file

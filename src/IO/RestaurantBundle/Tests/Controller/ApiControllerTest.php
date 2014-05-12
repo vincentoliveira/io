@@ -62,11 +62,13 @@ class ApiControllerTest extends IOTestCase
                 ),
                 array('carte' => array(
                         array(
+                            'id' => 1,
                             'name' => 'Caterory1',
                             'description' => '',
                             'type' => \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_CATEGORY,
                             'children' => array(
                                 array(
+                                    'id' => 2,
                                     'name' => 'Dish1',
                                     'description' => '',
                                     'type' => \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_DISH,
