@@ -9,6 +9,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 use IO\UserBundle\Entity\User;
 use IO\RestaurantBundle\Entity\Restaurant;
+use IO\RestaurantBundle\Entity\CarteItem;
 
 /**
  * Description of IOTestCase
@@ -186,5 +187,32 @@ class IOTestCase extends WebTestCase
         return sprintf('UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"', $username, $digest, base64_encode($nonce), $timestamp);
     }
 
+    /**
+     * Insert carte items into database
+     * 
+     * @param array $items
+     */
+    protected function insertCarteItems(array $items)
+    {        
+        $restaurantRepository = $this->em->getRepository('IORestaurantBundle:Restaurant');
+
+        $itemList = array();
+        foreach ($items as $key => $data) {
+            $item = new CarteItem();
+            foreach ($data as $field => $value) {
+                $setter = 'set' . ucfirst($field);
+                if ($field === 'parent') {
+                    $value = $itemList[$value];
+                } elseif ($field === 'restaurant') {
+                    $value = $restaurantRepository->findOneByName($value);
+                }
+                $item->{$setter}($value);
+            }
+            $this->em->persist($item);
+            $itemList[$key] = $item;
+        }
+        $this->em->flush();
+    }
+    
 }
 

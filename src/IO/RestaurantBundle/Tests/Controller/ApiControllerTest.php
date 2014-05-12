@@ -6,11 +6,16 @@ use IO\DefaultBundle\Tests\IOTestCase;
 
 class ApiControllerTest extends IOTestCase
 {
-
+    /**
+     * @var \IO\RestaurantBundle\Entity\Restaurant
+     */
+    protected $restaurant;
+    
     public function setUp()
     {
         parent::setUp();
         
+        $this->truncate('IORestaurantBundle:CarteItem');
         $this->userExists('tablette', 'restaurantTest', 'ROLE_TABLETTE');
     }
 
@@ -19,6 +24,8 @@ class ApiControllerTest extends IOTestCase
      */
     public function testCarteWS($data, $expected)
     {
+        $this->insertCarteItems($data);
+        
         $headers = array('HTTP_X_WSSE' => $this->generateWsseToken('tablette'));
         $this->client->request('GET', '/api/restaurant/carte', array(), array(), $headers);
         
@@ -28,10 +35,44 @@ class ApiControllerTest extends IOTestCase
     
     public function carteWSDataProvider()
     {
+        
         return array(
             array(
                 array(),
                 array('carte' => array()),
+            ),
+            array(
+                array(
+                    'c1' => array(
+                        'restaurant' => 'restaurantTest',
+                        'visible' => true,
+                        'itemType' => \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_CATEGORY,
+                        'name' => 'Caterory1',
+                    ),
+                    'p1' => array(
+                        'restaurant' => 'restaurantTest',
+                        'visible' => true,
+                        'itemType' => \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_DISH,
+                        'name' => 'Dish1',
+                        'price' => 5,
+                        'vat' => 10,
+                        'parent' => 'c1',
+                    ),
+                ),
+                array('carte' => array(
+                    array(
+                        'name' => 'Caterory1',
+                        'description' => '',
+                        'type' => \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_CATEGORY,
+                        'children' => array(
+                            'name' => 'Dish1',
+                            'description' => '',
+                            'type' => \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_DISH,
+                            'price' => 5,
+                            'vat' => 10,
+                        )
+                    )
+                )),
             ),
         );
     }
