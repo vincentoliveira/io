@@ -10,6 +10,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use IO\UserBundle\Entity\User;
 use IO\RestaurantBundle\Entity\Restaurant;
 use IO\RestaurantBundle\Entity\CarteItem;
+use IO\RestaurantBundle\Entity\Media;
 
 /**
  * Description of IOTestCase
@@ -197,6 +198,7 @@ class IOTestCase extends WebTestCase
         $restaurantRepository = $this->em->getRepository('IORestaurantBundle:Restaurant');
 
         $itemList = array();
+        $mediaList = array();
         foreach ($items as $key => $data) {
             $item = new CarteItem();
             foreach ($data as $field => $value) {
@@ -205,6 +207,15 @@ class IOTestCase extends WebTestCase
                     $value = $itemList[$value];
                 } elseif ($field === 'restaurant') {
                     $value = $restaurantRepository->findOneByName($value);
+                } elseif ($field === 'media') {
+                    if (isset($mediaList[$value])) {
+                        $value = $mediaList[$value];
+                    } else {
+                        $media = new Media();
+                        $media->setPath($value);
+                        $this->em->persist($media);
+                        $value = $media;
+                    }
                 }
                 $item->{$setter}($value);
             }
