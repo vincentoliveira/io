@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="carte_item")
  * @ORM\Entity(repositoryClass="IO\RestaurantBundle\Repository\CarteItemRepository")
  */
-class CarteItem
+class CarteItem implements CarteItemElement
 {
     /**
      * @var integer
@@ -101,6 +101,20 @@ class CarteItem
      * @ORM\Column(name="position", type="integer", nullable=true)
      */
     private $position;
+
+    /**
+     * Accept Carte Item Visitor
+     * 
+     * @param \IO\RestaurantBundle\Service\Visitor\CarteItemVisitor $visitor
+     */
+    public function accept(\IO\RestaurantBundle\Service\Visitor\CarteItemVisitor $visitor)
+    {
+        if ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_CATEGORY) {
+            return $visitor->visitCategory($this);
+        } elseif ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_DISH) {
+            return $visitor->visitDish($this);
+        }
+    }
     
     /**
      * Constructor

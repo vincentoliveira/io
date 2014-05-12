@@ -32,7 +32,7 @@ class CategoryController extends CarteItemController
      * User Service
      * 
      * @Inject("io.media_service")
-     * @var \IO\UserBundle\Service\MediaService
+     * @var \IO\RestaurantBundle\Service\MediaService
      */
     public $mediaSv;
     

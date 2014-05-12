@@ -10,7 +10,7 @@ use IO\RestaurantBundle\Entity\CarteItem;
 use IO\RestaurantBundle\Entity\Media;
 
 /**
- * User Service
+ * Media Service
  * 
  * @Service("io.media_service")
  */

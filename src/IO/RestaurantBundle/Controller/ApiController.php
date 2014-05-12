@@ -15,6 +15,23 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
  */
 class ApiController extends Controller
 {
+    
+    /**
+     * User Service
+     * 
+     * @Inject("io.user_service")
+     * @var \IO\UserBundle\Service\UserService
+     */
+    public $userSv;
+    
+    /**
+     * CarteItem Service
+     * 
+     * @Inject("io.carte_item_service")
+     * @var \IO\RestaurantBundle\Service\CarteItemService
+     */
+    public $carteItemSv;
+    
     /**
      * Admin restaurant index
      * 
@@ -24,7 +41,8 @@ class ApiController extends Controller
      */
     public function getCarteAction()
     {
-        $carte = array();
+        $restaurant = $this->userSv->getUserRestaurant(); 
+        $carte = $this->carteItemSv->getCarte($restaurant);
         return new JsonResponse(array('carte' => $carte));
     }
 }
