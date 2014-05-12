@@ -49,7 +49,7 @@ class Media implements CarteItemElement
      */
     public function accept(\IO\RestaurantBundle\Service\Visitor\CarteItemVisitor $visitor)
     {
-        $visitor->visitMedia($this);
+        return $visitor->visitMedia($this);
     }
     
     /**
