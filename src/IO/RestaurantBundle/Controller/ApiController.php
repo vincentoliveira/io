@@ -7,11 +7,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use JMS\DiExtraBundle\Annotation\Inject;
 
 /**
  * Description of ApiController
  * 
- * @Route("/api/restaurant")
+ * @Route("/api")
  */
 class ApiController extends Controller
 {
