@@ -146,6 +146,20 @@ class IOTestCase extends WebTestCase
     }
 
     /**
+     * Find and delete a user
+     * 
+     * @param string $username
+     * @return User
+     */
+    public function userDoesNotExists($username)
+    {
+        $user = $this->em->getRepository('IOUserBundle:User')->findOneByUsername($username);
+        if ($user !== null) {
+            $this->em->remove($user);
+            $this->em->flush();
+        }
+    }
+    /**
      * Generate Wsse token
      * 
      * @param String $username

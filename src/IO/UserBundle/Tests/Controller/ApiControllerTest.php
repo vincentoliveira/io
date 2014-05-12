@@ -13,6 +13,27 @@ class ApiControllerTest extends IOTestCase
         $this->userExists('usertest');
     }
     
+    public function testGetSaltUserDoesNotExist()
+    {
+        $this->userDoesNotExists('usertesttest');
+        
+        $expected = array('status' => 'ko');
+        $this->client->request('GET', '/api/salt?username=usertesttest');
+        
+        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals($expected, $result);
+    }
+    
+    public function testGetSaltUserExists()
+    {
+        $user = $this->em->getRepository('IOUserBundle:User')->findOneByUsername('usertest');
+        $expected = array('status' => 'ok', 'salt' => $user->getSalt());
+        $this->client->request('GET', '/api/salt?username=usertest');
+        
+        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals($expected, $result);
+    }
+    
     public function testWsseAuthNoToken()
     {
         $expected = array('status' => 'ok', 'login' => false, 'reason' => 'Bad token');

@@ -25,6 +25,9 @@ Scénario: C2.1 -  Création/modification/suppression d'un plat
     Et je presse "Ajouter"
     Alors je devrais voir "Veuillez renseigner un nom"
     Lorsque je remplis "dish[name]" avec "Plat Test"
+    Et je remplis "dish[description]" avec "Délicieux plat à déguster"
+    Et je remplis "dish[price]" avec "12.50"
+    Et je remplis "dish[vat]" avec "10.0"
     Et je presse "Ajouter"
     Alors je devrais voir "Le plat \"Plat Test\" a bien été ajouté"
 
@@ -32,6 +35,7 @@ Scénario: C2.1 -  Création/modification/suppression d'un plat
     Soit je suis sur la page d'accueil
     Et je suis "Categorie Test"
     Alors je devrais voir "Plat Test"
+    Et je devrais voir "Délicieux plat à déguster"
     Soit je suis "Modifier Plat Test"
     Lorsque je remplis "dish[name]" avec ""
     Et je presse "Valider"

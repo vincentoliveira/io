@@ -26,7 +26,7 @@ class APIController extends Controller
      */
     public function saltAction(Request $request)
     {
-        $username = $request->query->get('restaurant');
+        $username = $request->query->get('username');
         if ($username === null) {
             return new JsonResponse(array('status' => 'ko'));
         }
