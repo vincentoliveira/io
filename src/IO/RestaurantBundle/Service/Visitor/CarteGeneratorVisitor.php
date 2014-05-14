@@ -29,7 +29,10 @@ class CarteGeneratorVisitor implements CarteItemVisitor
         }
         
         foreach ($category->getChildren() as $child) {
-            $result['children'][] = $child->accept($this);
+            $item = $child->accept($this);
+            if ($item !== null) {
+                $result['children'][] = $item;
+            }
         }
         
         return $result;
@@ -58,7 +61,10 @@ class CarteGeneratorVisitor implements CarteItemVisitor
         );
         
         if ($dish->getMedia()) {
-            $result['media'] = $dish->getMedia()->accept($this);
+            $media = $dish->getMedia()->accept($this);
+            if ($media !== null) {
+                $result['media'] = $media;
+            }
         }
         
         return $result;

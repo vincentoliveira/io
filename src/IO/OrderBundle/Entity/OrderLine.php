@@ -57,7 +57,7 @@ class OrderLine
      *
      * @ORM\Column(name="item_vat", type="decimal", precision=7, scale=2, nullable=true)
      */
-    private $vatPrice;
+    private $setItemVat;
 
 
     /**
@@ -117,26 +117,26 @@ class OrderLine
     }
 
     /**
-     * Set vatPrice
+     * Set itemVat
      *
-     * @param float $vatPrice
+     * @param float $itemVat
      * @return OrderLine
      */
-    public function setVatPrice($vatPrice)
+    public function setItemVat($itemVat)
     {
-        $this->vatPrice = $vatPrice;
+        $this->itemVat = $itemVat;
     
         return $this;
     }
 
     /**
-     * Get vatPrice
+     * Get itemVat
      *
      * @return float 
      */
-    public function getVatPrice()
+    public function getItemVat()
     {
-        return $this->vatPrice;
+        return $this->itemVat;
     }
 
     /**

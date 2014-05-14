@@ -37,7 +37,7 @@ class ApiController extends Controller
      * Admin restaurant index
      * 
      * @return type
-     * @Route("/carte", name="restaurant_api_get_carte")
+     * @Route("/carte.json", name="restaurant_api_get_carte")
      * @Secure(roles="ROLE_TABLETTE")
      */
     public function getCarteAction()

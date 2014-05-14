@@ -44,7 +44,10 @@ class CarteItemService
         $carte = array();
         $visitor = new Visitor\CarteGeneratorVisitor();
         foreach ($categories as $category) {
-            $carte[] = $category->accept($visitor);
+            $item = $category->accept($visitor);
+            if ($item !== null) {
+                $carte[] = $item;
+            }
         }
         
         return $carte;

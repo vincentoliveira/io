@@ -86,6 +86,20 @@ class Order
      *
      * @return integer 
      */
+    public function getTotalPrice()
+    {
+        $price = 0;
+        foreach ($this->orderLines as $line) {
+            $price += $line->getItemPrice();
+        }
+        return $price;
+    }
+    
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
     public function getId()
     {
         return $this->id;

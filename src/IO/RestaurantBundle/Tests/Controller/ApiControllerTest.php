@@ -29,7 +29,7 @@ class ApiControllerTest extends IOTestCase
         $this->insertCarteItems($data);
 
         $headers = array('HTTP_X_WSSE' => $this->generateWsseToken('tablette'));
-        $this->client->request('GET', '/api/carte', array(), array(), $headers);
+        $this->client->request('GET', '/api/carte.json', array(), array(), $headers);
 
         $result = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertEquals($expected, $result);
@@ -41,6 +41,26 @@ class ApiControllerTest extends IOTestCase
         return array(
             array(
                 array(),
+                array('carte' => array()),
+            ),
+            array(
+                array(
+                    'c1' => array(
+                        'restaurant' => 'restaurantTest',
+                        'visible' => false,
+                        'itemType' => \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_CATEGORY,
+                        'name' => 'Caterory1',
+                    ),
+                    'p1' => array(
+                        'restaurant' => 'restaurantTest',
+                        'visible' => false,
+                        'itemType' => \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_DISH,
+                        'name' => 'Dish1',
+                        'price' => 5,
+                        'vat' => 10,
+                        'parent' => 'c1',
+                    ),
+                ),
                 array('carte' => array()),
             ),
             array(
