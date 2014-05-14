@@ -27,6 +27,7 @@ class AppKernel extends Kernel
             new IO\UserBundle\IOUserBundle(),
             new IO\RestaurantBundle\IORestaurantBundle(),
             new IO\DefaultBundle\IODefaultBundle(),
+            new IO\OrderBundle\IOOrderBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
