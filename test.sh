@@ -10,7 +10,8 @@ then
 else
     echo "Test sans couverture de code"
     echo "Pour activer la couverture: $0 cc"
-    bin/behat @IODefaultBundle $@
-    bin/behat @IORestaurantBundle $@
-    bin/behat @IOUserBundle $@
+    phpunit -c app/phpunit_nocc.xml.dist
+#    bin/behat @IODefaultBundle $@
+#    bin/behat @IORestaurantBundle $@
+#    bin/behat @IOUserBundle $@
 fi

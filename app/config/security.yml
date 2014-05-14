@@ -15,10 +15,10 @@ security:
 
     firewalls:
         wsse_secured:
-            pattern:   /api/.*
-            stateless: true
-            wsse:      { }
-            anonymous: true
+            pattern:    /api/.*
+            stateless:  true
+            wsse:       ~
+            anonymous:  true
 
         main:
             pattern: ^/
