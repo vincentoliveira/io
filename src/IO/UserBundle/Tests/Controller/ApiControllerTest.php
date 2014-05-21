@@ -17,8 +17,8 @@ class ApiControllerTest extends IOTestCase
     {
         $this->userDoesNotExists('usertesttest');
         
-        $expected = array('status' => 'ko');
-        $this->client->request('GET', '/api/salt?username=usertesttest');
+        $expected = array('salt' => null);
+        $this->client->request('GET', '/api/salt.json?username=usertesttest');
         
         $result = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertEquals($expected, $result);
@@ -27,8 +27,8 @@ class ApiControllerTest extends IOTestCase
     public function testGetSaltUserExists()
     {
         $user = $this->em->getRepository('IOUserBundle:User')->findOneByUsername('usertest');
-        $expected = array('status' => 'ok', 'salt' => $user->getSalt());
-        $this->client->request('GET', '/api/salt?username=usertest');
+        $expected = array('salt' => $user->getSalt());
+        $this->client->request('GET', '/api/salt.json?username=usertest');
         
         $result = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertEquals($expected, $result);
@@ -36,7 +36,7 @@ class ApiControllerTest extends IOTestCase
     
     public function testWsseAuthNoToken()
     {
-        $expected = array('status' => 'ok', 'login' => false, 'reason' => 'Bad token');
+        $expected = array('login' => false, 'reason' => 'Bad token');
         $this->client->request('GET', '/api/check_login');
         
         $result = json_decode($this->client->getResponse()->getContent(), true);
@@ -60,25 +60,25 @@ class ApiControllerTest extends IOTestCase
         $nonUniqNonce = mt_rand();
         return array(
             array(
-                array('status' => 'ok', 'login' => true),
+                array('login' => true),
             ),
             array(
-                array('status' => 'ok', 'login' => false, 'reason' => 'Bad token'),
+                array('login' => false, 'reason' => 'Bad token'),
                 'aze',
             ),
             array(
-                array('status' => 'ok', 'login' => false, 'reason' => 'Bad token'),
+                array('login' => false, 'reason' => 'Bad token'),
                 null,
                 '2012-01-01T12:34:56Z',
             ),
             array(
-                array('status' => 'ok', 'login' => true),
+                array('login' => true),
                 null,
                 null,
                 $nonUniqNonce,
             ),
             array(
-                array('status' => 'ok', 'login' => false, 'reason' => 'Bad token'),
+                array('login' => false, 'reason' => 'Bad token'),
                 null,
                 null,
                 $nonUniqNonce,

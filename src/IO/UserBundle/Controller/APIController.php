@@ -22,24 +22,23 @@ class APIController extends Controller
      * - <strong>GET</strong> <em>username</em>
      * 
      * @return JsonResponse
-     * @Route("/salt", name="api_get_salt")
+     * @Route("/salt.json", name="api_get_salt")
      */
     public function saltAction(Request $request)
     {
         $username = $request->query->get('username');
         if ($username === null) {
-            return new JsonResponse(array('status' => 'ko'));
+            return new JsonResponse(array('salt' => null));
         }
         
         $user = $this->getDoctrine()
                 ->getRepository('IOUserBundle:User')
                 ->findOneByUsername($username);
-        
         if ($user === null) {
-            return new JsonResponse(array('status' => 'ko'));
+            return new JsonResponse(array('salt' => null));
         }
         
-        return new JsonResponse(array('status' => 'ok', 'salt' => $user->getSalt()));
+        return new JsonResponse(array('salt' => $user->getSalt()));
     }
     
     
@@ -48,20 +47,20 @@ class APIController extends Controller
      * WSSE : <strong>ON</strong>
      * 
      * @return JsonResponse
-     * @Route("/check_login", name="api_check_login")
+     * @Route("/check_login.json", name="api_check_login")
      */
     public function checkLoginAction()
     {
         $token = $this->container->get('security.context')->getToken();
         if ($token === null) {
-            return new JsonResponse(array('status' => 'ok', 'login' => false, 'reason' => 'No token'));
+            return new JsonResponse(array('login' => false, 'reason' => 'No token'));
         }
         
         $user = $token->getUser();
         if ($user === null || !$user instanceof \IO\UserBundle\Entity\User) {
-            return new JsonResponse(array('status' => 'ok', 'login' => false, 'reason' => 'Bad token'));
+            return new JsonResponse(array('login' => false, 'reason' => 'Bad token'));
         }
         
-        return new JsonResponse(array('status' => 'ok', 'login' => true));
+        return new JsonResponse(array('login' => true));
     }
 }
