@@ -5,7 +5,7 @@ security:
           iterations: 742
 
     role_hierarchy:
-        ROLE_RESTAURATEUR:  ROLE_CUISINIER, ROLE_SERVEUR, ROLE_TABLETTE
+        ROLE_MANAGER:       ROLE_CUISINIER, ROLE_SERVEUR, ROLE_TABLETTE
         ROLE_ADMIN:         ROLE_ALLOWED_TO_SWITCH
         ROLE_SUPER_ADMIN:   ROLE_ADMIN
 
