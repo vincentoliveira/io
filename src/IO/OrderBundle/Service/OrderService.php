@@ -25,6 +25,23 @@ class OrderService
      */
     public $em;
 
+    /**
+     * process order from data
+     * 
+     * @param array $data
+     * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
+     * @return \IO\OrderBundle\Entity\Order
+     */
+    public function getCurrentOrders(Restaurant $restaurant)
+    {
+        $repo = $this->em->getRepository('IOOrderBundle:Order');
+        $orders = $repo->findBy(array(
+            'restaurant' => $restaurant,
+            'status' => array(OrderStatusEnum::STATUS_WAITING, OrderStatusEnum::STATUS_IN_PROGRESS),
+        ));
+                
+        return $orders;
+    }
     
     /**
      * process order from data
@@ -41,8 +58,16 @@ class OrderService
         $order->setOrderDate(new \DateTime());
         $order->setStatus(OrderStatusEnum::STATUS_WAITING);
         
+        if (isset($data['name'])) {
+            $order->setTableName($data['name']);
+        }
+        
+        if (isset($data['start_date'])) {
+            $order->setStartDate(\DateTime::createFromFormat('Y-m-d H:i:s', $data['start_date']));
+        }
+        
         $repo = $this->em->getRepository('IORestaurantBundle:CarteItem');
-        foreach ($data as $itemData) {
+        foreach ($data['items'] as $itemData) {
             $item = $repo->find($itemData['id']);
             if ($item !== null || $item->getRestaurant() !== $restaurant) {
                 $orderLine = new OrderLine();

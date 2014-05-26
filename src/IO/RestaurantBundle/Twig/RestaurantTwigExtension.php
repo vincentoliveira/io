@@ -8,6 +8,7 @@ use JMS\DiExtraBundle\Annotation\Service;
 use JMS\DiExtraBundle\Annotation\Inject;
 use JMS\DiExtraBundle\Annotation\Tag;
 use IO\RestaurantBundle\Enum\ItemTypeEnum;
+use IO\RestaurantBundle\Entity\Media;
 
 /**
  * Restaurant TwigExtension
@@ -32,6 +33,14 @@ class RestaurantTwigExtension extends \Twig_Extension
      * @var EntityManager
      */
     public $entityManger;
+
+    /**
+     * User Service
+     * 
+     * @Inject("io.media_service")
+     * @var \IO\RestaurantBundle\Service\MediaService
+     */
+    public $mediaSv;
     
     /**
      * {@inheritdoc}
@@ -39,6 +48,12 @@ class RestaurantTwigExtension extends \Twig_Extension
     public function getFunctions() {
         return array(
             'restaurantCategories' => new \Twig_SimpleFunction('restaurantCategories', array($this, 'restaurantCategoriesFunction')),
+        );
+    }
+    
+    public function getFilters() {
+        return array(
+            'media' => new \Twig_SimpleFilter('media', array($this, 'mediaFilter')),
         );
     }
     
@@ -52,6 +67,17 @@ class RestaurantTwigExtension extends \Twig_Extension
         $repositorty = $this->entityManger->getRepository('IORestaurantBundle:CarteItem');
         
         return $repositorty->getRestaurantMainCategory($restaurant->getId());
+    }
+    
+    
+    /**
+     * Return web path of media
+     * 
+     * @return array
+     */
+    public function mediaFilter(Media $media)
+    {
+        return $this->mediaSv->getWebPath($media);
     }
     
     /**

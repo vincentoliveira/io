@@ -88,6 +88,17 @@ class MediaService
         return $this->getUploadDir() . $media->getPath();
     }
     
+    /**
+     * Get web path of a media
+     * 
+     * @param \FJ\MainBundle\Entity\Media $media
+     * @return string
+     */
+    public function getWebPath(Media $media)
+    {
+        return 'media/' . $media->getPath();
+    }
+    
     protected function getUploadDir()
     {
         return $this->kernel->getRootDir() . '/../web/media/';

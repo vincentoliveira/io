@@ -74,7 +74,7 @@ class ApiControllerTest extends IOTestCase
                 array('error' => 'Bad data'),
             ),
             array(
-                array(array('id' => 2)),
+                array('items' => array('id' => 2)),
                 array('order' => array(
                     'id' => 1,
                     'status' => 'WAITING',

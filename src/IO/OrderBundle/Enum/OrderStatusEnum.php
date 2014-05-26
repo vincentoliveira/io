@@ -8,6 +8,6 @@ namespace IO\OrderBundle\Enum;
 class OrderStatusEnum
 {
     const STATUS_WAITING = 'WAITING';
-    const STATUS_SERVED = 'SERVED';
+    const STATUS_IN_PROGRESS = 'IN_PROGRESS';
     const STATUS_PAYED = 'PAYED';
 }

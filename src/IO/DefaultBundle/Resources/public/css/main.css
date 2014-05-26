@@ -14,13 +14,12 @@ a.btn-danger { color: #fff; }
 .menu-form .btn { margin: 20px 0 0; }
 
 
-.dish { clear: both; padding: 10px 2px; height: 100px; }
-.dish:hover { background-color:#ddd; }
-.dish img { float: left; width: 100px; height: 100px; }
-.dish a { float: right; vertical-align: middle; }
-.dish strong, .dish em, .dish span { margin: 0 150px; display: block; }
-.dish span { margin: 10px 150px 0; }
-.dish .glyphicon-edit { margin: 0; }
+.dish, .category { clear: both; padding: 10px 2px; height: 100px; }
+.dish:hover, .category:hover { background-color:#ddd; }
+.dish img, .category img { float: left; width: 80px; height: 80px; }
+.dish a, .category a { float: right; vertical-align: middle; }
+.dish strong, .dish em, .dish span, .category strong, .category span, .category em { margin: 0 150px; display: block; }
+.dish span, .category span { margin: 10px 150px 0; }
 
 .btn-dish { width: 140px; }
 .btn-dish img { margin: 0px 5px; width: 100px; height: 100px; display: block; }
@@ -34,6 +33,11 @@ a.btn-danger { color: #fff; }
 .order ul.lines em { float: right; }
 
 .panel-info .panel-heading a { color:#31708f; }
+
+.order { width: 200px; float: left; background-color: #f5f5f5; padding: 5px; border: 1px solid #1abc9c; margin: 2px; }
+.order ul { list-style-type: none; margin-top: 5px; }
+.order em { float: right; }
+.order .total { font-weight: bold; }
 
 /*
 .category .list-group-item { border: none; }

@@ -26,7 +26,7 @@ class Order
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="status", type="integer", nullable=true)
+     * @ORM\Column(name="status", type="string", nullable=false)
      */
     private $status;
 
@@ -48,9 +48,9 @@ class Order
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="table_start_date", type="datetime", nullable=true)
+     * @ORM\Column(name="start_date", type="datetime", nullable=true)
      */
-    private $tableStartDate;
+    private $startDate;
 
     /**
      * @var \DateTime
@@ -152,26 +152,26 @@ class Order
     }
 
     /**
-     * Set tableStartDate
+     * Set startDate
      *
-     * @param \DateTime $tableStartDate
+     * @param \DateTime $startDate
      * @return Order
      */
-    public function setTableStartDate($tableStartDate)
+    public function setStartDate($startDate)
     {
-        $this->tableStartDate = $tableStartDate;
+        $this->startDate = $startDate;
     
         return $this;
     }
 
     /**
-     * Get tableStartDate
+     * Get startDate
      *
      * @return \DateTime 
      */
-    public function getTableStartDate()
+    public function getStartDate()
     {
-        return $this->tableStartDate;
+        return $this->startDate;
     }
 
     /**

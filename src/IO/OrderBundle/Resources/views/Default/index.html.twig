@@ -1,5 +1,31 @@
 {% extends "IODefaultBundle::layout.html.twig" %}
 
 {% block content %}
-    Hello World!
+
+    <div class="content-header">
+        <h3>Commandes</h3>
+        <span class="actionbar">
+            <a class="btn btn-primary" href="#" title="Nouvelle commande"><i class="fa fa-plus"></i> </a>
+        </span>
+        <div class="clearfix"></div>
+    </div>
+
+<div class="order-list">
+    {% for order in orders %}
+    <div class="order">
+        <h3>{{ order.tableName }}</h3>
+        <strong>{{ order.status }}</strong>
+        <em>{{ order.orderDate|date('h:i') }}</em>
+        <ul>
+            {% for orderLine in order.orderLines %}
+            <li>{{ orderLine.itemShortName }} <em>{{ orderLine.itemPrice }}€</em></li>
+            {% endfor %}
+            <li class="total">Total <em>{{ order.totalPrice }}€</em></li>
+        </ul>
+        <a href="#" class="btn btn-default">Modifier</a>
+        <a href="#" class="btn btn-primary">Terminer</a>
+    </div>
+    {% endfor %}
+</div>
+
 {% endblock %}
