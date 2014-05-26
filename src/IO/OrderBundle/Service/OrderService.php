@@ -75,9 +75,8 @@ class OrderService
                 $orderLine->setItemPrice($item->getPrice());
                 $orderLine->setItemVat($item->getVat());
                 $orderLine->setItemShortName($item->getName());
+                $orderLine->setOrder($order);
                 $this->em->persist($orderLine);
-                
-                $order->addOrderLine($orderLine);
             }
         }
         
