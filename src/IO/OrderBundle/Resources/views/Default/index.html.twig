@@ -22,7 +22,6 @@
             {% endfor %}
             <li class="total">Total <em>{{ order.totalPrice }}€</em></li>
         </ul>
-        <a href="#" class="btn btn-default">Modifier</a>
         {% if order.status == "WAITING" %}
         <a href="{{ path('order_accept', {id:order.id}) }}" class="btn btn-primary">OK</a>
         {% else %}

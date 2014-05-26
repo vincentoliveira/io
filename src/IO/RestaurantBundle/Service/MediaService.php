@@ -16,6 +16,7 @@ use IO\RestaurantBundle\Entity\Media;
  */
 class MediaService
 {
+    const PICTURE_MAX_WIDTH = 600;
 
     protected static $acceptedMimeType = array(
         'jpeg' => 'image/jpeg',
@@ -66,7 +67,7 @@ class MediaService
         
         $tmpPath = tempnam($uploadDir, '');
         $dstPath = $tmpPath . '.' . $file->guessExtension();
-        copy($file->getPathName(), $dstPath);
+        $this->resizeImage($dstPath, $file->getPathName(), self::PICTURE_MAX_WIDTH);
         unlink($tmpPath);
         
         $media->setPath(basename($dstPath));
@@ -112,5 +113,72 @@ class MediaService
     protected function mimeTypeIsValid($mimeType)
     {
         return in_array($mimeType, self::$acceptedMimeType);
+    }
+    
+    /**
+     * Permet de créer les vignettes à chaque upload d'image
+     * 
+     * @param string $srcImagePath  Chemin d'accès à l'image originale (sur le serveur)
+     * @param string $dstImagePath  Chemin de destination de l'image redimensionné (sur le serveur)
+     * @param string $maxWidth      Largeur de l'image voulue
+     * @param string $maxHeight     Hauteur de l'image voulue (facultatif)
+     * @param bool   $getSizes      If true, just return sizes, else do the job
+     * 
+     * @return boolean
+     */
+    protected function resizeImage($srcImagePath, $dstImagePath, $maxWidth = null, $maxHeight = null)
+    {
+        if (empty($srcImagePath) || !file_exists($srcImagePath) || is_dir($srcImagePath) || empty($maxWidth)) {
+            return false;
+        }
+
+        list($srcImageWidth, $srcImageHeight, $source_image_type) = getimagesize($srcImagePath);
+        switch ($source_image_type) {
+            case IMAGETYPE_GIF:
+                $srcGdImage = imagecreatefromgif($srcImagePath);
+                break;
+            case IMAGETYPE_JPEG:
+                $srcGdImage = imagecreatefromjpeg($srcImagePath);
+                break;
+            case IMAGETYPE_PNG:
+                $srcGdImage = imagecreatefrompng($srcImagePath);
+                break;
+        }
+        if (!isset($srcGdImage) || $srcGdImage === false) {
+            return false;
+        }
+
+        $thumbnailImageWith = $maxWidth;
+        if ($maxHeight != null) {
+            $thumbnailImageHeight = $maxHeight;
+        } else {
+            $thumbnailImageHeight = (int) ($srcImageHeight * $maxWidth / $srcImageWidth );
+        }
+
+        if ($thumbnailImageWith >= $srcImageWidth || $thumbnailImageHeight >= $srcImageHeight) {
+            copy($srcImagePath, $dstImagePath);
+            return;
+        }
+
+        $thumbnailGdImage = imagecreatetruecolor($thumbnailImageWith, $thumbnailImageHeight);
+        imagealphablending($thumbnailGdImage, false);
+        imagesavealpha($thumbnailGdImage, true);
+        imagecopyresampled($thumbnailGdImage, $srcGdImage, 0, 0, 0, 0, $thumbnailImageWith, $thumbnailImageHeight, $srcImageWidth, $srcImageHeight);
+
+        switch ($source_image_type) {
+            case IMAGETYPE_GIF:
+                imagegif($thumbnailGdImage, $dstImagePath);
+                break;
+            case IMAGETYPE_JPEG:
+                imagejpeg($thumbnailGdImage, $dstImagePath, 90);
+                break;
+            case IMAGETYPE_PNG:
+                imagepng($thumbnailGdImage, $dstImagePath, 0);
+                break;
+        }
+        imagedestroy($srcGdImage);
+        imagedestroy($thumbnailGdImage);
+
+        return true;
     }
 }
