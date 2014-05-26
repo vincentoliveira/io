@@ -67,7 +67,8 @@ class MediaService
         
         $tmpPath = tempnam($uploadDir, '');
         $dstPath = $tmpPath . '.' . $file->guessExtension();
-        $this->resizeImage($dstPath, $file->getPathName(), self::PICTURE_MAX_WIDTH);
+        copy($file->getPathName(), $dstPath);
+        $this->resizeImage($file->getPathName(), $dstPath, self::PICTURE_MAX_WIDTH);
         unlink($tmpPath);
         
         $media->setPath(basename($dstPath));
