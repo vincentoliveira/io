@@ -10,25 +10,8 @@
         <div class="clearfix"></div>
     </div>
 
-<div class="order-list">
-    {% for order in orders %}
-    <div class="order {% if order.status == "WAITING" %}order-waiting{% endif %}">
-        <h3>{{ order.tableName }}</h3>
-        <strong>{{ order.status }}</strong>
-        <em>{{ order.orderDate|date('h:i') }}</em>
-        <ul>
-            {% for orderLine in order.orderLines %}
-            <li>{{ orderLine.itemShortName }} <em>{{ orderLine.itemPrice }}€</em></li>
-            {% endfor %}
-            <li class="total">Total <em>{{ order.totalPrice }}€</em></li>
-        </ul>
-        {% if order.status == "WAITING" %}
-        <a href="{{ path('order_accept', {id:order.id}) }}" class="btn btn-primary">OK</a>
-        {% else %}
-        <a href="{{ path('order_payed', {id:order.id}) }}" class="btn btn-primary">Terminer</a>
-        {% endif %}
-    </div>
-    {% endfor %}
+<div class="order-list" data-url="{{ path('order_refresh') }}" data-content="{{ app.user.restaurant.id }}">
+    {% include 'IOOrderBundle:Default:order_list.html.twig' with {orders:orders} %}
 </div>
 
 {% endblock %}

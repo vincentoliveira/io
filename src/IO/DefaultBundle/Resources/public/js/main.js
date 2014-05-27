@@ -33,7 +33,6 @@ var app = function() {
         resize();
         tooltips();
         toggleMenuLeft();
-        toggleMenuRight();
         menu();
         togglePanel();
         closePanel();
@@ -72,19 +71,7 @@ var app = function() {
             e.stopPropagation();
         });
     };
-
-    var toggleMenuRight = function() {
-        $('#toggle-right').bind('click', function(e) {
-            if (!$('.sidebar').hasClass('.sidebar-toggle')) {
-                $('.sidebar').addClass('sidebar-toggle');
-                $('.main-content-wrapper').addClass('main-content-toggle-left');
-            }
-            $('.sidebarRight').toggleClass('sidebar-toggle-right');
-            $('.main-content-wrapper').toggleClass('main-content-toggle-right');
-            e.stopPropagation();
-        });
-    };
-
+    
     var closePanel = function() {
         $('.actions > .fa-times').click(function() {
             $(this).parent().parent().parent().fadeOut();
@@ -99,7 +86,6 @@ var app = function() {
             if (!$(this).next().is(":visible")) {
                 $(this).next().slideDown();
             }
-
         });
     };
     return {
@@ -108,10 +94,26 @@ var app = function() {
     //End functions
 }();
         
+function autorefreshOrderList() {
+    var dataUrl = $(".order-list").attr("data-url");
+    var restaurantId = $(".order-list").attr("data-content");
+    $.post(dataUrl, "restaurant_id=" + restaurantId, function(data) {
+        if (data !== null) {
+            $(".order-list").empty().append(data);
+        }
+    });
+}
+        
 $(document).ready(function() {
     app.init();
     
     $('.confirm-delete').click(function(e) {
         return confirm('Etes-vous sûr de vouloir supprimer cet élément ?');
-    })
+    });
+    
+    if ($(".order-list").length) {
+        window.setInterval(autorefreshOrderList, 10000);
+    }
+    
+    //setTimeout(function(){$('.rt-clock').text()}),refresh)
 });
