@@ -114,6 +114,4 @@ $(document).ready(function() {
     if ($(".order-list").length) {
         window.setInterval(autorefreshOrderList, 10000);
     }
-    
-    //setTimeout(function(){$('.rt-clock').text()}),refresh)
 });

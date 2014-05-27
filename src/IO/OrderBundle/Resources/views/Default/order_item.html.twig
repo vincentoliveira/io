@@ -1,0 +1,16 @@
+<div class="order {% if order.status == "WAITING" %}order-waiting{% endif %}">
+    <h3>{{ order.tableName }}</h3>
+    <strong>{{ order.status }}</strong>
+    <em>{{ order.orderDate|date('h:i') }}</em>
+    <ul>
+        {% for orderLine in order.orderLines %}
+        <li>{{ orderLine.itemShortName }} <em>{{ orderLine.itemPrice }}€</em></li>
+        {% endfor %}
+        <li class="total">Total <em>{{ order.totalPrice }}€</em></li>
+    </ul>
+    {% if order.status == "WAITING" %}
+    <a href="{{ path('order_accept', {id:order.id}) }}" class="btn btn-primary">OK</a>
+    {% else %}
+    <a href="{{ path('order_payed', {id:order.id}) }}" class="btn btn-primary">Terminer</a>
+    {% endif %}
+</div>

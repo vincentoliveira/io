@@ -1,0 +1,3 @@
+{% for order in orders %}
+    {% include 'IOOrderBundle:Default:order_item.html.twig' with {order:order} %}
+{% endfor %}
