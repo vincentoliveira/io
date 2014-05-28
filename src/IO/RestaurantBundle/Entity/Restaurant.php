@@ -32,9 +32,17 @@ class Restaurant
      * @var string
      *
      * @ORM\OneToOne(targetEntity="IO\RestaurantBundle\Entity\Media", cascade={"persist"})
-     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @ORM\JoinColumn(name="logo_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private $media;
+    private $logo;
+    
+    /**
+     * @var string
+     *
+     * @ORM\OneToOne(targetEntity="IO\RestaurantBundle\Entity\Media", cascade={"persist"})
+     * @ORM\JoinColumn(name="background_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    private $background;
     
     /**
      * @var string
@@ -100,26 +108,50 @@ class Restaurant
         return $this->website;
     }
 
+
     /**
-     * Set media
+     * Set logo
      *
-     * @param \IO\RestaurantBundle\Entity\Media $media
+     * @param \IO\RestaurantBundle\Entity\Media $logo
      * @return Restaurant
      */
-    public function setMedia(\IO\RestaurantBundle\Entity\Media $media = null)
+    public function setLogo(\IO\RestaurantBundle\Entity\Media $logo = null)
     {
-        $this->media = $media;
+        $this->logo = $logo;
     
         return $this;
     }
 
     /**
-     * Get media
+     * Get logo
      *
      * @return \IO\RestaurantBundle\Entity\Media 
      */
-    public function getMedia()
+    public function getLogo()
     {
-        return $this->media;
+        return $this->logo;
+    }
+
+    /**
+     * Set background
+     *
+     * @param \IO\RestaurantBundle\Entity\Media $background
+     * @return Restaurant
+     */
+    public function setBackground(\IO\RestaurantBundle\Entity\Media $background = null)
+    {
+        $this->background = $background;
+    
+        return $this;
+    }
+
+    /**
+     * Get background
+     *
+     * @return \IO\RestaurantBundle\Entity\Media 
+     */
+    public function getBackground()
+    {
+        return $this->background;
     }
 }
