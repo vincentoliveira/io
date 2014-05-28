@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta property="og:title" content="{{ restaurant.name }} - La carte" />
         <meta property="og:site_name" content="InnovOrder - {{ restaurant.name }}" />
+        <meta property="og:type" content="article">
         <meta property="og:description" content="Venez découvrir notre nouvelle carte !" />
         <meta property="og:url" content="{{ url('carte_index', {name:restaurant.name}) }}" />
         {% if restaurant.background is not null %}
@@ -27,7 +28,10 @@
     <body>
         <div class="mainContainer">
             <h1><a href="{{ restaurant.website|default("#") }}">{% if restaurant.logo is not null %}<img src="{{ asset(restaurant.logo|media) }}" alt="{{ restaurant.name }}"/>{% else %}{{ restaurant.name }}{% endif %}</a></h1>
+            
             <div class="fb-share-button" data-href="{{ path('carte_index', {name:restaurant.name}) }}" data-type="button"></div>
+            
+            <div class="col-md-6">
             {% for item in carte %}
                 <h3>{{ item.name|upper }}</h3>
                 {% for child in item.children %}
@@ -37,8 +41,16 @@
                 </div>
                 {% endfor %}
             {% endfor %}
+            </div>
+            <div class="col-md-6">
+                <img src="asset(restaurant.background|media)" alt="" />
+            </div>
                 
+            <div class="clearfix"></div>
+            
+            <div class="footer">
                 Carte générée par <a href="http://innovorder.fr">InnovOrder</a>
+            </div>
         </div>
         
         {% javascripts 
