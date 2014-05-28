@@ -31,7 +31,7 @@
             
             <div class="fb-share-button" data-href="{{ path('carte_index', {name:restaurant.name}) }}" data-type="button"></div>
             
-            <div class="col-md-6">
+            <div>
             {% for item in carte %}
                 <h3>{{ item.name|upper }}</h3>
                 {% for child in item.children %}
@@ -41,9 +41,6 @@
                 </div>
                 {% endfor %}
             {% endfor %}
-            </div>
-            <div class="col-md-6">
-                <img src="{{ asset(restaurant.background|media) }}" alt="" />
             </div>
                 
             <div class="clearfix"></div>
