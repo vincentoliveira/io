@@ -27,6 +27,21 @@ class Restaurant
      * @ORM\Column(name="name", type="string", length=63, nullable=false)
      */
     private $name;
+    
+    /**
+     * @var string
+     *
+     * @ORM\OneToOne(targetEntity="IO\RestaurantBundle\Entity\Media", cascade={"persist"})
+     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    private $media;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="website", type="string", length=255, nullable=true)
+     */
+    private $website;
 
 
     /**
@@ -60,5 +75,51 @@ class Restaurant
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set website
+     *
+     * @param string $website
+     * @return Restaurant
+     */
+    public function setWebsite($website)
+    {
+        $this->website = $website;
+    
+        return $this;
+    }
+
+    /**
+     * Get website
+     *
+     * @return string 
+     */
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * Set media
+     *
+     * @param \IO\RestaurantBundle\Entity\Media $media
+     * @return Restaurant
+     */
+    public function setMedia(\IO\RestaurantBundle\Entity\Media $media = null)
+    {
+        $this->media = $media;
+    
+        return $this;
+    }
+
+    /**
+     * Get media
+     *
+     * @return \IO\RestaurantBundle\Entity\Media 
+     */
+    public function getMedia()
+    {
+        return $this->media;
     }
 }

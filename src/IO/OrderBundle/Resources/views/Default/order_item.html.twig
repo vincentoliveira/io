@@ -1,7 +1,7 @@
 <div class="order {% if order.status == "WAITING" %}order-waiting{% endif %}">
     <h3>{{ order.tableName }}</h3>
     <strong>{{ order.status }}</strong>
-    <em>{{ order.orderDate|date('h:i') }}</em>
+    <em>{{ order.orderDate|date('H:i') }}</em>
     <ul>
         {% for orderLine in order.orderLines %}
         <li>{{ orderLine.itemShortName }} <em>{{ orderLine.itemPrice }}€</em></li>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ restaurant.name }}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:site_name" content="InnovOrder" />
+        <meta property="og:title" content="{{ restaurant.name }} - La carte" />
+        <meta property="og:url" content="{{ path('carte_index', {name:restaurant.name}) }}" />
+        <meta property="og:image" content="{{ restaurant.website|default("#") }}" />
+
+        {% stylesheets 
+            'bundles/iodefault/css/bootstrap.css'
+            'bundles/iodefault/css/font-awesome.min.css'
+            'bundles/iodefault/css/animate.css'
+            'bundles/iodefault/css/restaurant.css'
+            filter='yui_css,cssrewrite' 
+            output='css/restaurant.css' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+
+        <link rel="icon" type="image/x-icon" ref="{{ asset('favicon.ico') }}">
+    </head>
+    <body>
+        <div class="mainContainer">
+            <h1><a href="{{ restaurant.website|default("#") }}">{% if restaurant.media is not null %}<img src="{{ asset(restaurant.media|media) }}" alt="{{ restaurant.name }}"/>{% else %}{{ restaurant.name }}{% endif %}</a></h1>
+            {% for item in carte %}
+                <h3>{{ item.name|upper }}</h3>
+                {% for child in item.children %}
+                <div>
+                    <strong>{{ child.name }}</strong>
+                    <em>{{ child.price }}€</em>
+                </div>
+                {% endfor %}
+            {% endfor %}
+        
+            <div class="fb-share-button" data-href="{{ path('carte_index', {name:restaurant.name}) }}" data-type="button"></div>
+        
+        </div>
+        
+        {% javascripts 
+            '@IODefaultBundle/Resources/public/js/jquery.js'
+            '@IODefaultBundle/Resources/public/plugins/nanoScroller/jquery.nanoscroller.min.js'
+            '@IODefaultBundle/Resources/public/js/bootstrap.js'
+            '@IODefaultBundle/Resources/public/js/respond.min.js'
+            '@IODefaultBundle/Resources/public/js/html5shiv.js'
+            filter='yui_js'
+            output='js/base.js' %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&appId=489218227845976&version=v2.0";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+    </body>
+</html>
