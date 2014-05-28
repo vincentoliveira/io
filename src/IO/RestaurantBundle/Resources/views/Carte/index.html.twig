@@ -7,9 +7,9 @@
         <meta property="og:title" content="{{ restaurant.name }} - La carte" />
         <meta property="og:site_name" content="InnovOrder - {{ restaurant.name }}" />
         <meta property="og:description" content="Venez découvrir notre nouvelle carte !" />
-        <meta property="og:url" content="{{ path('carte_index', {name:restaurant.name}) }}" />
+        <meta property="og:url" content="{{ url('carte_index', {name:restaurant.name}) }}" />
         {% if restaurant.background is not null %}
-        <meta property="og:image" content="{{ asset(restaurant.background|media) }}" />
+        <meta property="og:image" content="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ asset(restaurant.background|media) }}" />
         {% endif %}
         
         {% stylesheets 

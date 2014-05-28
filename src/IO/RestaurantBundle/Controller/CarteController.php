@@ -28,7 +28,6 @@ class CarteController extends Controller
      * Displays carte
      *
      * @Route("/{name}", name="carte_index")
-     * @Secure("ROLE_MANAGER")
      * @Template()
      */
     public function indexAction($name)
