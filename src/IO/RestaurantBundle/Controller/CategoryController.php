@@ -193,6 +193,24 @@ class CategoryController extends CarteItemController
 
         return $this->redirect($this->generateUrl('homepage'));
     }
+
+    /**
+     * Change visibility
+     *
+     * @Route("/{id}/visibility/{visibility}", name="category_visibility")
+     * @Template()
+     */
+    public function visibilityAction($id, $visibility)
+    {
+        $entity = $this->getEntity($id);
+        
+        $em = $this->getDoctrine()->getManager();
+        $entity->setVisible($visibility);
+        $em->persist($entity);
+        $em->flush();
+        
+        return $this->redirect($this->generateUrl('category_show', array('id' => $entity->getId())));
+    }
     
     /**
      * Get Entity

@@ -1,0 +1,25 @@
+{% extends "IODefaultBundle::layout.html.twig" %}
+
+{% block content %}
+
+    <div class="content-header">
+        <h3>Historique</h3>
+    </div>
+
+<div class="history">
+    {% for order in history %}
+    <div class="history_order">
+        <h3>{{ order.tableName }} - #{{ order.id }} ({{ order.totalPrice }}€)</h3>
+        <em>Temps de commande: {{ date_difference(order.orderDate, order.startDate) }}</em>
+        <em>Temps de préparation: {{ date_difference(order.paymentDate, order.orderDate) }}</em>
+        <em>Temps total: {{ date_difference(order.paymentDate, order.startDate) }}</em>
+        <ul>
+        {% for line in order.orderLines %}
+        <li>{{ line.itemShortName }} ({{ line.itemPrice}}€)</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

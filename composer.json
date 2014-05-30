@@ -31,6 +31,7 @@
         "behat/mink-extension": "*@stable",
         "behat/mink-browserkit-driver": "*@stable",
         
+        "beberlei/DoctrineExtensions": "*",
         "ob/highcharts-bundle": "dev-master"
     },
     "scripts": {

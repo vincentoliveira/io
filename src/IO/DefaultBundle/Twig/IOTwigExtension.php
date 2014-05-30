@@ -1,6 +1,6 @@
 <?php
 
-namespace IO\RestaurantBundle\Twig;
+namespace IO\DefaultBundle\Twig;
 
 use Symfony\Component\DependencyInjection\Container;
 use Doctrine\ORM\EntityManager;
@@ -11,12 +11,12 @@ use IO\RestaurantBundle\Enum\ItemTypeEnum;
 use IO\RestaurantBundle\Entity\Media;
 
 /**
- * Restaurant TwigExtension
+ * IO TwigExtension
  * 
- * @Service("io.restaurant_twig_extension")
+ * @Service("io.twig_extension")
  * @Tag("twig.extension")
  */
-class RestaurantTwigExtension extends \Twig_Extension
+class IOTwigExtension extends \Twig_Extension
 {
     /**
      * User Service
@@ -47,13 +47,7 @@ class RestaurantTwigExtension extends \Twig_Extension
      */
     public function getFunctions() {
         return array(
-            'restaurantCategories' => new \Twig_SimpleFunction('restaurantCategories', array($this, 'restaurantCategoriesFunction')),
-        );
-    }
-    
-    public function getFilters() {
-        return array(
-            'media' => new \Twig_SimpleFilter('media', array($this, 'mediaFilter')),
+            'date_difference' => new \Twig_SimpleFunction('date_difference', array($this, 'dateDifferenceFunction')),
         );
     }
     
@@ -62,11 +56,8 @@ class RestaurantTwigExtension extends \Twig_Extension
      * 
      * @return array
      */
-    public function restaurantCategoriesFunction() {
-        $restaurant = $this->userSv->getUserRestaurant();
-        $repositorty = $this->entityManger->getRepository('IORestaurantBundle:CarteItem');
-        
-        return $repositorty->getRestaurantMainCategory($restaurant->getId());
+    public function dateDifferenceFunction(\DateTime $date1, \DateTime $date2) {
+        return $date1->diff($date2)->format('%im%ss');
     }
     
     
@@ -85,6 +76,6 @@ class RestaurantTwigExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'restaurant_twig_extension';
+        return 'io_twig_extension';
     }
 }

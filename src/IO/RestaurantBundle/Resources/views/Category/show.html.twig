@@ -5,6 +5,12 @@
 <div class="content-header">
     <h3>{{ entity.name|raw }}</h3>
     <span class="actionbar">
+
+        {% if entity.visible %}{% set visibility = 0 %}{% else %}{% set visibility = 1 %}{% endif %}
+        <a class="btn {% if entity.visible %}btn-info{% else %}btn-warning{% endif %}" href="{{ path('category_visibility', {id:entity.id, visibility: visibility}) }}" title="Modifier la visibilité {{ entity.name|raw }}">
+            <i class="fa {% if entity.visible %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
+        </a>
+        
         <a class="btn btn-primary" href="{{ path('category_edit', {id:entity.id}) }}" title="Modifier {{ entity.name|raw }}"><i class="fa fa-edit"></i> </a>
         <a class="btn btn-danger confirm-delete" href="{{ path('category_delete', {id:entity.id}) }}" title="Supprimer {{ entity.name|raw }}"><i class="fa fa-trash-o"></i> </a>
     </span>
@@ -19,7 +25,6 @@
     <span>{{ entity.description }}</span>
 </div>
 <div class="clearfix"></div>
-
 <a href="{{ path('dish_new', {parent:entity.id}) }}" role="button" class="btn btn-primary btn-trans" title="Ajouter un plat"><i class="fa fa-plus"></i> Ajouter un plat</a>
 <a href="{{ path('category_new', {parent:entity.id}) }}" role="button" class="btn btn-primary btn-trans" title="Ajouter une sous-catégorie"><i class="fa fa-plus"></i> Ajouter une sous-catégorie</a>
 
@@ -47,10 +52,15 @@
             <a class="btn btn-primary" href="{{ path('dish_edit', {id:child.id}) }}" title="Modifier {{ child.name|raw }}">
                 <i class="fa fa-edit"></i>
             </a>
+            {% if child.visible %}{% set visibility = 0 %}{% else %}{% set visibility = 1 %}{% endif %}
+            <a class="btn {% if child.visible %}btn-info{% else %}btn-warning{% endif %}" href="{{ path('dish_visibility', {id:child.id, visibility: visibility}) }}" title="Modifier la visibilité {{ child.name|raw }}">
+                <i class="fa {% if child.visible %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
+            </a>
             {% if child.media %}
             <img class="img-rounded" src="{{ asset(child.media|media) }}" alt="" />
             {% endif %}
             <strong>{{ child.name }}</strong>
+            <em>Prix: {{ child.price }}€ (TVA: {{ child.vat }})</em>
             <span>{{ child.description|raw }}</span>
         </div>
         {% endif %}

@@ -1,0 +1,21 @@
+{% extends "IODefaultBundle::layout.html.twig" %}
+
+{% block content %}
+
+    <div class="content-header">
+        <h3>Historique</h3>
+    </div>
+
+<div class="history">
+    {% for dayHistory in history %}
+    <div class="period">
+        <a href="{{ path('history_day', {dateStr:dayHistory.date|date('d-m-Y')}) }}">
+            <h3>{{ dayHistory.date|date('d-m-Y') }}</h3>
+            <span>NB: <em>{{ dayHistory.count }}</em></span>
+            <span>CA: <em>{{ dayHistory.total }}€</em></span>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
