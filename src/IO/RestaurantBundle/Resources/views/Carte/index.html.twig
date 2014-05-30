@@ -4,10 +4,10 @@
         <title>{{ restaurant.name }}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta property="og:title" content="{{ restaurant.name }} - La carte" />
+        <meta property="og:title" content="{{ restaurant.name }} - Menu du jour" />
         <meta property="og:site_name" content="InnovOrder - {{ restaurant.name }}" />
         <meta property="og:type" content="article">
-        <meta property="og:description" content="Venez découvrir notre nouvelle carte !" />
+        <meta property="og:description" content="Nouveau : gagnez du temps en commandant depuis les tablettes InnovOrder !" />
         <meta property="og:url" content="{{ url('carte_index', {name:restaurant.name}) }}" />
         {% if restaurant.background is not null %}
         <meta property="og:image" content="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ asset(restaurant.background|media) }}" />
