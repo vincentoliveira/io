@@ -62,7 +62,7 @@ class HistoryService {
         $orderLineTableName = $metadataOL->getTableName();
         
         $sqlQuery = $this->select(array(
-            sprintf('COUNT(%s.%s)', $tableName, $metadata->getColumnName('id')) => 'count',
+            sprintf('COUNT(DISTINCT %s.%s)', $tableName, $metadata->getColumnName('id')) => 'count',
             sprintf('DATE(%s.%s)', $tableName, $metadata->getColumnName('orderDate')) => 'date',
             sprintf('SUM(%s.%s)', $orderLineTableName, $metadataOL->getColumnName('itemPrice')) => 'total',
         ));
