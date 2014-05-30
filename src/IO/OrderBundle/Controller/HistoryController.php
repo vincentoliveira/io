@@ -61,6 +61,7 @@ class HistoryController extends Controller
         $history = $this->historySv->getDayHistory($date, $restaurant);
         
         return array(
+            'day' => $date,
             'history' => $history,
         );
     }
