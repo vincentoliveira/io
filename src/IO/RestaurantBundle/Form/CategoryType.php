@@ -18,6 +18,7 @@ class CategoryType extends CarteItemType
                 ->remove('price')
                 ->add('vat', 'number', array(
                     'label' => 'TVA par défaut (%)',
+                    'data' => 10.0,
                     'precision' => 2,
                     'attr' => array('class' => 'form-control'),
                     'required' => false,

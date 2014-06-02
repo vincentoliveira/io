@@ -58,11 +58,16 @@ class DishController extends CarteItemController
         $entity = new CarteItem();
         $entity->setRestaurant($this->userSv->getUserRestaurant());
         $entity->setItemType(ItemTypeEnum::TYPE_DISH);
+        $entity->setVat(10.0);
+        $entity->setVisible(true);
         
         $parentId = $request->query->get('parent', null);
         if ($parentId !== null) {
             $parent = $this->getEntity($parentId);
             $entity->setParent($parent);
+            if ($parent->getVat() !== null) {
+                $entity->setVat($parent->getVat());
+            }
         }
         
         $form = $this->createForm(new DishType(), $entity);

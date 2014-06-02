@@ -51,6 +51,11 @@ class CarteGeneratorVisitor implements CarteItemVisitor
             $parent = $parent->getParent();
         }
         
+        if ($vat === null) {
+            // default VAT
+            $vat = 10.0;
+        }
+        
         $result = array(
             'id' => $dish->getId(),
             'name' => $dish->getName(),
