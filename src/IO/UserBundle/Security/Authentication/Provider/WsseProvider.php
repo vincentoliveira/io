@@ -66,7 +66,7 @@ class WsseProvider implements AuthenticationProviderInterface
      * Validate digest.
      * Check :
      * - not from future
-     * - not from past (timestamp > now() - 5 minutes)
+     * - not from past (timestamp > now() - 10 minutes)
      * - unique (in last 5 minutes)
      * - same digest
      * 
@@ -84,7 +84,7 @@ class WsseProvider implements AuthenticationProviderInterface
         }
 
         // Expire timestamp after 5 minutes
-        if (time() - strtotime($created) > 300) {
+        if (time() - strtotime($created) > 600) {
             return false;
         }
 
