@@ -85,4 +85,39 @@ class OrderService
 
         return $order;
     }
+    
+    /**
+     * Generate Receipt
+     * 
+     * @param \IO\OrderBundle\Entity\Order $order
+     * @return type
+     */
+    public function generateReceipt(Order $order) 
+    {
+        $receipt = array();
+        
+        foreach ($order->getOrderLines() as $line) {
+            $name = strtoupper($line->getItemShortName());
+            if ($line->getItem() !== null && $line->getItem()->getParent() !== null) {
+                $parent = strtoupper($line->getItem()->getParent()->getShortName());
+            } else {
+                $parent = '-';
+            }
+            
+            if (!isset($receipt[$parent])) {
+                $receipt[$parent] = array();
+            }
+            
+            if (!isset($receipt[$parent][$name])) {
+                $receipt[$parent][$name] = array(
+                    'count' => 1,
+                    'item' => $line,
+                );
+            } else {
+                $receipt[$parent][$name]['count']++;
+            }
+        }
+        
+        return $receipt;
+    }
 }

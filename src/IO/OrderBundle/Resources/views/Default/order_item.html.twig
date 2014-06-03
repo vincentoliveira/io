@@ -3,8 +3,19 @@
     <strong>{{ order.status }}</strong>
     <em>{{ order.orderDate|date('H:i') }}</em>
     <ul>
-        {% for orderLine in order.orderLines %}
-        <li>{{ orderLine.itemShortName }} <em>{{ orderLine.itemPrice }}€</em></li>
+        {% for parent, categoryReceipt in order|receipt %}
+        <li>
+            <strong>{{ parent }}</strong>
+            <ul>
+                {% for itemReceipt in categoryReceipt %}
+                <li>
+                    <span>{{ itemReceipt.count }}</span>
+                    {{ itemReceipt.item.itemShortName }}
+                    <em>{{ itemReceipt.item.itemPrice }}€</em>
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
         {% endfor %}
         <li class="total">Total <em>{{ order.totalPrice }}€</em></li>
     </ul>

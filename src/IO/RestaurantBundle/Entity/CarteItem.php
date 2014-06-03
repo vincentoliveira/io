@@ -69,6 +69,13 @@ class CarteItem implements CarteItemElement
     /**
      * @var string
      *
+     * @ORM\Column(name="short_name", type="string", length=15, nullable=true)
+     */
+    private $shortName;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     private $description;
@@ -395,5 +402,38 @@ class CarteItem implements CarteItemElement
     public function getMedia()
     {
         return $this->media;
+    }
+
+    /**
+     * Get visible
+     *
+     * @return boolean 
+     */
+    public function getVisible()
+    {
+        return $this->visible;
+    }
+
+    /**
+     * Set shortName
+     *
+     * @param string $shortName
+     * @return CarteItem
+     */
+    public function setShortName($shortName)
+    {
+        $this->shortName = $shortName;
+    
+        return $this;
+    }
+
+    /**
+     * Get shortName
+     *
+     * @return string 
+     */
+    public function getShortName()
+    {
+        return empty($this->shortName) ? $this->name : $this->shortName;
     }
 }

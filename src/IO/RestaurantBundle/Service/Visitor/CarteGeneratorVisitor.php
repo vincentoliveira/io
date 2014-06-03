@@ -59,6 +59,7 @@ class CarteGeneratorVisitor implements CarteItemVisitor
         $result = array(
             'id' => $dish->getId(),
             'name' => $dish->getName(),
+            'shortName' => $dish->getShortName(),
             'description' => $dish->getDescription(),
             'type' => $dish->getItemType(),
             'price' => $dish->getPrice(),
