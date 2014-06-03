@@ -9,7 +9,7 @@
             <ul>
                 {% for itemReceipt in categoryReceipt %}
                 <li>
-                    <span>{{ itemReceipt.count }}</span>
+                    <span>{{ itemReceipt.count }} x</span>
                     {{ itemReceipt.item.itemShortName }}
                     <em>{{ itemReceipt.item.itemPrice }}€</em>
                 </li>
