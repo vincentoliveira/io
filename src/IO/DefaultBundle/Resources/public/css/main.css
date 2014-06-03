@@ -36,7 +36,7 @@ a.btn-danger { color: #fff; }
 
 .order { width: 200px; float: left; background-color: #f5f5f5; padding: 5px; border: 1px solid #1abc9c; margin: 2px; }
 .order-waiting { background-color: #cacfd2; }
-.order ul { list-style-type: none; margin-top: 5px; min-height: 120px; }
+.order .main-order { list-style-type: none; margin-top: 5px; min-height: 200px; }
 .order em { float: right; }
 .order .total { font-weight: bold; }
 
