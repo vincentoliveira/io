@@ -1,0 +1,22 @@
+{% extends "IODefaultBundle::layout.html.twig" %}
+
+{% block content %}
+
+<div class="content-header">
+    <h3>Répartition</h3>
+</div>
+
+{% for id,chart in distributions %}
+    <div id="{{ id }}" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+{% endfor %}
+
+{% endblock %}
+    
+{% block javascripts %}
+    {{ parent() }}
+    {% for id,chart in distributions %}
+        <script type="text/javascript">
+            {{ chart(chart) }}
+        </script>
+    {% endfor %}
+{% endblock %}

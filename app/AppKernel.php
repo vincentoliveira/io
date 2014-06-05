@@ -22,7 +22,7 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new FOS\UserBundle\FOSUserBundle(),
             
-            //new Ob\HighchartsBundle\ObHighchartsBundle(),
+            new Ob\HighchartsBundle\ObHighchartsBundle(),
             
             new IO\UserBundle\IOUserBundle(),
             new IO\RestaurantBundle\IORestaurantBundle(),

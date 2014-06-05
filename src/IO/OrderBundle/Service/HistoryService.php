@@ -5,9 +5,7 @@ namespace IO\OrderBundle\Service;
 use JMS\DiExtraBundle\Annotation\Service;
 use JMS\DiExtraBundle\Annotation\Inject;
 use IO\RestaurantBundle\Entity\Restaurant;
-use IO\OrderBundle\Entity\Order;
-use IO\OrderBundle\Entity\OrderLine;
-use IO\OrderBundle\Enum\OrderStatusEnum;
+use IO\OrderBundle\Service\QueryBuilder\MySQLQueryBuilder;
 
 /**
  * History Service
@@ -61,25 +59,27 @@ class HistoryService {
         $tableName = $metadata->getTableName();
         $orderLineTableName = $metadataOL->getTableName();
         
-        $sqlQuery = $this->select(array(
+        $qb = new MySQLQueryBuilder();
+        
+        $sqlQuery = $qb->select(array(
             sprintf('COUNT(DISTINCT %s.%s)', $tableName, $metadata->getColumnName('id')) => 'count',
             sprintf('DATE(%s.%s)', $tableName, $metadata->getColumnName('orderDate')) => 'date',
             sprintf('SUM(%s.%s)', $orderLineTableName, $metadataOL->getColumnName('itemPrice')) => 'total',
             sprintf('AVG(TIMESTAMPDIFF(SECOND,%s.%s,%1$s.%s))', $tableName, $metadata->getColumnName('startDate'), $metadata->getColumnName('orderDate')) => 'avgOrderTime',
         ));
-        $sqlQuery .= $this->from($tableName);
+        $sqlQuery .= $qb->from($tableName);
         
         $orderLineOrderIdField = $orderLineTableName . '.' . $metadataOL->getSingleAssociationJoinColumnName('order');
         $orderIdField = $tableName . '.' . $metadata->getColumnName('id');
-        $sqlQuery .= $this->leftJoin($orderLineTableName, $orderLineOrderIdField, $orderIdField);
+        $sqlQuery .= $qb->leftJoin($orderLineTableName, $orderLineOrderIdField, $orderIdField);
               
         $whereRestaurant = sprintf('%s = %s', $metadata->getColumnName('restaurant_id'), $restaurant->getId());
-        $sqlQuery .= $this->where($whereRestaurant);
+        $sqlQuery .= $qb->where($whereRestaurant);
 
-        $sqlQuery .= $this->groupBy(array('date'));
-        $sqlQuery .= $this->orderBy(array('date' => 'DESC'));
+        $sqlQuery .= $qb->groupBy(array('date'));
+        $sqlQuery .= $qb->orderBy(array('date' => 'DESC'));
         
-        $sqlQuery .= $this->limit($firstResult, $maxResults);
+        $sqlQuery .= $qb->limit($firstResult, $maxResults);
         
         $result = array();
         try {
@@ -93,48 +93,4 @@ class HistoryService {
 
         return $result;
     }
-
-    protected function select($fields) {
-        $result = '';
-        foreach ($fields as $field => $alias) {
-            $result .= ', ' . $field . ' as "' . $alias . '"';
-        }
-
-        return 'SELECT' . substr($result, 1) . ' ';
-    }
-
-    protected function from($tableName) {
-        return sprintf('FROM %s ', $tableName);
-    }
-
-    protected function where($whereClauses) {
-        return sprintf('WHERE %s ', $whereClauses);
-    }
-
-    protected function leftJoin($joinTable, $joinField, $parentField) {
-        return sprintf('LEFT JOIN %s ON %s = %s ', $joinTable, $joinField, $parentField);
-    }
-
-    protected function limit($firstResult, $maxResults) {
-        return sprintf('LIMIT %s, %s ', $firstResult, $maxResults);
-    }
-
-    protected function groupBy($fields) {
-        $result = '';
-        foreach ($fields as $field) {
-            $result .= ', ' . $field;
-        }
-
-        return 'GROUP BY' . substr($result, 1) . ' ';
-    }
-
-    protected function orderBy($fields) {
-        $result = '';
-        foreach ($fields as $field => $direction) {
-            $result .= ', ' . $field . ' ' . $direction;
-        }
-
-        return 'ORDER BY' . substr($result, 1) . ' ';
-    }
-
 }
