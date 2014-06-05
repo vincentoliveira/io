@@ -36,7 +36,8 @@ a.btn-danger { color: #fff; }
 
 .order { width: 200px; float: left; background-color: #f5f5f5; padding: 5px; border: 1px solid #1abc9c; margin: 2px; }
 .order-waiting { background-color: #cacfd2; }
-.order .main-order { list-style-type: none; margin-top: 5px; min-height: 200px; }
+.order .main-order { list-style-type: none; margin-top: 5px; min-height: 200px; padding: 0; }
+.order .category-order { list-style-type: none; padding-left: 5px; }
 .order em { float: right; }
 .order .total { font-weight: bold; }
 
@@ -45,5 +46,6 @@ a.btn-danger { color: #fff; }
 .period span { display: block; }
 
 .history_order span, .history_order em { display: block; }
-
+.history_order .main-order { list-style-type: none; padding: 0; }
+.history_order .main-order em { display: inline; }
 

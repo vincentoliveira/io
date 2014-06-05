@@ -1,0 +1,17 @@
+<ul class="main-order">
+    {% for parent, categoryReceipt in order|receipt %}
+    <li>
+        {{ parent }}
+        <ul class="category-order">
+            {% for itemReceipt in categoryReceipt %}
+            <li>
+                <strong>{{ itemReceipt.count }}</strong>x 
+                <strong>{{ itemReceipt.item.itemShortName }}</strong>
+                <em>{{ itemReceipt.count * itemReceipt.item.itemPrice }}€</em>
+            </li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+    <li class="total">TOTAL <em>{{ order.totalPrice }}€</em></li>
+</ul>

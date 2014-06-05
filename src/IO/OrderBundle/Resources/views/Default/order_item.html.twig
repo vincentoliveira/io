@@ -2,23 +2,7 @@
     <h3>{{ order.tableName }}</h3>
     <strong>{{ order.status }}</strong>
     <em>{{ order.orderDate|date('H:i') }}</em>
-    <ul class="main-order">
-        {% for parent, categoryReceipt in order|receipt %}
-        <li>
-            <strong>{{ parent }}</strong>
-            <ul>
-                {% for itemReceipt in categoryReceipt %}
-                <li>
-                    <span>{{ itemReceipt.count }} x</span>
-                    {{ itemReceipt.item.itemShortName }}
-                    <em>{{ itemReceipt.item.itemPrice }}€</em>
-                </li>
-                {% endfor %}
-            </ul>
-        </li>
-        {% endfor %}
-        <li class="total">Total <em>{{ order.totalPrice }}€</em></li>
-    </ul>
+    {% include 'IOOrderBundle:Default:order_item_list.html.twig' with {order:order} %}
     {% if order.status == "WAITING" %}
     <a href="{{ path('order_accept', {id:order.id}) }}" class="btn btn-primary">OK</a>
     {% else %}

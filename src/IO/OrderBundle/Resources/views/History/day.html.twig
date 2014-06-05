@@ -10,14 +10,14 @@
     {% for order in history %}
     <div class="history_order">
         <h3>{{ order.tableName }} - #{{ order.id }} ({{ order.totalPrice }}€)</h3>
+        {% if order.orderDate is not null and order.startDate is not null %}
         <em>Temps de commande: {{ date_difference(order.orderDate, order.startDate) }}</em>
+        {% endif %}
+        {% if order.paymentDate is not null and order.orderDate is not null %}
         <em>Temps de préparation: {{ date_difference(order.paymentDate, order.orderDate) }}</em>
+        {% endif %}
         <em>Temps total: {{ date_difference(order.paymentDate, order.startDate) }}</em>
-        <ul>
-        {% for line in order.orderLines %}
-        <li>{{ line.itemShortName }} ({{ line.itemPrice}}€)</li>
-        {% endfor %}
-        </ul>
+        {% include 'IOOrderBundle:Default:order_item_list.html.twig' with {order:order} %}
     </div>
     {% endfor %}
 </div>
