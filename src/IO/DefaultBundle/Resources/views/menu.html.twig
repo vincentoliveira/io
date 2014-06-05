@@ -4,7 +4,7 @@
         <div id="leftside-navigation" class="nano">
             <ul class="nano-content">
                 <li class="active">
-                    <a href="{{ path('homepage') }}"><i class="fa fa-dashboard"></i><span>Tableau de bord</span></a>
+                    <a href="{{ path('dashboard') }}"><i class="fa fa-dashboard"></i><span>Tableau de bord</span></a>
                 </li>
                 {% if is_granted("ROLE_MANAGER") %}
                 <li>

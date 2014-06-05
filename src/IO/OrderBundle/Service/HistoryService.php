@@ -54,7 +54,7 @@ class HistoryService {
      * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
      * @return \IO\OrderBundle\Entity\Order
      */
-    public function getOrderHistoryPerDay(Restaurant $restaurant) {
+    public function getOrderHistoryPerDay(Restaurant $restaurant, $maxResults = 20, $firstResult = 0) {
         $metadata = $this->em->getClassMetadata('IOOrderBundle:Order');
         $metadataOL = $this->em->getClassMetadata('IOOrderBundle:OrderLine');
 
@@ -65,6 +65,7 @@ class HistoryService {
             sprintf('COUNT(DISTINCT %s.%s)', $tableName, $metadata->getColumnName('id')) => 'count',
             sprintf('DATE(%s.%s)', $tableName, $metadata->getColumnName('orderDate')) => 'date',
             sprintf('SUM(%s.%s)', $orderLineTableName, $metadataOL->getColumnName('itemPrice')) => 'total',
+            sprintf('AVG(TIMESTAMPDIFF(SECOND,%s.%s,%1$s.%s))', $tableName, $metadata->getColumnName('startDate'), $metadata->getColumnName('orderDate')) => 'avgOrderTime',
         ));
         $sqlQuery .= $this->from($tableName);
         
@@ -77,6 +78,8 @@ class HistoryService {
 
         $sqlQuery .= $this->groupBy(array('date'));
         $sqlQuery .= $this->orderBy(array('date' => 'DESC'));
+        
+        $sqlQuery .= $this->limit($firstResult, $maxResults);
         
         $result = array();
         try {
@@ -110,6 +113,10 @@ class HistoryService {
 
     protected function leftJoin($joinTable, $joinField, $parentField) {
         return sprintf('LEFT JOIN %s ON %s = %s ', $joinTable, $joinField, $parentField);
+    }
+
+    protected function limit($firstResult, $maxResults) {
+        return sprintf('LIMIT %s, %s ', $firstResult, $maxResults);
     }
 
     protected function groupBy($fields) {
