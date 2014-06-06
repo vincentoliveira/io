@@ -30,18 +30,18 @@ class StatsController extends Controller
     public $distribSv;
     
     /**
-     * @Route("/distribution", name="stats_distribution")
+     * @Route("/distribution/item", name="stats_item_distribution")
      * @Template()
      * @Secure("ROLE_MANAGER")
      */
-    public function distributionAction()
+    public function itemDistributionAction()
     {
         $restaurant = $this->userSv->getUserRestaurant();
         
         $distributions = array();
         $distributions['Globale'] = array(
-            'global_pie' => $this->distribSv->getGlobalRepartition($restaurant, "pie", 'global_pie'),
-            'global_bar' => $this->distribSv->getGlobalRepartition($restaurant, "bar", 'global_bar'),
+            'global_pie' => $this->distribSv->getGlobalDistribution($restaurant, "pie", 'global_pie'),
+            'global_bar' => $this->distribSv->getGlobalDistribution($restaurant, "bar", 'global_bar'),
         );
         
         $repositorty = $this->getDoctrine()->getRepository('IORestaurantBundle:CarteItem');
@@ -51,8 +51,8 @@ class StatsController extends Controller
             $pieId = $name . '_pie';
             $barId = $name . '_bar';
             $distributions[$name] = array(
-                $pieId => $this->distribSv->getCategoryRepartition($restaurant, $category, "pie", $pieId),
-                $barId => $this->distribSv->getCategoryRepartition($restaurant, $category, "bar", $barId),
+                $pieId => $this->distribSv->getCategoryDistribution($restaurant, $category, "pie", $pieId),
+                $barId => $this->distribSv->getCategoryDistribution($restaurant, $category, "bar", $barId),
             );
         }
         
@@ -61,4 +61,22 @@ class StatsController extends Controller
         );
     }
     
+    
+    /**
+     * @Route("/distribution/time", name="stats_time_distribution")
+     * @Template()
+     * @Secure("ROLE_MANAGER")
+     */
+    public function timeDistributionAction()
+    {
+        $restaurant = $this->userSv->getUserRestaurant();
+        
+        $chartId = 'time_distribution';
+        $chart =$this->distribSv->getTimeDistribution($restaurant, $chartId);
+
+        return array(
+            'chart' => $chart,
+            'chartId' => $chartId,
+        );
+    }
 }

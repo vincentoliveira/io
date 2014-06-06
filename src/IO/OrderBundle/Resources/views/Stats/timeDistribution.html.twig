@@ -1,0 +1,16 @@
+{% extends "IODefaultBundle::layout.html.twig" %}
+
+{% block content %}
+<div class="content-header">
+    <h3>Répartition (Temps)</h3>
+</div>
+                
+<div id="{{ chartId }}" style="min-width: 600px; height: 400px; margin: 0 auto"></div>
+{% endblock %}
+    
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        {{ chart(chart) }}
+    </script>
+{% endblock %}

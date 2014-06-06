@@ -37,7 +37,7 @@ class BarChartGenerator extends AbstractChartGenerator {
         $ob->chart->renderTo($id);
         $ob->chart->type('column');
         $ob->title->text($this->title);
-        $ob->xAxis->title(array('text'  => $this->yAxisTitle, 'categories' => $this->categories));
+        $ob->xAxis->title(array('text'  => $this->yAxisTitle));
         $ob->xAxis->categories($this->categories);
         $ob->yAxis->title(array('text'  => $this->xAxisTitle));
         $ob->legend->enabled(false);
