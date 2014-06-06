@@ -6,17 +6,33 @@
     <h3>Répartition</h3>
 </div>
 
-{% for id,chart in distributions %}
-    <div id="{{ id }}" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-{% endfor %}
+<div class="tab-wrapper tab-primary">
+    <ul class="nav nav-tabs">
+        {% for tabName,tabDistribution in distributions %}
+        <li {% if loop.first %}class="active"{% endif %}><a href="#{{ tabName }}" data-toggle="tab">{{ tabName }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="tab-content">
+        {% for tabName,tabDistribution in distributions %}
+            <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{ tabName }}">
+            {% for id,chart in tabDistribution %}
+                <div id="{{ id }}" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+            {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock %}
     
 {% block javascripts %}
     {{ parent() }}
-    {% for id,chart in distributions %}
-        <script type="text/javascript">
-            {{ chart(chart) }}
-        </script>
+    {% for tabName,tabDistribution in distributions %}
+        {% for chart in tabDistribution %}
+            <script type="text/javascript">
+                {{ chart(chart) }}
+            </script>
+        {% endfor %}
     {% endfor %}
 {% endblock %}

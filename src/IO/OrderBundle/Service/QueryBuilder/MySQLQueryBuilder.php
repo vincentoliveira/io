@@ -36,6 +36,13 @@ class MySQLQueryBuilder implements QueryBuilderInterface {
     /**
      * @{inheritDoc}
      */
+    public function andWhere($whereClauses) {
+        return sprintf('AND %s ', $whereClauses);
+    }
+
+    /**
+     * @{inheritDoc}
+     */
     public function leftJoin($joinTable, $joinField, $parentField) {
         return sprintf('LEFT JOIN %s ON %s = %s ', $joinTable, $joinField, $parentField);
     }

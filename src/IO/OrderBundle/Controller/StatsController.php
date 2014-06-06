@@ -43,8 +43,22 @@ class StatsController extends Controller
         $restaurant = $this->userSv->getUserRestaurant();
         
         $distributions = array();
-        $distributions['global_pie'] = $this->distribSv->getGlobalRepartition($restaurant, array(), "pie");
-        $distributions['global_bar'] = $this->distribSv->getGlobalRepartition($restaurant, array(), "bar");
+        $distributions['Globale'] = array(
+            'global_pie' => $this->distribSv->getGlobalRepartition($restaurant, "pie", 'global_pie'),
+            'global_bar' => $this->distribSv->getGlobalRepartition($restaurant, "bar", 'global_bar'),
+        );
+        
+        $repositorty = $this->getDoctrine()->getRepository('IORestaurantBundle:CarteItem');
+        $categories = $repositorty->getRestaurantMainCategory($restaurant->getId());
+        foreach ($categories as $category) {
+            $name = preg_replace("/[^A-Za-z0-9 ]/", '', $category->getShortName());
+            $pieId = $name . '_pie';
+            $barId = $name . '_bar';
+            $distributions[$name] = array(
+                $pieId => $this->distribSv->getCategoryRepartition($restaurant, $category, "pie", $pieId),
+                $barId => $this->distribSv->getCategoryRepartition($restaurant, $category, "bar", $barId),
+            );
+        }
         
         return array(
             'distributions' => $distributions,

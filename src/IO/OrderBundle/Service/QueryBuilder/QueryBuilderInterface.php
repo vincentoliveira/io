@@ -12,6 +12,8 @@ interface QueryBuilderInterface {
     public function from($tableName);
 
     public function where($whereClauses);
+    
+    public function andWhere($whereClauses);
 
     public function leftJoin($joinTable, $joinField, $parentField);
 

@@ -25,7 +25,7 @@ class BarChartGenerator extends AbstractChartGenerator {
         
         $this->series[] = array(
             'name' => $serieName,
-            'data' => $data,
+            'data' => $serieData,
         );
     }
     
@@ -38,7 +38,9 @@ class BarChartGenerator extends AbstractChartGenerator {
         $ob->chart->type('column');
         $ob->title->text($this->title);
         $ob->xAxis->title(array('text'  => $this->yAxisTitle, 'categories' => $this->categories));
+        $ob->xAxis->categories($this->categories);
         $ob->yAxis->title(array('text'  => $this->xAxisTitle));
+        $ob->legend->enabled(false);
         $ob->series($this->series);
         
         return $ob;
