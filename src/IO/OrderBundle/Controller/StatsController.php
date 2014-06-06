@@ -51,7 +51,7 @@ class StatsController extends Controller
         $repositorty = $this->getDoctrine()->getRepository('IORestaurantBundle:CarteItem');
         $categories = $repositorty->getRestaurantMainCategory($restaurant->getId());
         foreach ($categories as $category) {
-            $name = preg_replace("/[^A-Za-z0-9 ]/", '', $category->getShortName());
+            $name = preg_replace("/[^A-Za-z0-9]/", '', $category->getShortName());
             $pieId = $name . '_pie';
             $barId = $name . '_bar';
             $distributions[$name] = array(
