@@ -1,7 +1,6 @@
 {% extends "IODefaultBundle::layout.html.twig" %}
 
 {% block content %}
-
 <div class="content-header">
     <h3>Répartition</h3>
 </div>
@@ -17,13 +16,12 @@
         {% for tabName,tabDistribution in distributions %}
             <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{ tabName }}">
             {% for id,chart in tabDistribution %}
-                <div id="{{ id }}" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+                <div id="{{ id }}" style="min-width: 600px; height: 400px; margin: 0 auto"></div>
             {% endfor %}
             </div>
         {% endfor %}
     </div>
 </div>
-
 {% endblock %}
     
 {% block javascripts %}

@@ -45,7 +45,5 @@ a.btn-danger { color: #fff; }
 .period:hover { background-color: #cacfd2; }
 .period span { display: block; }
 
-.history_order span, .history_order em { display: block; }
 .history_order .main-order { list-style-type: none; padding: 0; }
-.history_order .main-order em { display: inline; }
 
