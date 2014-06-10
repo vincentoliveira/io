@@ -7,7 +7,7 @@
         <meta property="og:title" content="{{ restaurant.name }} - Menu du jour" />
         <meta property="og:site_name" content="InnovOrder - {{ restaurant.name }}" />
         <meta property="og:type" content="article">
-        <meta property="og:description" content="Nouveau : gagnez du temps en commandant depuis les tablettes InnovOrder !" />
+        <meta property="og:description" content="Soutenez la candidature InnovOrder pour le Camping saison 6 :)  http://www.f6s.com/innovorder" />
         <meta property="og:url" content="{{ url('carte_index', {name:restaurant.name}) }}" />
         {% if restaurant.background is not null %}
         <meta property="og:image" content="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ asset(restaurant.background|media) }}" />
@@ -32,7 +32,7 @@
             <div class="fb-share-button" data-href="{{ path('carte_index', {name:restaurant.name}) }}" data-type="button"></div>
             
             <div class="message">
-                <p><strong>Nouveau</strong> : gagnez du temps en commandant depuis les tablettes InnovOrder ! Romain et Vincent du SchoolLab seront ravis de vous présenter leur projet.</p>
+                <p>Soutenez la candidature InnovOrder pour le Camping saison 6 :)  <a href="http://www.f6s.com/innovorder">f6s.com/innovorder</a></p>
             </div>
             
             <div>
