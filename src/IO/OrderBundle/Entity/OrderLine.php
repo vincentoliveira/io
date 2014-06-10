@@ -25,7 +25,7 @@ class OrderLine
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="IO\OrderBundle\Entity\Order", inversedBy="orderLines")
+     * @ORM\ManyToOne(targetEntity="IO\OrderBundle\Entity\OrderData", inversedBy="orderLines")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $order;
@@ -142,10 +142,10 @@ class OrderLine
     /**
      * Set order
      *
-     * @param \IO\OrderBundle\Entity\Order $order
+     * @param \IO\OrderBundle\Entity\OrderData $order
      * @return OrderLine
      */
-    public function setOrder(\IO\OrderBundle\Entity\Order $order = null)
+    public function setOrder(\IO\OrderBundle\Entity\OrderData $order = null)
     {
         $this->order = $order;
     
@@ -155,7 +155,7 @@ class OrderLine
     /**
      * Get order
      *
-     * @return \IO\OrderBundle\Entity\Order 
+     * @return \IO\OrderBundle\Entity\OrderData 
      */
     public function getOrder()
     {
@@ -183,5 +183,28 @@ class OrderLine
     public function getItem()
     {
         return $this->item;
+    }
+
+    /**
+     * Set setItemVat
+     *
+     * @param string $setItemVat
+     * @return OrderLine
+     */
+    public function setSetItemVat($setItemVat)
+    {
+        $this->setItemVat = $setItemVat;
+    
+        return $this;
+    }
+
+    /**
+     * Get setItemVat
+     *
+     * @return string 
+     */
+    public function getSetItemVat()
+    {
+        return $this->setItemVat;
     }
 }

@@ -23,7 +23,7 @@ class TimeDistributionCalculator implements StatsCalculatorInterface {
             $step = 600;
         }
         
-        $repo = $em->getRepository('IOOrderBundle:Order');
+        $repo = $em->getRepository('IOOrderBundle:OrderData');
         $qb = $repo->createQueryBuilder('orderItem')
                 ->select('orderItem.orderDate')
                 ->where('orderItem.restaurant = :restaurant')
@@ -49,7 +49,8 @@ class TimeDistributionCalculator implements StatsCalculatorInterface {
         $result = array();
         for ($t = $min; $t <= $max; $t++) {
             $timeStr = intval(($t * $step) / 3600) . 'h' . intval(($t * $step / 60) % 60);
-            $result[] = array($timeStr, $timeResult[$t]);
+            $nbAtThisTime = isset($timeResult[$t]) ? $timeResult[$t] : 0;
+            $result[] = array($timeStr, $nbAtThisTime);
         }
         
         return $result;

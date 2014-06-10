@@ -61,6 +61,8 @@ doctrine:
             default:
                 auto_mapping: true
                 dql:
+                    string_functions:
+                        GROUP_CONCAT: DoctrineExtensions\Query\Mysql\GroupConcat
                     datetime_functions:
                         DAY: DoctrineExtensions\Query\Mysql\Day
                         MONTH: DoctrineExtensions\Query\Mysql\Month

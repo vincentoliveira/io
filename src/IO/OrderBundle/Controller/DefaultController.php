@@ -9,8 +9,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use JMS\DiExtraBundle\Annotation\Inject;
-use IO\OrderBundle\Entity\Order;
+use IO\OrderBundle\Entity\OrderData;
+use IO\OrderBundle\Entity\OrderPayment;
+use IO\OrderBundle\Entity\OrderStatus;
 use IO\OrderBundle\Enum\OrderStatusEnum;
+use IO\OrderBundle\Enum\PaymentTypeEnum;
+use IO\OrderBundle\Enum\PaymentStatusEnum;
 
 /**
  * @Route("/order")
@@ -77,10 +81,36 @@ class DefaultController extends Controller
     public function acceptAction($id)
     {
         $order = $this->getOrder($id);
-        $order->setStatus(OrderStatusEnum::STATUS_IN_PROGRESS);
+        
+        $status = new OrderStatus();
+        $status->setOrder($order);
+        $status->setDate(new \DateTime());
+        $status->setOldStatus($order->getLastStatus());
+        $status->setNewStatus(OrderStatusEnum::STATUS_IN_PROGRESS);
         
         $em = $this->getDoctrine()->getManager();
-        $em->persist($order);
+        $em->persist($status);
+        $em->flush();
+        
+        return $this->redirect($this->generateUrl('order_index'));
+    }
+    
+    /**
+     * @Route("/close/{id}", name="order_close")
+     * @Secure("ROLE_MANAGER")
+     */
+    public function closeAction($id)
+    {
+        $order = $this->getOrder($id);
+        
+        $status = new OrderStatus();
+        $status->setOrder($order);
+        $status->setDate(new \DateTime());
+        $status->setOldStatus($order->getLastStatus());
+        $status->setNewStatus(OrderStatusEnum::STATUS_CLOSED);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($status);
         $em->flush();
         
         return $this->redirect($this->generateUrl('order_index'));
@@ -93,11 +123,23 @@ class DefaultController extends Controller
     public function payedAction($id)
     {
         $order = $this->getOrder($id);
-        $order->setStatus(OrderStatusEnum::STATUS_PAYED);
-        $order->setPaymentDate(new \DateTime());
+        
+        $status = new OrderStatus();
+        $status->setOrder($order);
+        $status->setDate(new \DateTime());
+        $status->setOldStatus($order->getLastStatus());
+        $status->setNewStatus(OrderStatusEnum::STATUS_CLOSED);
+        
+        $payment = new OrderPayment();
+        $payment->setOrder($order);
+        $payment->setDate(new \DateTime());
+        $payment->setAmount($order->getTotalPrice());
+        $payment->setType(PaymentTypeEnum::PAYMENT_CASH);
+        $payment->setStatus(PaymentStatusEnum::PAYMENT_SUCCESS);
         
         $em = $this->getDoctrine()->getManager();
-        $em->persist($order);
+        $em->persist($status);
+        $em->persist($payment);
         $em->flush();
         
         return $this->redirect($this->generateUrl('order_index'));
@@ -106,13 +148,13 @@ class DefaultController extends Controller
     /**
      * 
      * @param integer $id
-     * @return Order
+     * @return OrderData
      * @throws type
      */
     protected function getOrder($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('IOOrderBundle:Order')->find($id);
+        $entity = $em->getRepository('IOOrderBundle:OrderData')->find($id);
         if (!$entity || $entity->getRestaurant()->getId() !== $this->userSv->getUserRestaurant()->getId()) {
             throw $this->createNotFoundException('Unable to find Order entity.');
         }

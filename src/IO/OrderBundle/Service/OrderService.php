@@ -5,7 +5,7 @@ namespace IO\OrderBundle\Service;
 use JMS\DiExtraBundle\Annotation\Service;
 use JMS\DiExtraBundle\Annotation\Inject;
 use IO\RestaurantBundle\Entity\Restaurant;
-use IO\OrderBundle\Entity\Order;
+use IO\OrderBundle\Entity\OrderData;
 use IO\OrderBundle\Entity\OrderLine;
 use IO\OrderBundle\Enum\OrderStatusEnum;
 
@@ -30,16 +30,24 @@ class OrderService
      * 
      * @param array $data
      * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
-     * @return \IO\OrderBundle\Entity\Order
+     * @return \IO\OrderBundle\Entity\OrderData
      */
     public function getCurrentOrders(Restaurant $restaurant)
     {
-        $repo = $this->em->getRepository('IOOrderBundle:Order');
-        $orders = $repo->findBy(array(
-            'restaurant' => $restaurant,
-            'status' => array(OrderStatusEnum::STATUS_WAITING, OrderStatusEnum::STATUS_IN_PROGRESS),
-        ));
-                
+        $repo = $this->em->getRepository('IOOrderBundle:OrderData');
+        $qb = $repo->createQueryBuilder('order_data');
+        $qb->select('order_data')
+                ->leftJoin('order_data.orderStatuses', 'order_status')
+                ->where('order_data.restaurant = :restaurant')
+                ->groupBy('order_data.id')
+                ->having('GROUP_CONCAT(order_status.newStatus) NOT LIKE :status_closed')
+                ->andHaving('GROUP_CONCAT(order_status.newStatus) NOT LIKE :status_canceled')
+                ->setParameter(':restaurant', $restaurant)
+                ->setParameter(':status_closed', '%' . OrderStatusEnum::STATUS_CLOSED . '%')
+                ->setParameter(':status_canceled', '%' . OrderStatusEnum::STATUS_CANCELED . '%');
+        
+        $orders = $qb->getQuery()->getResult();
+        
         return $orders;
     }
     
@@ -48,15 +56,20 @@ class OrderService
      * 
      * @param array $data
      * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
-     * @return \IO\OrderBundle\Entity\Order
+     * @return \IO\OrderBundle\Entity\OrderData
      */
     public function processOrder(array $data, Restaurant $restaurant)
     {
-        $order = new Order();
+        $order = new OrderData();
         
         $order->setRestaurant($restaurant);
         $order->setOrderDate(new \DateTime());
-        $order->setStatus(OrderStatusEnum::STATUS_WAITING);
+        
+        $status = new OrderStatus();
+        $status->setOrder($order);
+        $status->setDate(new \DateTime());
+        $status->setOldStatus($order->getLastStatus());
+        $status->setNewStatus(OrderStatusEnum::STATUS_IN_PROGRESS);
         
         if (isset($data['name'])) {
             $order->setTableName($data['name']);
@@ -80,6 +93,7 @@ class OrderService
             }
         }
         
+        $this->em->persist($status);
         $this->em->persist($order);
         $this->em->flush();
 
@@ -89,10 +103,10 @@ class OrderService
     /**
      * Generate Receipt
      * 
-     * @param \IO\OrderBundle\Entity\Order $order
+     * @param \IO\OrderBundle\Entity\OrderData $order
      * @return type
      */
-    public function generateReceipt(Order $order) 
+    public function generateReceipt(OrderData $order) 
     {
         $receipt = array();
         

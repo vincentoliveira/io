@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 use JMS\DiExtraBundle\Annotation\Service;
 use JMS\DiExtraBundle\Annotation\Inject;
 use JMS\DiExtraBundle\Annotation\Tag;
-use IO\OrderBundle\Entity\Order;
+use IO\OrderBundle\Entity\OrderData;
 
 /**
  * Restaurant TwigExtension
@@ -37,7 +37,7 @@ class OrderTwigExtension extends \Twig_Extension
      * 
      * @return array
      */
-    public function receiptFilter(Order $order) {
+    public function receiptFilter(OrderData $order) {
         return $this->orderSv->generateReceipt($order);
     }
     

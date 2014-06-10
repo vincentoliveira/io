@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use JMS\DiExtraBundle\Annotation\Inject;
-use IO\OrderBundle\Entity\Order;
+use IO\OrderBundle\Entity\OrderData;
 use IO\OrderBundle\Enum\OrderStatusEnum;
 
 /**
