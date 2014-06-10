@@ -78,13 +78,14 @@ class WsseProvider implements AuthenticationProviderInterface
      */
     protected function validateDigest($digest, $nonce, $created, $secret)
     {
+        $timeDelta = 600;
         // Check created time is not in the future
-        if (strtotime($created) > time()) {
+        if (strtotime($created) > time() + $timeDelta) {
             return false;
         }
 
         // Expire timestamp after 5 minutes
-        if (time() - strtotime($created) > 600) {
+        if (time() - strtotime($created) > $timeDelta) {
             return false;
         }
 

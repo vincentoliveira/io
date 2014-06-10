@@ -7,6 +7,7 @@ use JMS\DiExtraBundle\Annotation\Inject;
 use IO\RestaurantBundle\Entity\Restaurant;
 use IO\OrderBundle\Entity\OrderData;
 use IO\OrderBundle\Entity\OrderLine;
+use IO\OrderBundle\Entity\OrderStatus;
 use IO\OrderBundle\Enum\OrderStatusEnum;
 
 /**
@@ -68,8 +69,9 @@ class OrderService
         $status = new OrderStatus();
         $status->setOrder($order);
         $status->setDate(new \DateTime());
-        $status->setOldStatus($order->getLastStatus());
+        $status->setOldStatus(OrderStatusEnum::STATUS_INIT);
         $status->setNewStatus(OrderStatusEnum::STATUS_IN_PROGRESS);
+        $this->em->persist($status);
         
         if (isset($data['name'])) {
             $order->setTableName($data['name']);
@@ -93,7 +95,6 @@ class OrderService
             }
         }
         
-        $this->em->persist($status);
         $this->em->persist($order);
         $this->em->flush();
 

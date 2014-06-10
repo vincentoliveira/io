@@ -15,6 +15,7 @@ use JMS\DiExtraBundle\Annotation\Inject;
  */
 class ApiController extends Controller
 {
+
     /**
      * User Service
      * 
@@ -22,7 +23,7 @@ class ApiController extends Controller
      * @var \IO\UserBundle\Service\UserService
      */
     public $userSv;
-    
+
     /**
      * CarteItem Service
      * 
@@ -30,7 +31,7 @@ class ApiController extends Controller
      * @var \IO\OrderBundle\Service\OrderService
      */
     public $orderSv;
-    
+
     /**
      * @Route("/order.json", name="order_api_order")
      * @Method("POST")
@@ -38,24 +39,26 @@ class ApiController extends Controller
     public function orderAction(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        
+
         if ($data === null || !is_array($data)) {
             return new JsonResponse(array('error' => 'Bad data'));
         }
         if (empty($data)) {
             return new JsonResponse(array('error' => 'Empty command'));
         }
-        
+
         $restaurant = $this->userSv->getUserRestaurant();
         $order = $this->orderSv->processOrder($data, $restaurant);
-        
+
         $response = array(
             'order' => array(
                 'id' => $order->getId(),
-                'status' => $order->getStatus(),
+                'status' => $order->getLastStatus(),
                 'total_price' => $order->getTotalPrice(),
             ),
         );
         return new JsonResponse($response);
     }
+
+
 }
