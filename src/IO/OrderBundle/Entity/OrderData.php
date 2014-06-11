@@ -82,6 +82,8 @@ class OrderData
     public function __construct()
     {
         $this->orderLines = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->orderStatuses = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->orderPayments = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -98,12 +100,33 @@ class OrderData
         return $price;
     }
     
+    /**
+     * Get lasty status name
+     * 
+     * @return string
+     */
     public function getLastStatus() {
         if ($this->orderStatuses->isEmpty()) {
             return OrderStatusEnum::STATUS_INIT;
         }
         
         return $this->orderStatuses->last()->getNewStatus();
+    }
+    
+    /**
+     * Get Payed Amount
+     *
+     * @return integer 
+     */
+    public function getPayedAmount()
+    {
+        $totalPayed = 0;
+        foreach ($this->orderPayments as $payment) {
+            if ($payment->getStatus() === PaymentStatusEnum::PAYMENT_SUCCESS) {
+                $totalPayed += $payment->getAmount();
+            }
+        }
+        return $totalPayed;
     }
     
     /**
@@ -114,12 +137,7 @@ class OrderData
     public function isPayed()
     {
         $totalPrice = $this->getTotalPrice();
-        $totalPayed = 0;
-        foreach ($this->orderPayments as $payment) {
-            if ($payment->getStatus() === PaymentStatusEnum::PAYMENT_SUCCESS) {
-                $totalPayed += $payment->getAmount();
-            }
-        }
+        $totalPayed = $this->getPayedAmount();
         return $totalPayed >= $totalPrice;
     }
     
