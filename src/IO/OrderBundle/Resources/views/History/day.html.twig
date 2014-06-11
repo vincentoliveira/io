@@ -11,16 +11,26 @@
         {% if order.orderDate is not null %}
         Heure de commande: <em>{{ order.orderDate|date('h\\hi') }}</em><br/>
         {% endif %}
-        {% if order.paymentDate is not null %}
-        Heure de paiement: <em>{{ order.paymentDate|date('h\\hi') }}</em><br/>
-        {% endif %}
         {% if order.orderDate is not null and order.startDate is not null %}
         Temps de commande: <em>{{ date_difference(order.orderDate, order.startDate) }}</em><br/>
         {% endif %}
-        {% if order.paymentDate is not null and order.orderDate is not null %}
-        Temps de préparation: <em>{{ date_difference(order.paymentDate, order.orderDate) }}</em><br/>
-        {% endif %}
-        Temps total:  <em>{{ date_difference(order.paymentDate, order.startDate) }}</em><br/>
+        <h4>Statuts</h4>
+        <ul>
+        {% for status in order.orderStatuses %}
+                <li>{{ status.date|date('h\\hi') }}: {{ status.oldStatus }} -> {{ status.newStatus }}</li>
+        {% else %}
+            <em>Aucun statut</em>
+        {% endfor %}
+        </ul>
+        <h4>Paiments</h4>
+        <ul>
+        {% for payment in order.orderPayments %}
+                <li>{{ payment.date|date('h\\hi') }}: <strong>{{ payment.amount }}</strong> <em>{{ payment.type|trans }} ({{ payment.status|trans }})</em></li>
+        {% else %}
+            <em>Aucun paiement</em>
+        {% endfor %}
+        </ul>
+        <h4>Commande</h4>
         {% include 'IOOrderBundle:Default:order_item_list.html.twig' with {order:order} %}
     </div>
     {% endfor %}

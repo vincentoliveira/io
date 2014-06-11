@@ -15,6 +15,7 @@ use JMS\DiExtraBundle\Annotation\Inject;
  */
 class ApiController extends Controller
 {
+
     /**
      * User Service
      * 
@@ -22,7 +23,7 @@ class ApiController extends Controller
      * @var \IO\UserBundle\Service\UserService
      */
     public $userSv;
-    
+
     /**
      * CarteItem Service
      * 
@@ -30,7 +31,7 @@ class ApiController extends Controller
      * @var \IO\OrderBundle\Service\OrderService
      */
     public $orderSv;
-    
+
     /**
      * @Route("/order.json", name="order_api_order")
      * @Method("POST")
@@ -38,11 +39,7 @@ class ApiController extends Controller
     public function orderAction(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        
-        if ($data === null || !is_array($data)) {
-            return new JsonResponse(array('error' => 'Bad data'));
-        }
-        if (empty($data)) {
+        if ($data === null || !is_array($data) || empty($data)) {
             return new JsonResponse(array('error' => 'Empty command'));
         }
         
@@ -52,10 +49,59 @@ class ApiController extends Controller
         $response = array(
             'order' => array(
                 'id' => $order->getId(),
-                'status' => $order->getStatus(),
+                'status' => $order->getLastStatus(),
                 'total_price' => $order->getTotalPrice(),
             ),
         );
         return new JsonResponse($response);
     }
+
+    /**
+     * @Route("/order/{id}/payment.json", name="order_api_payment")
+     * @Method("POST")
+     */
+    public function paymentAction(Request $request, $id)
+    {
+        $order = $this->getOrderData($id);
+        if ($order === null) {
+            return new JsonResponse(array('error' => 'You are not allowed to do this action'));
+        }
+        
+        $data = json_decode($request->getContent(), true);
+        if ($data === null || !is_array($data) || empty($data)) {
+            return new JsonResponse(array('error' => 'Empty payment'));
+        }
+            
+        $this->orderSv->processPayment($order, $data);
+        $this->getDoctrine()->getEntityManager()->refresh($order);
+        
+        $response = array(
+            'order' => array(
+                'id' => $order->getId(),
+                'status' => $order->getLastStatus(),
+                'total_price' => $order->getTotalPrice(),
+                'payed_amount' => $order->getPayedAmount(),
+            ),
+        );
+        return new JsonResponse($response);
+    }
+    
+    /**
+     * Get Order data
+     * 
+     * @param integer $id
+     * @return \IO\OrderBundle\Entity\OrderData
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    protected function getOrderData($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('IOOrderBundle:OrderData')->find($id);
+        if ($entity === null || $entity->getRestaurant()->getId() !== $this->userSv->getUserRestaurant()->getId()) {
+            return null;
+        }
+        
+        return $entity;
+    }
+
 }

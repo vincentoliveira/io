@@ -11,7 +11,7 @@ class ApiControllerTest extends IOTestCase
     {
         parent::setUp();
 
-        $this->truncate('IOOrderBundle:Order');
+        $this->truncate('IOOrderBundle:OrderData');
         $this->truncate('IOOrderBundle:OrderLine');
         $this->truncate('IORestaurantBundle:CarteItem');
         $this->truncate('IORestaurantBundle:Media');

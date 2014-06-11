@@ -27,10 +27,10 @@ class HistoryService {
      * 
      * @param array $data
      * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
-     * @return \IO\OrderBundle\Entity\Order
+     * @return \IO\OrderBundle\Entity\OrderData
      */
     public function getDayHistory(\DateTime $date, Restaurant $restaurant) {
-        $repo = $this->em->getRepository('IOOrderBundle:Order');
+        $repo = $this->em->getRepository('IOOrderBundle:OrderData');
         $qb = $repo->createQueryBuilder('order_item');
         $qb->where('order_item.restaurant = :restaurant')
                 ->andWhere('DAY(order_item.orderDate) = :day')
@@ -50,10 +50,10 @@ class HistoryService {
      * 
      * @param array $data
      * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
-     * @return \IO\OrderBundle\Entity\Order
+     * @return \IO\OrderBundle\Entity\OrderData
      */
     public function getOrderHistoryPerDay(Restaurant $restaurant, $maxResults = 20, $firstResult = 0) {
-        $metadata = $this->em->getClassMetadata('IOOrderBundle:Order');
+        $metadata = $this->em->getClassMetadata('IOOrderBundle:OrderData');
         $metadataOL = $this->em->getClassMetadata('IOOrderBundle:OrderLine');
 
         $tableName = $metadata->getTableName();

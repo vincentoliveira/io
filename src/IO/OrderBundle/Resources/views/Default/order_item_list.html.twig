@@ -14,4 +14,12 @@
     </li>
     {% endfor %}
     <li class="total">TOTAL <em>{{ order.totalPrice }}€</em></li>
+    {% set payedSum = 0 %}
+    {% for payment in order.orderPayments %} 
+        {% if payment.status == "SUCCESS" %}
+            {% set payedSum = payedSum + payment.amount %}
+            <li class="payment">{{ payment.type }} <em>-{{ payment.amount }}€</em></li>
+        {% endif %}
+    {% endfor %}
+    <li class="total">RESTE A PAYER <em>{{ order.totalPrice - payedSum }}€</em></li>
 </ul>

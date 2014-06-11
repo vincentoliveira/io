@@ -1,11 +1,18 @@
-<div class="order {% if order.status == "WAITING" %}order-waiting{% endif %}">
+<div class="order {% if order.lastStatus == "WAITING" or order.lastStatus == "INIT" %}order-waiting{% endif %}">
     <h3>{{ order.tableName }}</h3>
-    <strong>{{ order.status }}</strong>
+    <strong>{{ order.lastStatus|trans }}</strong>
+    {% if order.isPayed %}
+    <strong class="red">PAYEE</strong>
+    {% endif %}
     <em>{{ order.orderDate|date('H:i') }}</em>
     {% include 'IOOrderBundle:Default:order_item_list.html.twig' with {order:order} %}
-    {% if order.status == "WAITING" %}
+    {% if order.lastStatus == "WAITING" or order.lastStatus == "INIT" %}
     <a href="{{ path('order_accept', {id:order.id}) }}" class="btn btn-primary">OK</a>
     {% else %}
-    <a href="{{ path('order_payed', {id:order.id}) }}" class="btn btn-primary">Terminer</a>
+        {% if order.isPayed %}
+            <a href="{{ path('order_close', {id:order.id}) }}" class="btn btn-primary">Terminer</a>
+        {% else %}
+            <a href="{{ path('order_payed', {id:order.id}) }}" class="btn btn-primary">Payer</a>
+        {% endif %}
     {% endif %}
 </div>
