@@ -74,7 +74,7 @@ class OrderService
         $status->setOrder($order);
         $status->setDate(new \DateTime());
         $status->setOldStatus(OrderStatusEnum::STATUS_INIT);
-        $status->setNewStatus(OrderStatusEnum::STATUS_IN_PROGRESS);
+        $status->setNewStatus(OrderStatusEnum::STATUS_WAITING);
         $this->em->persist($status);
 
         $order->addOrderStatuse($status);
