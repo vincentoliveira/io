@@ -40,7 +40,7 @@ class OrderPayment
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="amount", type="integer", nullable=false)
+     * @ORM\Column(name="amount", type="decimal", precision=7, scale=2, nullable=false)
      */
     private $amount;
 
