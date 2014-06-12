@@ -130,7 +130,7 @@ class OrderService
         }
 
         $comments = isset($data['comments']) ? $data['comments'] : null;
-        $amount = isset($data['amount']) ? intval($data['amount']) : null;
+        $amount = isset($data['amount']) ? floatval($data['amount']) : null;
         $transactionId = isset($data['transaction_id']) ? $data['transaction_id'] : null;
             
         if ($amount < 0) {
