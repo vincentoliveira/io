@@ -135,7 +135,7 @@ class OrderService
             
         if ($amount < 0) {
             $status = PaymentStatusEnum::PAYMENT_ERROR;
-            $comments .= "NO AMOUNT;";
+            $comments .= ';' . base64_encode("NO AMOUNT");
         } elseif (isset($data['status']) && in_array($data['status'], PaymentStatusEnum::$allowedStatuses)) {
             $status = $data['status'];
         } else {
@@ -147,7 +147,7 @@ class OrderService
         } else {
             $status = PaymentStatusEnum::PAYMENT_ERROR;
             $type = PaymentTypeEnum::PAYMENT_UNKNOWN;
-            $comments .= "NO PAYMENT TYPE;";
+            $comments .= ';' . base64_encode("NO PAYMENT TYPE");
         }
 
         $payment = new OrderPayment();
