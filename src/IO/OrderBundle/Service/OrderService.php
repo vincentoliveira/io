@@ -129,13 +129,13 @@ class OrderService
             $date = new \DateTime();
         }
 
-        $comments = isset($data['comments']) ? $data['comments'] : null;
+        $comments = isset($data['comments']) ? base64_decode($data['comments']) : '';
         $amount = isset($data['amount']) ? floatval($data['amount']) : null;
         $transactionId = isset($data['transaction_id']) ? $data['transaction_id'] : null;
             
         if ($amount < 0) {
             $status = PaymentStatusEnum::PAYMENT_ERROR;
-            $comments .= ';' . base64_encode("NO AMOUNT");
+            $comments .= "NO AMOUNT;";
         } elseif (isset($data['status']) && in_array($data['status'], PaymentStatusEnum::$allowedStatuses)) {
             $status = $data['status'];
         } else {
@@ -147,8 +147,9 @@ class OrderService
         } else {
             $status = PaymentStatusEnum::PAYMENT_ERROR;
             $type = PaymentTypeEnum::PAYMENT_UNKNOWN;
-            $comments .= ';' . base64_encode("NO PAYMENT TYPE");
+            $comments .= "NO PAYMENT TYPE;";
         }
+        
 
         $payment = new OrderPayment();
         $payment->setOrder($order);
@@ -156,8 +157,10 @@ class OrderService
         $payment->setDate($date);
         $payment->setType($type);
         $payment->setTransactionId($transactionId);
-        $payment->setComments($comments);
         $payment->setStatus($status);
+        if ($comments !== '') {
+            $payment->setComments(base64_encode($comments));
+        }
 
         $this->em->persist($payment);
         $this->em->flush();
