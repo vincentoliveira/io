@@ -26,12 +26,20 @@ class HistoryController extends Controller
     public $userSv;
     
     /**
-     * CarteItem Service
+     * HistoryService Service
      * 
      * @Inject("io.history_service")
      * @var \IO\OrderBundle\Service\HistoryService
      */
     public $historySv;
+    
+    /**
+     * PaymentHistory Service
+     * 
+     * @Inject("io.payment_history_service")
+     * @var \IO\OrderBundle\Service\PaymentHistoryService
+     */
+    public $paymentHistorySv;
     
     /**
      * @Route("/", name="history_index")
@@ -63,6 +71,22 @@ class HistoryController extends Controller
         return array(
             'day' => $date,
             'history' => $history,
+        );
+    }
+    
+    
+    /**
+     * @Route("/payments", name="history_payment")
+     * @Template()
+     * @Secure("ROLE_MANAGER")
+     */
+    public function paymentAction(Request $request) 
+    {
+        $restaurant = $this->userSv->getUserRestaurant();
+        $payments = $this->paymentHistorySv->getPayments($restaurant, $request->request->all());
+        
+        return array(
+            'payments' => $payments,
         );
     }
     

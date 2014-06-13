@@ -51,6 +51,12 @@ class IOTwigExtension extends \Twig_Extension
         );
     }
     
+    public function getFilters() {
+        return array(
+            'base64_decode' => new \Twig_SimpleFilter('base64_decode', array($this, 'base64DecodeFilter'))
+        );
+    }
+    
     /**
      * Return restaurant categories
      * 
@@ -69,6 +75,17 @@ class IOTwigExtension extends \Twig_Extension
     public function mediaFilter(Media $media)
     {
         return $this->mediaSv->getWebPath($media);
+    }
+    
+    /**
+     * Base64 decode Filter
+     * 
+     * @param string $data
+     * @return string
+     */
+    public function base64DecodeFilter($data) 
+    {
+        return base64_decode($data);
     }
     
     /**

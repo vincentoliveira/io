@@ -1,0 +1,30 @@
+{% extends "IODefaultBundle::layout.html.twig" %}
+
+{% block content %}
+<div class="content-header">
+    <h3>Historique des paiements</h3>
+</div>
+<div class="history">
+    <table class="table table-hover table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>Transaction ID</th>
+            <th>Montant</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Commentaires</th>
+        </tr>
+        {% for payment in payments %}
+        <tr>
+            <td>{{ payment.id }}</td>
+            <td>{{ payment.transactionId }}</td>
+            <td>{{ payment.amount }}</td>
+            <td>{{ payment.type }}</td>
+            <td>{{ payment.status|trans }}</td>
+            <td>{{ payment.comments|base64_decode }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

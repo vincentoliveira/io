@@ -10,8 +10,12 @@
                 <li>
                     <a href="{{ path('order_index') }}"><i class="fa fa-cutlery"></i><span>Commandes</span></a>
                 </li>
-                <li>
-                    <a href="{{ path('history_index') }}"><i class="fa fa-bar-chart-o"></i><span>Historique</span></a>
+                <li class="sub-menu">
+                    <a href="javascript:void(0);"><i class="fa fa-history"></i><span>Historique</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                    <ul>
+                        <li><a href="{{ path('history_index') }}"><i class="fa fa-cutlery"></i><span>Historique des commandes</span></a></li>
+                        <li><a href="{{ path('history_payment') }}"><i class="fa fa-money"></i><span>Historique des paiments</span></a></li>
+                    </ul>
                 </li>
                 <li class="sub-menu">
                     <a href="javascript:void(0);"><i class="fa fa-bar-chart-o"></i><span>Statistiques</span><i class="arrow fa fa-angle-right pull-right"></i></a>
