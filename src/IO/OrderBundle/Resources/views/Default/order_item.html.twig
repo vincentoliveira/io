@@ -7,7 +7,7 @@
     <em>{{ order.orderDate|date('H:i') }}</em>
     {% include 'IOOrderBundle:Default:order_item_list.html.twig' with {order:order} %}
     {% if order.lastStatus == "WAITING" or order.lastStatus == "INIT" %}
-    <a href="{{ path('order_accept', {id:order.id}) }}" class="btn btn-primary">OK</a>
+        <a href="{{ path('order_accept', {id:order.id}) }}" class="btn btn-primary">OK</a>
     {% else %}
         {% if order.isPayed %}
             <a href="{{ path('order_close', {id:order.id}) }}" class="btn btn-primary">Terminer</a>
@@ -15,4 +15,5 @@
             <a href="{{ path('order_payed', {id:order.id}) }}" class="btn btn-primary">Payer</a>
         {% endif %}
     {% endif %}
+    <a href="{{ path('order_cancel', {id:order.id}) }}" class="btn btn-danger confirm-cancel">Annuler</a>
 </div>

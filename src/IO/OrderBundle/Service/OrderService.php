@@ -87,7 +87,7 @@ class OrderService
         if (isset($data['start_date'])) {
             $date = \DateTime::createFromFormat('Y-m-d H:i:s', $data['start_date']);
         }
-        if (!$date) {
+        if (!$date instanceof \DateTime) {
             $date = new \DateTime();
         }
         $order->setStartDate($date);

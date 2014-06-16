@@ -117,6 +117,33 @@ class DefaultController extends Controller
     }
     
     /**
+     * @Route("/cancel/{id}", name="order_cancel")
+     * @Secure("ROLE_MANAGER")
+     */
+    public function cancelAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $order = $this->getOrder($id);
+        
+        $status = new OrderStatus();
+        $status->setOrder($order);
+        $status->setDate(new \DateTime());
+        $status->setOldStatus($order->getLastStatus());
+        $status->setNewStatus(OrderStatusEnum::STATUS_CANCELED);
+        
+        foreach ($order->getOrderPayments() as $payment) {
+            $payment->setStatus(PaymentStatusEnum::PAYMENT_CANCELED);
+            $em->persist($payment);
+        }
+        
+        $em->persist($status);
+        $em->flush();
+        
+        return $this->redirect($this->generateUrl('order_index'));
+    }
+    
+    /**
      * @Route("/payed/{id}", name="order_payed")
      * @Secure("ROLE_MANAGER")
      */
