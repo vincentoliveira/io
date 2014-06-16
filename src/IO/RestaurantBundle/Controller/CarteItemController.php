@@ -11,4 +11,23 @@ use IO\RestaurantBundle\Form\CarteItemType;
  */
 abstract class CarteItemController extends Controller
 {
+    
+    /**
+     * Get Entity
+     * 
+     * @param integer $id
+     * @return CarteItem
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    protected function getEntity($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('IORestaurantBundle:CarteItem')->find($id);
+        if (!$entity || $entity->getRestaurant()->getId() !== $this->userSv->getUserRestaurant()->getId()) {
+            throw $this->createNotFoundException('Unable to find CarteItem entity.');
+        }
+        
+        return $entity;
+    }
+
 }

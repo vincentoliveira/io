@@ -30,6 +30,26 @@ class CarteItemRepository extends EntityRepository
 
         return $queryBuilder;
     }
+    /**
+     * 
+     * @param int $restaurantId
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getRestaurantOptionListQueryBuilder($restaurantId)
+    {
+        $queryBuilder = $this->createQueryBuilder('item');
+
+        $queryBuilder->select('item')
+                ->where('item.restaurant = :restaurant')
+                ->andWhere('item.itemType = :type')
+                ->setParameter(':restaurant', $restaurantId)
+                ->setParameter(':type', ItemTypeEnum::TYPE_OPTION_LIST)
+                ->addOrderBy('item.parent', 'ASC')
+                ->addOrderBy('item.position', 'ASC');
+
+        return $queryBuilder;
+    }
+    
 
     /**
      * 

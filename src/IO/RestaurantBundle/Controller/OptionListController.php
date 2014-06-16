@@ -8,16 +8,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
-use IO\RestaurantBundle\Form\CategoryType;
+use IO\RestaurantBundle\Form\OptionListType;
 use IO\RestaurantBundle\Entity\CarteItem;
 use IO\RestaurantBundle\Enum\ItemTypeEnum;
 
 /**
- * CarteItem controller.
+ * Option List (CarteItem) controller.
  *
- * @Route("/cat")
+ * @Route("/optlist")
  */
-class CategoryController extends CarteItemController
+class OptionListController extends CarteItemController
 {
 
     /**
@@ -27,14 +27,6 @@ class CategoryController extends CarteItemController
      * @var \IO\UserBundle\Service\UserService
      */
     public $userSv;
-
-    /**
-     * User Service
-     * 
-     * @Inject("io.media_service")
-     * @var \IO\RestaurantBundle\Service\MediaService
-     */
-    public $mediaSv;
     
     /**
      * Session
@@ -44,28 +36,46 @@ class CategoryController extends CarteItemController
      */
     public $session;
 
+    
+    /**
+     * Displays all .
+     *
+     * @Route("/", name="option_list_index")
+     * @Secure("ROLE_MANAGER")
+     * @Method("GET")
+     * @Template()
+     */
+    public function indexAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('IORestaurantBundle:CarteItem');
+        $lists = $repo->findBy(array(
+            'restaurant' => $this->userSv->getUserRestaurant(),
+            'itemType' => ItemTypeEnum::TYPE_OPTION_LIST,
+        ));
+        
+        return array(
+            'opt_lists' => $lists,
+        );
+    }
+    
+    
     /**
      * Displays a form to create a new CarteItem entity.
      *
-     * @Route("/new", name="category_new")
+     * @Route("/new", name="option_list_new")
      * @Secure("ROLE_MANAGER")
      * @Method("GET")
      * @Template()
      */
     public function newAction(Request $request)
     {
-        
         $entity = new CarteItem();
         $entity->setRestaurant($this->userSv->getUserRestaurant());
-        $entity->setItemType(ItemTypeEnum::TYPE_CATEGORY);
+        $entity->setItemType(ItemTypeEnum::TYPE_OPTION_LIST);
+        $entity->setVisible(true);
         
-        $parentId = $request->query->get('parent', null);
-        if ($parentId !== null) {
-            $parent = $this->getEntity($parentId);
-            $entity->setParent($parent);
-        }
-        
-        $form = $this->createForm(new CategoryType(), $entity);
+        $form = $this->createForm(new OptionListType(), $entity);
 
         return array(
             'entity' => $entity,
@@ -77,29 +87,28 @@ class CategoryController extends CarteItemController
     /**
      * Creates a new CarteItem entity.
      *
-     * @Route("/create", name="category_create")
+     * @Route("/create", name="option_list_create")
      * @Secure("ROLE_MANAGER")
      * @Method("POST")
-     * @Template("IORestaurantBundle:Category:new.html.twig")
+     * @Template("IORestaurantBundle:Dish:new.html.twig")
      */
     public function createAction(Request $request)
     {
         $entity = new CarteItem();
         $entity->setRestaurant($this->userSv->getUserRestaurant());
-        $entity->setItemType(ItemTypeEnum::TYPE_CATEGORY);
+        $entity->setItemType(ItemTypeEnum::TYPE_OPTION_LIST);
+        $entity->setVisible(true);
 
-        $form = $this->createForm(new CategoryType(), $entity);
+        $form = $this->createForm(new OptionListType(), $entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $this->mediaSv->handleMedia($entity);
-            
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 
-            $this->session->getFlashBag()->add('success', sprintf('La categorie "%s" a bien été ajoutée', $entity->getName()));
-            return $this->redirect($this->generateUrl('category_show', array('id' => $entity->getId())));
+            $this->session->getFlashBag()->add('success', sprintf('La liste d\'option "%s" a bien été ajoutée', $entity->getName()));
+            return $this->redirect($this->generateUrl('option_list_index'));
         }
 
         return array(
@@ -110,34 +119,16 @@ class CategoryController extends CarteItemController
 
 
     /**
-     * Finds and displays a CarteItem entity.
-     *
-     * @Route("/{id}", name="category_show")
-     * @Secure("ROLE_MANAGER")
-     * @Method("GET")
-     * @Template()
-     */
-    public function showAction($id)
-    {
-        $entity = $this->getEntity($id);
-
-        return array(
-            'entity' => $entity,
-        );
-    }
-
-
-    /**
      * Displays a form to edit an existing CarteItem entity.
      *
-     * @Route("/{id}/edit", name="category_edit")
+     * @Route("/{id}/edit", name="option_list_edit")
      * @Method("GET")
      * @Template()
      */
     public function editAction($id)
     {
         $entity = $this->getEntity($id);
-        $editForm = $this->createForm(new CategoryType(), $entity);
+        $editForm = $this->createForm(new OptionListType(), $entity);
 
         return array(
             'entity' => $entity,
@@ -149,25 +140,23 @@ class CategoryController extends CarteItemController
     /**
      * Edits an existing CarteItem entity.
      *
-     * @Route("/{id}/update", name="category_update")
+     * @Route("/{id}/update", name="option_list_update")
      * @Method("POST")
-     * @Template("IORestaurantBundle:Category:edit.html.twig")
+     * @Template("IORestaurantBundle:Dish:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $entity = $this->getEntity($id);
-        $editForm = $this->createForm(new CategoryType(), $entity);
+        $editForm = $this->createForm(new OptionListType(), $entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $media = $this->mediaSv->handleMedia($entity);
-            
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
             
-            $this->session->getFlashBag()->add('success', sprintf('La categorie "%s" a bien été modifiée', $entity->getName()));
-            return $this->redirect($this->generateUrl('category_show', array('id' => $id)));
+            $this->session->getFlashBag()->add('success', sprintf('La liste d\'option "%s" a bien été modifiée', $entity->getName()));
+            return $this->redirect($this->generateUrl('option_list_index'));
         }
 
         return array(
@@ -180,7 +169,7 @@ class CategoryController extends CarteItemController
     /**
      * Deletes a CarteItem entity.
      *
-     * @Route("/{id}/delete", name="category_delete")
+     * @Route("/{id}/delete", name="option_list_delete")
      */
     public function deleteAction($id)
     {
@@ -189,27 +178,8 @@ class CategoryController extends CarteItemController
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
         $em->flush();
-        $this->session->getFlashBag()->add('success', sprintf('La categorie "%s" a bien été supprimée', $entity->getName()));
+        $this->session->getFlashBag()->add('success', sprintf('La liste d\'option a bien été supprimée', $entity->getName()));
 
-        return $this->redirect($this->generateUrl('homepage'));
+        return $this->redirect($this->generateUrl('option_list_index'));
     }
-
-    /**
-     * Change visibility
-     *
-     * @Route("/{id}/visibility/{visibility}", name="category_visibility")
-     * @Template()
-     */
-    public function visibilityAction($id, $visibility)
-    {
-        $entity = $this->getEntity($id);
-        
-        $em = $this->getDoctrine()->getManager();
-        $entity->setVisible($visibility);
-        $em->persist($entity);
-        $em->flush();
-        
-        return $this->redirect($this->generateUrl('category_show', array('id' => $entity->getId())));
-    }
-
 }

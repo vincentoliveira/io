@@ -198,24 +198,5 @@ class DishController extends CarteItemController
         
         return $this->redirect($this->generateUrl('category_show', array('id' => $entity->getParent()->getId())));
     }
-    
-    /**
-     * Get Entity
-     * 
-     * @param integer $id
-     * @return CarteItem
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
-    protected function getEntity($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('IORestaurantBundle:CarteItem')->find($id);
-        if (!$entity || $entity->getRestaurant()->getId() !== $this->userSv->getUserRestaurant()->getId()) {
-            throw $this->createNotFoundException('Unable to find CarteItem entity.');
-        }
-        
-        return $entity;
-    }
-
 
 }

@@ -46,7 +46,9 @@ class HistoryService {
     }
 
     /**
-     * process order from data
+     * Get order hisoty per day
+     * 
+     * @TODO: Dont calculate canceled orders
      * 
      * @param array $data
      * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
@@ -55,9 +57,11 @@ class HistoryService {
     public function getOrderHistoryPerDay(Restaurant $restaurant, $maxResults = 20, $firstResult = 0) {
         $metadata = $this->em->getClassMetadata('IOOrderBundle:OrderData');
         $metadataOL = $this->em->getClassMetadata('IOOrderBundle:OrderLine');
+        $metadataStatus = $this->em->getClassMetadata('IOOrderBundle:OrderStatus');
 
         $tableName = $metadata->getTableName();
         $orderLineTableName = $metadataOL->getTableName();
+        $orderStatusTableName = $metadataStatus->getTableName();
         
         $qb = new MySQLQueryBuilder();
         
@@ -69,9 +73,15 @@ class HistoryService {
         ));
         $sqlQuery .= $qb->from($tableName);
         
+        // join order lines
         $orderLineOrderIdField = $orderLineTableName . '.' . $metadataOL->getSingleAssociationJoinColumnName('order');
         $orderIdField = $tableName . '.' . $metadata->getColumnName('id');
         $sqlQuery .= $qb->leftJoin($orderLineTableName, $orderLineOrderIdField, $orderIdField);
+        
+        // join order status
+//        $orderStatusOrderIdField = $orderStatusTableName . '.' . $metadataStatus->getSingleAssociationJoinColumnName('order');
+//        $orderIdField = $tableName . '.' . $metadata->getColumnName('id');
+//        $sqlQuery .= $qb->leftJoin($orderStatusTableName, $orderStatusOrderIdField, $orderIdField);
               
         $whereRestaurant = sprintf('%s = %s', $metadata->getColumnName('restaurant_id'), $restaurant->getId());
         $sqlQuery .= $qb->where($whereRestaurant);

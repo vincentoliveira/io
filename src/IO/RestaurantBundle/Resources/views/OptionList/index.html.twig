@@ -1,0 +1,37 @@
+{% extends "IODefaultBundle::layout.html.twig" %}
+
+{% block content %}
+    <div class="content-header">
+        <h3>Liste d'options</h3>
+        <div class="clearfix"></div>
+    </div>
+
+<a href="{{ path('option_list_new') }}" role="button" class="btn btn-primary btn-trans" title="Ajouter une liste d'options"><i class="fa fa-plus"></i> Ajouter une liste d'options</a>
+
+<div class="children list-group">
+    {% for opt_list in opt_lists %}
+        <div class="option-list">
+            <a href="{{ path('option_list_edit', {id:opt_list.id}) }}" title="Modifier {{ opt_list.name|raw }}">
+                <i class="fa fa-edit"></i>
+            </a>
+            <a href="{{ path('option_list_delete', {id:opt_list.id}) }}" title="Supprimer {{ opt_list.name|raw }}">
+                <i class="fa fa-trash-o"></i>
+            </a>
+            <strong>{{ opt_list.name }}</strong>
+            <em>{{ opt_list.description }}</em>
+            
+            <ul>
+                {% for opt in opt_list.children %}
+                <li>{{ opt.name }} ({{ opt.price }}€)</li>
+                {% endfor %}
+                <li>
+                    <a href="{{ path('option_new', {parent:opt_list.id}) }}" title="Modifier {{ opt_list.name|raw }}">
+                        Ajouter une option à la liste "{{ opt_list.name }}"
+                    </a>
+                </li>
+            </ul>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

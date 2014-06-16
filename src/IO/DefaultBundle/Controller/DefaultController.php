@@ -4,7 +4,7 @@ namespace IO\DefaultBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\DiExtraBundle\Annotation\Inject;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 
 /**
@@ -15,12 +15,24 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 class DefaultController extends Controller
 {
     /**
+     * User Service
+     * 
+     * @Inject("io.user_service")
+     * @var \IO\UserBundle\Service\UserService
+     */
+    public $userSv;
+    
+    /**
      * @Route("/", name="homepage")
-     * @Template()
      * @Secure(roles="ROLE_USER")
      */
     public function indexAction()
     {
-        return array();
+        $user = $this->userSv->getUser();
+        if ($user->hasRole("ROLE_ADMIN")) {
+            return $this->forward("IORestaurantBundle:Admin:index");
+        } else {
+            return $this->forward("IOOrderBundle:Default:index");
+        }
     }
 }

@@ -52,7 +52,6 @@ class CarteItemType extends AbstractType
                 ))
         ;
         
-        
         $builder->addEventSubscriber(new EventListener\ParentSubscriber());
     }
 

@@ -26,7 +26,7 @@
 </div>
 <div class="clearfix"></div>
 <a href="{{ path('dish_new', {parent:entity.id}) }}" role="button" class="btn btn-primary btn-trans" title="Ajouter un plat"><i class="fa fa-plus"></i> Ajouter un plat</a>
-<a href="{{ path('category_new', {parent:entity.id}) }}" role="button" class="btn btn-primary btn-trans" title="Ajouter une sous-catégorie"><i class="fa fa-plus"></i> Ajouter une sous-catégorie</a>
+{#<a href="{{ path('category_new', {parent:entity.id}) }}" role="button" class="btn btn-primary btn-trans" title="Ajouter une sous-catégorie"><i class="fa fa-plus"></i> Ajouter une sous-catégorie</a>#}
 
 <div class="children list-group">
     {% for child in entity.children %}
