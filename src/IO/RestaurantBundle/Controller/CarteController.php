@@ -23,7 +23,7 @@ class CarteController extends Controller
      * @var \IO\RestaurantBundle\Service\CarteItemService
      */
     public $carteItemSv;
-
+    
     /**
      * Displays carte
      *

@@ -18,4 +18,14 @@
         </div>
     </form>
 
+<h4>Options</h4>
+<ul>
+{% for dishOption in entity.dishOptions %}
+    <li><a href="{{ path('dish_delete_option', {id:dishOption.id}) }}" title="Supprimer l'option {{ dishOption.optionList.name }}"><i class="fa fa-trash-o"></i> </a>{{ dishOption.optionList.name }}</li>
+{% else %}
+    <li>Aucune option pour ce plat</li>
+{% endfor %}
+</ul>
+<a href="{{ path('dish_add_option', {id:entity.id}) }}" class="btn btn-primary">Ajouter une option</a>
+
 {% endblock %}

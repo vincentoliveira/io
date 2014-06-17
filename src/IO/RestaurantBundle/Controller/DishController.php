@@ -11,14 +11,15 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 use IO\RestaurantBundle\Form\DishType;
 use IO\RestaurantBundle\Entity\CarteItem;
 use IO\RestaurantBundle\Enum\ItemTypeEnum;
+use IO\RestaurantBundle\Form\DishOptionListType;
+use IO\RestaurantBundle\Entity\DishOptionList;
 
 /**
  * CarteItem controller.
  *
  * @Route("/dish")
  */
-class DishController extends CarteItemController
-{
+class DishController extends CarteItemController {
 
     /**
      * User Service
@@ -35,7 +36,7 @@ class DishController extends CarteItemController
      * @var \IO\UserBundle\Service\MediaService
      */
     public $mediaSv;
-    
+
     /**
      * Session
      * 
@@ -52,15 +53,14 @@ class DishController extends CarteItemController
      * @Method("GET")
      * @Template()
      */
-    public function newAction(Request $request)
-    {
-        
+    public function newAction(Request $request) {
+
         $entity = new CarteItem();
         $entity->setRestaurant($this->userSv->getUserRestaurant());
         $entity->setItemType(ItemTypeEnum::TYPE_DISH);
         $entity->setVat(10.0);
         $entity->setVisible(true);
-        
+
         $parentId = $request->query->get('parent', null);
         if ($parentId !== null) {
             $parent = $this->getEntity($parentId);
@@ -69,7 +69,7 @@ class DishController extends CarteItemController
                 $entity->setVat($parent->getVat());
             }
         }
-        
+
         $form = $this->createForm(new DishType(), $entity);
 
         return array(
@@ -77,7 +77,6 @@ class DishController extends CarteItemController
             'form' => $form->createView(),
         );
     }
-
 
     /**
      * Creates a new CarteItem entity.
@@ -87,8 +86,7 @@ class DishController extends CarteItemController
      * @Method("POST")
      * @Template("IORestaurantBundle:Dish:new.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new CarteItem();
         $entity->setRestaurant($this->userSv->getUserRestaurant());
         $entity->setItemType(ItemTypeEnum::TYPE_DISH);
@@ -98,7 +96,7 @@ class DishController extends CarteItemController
 
         if ($form->isValid()) {
             $this->mediaSv->handleMedia($entity);
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -113,7 +111,6 @@ class DishController extends CarteItemController
         );
     }
 
-
     /**
      * Displays a form to edit an existing CarteItem entity.
      *
@@ -121,8 +118,7 @@ class DishController extends CarteItemController
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $entity = $this->getEntity($id);
         $editForm = $this->createForm(new DishType(), $entity);
 
@@ -132,7 +128,6 @@ class DishController extends CarteItemController
         );
     }
 
-
     /**
      * Edits an existing CarteItem entity.
      *
@@ -140,19 +135,18 @@ class DishController extends CarteItemController
      * @Method("POST")
      * @Template("IORestaurantBundle:Dish:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $entity = $this->getEntity($id);
         $editForm = $this->createForm(new DishType(), $entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $media = $this->mediaSv->handleMedia($entity);
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-            
+
             $this->session->getFlashBag()->add('success', sprintf('Le plat "%s" a bien été modifié', $entity->getName()));
             return $this->redirect($this->generateUrl('category_show', array('id' => $entity->getParent()->getId())));
         }
@@ -163,16 +157,14 @@ class DishController extends CarteItemController
         );
     }
 
-
     /**
      * Deletes a CarteItem entity.
      *
      * @Route("/{id}/delete", name="dish_delete")
      */
-    public function deleteAction($id)
-    {
+    public function deleteAction($id) {
         $entity = $this->getEntity($id);
-        
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
         $em->flush();
@@ -187,16 +179,63 @@ class DishController extends CarteItemController
      * @Route("/{id}/visibility/{visibility}", name="dish_visibility")
      * @Template()
      */
-    public function visibilityAction($id, $visibility)
-    {
+    public function visibilityAction($id, $visibility) {
         $entity = $this->getEntity($id);
-        
+
         $em = $this->getDoctrine()->getManager();
         $entity->setVisible($visibility);
         $em->persist($entity);
         $em->flush();
-        
+
         return $this->redirect($this->generateUrl('category_show', array('id' => $entity->getParent()->getId())));
+    }
+
+    /**
+     * Displays a form to edit an existing CarteItem entity.
+     *
+     * @Route("/{id}/option/add", name="dish_add_option")
+     * @Template()
+     */
+    public function addOptionAction(Request $request, $id) {
+        $dish = $this->getEntity($id);
+
+        $dishOption = new DishOptionList();
+        $dishOption->setDish($dish);
+
+        $formType = new DishOptionListType($this->userSv->getUserRestaurant());
+        $form = $this->createForm($formType, $dishOption);
+
+        if ($request->isMethod("POST")) {
+            $form->submit($request);
+            
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($dishOption);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('dish_edit', array('id' => $dish->getId())));
+        }
+
+        return array(
+            'entity' => $dish,
+            'form' => $form->createView(),
+        );
+    }
+
+    /**
+     * Displays a form to edit an existing CarteItem entity.
+     *
+     * @Route("/option/delete/{id}", name="dish_delete_option")
+     * @Template()
+     */
+    public function deleteOptionAction($id) {
+        $entity = $this->getEntity($id, 'IORestaurantBundle:DishOptionList');
+        $dish = $entity->getDish();
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($entity);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('dish_edit', array('id' => $dish->getId())));
     }
 
 }

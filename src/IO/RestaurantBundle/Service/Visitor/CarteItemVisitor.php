@@ -12,5 +12,7 @@ interface CarteItemVisitor
 {
     public function visitCategory(CarteItem $category);
     public function visitDish(CarteItem $dish);
+    public function visitOptionList(CarteItem $optionList);
+    public function visitOption(CarteItem $option);
     public function visitMedia(Media $media);
 }

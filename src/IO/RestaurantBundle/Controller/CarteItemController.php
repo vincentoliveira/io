@@ -4,7 +4,6 @@ namespace IO\RestaurantBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use IO\RestaurantBundle\Entity\CarteItem;
-use IO\RestaurantBundle\Form\CarteItemType;
 
 /**
  * CarteItem abstract controller.
@@ -19,12 +18,12 @@ abstract class CarteItemController extends Controller
      * @return CarteItem
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    protected function getEntity($id)
+    protected function getEntity($id, $className = 'IORestaurantBundle:CarteItem')
     {
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('IORestaurantBundle:CarteItem')->find($id);
-        if (!$entity || $entity->getRestaurant()->getId() !== $this->userSv->getUserRestaurant()->getId()) {
-            throw $this->createNotFoundException('Unable to find CarteItem entity.');
+        $entity = $em->getRepository($className)->find($id);
+        if (!$entity || (method_exists($entity, 'getRestaurant') && $entity->getRestaurant()->getId() !== $this->userSv->getUserRestaurant()->getId())) {
+            throw $this->createNotFoundException('Unable to find ' . $className . ' entity.');
         }
         
         return $entity;

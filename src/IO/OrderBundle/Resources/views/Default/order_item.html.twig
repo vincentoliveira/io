@@ -12,7 +12,7 @@
         {% if order.isPayed %}
             <a href="{{ path('order_close', {id:order.id}) }}" class="btn btn-primary">Terminer</a>
         {% else %}
-            <a href="{{ path('order_payed', {id:order.id}) }}" class="btn btn-primary">Payer</a>
+            <a href="{{ path('order_payed', {id:order.id}) }}" class="btn btn-primary">Payé</a>
         {% endif %}
     {% endif %}
     <a href="{{ path('order_cancel', {id:order.id}) }}" class="btn btn-danger confirm-cancel">Annuler</a>

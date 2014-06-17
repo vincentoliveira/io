@@ -108,6 +108,13 @@ class CarteItem implements CarteItemElement
      * @ORM\Column(name="position", type="integer", nullable=true)
      */
     private $position;
+    
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="IO\RestaurantBundle\Entity\DishOptionList", mappedBy="dish", cascade={"remove", "persist"})
+     */
+    private $dishOptions;
 
     /**
      * Accept Carte Item Visitor
@@ -120,6 +127,10 @@ class CarteItem implements CarteItemElement
             return $visitor->visitCategory($this);
         } elseif ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_DISH) {
             return $visitor->visitDish($this);
+        } elseif ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_OPTION_LIST) {
+            return $visitor->visitOptionList($this);
+        } elseif ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_OPTION) {
+            return $visitor->visitOption($this);
         }
     }
     
@@ -129,6 +140,7 @@ class CarteItem implements CarteItemElement
     public function __construct()
     {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->dishOptions = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -435,5 +447,38 @@ class CarteItem implements CarteItemElement
     public function getShortName()
     {
         return empty($this->shortName) ? $this->name : $this->shortName;
+    }
+
+    /**
+     * Add options
+     *
+     * @param \IO\RestaurantBundle\Entity\DishOptionList $options
+     * @return CarteItem
+     */
+    public function addDishOption(\IO\RestaurantBundle\Entity\DishOptionList $options)
+    {
+        $this->dishOptions[] = $options;
+    
+        return $this;
+    }
+
+    /**
+     * Remove options
+     *
+     * @param \IO\RestaurantBundle\Entity\DishOptionList $options
+     */
+    public function removeDishOption(\IO\RestaurantBundle\Entity\DishOptionList $options)
+    {
+        $this->dishOptions->removeElement($options);
+    }
+
+    /**
+     * Get options
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDishOptions()
+    {
+        return $this->dishOptions;
     }
 }
