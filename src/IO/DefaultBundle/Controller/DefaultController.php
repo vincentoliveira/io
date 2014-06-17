@@ -31,6 +31,8 @@ class DefaultController extends Controller
         $user = $this->userSv->getUser();
         if ($user->hasRole("ROLE_ADMIN")) {
             return $this->forward("IORestaurantBundle:Admin:index");
+        } elseif ($user->hasRole("ROLE_MANAGER")) {
+            return $this->forward("IODashboardBundle:Default:index");
         } else {
             return $this->forward("IOOrderBundle:Default:index");
         }

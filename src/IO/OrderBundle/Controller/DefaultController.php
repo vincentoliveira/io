@@ -40,7 +40,7 @@ class DefaultController extends Controller
     /**
      * @Route("/", name="order_index")
      * @Template()
-     * @Secure("ROLE_MANAGER")
+     * @Secure("ROLE_CUISINIER")
      */
     public function indexAction()
     {
@@ -55,7 +55,7 @@ class DefaultController extends Controller
      * @Route("/refresh", name="order_refresh")
      * @Template("IOOrderBundle:Default:order_list.html.twig")
      * @Method("POST")
-     * @Secure("ROLE_MANAGER")
+     * @Secure("ROLE_CUISINIER")
      */
     public function indexRefreshCallAction(Request $request)
     {
