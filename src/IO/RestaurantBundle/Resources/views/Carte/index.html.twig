@@ -7,7 +7,7 @@
         <meta property="og:title" content="{{ restaurant.name }} - Menu du jour" />
         <meta property="og:site_name" content="InnovOrder - {{ restaurant.name }}" />
         <meta property="og:type" content="article">
-        <meta property="og:description" content="Soutenez la candidature InnovOrder pour le Camping saison 6 :)  http://www.f6s.com/innovorder" />
+        <meta property="og:description" content="Découvre la carte du jour du NUMA Café grâce à InnovOrder  http://www.f6s.com/innovorder" />
         <meta property="og:url" content="{{ url('carte_index', {name:restaurant.name}) }}" />
         {% if restaurant.background is not null %}
         <meta property="og:image" content="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ asset(restaurant.background|media) }}" />
@@ -30,6 +30,9 @@
             <h1><a href="{{ restaurant.website|default("#") }}">{% if restaurant.logo is not null %}<img src="{{ asset(restaurant.logo|media) }}" alt="{{ restaurant.name }}"/>{% else %}{{ restaurant.name }}{% endif %}</a></h1>
             
             <div class="fb-share-button" data-href="{{ path('carte_index', {name:restaurant.name}) }}" data-type="button"></div>
+            <div class="twitter-button">
+                <a href="https://twitter.com/share?text=Découvrer%20la%20carte%20du%20jour%20du%20NUMA%20Cafe%20grâce%20à%20@InnovOrder" class="twitter-share-button" data-lang="fr" data-count="none">Tweet</a>
+            </div>
             
             <div class="message">
                 <p>Soutenez la candidature InnovOrder pour le Camping saison 6 :)  <a href="http://www.f6s.com/innovorder">f6s.com/innovorder</a></p>
@@ -78,5 +81,6 @@
             })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
             ga('create', 'UA-44614143-2', 'innovorder.fr');
             ga('send', 'pageview');</script>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
     </body>
 </html>
