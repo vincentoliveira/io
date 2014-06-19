@@ -265,6 +265,9 @@ class CarteItem implements CarteItemElement
      */
     public function getPrice()
     {
+        if ($this->price === null) {
+            return 0;
+        }
         return $this->price;
     }
 
@@ -288,6 +291,9 @@ class CarteItem implements CarteItemElement
      */
     public function getVat()
     {
+        if ($this->vat === null) {
+            return 0;
+        }
         return $this->vat;
     }
 
