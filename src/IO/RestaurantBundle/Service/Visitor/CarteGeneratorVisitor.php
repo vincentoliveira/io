@@ -103,7 +103,7 @@ class CarteGeneratorVisitor implements CarteItemVisitor
             'id' => $option->getId(),
             'name' => $option->getName(),
             'description' => $option->getDescription(),
-            'price' => $dish->getPrice(),
+            'price' => $option->getPrice(),
         );
         
         return $result;
