@@ -184,7 +184,7 @@ class OrderService
 
         foreach ($order->getOrderLines() as $line) {
             $name = strtoupper($line->getItemShortName());
-            if (isset($line->getExtra())) {
+            if ($line->getExtra() !== null) {
                 $name .= strtoupper($line->getExtra());
             }
             if ($line->getItem() !== null && $line->getItem()->getParent() !== null) {
