@@ -106,6 +106,9 @@ class OrderService
                 if (isset($itemData['extra'])) {
                     $orderLine->setExtra($itemData['extra']);
                 }
+                if (isset($itemData['price'])) {
+                    $orderLine->setPrice(floatval($itemData['price']));
+                }
                 
                 $this->em->persist($orderLine);
 
