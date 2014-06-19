@@ -39,7 +39,7 @@ class OrderLine
     private $item;
 
     /**
-     * @var integer
+     * @var string
      *
      * @ORM\Column(name="item_short_name", type="string", nullable=true)
      */
@@ -58,6 +58,13 @@ class OrderLine
      * @ORM\Column(name="item_vat", type="decimal", precision=7, scale=2, nullable=true)
      */
     private $setItemVat;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="extra", type="string", nullable=true)
+     */
+    private $extra;
 
 
     /**
@@ -206,5 +213,28 @@ class OrderLine
     public function getSetItemVat()
     {
         return $this->setItemVat;
+    }
+
+    /**
+     * Set extra
+     *
+     * @param string $extra
+     * @return OrderLine
+     */
+    public function setExtra($extra)
+    {
+        $this->extra = $extra;
+    
+        return $this;
+    }
+
+    /**
+     * Get extra
+     *
+     * @return string 
+     */
+    public function getExtra()
+    {
+        return $this->extra;
     }
 }

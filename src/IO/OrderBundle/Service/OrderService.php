@@ -102,6 +102,11 @@ class OrderService
                 $orderLine->setItemVat($item->getVat());
                 $orderLine->setItemShortName($item->getShortName());
                 $orderLine->setOrder($order);
+                
+                if (isset($itemData['extra'])) {
+                    $orderLine->setExtra($itemData['extra']);
+                }
+                
                 $this->em->persist($orderLine);
 
                 $order->addOrderLine($orderLine);
