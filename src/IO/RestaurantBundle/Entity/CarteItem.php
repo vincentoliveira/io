@@ -91,14 +91,14 @@ class CarteItem implements CarteItemElement
     /**
      * @var integer
      *
-     * @ORM\Column(name="price", type="decimal", precision=7, scale=2, nullable=false)
+     * @ORM\Column(name="price", type="decimal", precision=7, scale=2, nullable=true)
      */
     private $price;
     
     /**
      * @var integer
      *
-     * @ORM\Column(name="vat", type="decimal", precision=7, scale=2, nullable=false)
+     * @ORM\Column(name="vat", type="decimal", precision=7, scale=2, nullable=true)
      */
     private $vat;
     
