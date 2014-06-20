@@ -49,3 +49,5 @@ a.btn-danger { color: #fff; }
 
 .history_order .main-order { list-style-type: none; padding: 0; }
 
+.option-list .btn-info {color: #3498db !important; background-color: #eee !important;}
+.option-list .btn-warning {color: #f1c40f !important; background-color: #eee !important;}
