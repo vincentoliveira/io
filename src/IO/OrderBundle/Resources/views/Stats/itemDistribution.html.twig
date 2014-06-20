@@ -5,6 +5,14 @@
     <h3>Répartition (Plats)</h3>
 </div>
 
+<div class="filters">
+    <form action="#" method="POST">
+        {{ form_row(filters.start_date) }}
+        {{ form_row(filters.end_date) }}
+        <button class="btn btn-primary">Filter</button>
+    </form>
+</div>
+
 <div class="tab-wrapper tab-primary">
     <ul class="nav nav-tabs">
         {% for tabName,tabDistribution in distributions %}

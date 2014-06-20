@@ -20,9 +20,11 @@ class DistributionCalculator implements StatsCalculatorInterface {
         
         $itemMetadata = $em->getClassMetadata('IORestaurantBundle:CarteItem');
         $lineMetadata = $em->getClassMetadata('IOOrderBundle:OrderLine');
+        $orderMetadata = $em->getClassMetadata('IOOrderBundle:OrderData');
         
         $itemTableName = $itemMetadata->getTableName();
         $lineTableName = $lineMetadata->getTableName();
+        $orderTableName = $orderMetadata->getTableName();
         
         $qb = new MySQLQueryBuilder();
                 
@@ -35,10 +37,21 @@ class DistributionCalculator implements StatsCalculatorInterface {
         $itemFK = sprintf('%s.%s', $lineTableName, $lineMetadata->getSingleAssociationJoinColumnName('item'));
         $parentId = sprintf('%s.%s', $itemTableName, $itemMetadata->getColumnName('id'));
         $sqlQuery .= $qb->leftJoin($lineTableName, $parentId, $itemFK);
+        
+        $orderFK = sprintf('%s.%s', $lineTableName, $lineMetadata->getSingleAssociationJoinColumnName('order'));
+        $orderId = sprintf('%s.%s', $orderTableName, $orderMetadata->getColumnName('id'));
+        $sqlQuery .= $qb->leftJoin($orderTableName, $orderId, $orderFK);
                     
         $restaurantFK = sprintf('%s.%s', $itemTableName, $itemMetadata->getSingleAssociationJoinColumnName('restaurant'));
         $sqlQuery .= $qb->where(sprintf('%s = %s', $restaurantFK, $filters['restaurant_id']));
         
+        if (isset($filters['start_date'])) {
+            $sqlQuery .= $qb->andWhere(sprintf('%s.%s >= "%s"', $orderTableName, $orderMetadata->getColumnName('orderDate'), $filters['start_date']));
+        }
+        if (isset($filters['end_date'])) {
+            $sqlQuery .= $qb->andWhere(sprintf('%s.%s <= "%s"', $orderTableName, $orderMetadata->getColumnName('orderDate'), $filters['end_date']));
+        }
+                
         if (isset($filters['parent_id'])) {
             $parentFK = sprintf('%s.%s', $itemTableName, $itemMetadata->getSingleAssociationJoinColumnName('parent'));
             $sqlQuery .= $qb->andWhere(sprintf('%s = %s', $parentFK, $filters['parent_id']));

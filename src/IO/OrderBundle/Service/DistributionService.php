@@ -30,14 +30,12 @@ class DistributionService {
     /**
      * Get Global Repartition
      * 
-     * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
+     * @param array $filters
      * @param type $graph
      * @param type $id
      * @return type
      */
-    public function getGlobalDistribution(Restaurant $restaurant, $graph = "pie", $id = "global_repartition") {
-        $filters['restaurant_id'] = $restaurant->getId();
-        
+    public function getGlobalDistribution(array $filters, $graph = "pie", $id = "global_repartition") {        
         $calculator = new DistributionCalculator();
         $serie = $calculator->calculate($this->em, $filters);
         
@@ -55,16 +53,12 @@ class DistributionService {
     /**
      * Get Category Distribution
      * 
-     * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
-     * @param \IO\RestaurantBundle\Entity\CarteItem $category
+     * @param array $filters
      * @param type $graph
      * @param type $id
      * @return type
      */
-    public function getCategoryDistribution(Restaurant $restaurant, CarteItem $category, $graph = "pie", $id = "category_repartition") {
-        $filters['restaurant_id'] = $restaurant->getId();
-        $filters['parent_id'] = $category->getId();
-        
+    public function getCategoryDistribution(array $filters, $graph = "pie", $id = "category_repartition", $categoryName = "") {
         $calculator = new DistributionCalculator();
         $serie = $calculator->calculate($this->em, $filters);
         
@@ -73,7 +67,7 @@ class DistributionService {
         } else {
             $chartGenerator = new PieChartGenerator();
         }
-        $chartGenerator->setTitle("Répartition - " . $category->getName());
+        $chartGenerator->setTitle("Répartition - " . $categoryName);
         $chartGenerator->addSerie('Répartition', $serie);
         
         return $chartGenerator->generate($id);

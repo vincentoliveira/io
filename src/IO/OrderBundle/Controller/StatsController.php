@@ -5,8 +5,10 @@ namespace IO\OrderBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use JMS\DiExtraBundle\Annotation\Inject;
+use IO\OrderBundle\Form\StatFilterType;
 
 /**
  * @Route("/order/stats")
@@ -34,29 +36,41 @@ class StatsController extends Controller
      * @Template()
      * @Secure("ROLE_MANAGER")
      */
-    public function itemDistributionAction()
+    public function itemDistributionAction(Request $request)
     {
         $restaurant = $this->userSv->getUserRestaurant();
         
+        $filters = array();
+        $filtersForm = $this->createForm(new StatFilterType(), $filters);
+        
+        if ($request->isMethod('POST')) {
+            $filtersForm->submit($request);
+            $filters = $filtersForm->getData();
+        }
+        $filters['restaurant_id'] = $restaurant->getId();
+        
         $distributions = array();
         $distributions['Globale'] = array(
-            'global_pie' => $this->distribSv->getGlobalDistribution($restaurant, "pie", 'global_pie'),
-            'global_bar' => $this->distribSv->getGlobalDistribution($restaurant, "bar", 'global_bar'),
+            'global_pie' => $this->distribSv->getGlobalDistribution($filters, "pie", 'global_pie'),
+            'global_bar' => $this->distribSv->getGlobalDistribution($filters, "bar", 'global_bar'),
         );
         
         $repositorty = $this->getDoctrine()->getRepository('IORestaurantBundle:CarteItem');
         $categories = $repositorty->getRestaurantMainCategory($restaurant->getId());
         foreach ($categories as $category) {
-            $name = preg_replace("/[^A-Za-z0-9]/", '', $category->getShortName());
+            $name = preg_replace("/[^A-Za-z0-9]/", '_', $category->getShortName());
             $pieId = $name . '_pie';
             $barId = $name . '_bar';
+            
+            $filters['parent_id'] = $category->getId();
             $distributions[$name] = array(
-                $pieId => $this->distribSv->getCategoryDistribution($restaurant, $category, "pie", $pieId),
-                $barId => $this->distribSv->getCategoryDistribution($restaurant, $category, "bar", $barId),
+                $pieId => $this->distribSv->getCategoryDistribution($filters, "pie", $pieId, $category->getName()),
+                $barId => $this->distribSv->getCategoryDistribution($filters, "bar", $barId, $category->getName()),
             );
         }
         
         return array(
+            'filters' => $filtersForm->createView(),
             'distributions' => $distributions,
         );
     }
