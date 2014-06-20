@@ -79,4 +79,29 @@ class StatsController extends Controller
             'chartId' => $chartId,
         );
     }
+    
+    
+    /**
+     * @Route("/distribution/payment", name="stats_payment_distribution")
+     * @Template()
+     * @Secure("ROLE_MANAGER")
+     */
+    public function paymentDistributionAction()
+    {
+        $restaurant = $this->userSv->getUserRestaurant();
+        
+        $chartId = 'payment_distribution';
+        $chart =$this->distribSv->getPaymentDistribution($restaurant, $chartId);
+        
+        
+        $chartId2 = 'payment_amount_distribution';
+        $chart2 =$this->distribSv->getPaymentAmountDistribution($restaurant, $chartId2);
+        
+        return array(
+            'chart' => $chart,
+            'chartId' => $chartId,
+            'chart2' => $chart2,
+            'chartId2' => $chartId2,
+        );
+    }
 }

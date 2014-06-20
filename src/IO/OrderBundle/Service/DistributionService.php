@@ -8,6 +8,7 @@ use IO\RestaurantBundle\Entity\CarteItem;
 use IO\RestaurantBundle\Entity\Restaurant;
 use IO\OrderBundle\Service\StatsCalculator\DistributionCalculator;
 use IO\OrderBundle\Service\StatsCalculator\TimeDistributionCalculator;
+use IO\OrderBundle\Service\StatsCalculator\PaymentDistributionCalculator;
 use IO\OrderBundle\Service\ChartGenerator\PieChartGenerator;
 use IO\OrderBundle\Service\ChartGenerator\BarChartGenerator;
 
@@ -85,7 +86,7 @@ class DistributionService {
      * @param type $id
      * @return type
      */
-    public function getTimeDistribution(Restaurant $restaurant, $id = "category_repartition") {
+    public function getTimeDistribution(Restaurant $restaurant, $id = "time_repartition") {
         $filters['restaurant_id'] = $restaurant->getId();
         
         $calculator = new TimeDistributionCalculator();
@@ -93,6 +94,47 @@ class DistributionService {
         
         $chartGenerator = new BarChartGenerator();
         $chartGenerator->setTitle("Répartition en fonction du temps");
+        $chartGenerator->addSerie('Répartition', $serie);
+        
+        return $chartGenerator->generate($id);
+    }
+    
+
+    /**
+     * Get Time Distribution
+     * 
+     * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
+     * @param type $id
+     * @return type
+     */
+    public function getPaymentDistribution(Restaurant $restaurant, $id = "payment_repartition") {
+        $filters['restaurant_id'] = $restaurant->getId();
+        
+        $calculator = new PaymentDistributionCalculator();
+        $serie = $calculator->calculate($this->em, $filters);
+        
+        $chartGenerator = new PieChartGenerator();
+        $chartGenerator->setTitle("Répartition des modes de paiement (Nombre)");
+        $chartGenerator->addSerie('Répartition', $serie);
+        
+        return $chartGenerator->generate($id);
+    }
+
+    /**
+     * Get Time Distribution
+     * 
+     * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
+     * @param type $id
+     * @return type
+     */
+    public function getPaymentAmountDistribution(Restaurant $restaurant, $id = "payment_amount_repartition") {
+        $filters['restaurant_id'] = $restaurant->getId();
+        
+        $calculator = new PaymentDistributionCalculator();
+        $serie = $calculator->calculateAmount($this->em, $filters);
+        
+        $chartGenerator = new PieChartGenerator();
+        $chartGenerator->setTitle("Répartition des modes de paiement (Montants)");
         $chartGenerator->addSerie('Répartition', $serie);
         
         return $chartGenerator->generate($id);
