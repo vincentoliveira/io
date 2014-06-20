@@ -39,7 +39,7 @@ class DashboardController extends Controller
         $restaurant = $this->userSv->getUserRestaurant();
         $history = $this->historySv->getOrderHistoryPerDay($restaurant, 1);
         if (empty($history)) {
-            throw $this->createNotFoundException('No dashboard yet');
+            return $this->redirect($this->generateUrl('order_index'));
         }
         
         $history = $history[0];
