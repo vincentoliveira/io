@@ -40,7 +40,7 @@ class DefaultController extends Controller
     /**
      * @Route("/", name="order_index")
      * @Template()
-     * @Secure("ROLE_CUISINIER")
+     * @Secure("ROLE_EMPLOYEE")
      */
     public function indexAction()
     {
@@ -55,7 +55,7 @@ class DefaultController extends Controller
      * @Route("/refresh", name="order_refresh")
      * @Template("IOOrderBundle:Default:order_list.html.twig")
      * @Method("POST")
-     * @Secure("ROLE_CUISINIER")
+     * @Secure("ROLE_EMPLOYEE")
      */
     public function indexRefreshCallAction(Request $request)
     {
@@ -76,7 +76,7 @@ class DefaultController extends Controller
     
     /**
      * @Route("/accept/{id}", name="order_accept")
-     * @Secure("ROLE_MANAGER")
+     * @Secure("ROLE_EMPLOYEE")
      */
     public function acceptAction($id)
     {
@@ -97,7 +97,7 @@ class DefaultController extends Controller
     
     /**
      * @Route("/close/{id}", name="order_close")
-     * @Secure("ROLE_MANAGER")
+     * @Secure("ROLE_EMPLOYEE")
      */
     public function closeAction($id)
     {
@@ -118,7 +118,7 @@ class DefaultController extends Controller
     
     /**
      * @Route("/cancel/{id}", name="order_cancel")
-     * @Secure("ROLE_MANAGER")
+     * @Secure("ROLE_EMPLOYEE")
      */
     public function cancelAction($id)
     {
@@ -145,7 +145,7 @@ class DefaultController extends Controller
     
     /**
      * @Route("/payed/{id}", name="order_payed")
-     * @Secure("ROLE_MANAGER")
+     * @Secure("ROLE_EMPLOYEE")
      */
     public function payedAction($id)
     {
