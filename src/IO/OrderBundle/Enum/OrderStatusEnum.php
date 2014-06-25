@@ -7,6 +7,7 @@ namespace IO\OrderBundle\Enum;
  */
 class OrderStatusEnum
 {
+    const STATUS_DRAFT = 'DRAFT';
     const STATUS_INIT = 'INIT';
     const STATUS_WAITING = 'WAITING';
     const STATUS_IN_PROGRESS = 'IN_PROGRESS';

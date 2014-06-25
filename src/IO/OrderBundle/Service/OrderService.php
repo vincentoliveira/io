@@ -77,7 +77,7 @@ class OrderService
         $status->setNewStatus(OrderStatusEnum::STATUS_WAITING);
         $this->em->persist($status);
 
-        $order->addOrderStatuse($status);
+        $order->addOrderStatus($status);
 
         if (isset($data['name'])) {
             $order->setTableName($data['name']);

@@ -282,9 +282,9 @@ class OrderData
      * @param \IO\OrderBundle\Entity\OrderStatus $orderStatuses
      * @return OrderData
      */
-    public function addOrderStatuse(\IO\OrderBundle\Entity\OrderStatus $orderStatuses)
+    public function addOrderStatus(\IO\OrderBundle\Entity\OrderStatus $orderStatus)
     {
-        $this->orderStatuses[] = $orderStatuses;
+        $this->orderStatuses[] = $orderStatus;
     
         return $this;
     }
@@ -294,9 +294,9 @@ class OrderData
      *
      * @param \IO\OrderBundle\Entity\OrderStatus $orderStatuses
      */
-    public function removeOrderStatuse(\IO\OrderBundle\Entity\OrderStatus $orderStatuses)
+    public function removeOrderStatus(\IO\OrderBundle\Entity\OrderStatus $orderStatus)
     {
-        $this->orderStatuses->removeElement($orderStatuses);
+        $this->orderStatuses->removeElement($orderStatus);
     }
 
     /**

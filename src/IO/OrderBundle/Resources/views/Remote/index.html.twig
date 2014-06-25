@@ -40,6 +40,7 @@
                     {% for child in item.children %}
                     <div class="product">
                         <strong>{{ child.name }}</strong>
+                        <a href="{{ path('remote_order_add_product',  {name:restaurant.name, id:child.id}) }}">Ajouter</a>
                         <p>
                             {{ child.description|default("")|nl2br }}
                         </p>
@@ -49,6 +50,26 @@
             {% endfor %}
             </div>
                 
+            <div class="receipt">
+                <h3>Ma commande</h3>
+                <ul class="main-order">
+                {% for parent, categoryReceipt in draftOrder|receipt %}
+                <li>
+                    {{ parent }}
+                    <ul class="category-order">
+                        {% for itemReceipt in categoryReceipt %}
+                        <li>
+                            <strong>{{ itemReceipt.count }}</strong>x 
+                            <strong>{{ itemReceipt.item.itemShortName }}</strong>
+                            <span>{{ itemReceipt.item.extra }}</span>
+                            <em>{{ itemReceipt.count * itemReceipt.item.itemPrice }}€</em>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endfor %}
+            </div>
+            
             <div class="clearfix"></div>
             
             <div class="footer">
