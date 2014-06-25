@@ -35,15 +35,17 @@
             
             <div class="menu">
             {% for item in carte %}
-                <h3>{{ item.name|upper }}</h3>
-                {% for child in item.children %}
-                <div>
-                    <strong>{{ child.name }}</strong>
-                    <p>
-                        {{ child.description|default("")|nl2br }}
-                    </p>
+                <div class="category">
+                    <h3>{{ item.name|upper }}</h3>
+                    {% for child in item.children %}
+                    <div class="product">
+                        <strong>{{ child.name }}</strong>
+                        <p>
+                            {{ child.description|default("")|nl2br }}
+                        </p>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             {% endfor %}
             </div>
                 
