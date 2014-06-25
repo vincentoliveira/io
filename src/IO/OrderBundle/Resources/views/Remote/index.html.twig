@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ restaurant.name }}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="{{ restaurant.name }} - Menu du jour" />
+        <meta property="og:site_name" content="InnovOrder - {{ restaurant.name }}" />
+        <meta property="og:type" content="article">
+        <meta property="og:description" content="Découvre la carte du jour du NUMA Café grâce à InnovOrder  http://www.f6s.com/innovorder" />
+        <meta property="og:url" content="{{ url('carte_index', {name:restaurant.name}) }}" />
+        {% if restaurant.background is not null %}
+        <meta property="og:image" content="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ asset(restaurant.background|media) }}" />
+        {% endif %}
+        
+        {% stylesheets 
+            'bundles/iodefault/css/bootstrap.css'
+            'bundles/iodefault/css/font-awesome.min.css'
+            'bundles/iodefault/css/animate.css'
+            'bundles/iodefault/css/restaurant.css'
+            filter='yui_css,cssrewrite' 
+            output='css/restaurant.css' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+
+        <link rel="icon" type="image/x-icon" ref="{{ asset('favicon.ico') }}">
+    </head>
+    <body>
+        <div class="mainContainer">
+            <h1><a href="{{ restaurant.website|default("#") }}">{% if restaurant.logo is not null %}<img src="{{ asset(restaurant.logo|media) }}" alt="{{ restaurant.name }}"/>{% else %}{{ restaurant.name }}{% endif %}</a></h1>
+            
+            <div class="message">
+                <p>Bienvenue sur la commande en ligne du restaurant : {{ restaurant.name }}</p>
+            </div>
+            
+            <div>
+            {% for item in carte %}
+                <h3>{{ item.name|upper }}</h3>
+                {% for child in item.children %}
+                <div>
+                    <strong>{{ child.name }}</strong>
+                    <em>{{ child.price }}€</em>
+                    <p>
+                        {{ child.description|default("") }}
+                    </p>
+                </div>
+                {% endfor %}
+            {% endfor %}
+            </div>
+                
+            <div class="clearfix"></div>
+            
+            <div class="footer">
+                Carte générée par <a href="http://innovorder.fr">InnovOrder</a>
+            </div>
+        </div>
+        
+        {% javascripts 
+            '@IODefaultBundle/Resources/public/js/jquery.js'
+            '@IODefaultBundle/Resources/public/plugins/nanoScroller/jquery.nanoscroller.min.js'
+            '@IODefaultBundle/Resources/public/js/bootstrap.js'
+            '@IODefaultBundle/Resources/public/js/respond.min.js'
+            '@IODefaultBundle/Resources/public/js/html5shiv.js'
+            filter='yui_js'
+            output='js/base.js' %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&appId=489218227845976&version=v2.0";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-44614143-2', 'innovorder.fr');
+            ga('send', 'pageview');</script>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </body>
+</html>
