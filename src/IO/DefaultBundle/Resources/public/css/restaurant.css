@@ -7,9 +7,12 @@ body{background-color:#eee;}
     margin: 10px auto;
     background: white; 
 }
-h1 img { height: 55px; }
+h1 img { height: 120px; }
 h3 { color: #e31b7c; }
 .footer { margin-top: 50px; }
 
-.message { margin: 20px 0; font-size: 20px; }
+.message { margin: 20px 0 50px; font-size: 20px; }
 .twitter-button { display: inline-block;position: relative;top: 5px; }
+
+.menu p { font-style: italic; }
+

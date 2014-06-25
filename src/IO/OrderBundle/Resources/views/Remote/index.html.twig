@@ -33,7 +33,7 @@
                 <p>Bienvenue sur la commande en ligne du restaurant : {{ restaurant.name }}</p>
             </div>
             
-            <div>
+            <div class="menu">
             {% for item in carte %}
                 <h3>{{ item.name|upper }}</h3>
                 {% for child in item.children %}
