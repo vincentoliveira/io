@@ -39,9 +39,8 @@
                 {% for child in item.children %}
                 <div>
                     <strong>{{ child.name }}</strong>
-                    <em>{{ child.price }}€</em>
                     <p>
-                        {{ child.description|default("") }}
+                        {{ child.description|default("")|nl2br }}
                     </p>
                 </div>
                 {% endfor %}
