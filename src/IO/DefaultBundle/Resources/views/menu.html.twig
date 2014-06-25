@@ -32,6 +32,7 @@
                         {% for category in restaurantCategories() %}
                         <li><a href="{{ path('category_show', {id:category.id}) }}"><i class="fa {% if category.visible %}fa-eye{% else %}fa-eye-slash{% endif %}"></i> {{ category.name }}</a></li>
                         {% endfor %}
+                        <li><a href="{{ path('menu_index') }}"><i class="fa fa-list"></i> Formules</a></li>
                         <li><a href="{{ path('option_list_index') }}"><i class="fa fa-list"></i> Liste d'options</a></li>
                     </ul>
                 </li>

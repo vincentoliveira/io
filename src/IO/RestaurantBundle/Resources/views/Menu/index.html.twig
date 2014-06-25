@@ -1,0 +1,26 @@
+{% extends "IODefaultBundle::layout.html.twig" %}
+
+{% block content %}
+    <div class="content-header">
+        <h3>Formules</h3>
+        <div class="clearfix"></div>
+    </div>
+
+<a href="{{ path('menu_new') }}" role="button" class="btn btn-primary btn-trans" title="Ajouter une formule"><i class="fa fa-plus"></i> Ajouter une formule</a>
+
+<div class="children list-group">
+    {% for menu in menus %}
+        <div class="option-list">
+            <a href="{{ path('menu_edit', {id:menu.id}) }}" title="Modifier {{ menu.name|raw }}">
+                <i class="fa fa-edit"></i>
+            </a>
+            <a href="{{ path('menu_delete', {id:menu.id}) }}" title="Supprimer {{ menu.name|raw }}">
+                <i class="fa fa-trash-o"></i>
+            </a>
+            <strong>{{ menu.name }}</strong>
+            <em>{{ menu.description }}</em>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
