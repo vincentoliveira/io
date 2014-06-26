@@ -30,27 +30,25 @@
             <h1><a href="{{ restaurant.website|default("#") }}">{% if restaurant.logo is not null %}<img src="{{ asset(restaurant.logo|media) }}" alt="{{ restaurant.name }}"/>{% else %}{{ restaurant.name }}{% endif %}</a></h1>
             
             <div class="message">
-                <p>Bienvenue sur la commande en ligne du restaurant : {{ restaurant.name }}</p>
+                <p>Vous êtes sur le point de valider votre commande.</p>
             </div>
             
             <div class="menu">
-            {% for item in carte %}
-                <div class="category">
-                    <h3>{{ item.name|upper }}</h3>
-                    {% for child in item.children %}
-                    <div class="product">
-                        <strong>{{ child.name }}</strong>
-                        <a href="{{ path('remote_order_add_product',  {name:restaurant.name, id:child.id}) }}">Ajouter</a>
-                        <p>
-                            {{ child.description|default("")|nl2br }}
-                        </p>
+                <form action="#" method="POST">
+                    <div class="form-group">
+                        {{ form_row(form.orderDate) }}
+                        {{ form_row(form.customer.email) }}
+                        {{ form_row(form.customer.name) }}
+                        {{ form_row(form.customer.phone) }}
+                    
+                        {{ form_rest(form) }}
                     </div>
-                    {% endfor %}
-                </div>
-            {% endfor %}
+                    
+                    <button class="btn btn-success">Valider ma commande</button>
+                    <a href="{{ path('remote_order_index', {'name':restaurant.name}) }}" class="btn btn-primary">Retour à la carte</a>
+                </form>
             </div>
                 
-            {% if draftOrder.totalPrice > 0 %}
             <div class="receipt">
                 <h3>Ma commande</h3>
                 <ul class="main-order">
@@ -73,9 +71,7 @@
                         TOTAL <em>{{ draftOrder.totalPrice }}€</em>
                     </li>
                 </ul>
-                <a href="{{ path('remote_order_validate', {'name':restaurant.name}) }}" class="btn btn-order">Valider</a>
             </div>
-            {% endif %}
             
             <div class="clearfix"></div>
             
@@ -90,6 +86,7 @@
             '@IODefaultBundle/Resources/public/js/bootstrap.js'
             '@IODefaultBundle/Resources/public/js/respond.min.js'
             '@IODefaultBundle/Resources/public/js/html5shiv.js'
+            '@IODefaultBundle/Resources/public/js/restaurant.js'
             filter='yui_js'
             output='js/base.js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
