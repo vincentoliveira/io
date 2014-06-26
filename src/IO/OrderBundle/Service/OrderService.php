@@ -12,6 +12,7 @@ use IO\OrderBundle\Entity\OrderPayment;
 use IO\OrderBundle\Enum\OrderStatusEnum;
 use IO\OrderBundle\Enum\PaymentTypeEnum;
 use IO\OrderBundle\Enum\PaymentStatusEnum;
+use IO\OrderBundle\Entity\Customer;
 
 /**
  * Order Service
@@ -80,7 +81,15 @@ class OrderService
         $order->addOrderStatus($status);
 
         if (isset($data['name'])) {
-            $order->setTableName($data['name']);
+            $name = $data['name'];
+            $customer = $this->em->getRepository('IOOrderBundle:Customer')->findOneByName($name);
+            
+            if ($customer === null) {
+                $customer = new Customer();
+                $customer->setName($name);
+            }
+            
+            $order->setCustomer($customer);
         }
 
         $date = null;

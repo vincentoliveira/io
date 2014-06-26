@@ -33,13 +33,14 @@ class OrderData
      * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
      */
     private $restaurant;
-
+    
     /**
      * @var string
      *
-     * @ORM\Column(name="table_name", type="string", nullable=true)
+     * @ORM\ManyToOne(targetEntity="IO\OrderBundle\Entity\Customer")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      */
-    private $tableName;
+    private $customer;
 
     /**
      * @var \DateTime
@@ -149,29 +150,6 @@ class OrderData
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set tableName
-     *
-     * @param string $tableName
-     * @return OrderData
-     */
-    public function setTableName($tableName)
-    {
-        $this->tableName = $tableName;
-    
-        return $this;
-    }
-
-    /**
-     * Get tableName
-     *
-     * @return string 
-     */
-    public function getTableName()
-    {
-        return $this->tableName;
     }
 
     /**
@@ -340,5 +318,51 @@ class OrderData
     public function getOrderPayments()
     {
         return $this->orderPayments;
+    }
+
+    /**
+     * Set customer
+     *
+     * @param \IO\OrderBundle\Entity\Customer $customer
+     * @return OrderData
+     */
+    public function setCustomer(\IO\OrderBundle\Entity\Customer $customer = null)
+    {
+        $this->customer = $customer;
+    
+        return $this;
+    }
+
+    /**
+     * Get customer
+     *
+     * @return \IO\OrderBundle\Entity\Customer 
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * Add orderStatuses
+     *
+     * @param \IO\OrderBundle\Entity\OrderStatus $orderStatuses
+     * @return OrderData
+     */
+    public function addOrderStatuse(\IO\OrderBundle\Entity\OrderStatus $orderStatuses)
+    {
+        $this->orderStatuses[] = $orderStatuses;
+    
+        return $this;
+    }
+
+    /**
+     * Remove orderStatuses
+     *
+     * @param \IO\OrderBundle\Entity\OrderStatus $orderStatuses
+     */
+    public function removeOrderStatuse(\IO\OrderBundle\Entity\OrderStatus $orderStatuses)
+    {
+        $this->orderStatuses->removeElement($orderStatuses);
     }
 }

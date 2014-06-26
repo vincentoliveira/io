@@ -7,7 +7,7 @@
 <div class="history">
     {% for order in history %}
     <div class="history_order">
-        <h3>{{ order.tableName }} - #{{ order.id }} ({{ order.totalPrice }}€)</h3>
+        <h3>{{ order.customer.name|default('-') }} - #{{ order.id }} ({{ order.totalPrice }}€)</h3>
         {% if order.orderDate is not null %}
         Heure de commande: <em>{{ order.orderDate|date('h\\hi') }}</em><br/>
         {% endif %}
