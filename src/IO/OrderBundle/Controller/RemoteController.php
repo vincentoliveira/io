@@ -93,6 +93,8 @@ class RemoteController extends Controller
                 $existingCustomer = $this->getDoctrine()->getRepository('IOOrderBundle:Customer')->findOneByEmail($customer->getEmail());
                 if ($existingCustomer !== null) {
                     $draftOrder->setCustomer($existingCustomer);
+                } else {
+                    $em->persist($customer);
                 }
                 
                 $em = $this->getDoctrine()->getManager();
