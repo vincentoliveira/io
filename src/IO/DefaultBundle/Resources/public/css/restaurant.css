@@ -1,4 +1,4 @@
-body{background-color:#eee;}
+body { background-color:#eee; }
 .mainContainer { 
     background-color:#fff; 
     width: 1000px;
@@ -18,4 +18,9 @@ h3 { color: #e31b7c; }
 .menu p { font-style: italic; }
 .menu > .category { margin: 0px 0px 50px; }
 
-.receipt { width: 250px; float: right; }
+.receipt { width: 250px; float: right; border: 1px solid black; padding: 5px; }
+.receipt .main-order { list-style-type: none; margin-top: 5px; padding: 0; }
+.receipt .category-order { list-style-type: none; padding-left: 5px; }
+.receipt em { float: right; }
+.receipt .total { font-weight: bold; border-top: 1px solid black; margin-top: 15px; }
+.receipt .btn-order { width: 100%; background-color: #e31b7c; color: #ffffff; }
