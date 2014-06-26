@@ -89,6 +89,8 @@ class RemoteController extends Controller
             $form->submit($request);
             
             if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                
                 $customer = $draftOrder->getCustomer();
                 $existingCustomer = $this->getDoctrine()->getRepository('IOOrderBundle:Customer')->findOneByEmail($customer->getEmail());
                 if ($existingCustomer !== null) {
@@ -97,7 +99,6 @@ class RemoteController extends Controller
                     $em->persist($customer);
                 }
                 
-                $em = $this->getDoctrine()->getManager();
                 $em->persist($draftOrder);
                 $em->flush();
                 
