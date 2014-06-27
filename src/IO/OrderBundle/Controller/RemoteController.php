@@ -103,6 +103,8 @@ class RemoteController extends Controller
                 $em->flush();
                 
                 $this->remoteOrderSv->sendOrder($draftOrder);
+                
+                return $this->redirect($this->generateUrl('remote_order_success', array('name' => $name, 'id' => $draftOrder->getId())));
             }
         }
         
@@ -112,6 +114,25 @@ class RemoteController extends Controller
             'form' => $form->createView(),
         );
     }
+    
+    
+    /**
+     * Add product to order
+     *
+     * @Route("/{name}/success/{id}", name="remote_order_success")
+     * @Template()
+     */
+    public function successAction($name, $id)
+    {
+        $restaurant = $this->getRestaurant($name);
+        $draftOrder = $this->getDoctrine()->getRepository('IOOrderBundle:OrderData')->find($id);
+
+        return array(
+            'restaurant' => $restaurant,
+            'draftOrder' => $draftOrder,
+        );
+    }
+    
     
     
     /**
