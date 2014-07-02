@@ -83,7 +83,7 @@ class HistoryController extends Controller
     public function paymentAction(Request $request) 
     {
         $restaurant = $this->userSv->getUserRestaurant();
-        $payments = $this->paymentHistorySv->getPayments($restaurant, $request->request->all());
+        $payments = $this->paymentHistorySv->getPayments($restaurant, $request->query->all());
         
         return array(
             'payments' => $payments,
