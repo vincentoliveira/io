@@ -36,6 +36,14 @@ class RemoteOrderService {
     public $session;
 
     /**
+     * Mailer
+     * 
+     * @Inject("mailer")
+     * @var \Swift_Mailer
+     */
+    public $mailer;
+
+    /**
      * Get current draft order
      * 
      * @param array $data
@@ -48,7 +56,7 @@ class RemoteOrderService {
         $repo = $this->em->getRepository('IOOrderBundle:OrderData');
         $draftOrder = $repo->find($draftId);
 
-        if ($draftOrder === null || $draftOrder->getRestaurant() !== $restaurant || 
+        if ($draftOrder === null || $draftOrder->getRestaurant() !== $restaurant ||
                 $draftOrder->getLastStatus() !== OrderStatusEnum::STATUS_DRAFT) {
             $draftOrder = new OrderData();
             $draftOrder->setRestaurant($restaurant);
@@ -118,7 +126,7 @@ class RemoteOrderService {
      * @return \IO\OrderBundle\Entity\OrderData
      */
     public function sendOrder(OrderData $draftOrder) {
-        
+
         $status = new OrderStatus();
         $status->setOrder($draftOrder);
         $status->setDate(new \DateTime());
@@ -127,13 +135,24 @@ class RemoteOrderService {
         $this->em->persist($status);
 
         $draftOrder->addOrderStatus($status);
-        
+
         $this->em->persist($draftOrder);
         $this->em->flush();
-        
+
         //@TODO: send email
+        $this->setCurrentDraftOrder($draftOrder);
 
         return $draftOrder;
+    }
+
+    public function sendOrderEmailToClient(OrderData $draftOrder) {
+        $message = \Swift_Message::newInstance()
+                ->setSubject('Confirmation de commande')
+                ->setFrom('no-reply@innovorder.com')
+                ->setTo($draftOrder->getCustomer()->getEmail())
+                ->setBody($draftOrder->getCustomer()->getName())
+        ;
+        $this->mailer->send($message);
     }
 
 }
