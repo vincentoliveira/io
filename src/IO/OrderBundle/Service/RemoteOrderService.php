@@ -140,7 +140,7 @@ class RemoteOrderService {
         $this->em->flush();
 
         //@TODO: send email
-        $this->setCurrentDraftOrder($draftOrder);
+        $this->sendOrderEmailToClient($draftOrder);
 
         return $draftOrder;
     }
