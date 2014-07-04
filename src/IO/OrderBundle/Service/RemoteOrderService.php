@@ -147,8 +147,9 @@ class RemoteOrderService {
         $this->em->persist($draftOrder);
         $this->em->flush();
 
-        //@TODO: send email
+        // send email
         $this->sendOrderEmailToClient($draftOrder);
+        $this->sendOrderEmailToManager($draftOrder);
 
         return $draftOrder;
     }
@@ -166,6 +167,34 @@ class RemoteOrderService {
                 ->setSubject('Confirmation de commande')
                 ->setFrom('no-reply@innovorder.com')
                 ->setTo($draftOrder->getCustomer()->getEmail())
+                ->setBody($body)
+        ;
+        $this->mailer->send($message);
+    }
+
+    /**
+     * Send email to client
+     * 
+     * @param \IO\OrderBundle\Entity\OrderData $draftOrder
+     */
+    protected function sendOrderEmailToManager(OrderData $draftOrder) {
+        $templateContent = $this->twig->loadTemplate('IODefaultBundle:Mail:managerOrderConfirmation.html.twig');
+        $body = $templateContent->render(array('order' => $draftOrder));
+                
+        $managers = $this->em->getRepository("IOUserBundle:User")->findBy(array(
+            'restaurant' => $draftOrder->getRestaurant(),
+            'roles' => 'ROLE_MANAGER',
+        ));
+        
+        $emails = array();
+        foreach ($managers as $manager) {
+            $emails[] = $manager->getEmail();
+        }
+        
+        $message = \Swift_Message::newInstance()
+                ->setSubject('Une nouvelle commande est arrivée')
+                ->setFrom('no-reply@innovorder.com')
+                ->setTo($emails)
                 ->setBody($body)
         ;
         $this->mailer->send($message);
