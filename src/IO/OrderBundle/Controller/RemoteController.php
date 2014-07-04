@@ -104,7 +104,7 @@ class RemoteController extends Controller
                 
                 $this->remoteOrderSv->sendOrder($draftOrder);
                 
-                //return $this->redirect($this->generateUrl('remote_order_success', array('name' => $name, 'id' => $draftOrder->getId())));
+                return $this->redirect($this->generateUrl('remote_order_success', array('name' => $name, 'id' => $draftOrder->getId())));
             }
         }
         
