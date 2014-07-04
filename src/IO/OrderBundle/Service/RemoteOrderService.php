@@ -183,7 +183,6 @@ class RemoteOrderService {
                 
         $managers = $this->em->getRepository("IOUserBundle:User")->findBy(array(
             'restaurant' => $draftOrder->getRestaurant(),
-            'roles' => 'ROLE_MANAGER',
         ));
         
         $emails = array();
