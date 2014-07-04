@@ -44,6 +44,14 @@ class RemoteOrderService {
     public $mailer;
 
     /**
+     * Mailer
+     * 
+     * @Inject("twig")
+     * @var \Twig_Environment
+     */
+    public $twig;
+
+    /**
      * Get current draft order
      * 
      * @param array $data
@@ -145,12 +153,20 @@ class RemoteOrderService {
         return $draftOrder;
     }
 
-    public function sendOrderEmailToClient(OrderData $draftOrder) {
+    /**
+     * Send email to client
+     * 
+     * @param \IO\OrderBundle\Entity\OrderData $draftOrder
+     */
+    protected function sendOrderEmailToClient(OrderData $draftOrder) {
+        $templateContent = $this->twig->loadTemplate('IODefaultBundle:Mail:clientOrderConfirmation.html.twig');
+        $body = $templateContent->render(array('order' => $draftOrder));
+                
         $message = \Swift_Message::newInstance()
                 ->setSubject('Confirmation de commande')
                 ->setFrom('no-reply@innovorder.com')
                 ->setTo($draftOrder->getCustomer()->getEmail())
-                ->setBody($draftOrder->getCustomer()->getName())
+                ->setBody($body)
         ;
         $this->mailer->send($message);
     }
