@@ -37,29 +37,7 @@
                 Votre commande à bien été envoyée.
             </div>
                 
-            <div class="receipt">
-                <h3>Ma commande</h3>
-                <ul class="main-order">
-                    {% for parent, categoryReceipt in draftOrder|receipt %}
-                    <li>
-                        {{ parent }}
-                        <ul class="category-order">
-                            {% for itemReceipt in categoryReceipt %}
-                            <li>
-                                <strong>{{ itemReceipt.count }}</strong>x 
-                                <strong>{{ itemReceipt.item.itemShortName }}</strong>
-                                <span>{{ itemReceipt.item.extra }}</span>
-                                <em>{{ itemReceipt.count * itemReceipt.item.itemPrice }}€</em>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                    {% endfor %}
-                    <li class="total">
-                        TOTAL <em>{{ draftOrder.totalPrice }}€</em>
-                    </li>
-                </ul>
-            </div>
+            {% include 'IOOrderBundle:Remote:receipt.html.twig' with {cantOrder:true} %}
             
             <div class="clearfix"></div>
             

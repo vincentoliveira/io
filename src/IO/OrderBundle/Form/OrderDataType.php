@@ -20,6 +20,11 @@ class OrderDataType extends AbstractType {
                     'input' => 'datetime',
                     'format' => 'dd-MM-yyyy HH:mm',
                     'attr' => array('class' => 'form-control datepicker'),
+                    'required' => true,
+                ))
+                ->add('comment', 'textarea', array(
+                    'label' => 'Commentaires',
+                    'attr' => array('class' => 'form-control'),
                     'required' => false,
                 ))
                 ->add('customer', new CustomerType())

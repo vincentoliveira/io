@@ -1,0 +1,31 @@
+{% if draftOrder.totalPrice > 0 %}
+<div class="receipt">
+    <h3>Ma commande</h3>
+    <ul class="main-order">
+        {% for parent, categoryReceipt in draftOrder|receipt %}
+        <li>
+            {{ parent }}
+            <ul class="category-order">
+                {% for itemReceipt in categoryReceipt %}
+                <li>
+                    <strong>{{ itemReceipt.count }}</strong>x 
+                    <strong>{{ itemReceipt.item.itemShortName }}</strong>
+                    <span>{{ itemReceipt.item.extra }}</span>
+                    <em>{{ itemReceipt.count * itemReceipt.item.itemPrice|number_format(2, '.', ',') }}€</em>
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+        <li class="total">
+            TOTAL HT<em>{{ draftOrder.noTaxeTotalPrice|number_format(2, '.', ',') }}€</em>
+        </li>
+        <li class="total">
+            TOTAL TTC<em>{{ draftOrder.totalPrice|number_format(2, '.', ',') }}€</em>
+        </li>
+    </ul>
+    {% if cantOrder is not defined or not cantOrder %}
+    <a href="{{ path('remote_order_validate', {'name':restaurant.name}) }}" class="btn btn-order">Valider</a>
+    {% endif %}
+</div>
+{% endif %}

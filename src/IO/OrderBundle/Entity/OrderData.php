@@ -43,6 +43,13 @@ class OrderData
     private $customer;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="comment", type="string", nullable=true)
+     */
+    private $comment;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="start_date", type="datetime", nullable=true)
@@ -97,6 +104,19 @@ class OrderData
         $price = 0;
         foreach ($this->orderLines as $line) {
             $price += $line->getItemPrice();
+        }
+        return $price;
+    }
+    /**
+     * Get no taxe total price
+     *
+     * @return integer 
+     */
+    public function getNoTaxeTotalPrice()
+    {
+        $price = 0;
+        foreach ($this->orderLines as $line) {
+            $price += $line->getItemPrice() / (1 + $line->getItemVat() / 100);
         }
         return $price;
     }
@@ -364,5 +384,28 @@ class OrderData
     public function removeOrderStatuse(\IO\OrderBundle\Entity\OrderStatus $orderStatuses)
     {
         $this->orderStatuses->removeElement($orderStatuses);
+    }
+
+    /**
+     * Set comment
+     *
+     * @param string $comment
+     * @return OrderData
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+    
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string 
+     */
+    public function getComment()
+    {
+        return $this->comment;
     }
 }
