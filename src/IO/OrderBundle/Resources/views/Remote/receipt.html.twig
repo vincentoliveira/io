@@ -16,7 +16,7 @@
                         {% else %}
                         x
                         {% endif %}
-                        <strong>{{ itemReceipt.count }}</strong>
+                        {{ itemReceipt.count }}
                         {% if cantOrder is not defined or not cantOrder %}
                         <a href="{{ path('remote_order_add_product',  {name:restaurant.name, id:itemReceipt.item.item.id}) }}">+</a>
                         {% endif %}
