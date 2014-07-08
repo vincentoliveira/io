@@ -74,6 +74,22 @@ class RemoteController extends Controller
     
     
     /**
+     * Remove product to order
+     *
+     * @Route("/{name}/remove/{id}", name="remote_order_remove_product")
+     */
+    public function removeProductToOrderAction($name, $id)
+    {
+        $restaurant = $this->getRestaurant($name);
+        $product = $this->getProduct($id, $restaurant);
+        $draftOrder = $this->remoteOrderSv->removeProductToOrder($restaurant, $product);
+        $this->remoteOrderSv->setCurrentDraftOrder($draftOrder);
+        
+        return $this->redirect($this->generateUrl('remote_order_index', array('name' => $name)));
+    }
+    
+    
+    /**
      * Add product to order
      *
      * @Route("/{name}/validate", name="remote_order_validate")

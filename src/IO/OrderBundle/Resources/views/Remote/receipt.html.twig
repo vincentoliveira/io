@@ -8,10 +8,20 @@
             <ul class="category-order">
                 {% for itemReceipt in categoryReceipt %}
                 <li>
-                    <strong>{{ itemReceipt.count }}</strong>x 
-                    <strong>{{ itemReceipt.item.itemShortName }}</strong>
-                    <span>{{ itemReceipt.item.extra }}</span>
-                    <em>{{ itemReceipt.count * itemReceipt.item.itemPrice|number_format(2, '.', ',') }}€</em>
+                    <strong>{{ itemReceipt.item.item.Name }}</strong>
+                    <em>{{ (itemReceipt.count * itemReceipt.item.itemPrice)|number_format(2, '.', ',') }}€</em>
+                    <span class="count">
+                        {% if cantOrder is not defined or not cantOrder %}
+                        <a href="{{ path('remote_order_remove_product',  {name:restaurant.name, id:itemReceipt.item.item.id}) }}">-</a>
+                        {% else %}
+                        x
+                        {% endif %}
+                        <strong>{{ itemReceipt.count }}</strong>
+                        {% if cantOrder is not defined or not cantOrder %}
+                        <a href="{{ path('remote_order_add_product',  {name:restaurant.name, id:itemReceipt.item.item.id}) }}">+</a>
+                        {% endif %}
+                    </span>
+                    <span class="extra">{{ itemReceipt.item.extra }}</span>
                 </li>
                 {% endfor %}
             </ul>

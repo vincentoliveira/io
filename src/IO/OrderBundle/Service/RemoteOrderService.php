@@ -126,6 +126,32 @@ class RemoteOrderService {
 
         return $draftOrder;
     }
+    
+    /**
+     * Remove product to draft order
+     * 
+     * @param type $restaurant
+     * @param \IO\OrderBundle\Service\CarteItem $product
+     * @return \IO\OrderBundle\Entity\OrderData
+     */
+    public function removeProductToOrder($restaurant, CarteItem $product)
+    {        
+        $draftOrder = $this->getCurrentDraftOrder($restaurant);
+
+        foreach ($draftOrder->getOrderLines() as $orderLines) {
+            if ($orderLines->getItem()->getId() === $product->getId()) {
+                $draftOrder->removeOrderLine($orderLines);
+                
+                $this->em->remove($orderLines);
+                $this->em->persist($draftOrder);
+                $this->em->flush();
+                
+                break;
+            }
+        }
+        
+        return $draftOrder;
+    }
 
     /**
      * Send Order

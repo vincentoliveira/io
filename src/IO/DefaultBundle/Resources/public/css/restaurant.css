@@ -21,6 +21,21 @@ h3 { color: #e31b7c; }
 .receipt { width: 250px; float: right; border: 1px solid black; padding: 5px; }
 .receipt .main-order { list-style-type: none; margin-top: 5px; padding: 0; }
 .receipt .category-order { list-style-type: none; padding-left: 5px; }
-.receipt em { float: right; }
+.receipt em { float: right; width: 50px; text-align: right; }
 .receipt .total { font-weight: bold; border-top: 1px solid black; margin-top: 15px; }
 .receipt .btn-order { width: 100%; background-color: #e31b7c; color: #ffffff; }
+.receipt .extra { clear: both; display: block; font-style: italic; }
+.receipt .count { float: right; }
+.receipt .count a {
+    border: 2px solid #e31b7c;
+    color: #e31b7c;
+    width: 18px;
+    height: 18px;
+    line-height: 12px;
+    display: inline-block;
+    text-align: center;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+    font-weight: bold;
+}
