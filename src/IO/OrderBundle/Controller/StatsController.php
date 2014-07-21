@@ -38,7 +38,7 @@ class StatsController extends Controller
      */
     public function itemDistributionAction(Request $request)
     {
-        $restaurant = $this->userSv->getUserRestaurant();
+        $restaurant = $this->userSv->getCurrentRestaurant();
         
         $filters = array();
         $filtersForm = $this->createForm(new StatFilterType(), $filters);
@@ -83,7 +83,7 @@ class StatsController extends Controller
      */
     public function timeDistributionAction()
     {
-        $restaurant = $this->userSv->getUserRestaurant();
+        $restaurant = $this->userSv->getCurrentRestaurant();
         
         $chartId = 'time_distribution';
         $chart =$this->distribSv->getTimeDistribution($restaurant, $chartId);
@@ -102,7 +102,7 @@ class StatsController extends Controller
      */
     public function paymentDistributionAction()
     {
-        $restaurant = $this->userSv->getUserRestaurant();
+        $restaurant = $this->userSv->getCurrentRestaurant();
         
         $chartId = 'payment_distribution';
         $chart =$this->distribSv->getPaymentDistribution($restaurant, $chartId);

@@ -43,7 +43,7 @@ class ApiController extends Controller
             return new JsonResponse(array('error' => 'Empty command'));
         }
         
-        $restaurant = $this->userSv->getUserRestaurant();
+        $restaurant = $this->userSv->getCurrentRestaurant();
         $order = $this->orderSv->processOrder($data, $restaurant);
         
         $response = array(
@@ -97,7 +97,7 @@ class ApiController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('IOOrderBundle:OrderData')->find($id);
-        if ($entity === null || $entity->getRestaurant()->getId() !== $this->userSv->getUserRestaurant()->getId()) {
+        if ($entity === null || $entity->getRestaurant()->getId() !== $this->userSv->getCurrentRestaurant()->getId()) {
             return null;
         }
         

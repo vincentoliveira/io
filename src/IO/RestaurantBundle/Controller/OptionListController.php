@@ -50,7 +50,7 @@ class OptionListController extends CarteItemController
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('IORestaurantBundle:CarteItem');
         $lists = $repo->findBy(array(
-            'restaurant' => $this->userSv->getUserRestaurant(),
+            'restaurant' => $this->userSv->getCurrentRestaurant(),
             'itemType' => ItemTypeEnum::TYPE_OPTION_LIST,
         ));
         
@@ -71,7 +71,7 @@ class OptionListController extends CarteItemController
     public function newAction(Request $request)
     {
         $entity = new CarteItem();
-        $entity->setRestaurant($this->userSv->getUserRestaurant());
+        $entity->setRestaurant($this->userSv->getCurrentRestaurant());
         $entity->setItemType(ItemTypeEnum::TYPE_OPTION_LIST);
         $entity->setVisible(true);
         
@@ -95,7 +95,7 @@ class OptionListController extends CarteItemController
     public function createAction(Request $request)
     {
         $entity = new CarteItem();
-        $entity->setRestaurant($this->userSv->getUserRestaurant());
+        $entity->setRestaurant($this->userSv->getCurrentRestaurant());
         $entity->setItemType(ItemTypeEnum::TYPE_OPTION_LIST);
         $entity->setVisible(true);
 

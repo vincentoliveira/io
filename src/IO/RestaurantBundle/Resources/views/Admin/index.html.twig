@@ -1,17 +1,24 @@
 {% extends "IODefaultBundle::layout.html.twig" %}
 
 {% block content %}
-    <div class="content-header">
-        <h3>Restaurants</h3>
-        <span class="actionbar">
-            <a class="btn btn-primary" href="{{ path('admin_restaurant_new') }}" title="Ajouter un restaurant"><i class="fa fa-plus"></i> </a>
-        </span>
-        <div class="clearfix"></div>
-    </div>
+<div class="container">    
+    <span class="actionbar">
+        <a class="btn btn-primary" href="{{ path('admin_restaurant_new') }}" title="Créer un restaurant"><i class="fa fa-plus"></i> Créer un restaurant</a>
+    </span>    
+    <h1>Restaurants</h1>
+    <div class="clearfix"></div>
 
     <ul class="list-group">
-    {% for restaurant in restaurants %}
-        <li class="list-group-item">{{ restaurant.name }}</li>
+    {% for group in restaurants %}
+        <li class="list-group-item">
+            <strong>{{ group.name }}</strong>
+            <ul>
+                {% for restaurant in group.restaurants %}
+                <li><a href="{{ path('restaurant_set_current', {restaurantId:restaurant.id}) }}">{{ restaurant.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
     {% endfor %}
     </ul>
+</div>
 {% endblock %}

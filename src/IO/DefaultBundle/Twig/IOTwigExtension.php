@@ -48,6 +48,7 @@ class IOTwigExtension extends \Twig_Extension
     public function getFunctions() {
         return array(
             'date_difference' => new \Twig_SimpleFunction('date_difference', array($this, 'dateDifferenceFunction')),
+            'current_restaurant' => new \Twig_SimpleFunction('current_restaurant', array($this, 'currentRestaurantFunction')),
         );
     }
     
@@ -66,6 +67,14 @@ class IOTwigExtension extends \Twig_Extension
         return $date1->diff($date2)->format('%im%ss');
     }
     
+    /**
+     * Get current user current restaurant
+     * 
+     * @return \IO\RestaurantBundle\Entity\Restaurant
+     */
+    public function currentRestaurantFunction() {
+        return $this->userSv->getCurrentRestaurant();
+    }
     
     /**
      * Return web path of media

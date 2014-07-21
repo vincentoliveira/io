@@ -22,7 +22,7 @@ abstract class CarteItemController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository($className)->find($id);
-        if (!$entity || (method_exists($entity, 'getRestaurant') && $entity->getRestaurant()->getId() !== $this->userSv->getUserRestaurant()->getId())) {
+        if (!$entity || (method_exists($entity, 'getRestaurant') && $entity->getRestaurant()->getId() !== $this->userSv->getCurrentRestaurant()->getId())) {
             throw $this->createNotFoundException('Unable to find ' . $className . ' entity.');
         }
         

@@ -36,7 +36,7 @@ class DashboardController extends Controller
      */
     public function indexAction()
     {
-        $restaurant = $this->userSv->getUserRestaurant();
+        $restaurant = $this->userSv->getCurrentRestaurant();
         $history = $this->historySv->getOrderHistoryPerDay($restaurant, 1);
         if (empty($history)) {
             return $this->redirect($this->generateUrl('order_index'));

@@ -1,0 +1,59 @@
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('homepage') }}">InnovOrder</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            {% if current_restaurant() %}
+            <ul class="nav navbar-nav">
+                <li><a href="{{ path('order_index') }}"><i class="fa fa-cutlery"></i> Commandes</a></li>
+                <li><a href="{{ path('carte_edit') }}"><i class="fa fa-edit"></i> La carte</a></li>
+                <li><a href="{{ path('dashboard') }}"><i class="fa fa-bar-chart-o"></i> Tableau de bord</a></li>
+            </ul>
+            {% endif %}
+            {% if is_granted("ROLE_CHIEF") and not is_granted('ROLE_ADMIN') %}
+            <ul class="nav navbar-nav">
+                <li class="sub-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-lock"></i> Mes restaurants <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" title="TODO">TODO</a></li>
+                    </ul>
+                </li>
+            </ul>
+            {% endif %}
+            {% if is_granted("ROLE_ADMIN") %}
+            <ul class="nav navbar-nav">
+                <li class="sub-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-lock"></i> Administration <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{{ path('admin_restaurant_index') }}" title="Administration des restaurants">Restaurants</a></li>
+                        <li><a href="{{ path('admin_user_index') }}" title="Administration des utilisateurs">Utilisateurs</a></li>
+                    </ul>
+                </li>
+            </ul>
+            {% endif %}
+            <ul class="nav navbar-nav navbar-right">
+                <li class="divider"></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-user"></i>
+                        {{ app.user.username }} {% if current_restaurant() %}({{ current_restaurant().name }}){% endif %}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Modifier mon profil</a></li>
+                        <li><a href="#">Modifier mon restaurant</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-power-off"></i> Déconnexion</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

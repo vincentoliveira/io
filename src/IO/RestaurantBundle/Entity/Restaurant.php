@@ -31,25 +31,10 @@ class Restaurant
     /**
      * @var string
      *
-     * @ORM\OneToOne(targetEntity="IO\RestaurantBundle\Entity\Media", cascade={"persist"})
-     * @ORM\JoinColumn(name="logo_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @ORM\ManyToOne(targetEntity="IO\RestaurantBundle\Entity\RestaurantGroup", cascade={"persist"})
+     * @ORM\JoinColumn(name="group_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    private $logo;
-    
-    /**
-     * @var string
-     *
-     * @ORM\OneToOne(targetEntity="IO\RestaurantBundle\Entity\Media", cascade={"persist"})
-     * @ORM\JoinColumn(name="background_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
-     */
-    private $background;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="website", type="string", length=255, nullable=true)
-     */
-    private $website;
+    private $group;
 
 
     /**
@@ -85,73 +70,27 @@ class Restaurant
         return $this->name;
     }
 
+
     /**
-     * Set website
+     * Set group
      *
-     * @param string $website
+     * @param \IO\RestaurantBundle\Entity\RestaurantGroup $group
      * @return Restaurant
      */
-    public function setWebsite($website)
+    public function setGroup(\IO\RestaurantBundle\Entity\RestaurantGroup $group = null)
     {
-        $this->website = $website;
+        $this->group = $group;
     
         return $this;
     }
 
     /**
-     * Get website
+     * Get group
      *
-     * @return string 
+     * @return \IO\RestaurantBundle\Entity\RestaurantGroup 
      */
-    public function getWebsite()
+    public function getGroup()
     {
-        return $this->website;
-    }
-
-
-    /**
-     * Set logo
-     *
-     * @param \IO\RestaurantBundle\Entity\Media $logo
-     * @return Restaurant
-     */
-    public function setLogo(\IO\RestaurantBundle\Entity\Media $logo = null)
-    {
-        $this->logo = $logo;
-    
-        return $this;
-    }
-
-    /**
-     * Get logo
-     *
-     * @return \IO\RestaurantBundle\Entity\Media 
-     */
-    public function getLogo()
-    {
-        return $this->logo;
-    }
-
-    /**
-     * Set background
-     *
-     * @param \IO\RestaurantBundle\Entity\Media $background
-     * @return Restaurant
-     */
-    public function setBackground(\IO\RestaurantBundle\Entity\Media $background = null)
-    {
-        $this->background = $background;
-    
-        return $this;
-    }
-
-    /**
-     * Get background
-     *
-     * @return \IO\RestaurantBundle\Entity\Media 
-     */
-    public function getBackground()
-    {
-        return $this->background;
+        return $this->group;
     }
 }

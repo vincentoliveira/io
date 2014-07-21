@@ -1,0 +1,53 @@
+{% extends "IODefaultBundle::layout.html.twig" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-3 col-md-2 sidebar sidebar-categories">
+        <ul class="nav nav-sidebar">
+            {% for category in carte %}
+                <li{% if loop.first %} class="active"{% endif %}><a href="#c{{ category.id }}"> {{ category.name }}</a></li>
+            {% endfor %}
+        </ul>
+        <ul class="nav nav-sidebar">
+            <li><a href="{{ path('category_new') }}"><i class="fa fa-plus"></i> Ajouter une categorie</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main categories" data-spy="scroll" data-target=".sidebar-categories">
+        <h1 class="page-header">La carte</h1>
+        {% for category in carte %}
+        <div id="c{{ category.id }}">
+            <h3>{{ category.name }}</h3>
+            {% if category.visible %}{% set visibility = 0 %}{% else %}{% set visibility = 1 %}{% endif %}
+            <a class="btn {% if category.visible %}btn-info{% else %}btn-warning{% endif %}" href="{{ path('category_visibility', {id:category.id, visibility: visibility}) }}" title="Modifier la visibilité {{ category.name|raw }}">
+                <i class="fa {% if category.visible %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
+            </a>
+
+            <a class="btn btn-primary" href="{{ path('category_edit', {id:category.id}) }}" title="Modifier {{ category.name|raw }}"><i class="fa fa-edit"></i> </a>
+            <a class="btn btn-danger confirm-delete" href="{{ path('category_delete', {id:category.id}) }}" title="Supprimer {{ category.name|raw }}"><i class="fa fa-trash-o"></i> </a>
+
+            {% for child in category.children %}
+                <div class="dish">
+                    <a class="btn btn-danger confirm-delete" href="{{ path('dish_delete', {id:child.id}) }}" title="Supprimer {{ child.name|raw }}">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                    <a class="btn btn-primary" href="{{ path('dish_edit', {id:child.id}) }}" title="Modifier {{ child.name|raw }}">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    {% if child.visible %}{% set visibility = 0 %}{% else %}{% set visibility = 1 %}{% endif %}
+                    <a class="btn {% if child.visible %}btn-info{% else %}btn-warning{% endif %}" href="{{ path('dish_visibility', {id:child.id, visibility: visibility}) }}" title="Modifier la visibilité {{ child.name|raw }}">
+                        <i class="fa {% if child.visible %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
+                    </a>
+                    {% if child.media %}
+                    <img class="img-rounded" src="{{ asset(child.media|media) }}" alt="" />
+                    {% endif %}
+                    <strong>{{ child.name }}</strong>
+                    <em>Prix: {{ child.price }}€ (TVA: {{ child.vat }})</em>
+                    <span>{{ child.description|raw }}</span>
+                </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

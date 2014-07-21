@@ -5,10 +5,7 @@ security:
           iterations: 742
 
     role_hierarchy:
-        ROLE_SERVEUR:       ROLE_EMPLOYEE
-        ROLE_CUISINIER:     ROLE_EMPLOYEE
-        ROLE_MANAGER:       ROLE_EMPLOYEE, ROLE_TABLETTE
-        ROLE_ADMIN:         ROLE_ALLOWED_TO_SWITCH
+        ROLE_ADMIN:         ROLE_CHIEF
         ROLE_SUPER_ADMIN:   ROLE_ADMIN
 
     providers:

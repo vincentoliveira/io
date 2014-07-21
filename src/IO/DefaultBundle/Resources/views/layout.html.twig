@@ -10,9 +10,8 @@
         {% block stylesheets %}
             {% stylesheets 
                 'bundles/iodefault/css/bootstrap.css'
-                'bundles/iodefault/css/spacelab.css'
+                'bundles/iodefault/css/bootstrap-theme.css'
                 'bundles/iodefault/css/font-awesome.min.css'
-                'bundles/iodefault/css/animate.css'
                 'bundles/iodefault/css/main.css'
                 filter='yui_css,cssrewrite' 
                 output='css/main.css' %}
@@ -23,7 +22,10 @@
         <link rel="icon" type="image/x-icon" ref="{{ asset('favicon.ico') }}">
     </head>
     <body>
-        {% block body %}
+        {% block body %}        
+            {% include 'IODefaultBundle::_navbar.html.twig' %} 
+        
+            {#
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <section id="container">
                     <header id="header">
@@ -41,11 +43,9 @@
                         </div>
                         <div class="user-nav">
                             <ul>
-                                {#
                                 <li class="profile-photo">
                                     <img src="assets/img/avatar.png" alt="" class="img-circle">
                                 </li>
-                                #}
                                 <li class="dropdown settings">
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     {{ app.user.username }} {% if app.user.restaurant %}({{ app.user.restaurant.name }}){% endif %} <i class="fa fa-angle-down"></i>
@@ -66,37 +66,33 @@
 
                 {% include 'IODefaultBundle::menu.html.twig' %} 
             {% endif %}
+            #}
 
             <!--main content start-->
-            <section class="main-content-wrapper">
-                <section id="main-content">
-                    {% for message in app.session.flashbag.get('error') %}
-                        <div class="alert alert-danger">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            {% autoescape false %}{{ message }}{% endautoescape %}
-                        </div>
-                    {% endfor %}
+            <div class="container-fluid">
+                {% for message in app.session.flashbag.get('error') %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {% autoescape false %}{{ message }}{% endautoescape %}
+                    </div>
+                {% endfor %}
 
-                    {% for message in app.session.flashbag.get('success') %}
-                        <div class="alert alert-success">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            {% autoescape false %}{{ message }}{% endautoescape %}
-                        </div>
-                    {% endfor %}
+                {% for message in app.session.flashbag.get('success') %}
+                    <div class="alert alert-success">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {% autoescape false %}{{ message }}{% endautoescape %}
+                    </div>
+                {% endfor %}
 
-                    {% block content %}{% endblock %}
-                </section>
-            </section>
+                {% block content %}{% endblock %}
+            </div>
+                
         {% endblock %}
         
         {% block javascripts %}
             {% javascripts 
                 '@IODefaultBundle/Resources/public/js/jquery.js'
-                '@IODefaultBundle/Resources/public/plugins/nanoScroller/jquery.nanoscroller.min.js'
                 '@IODefaultBundle/Resources/public/js/bootstrap.js'
-                '@IODefaultBundle/Resources/public/js/respond.min.js'
-                '@IODefaultBundle/Resources/public/js/html5shiv.js'
-                '@IODefaultBundle/Resources/public/js/modernizr.min.js'
                 '@IODefaultBundle/Resources/public/js/highcharts/highcharts.js'
                 '@IODefaultBundle/Resources/public/js/highcharts/exporting.js'
                 '@IODefaultBundle/Resources/public/js/main.js'

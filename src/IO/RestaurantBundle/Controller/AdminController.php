@@ -7,8 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
-use IO\RestaurantBundle\Form\RestaurantType;
+use IO\RestaurantBundle\Form\RestaurantGroupType;
 use IO\RestaurantBundle\Entity\Restaurant;
+use IO\RestaurantBundle\Entity\RestaurantGroup;
 
 
 /**
@@ -28,7 +29,7 @@ class AdminController extends Controller
      */
     public function indexAction()
     {
-        $restaurants = $this->getDoctrine()->getRepository("IORestaurantBundle:Restaurant")->findAll();
+        $restaurants = $this->getDoctrine()->getRepository("IORestaurantBundle:RestaurantGroup")->findAll();
         return array('restaurants' => $restaurants);
     }
     
@@ -42,18 +43,23 @@ class AdminController extends Controller
      */
     public function newAction(Request $request)
     {
-        $restaurant = new Restaurant();
-        $form = $this->createForm(new RestaurantType(), $restaurant);
+        $group = new RestaurantGroup();
+        $form = $this->createForm(new RestaurantGroupType(), $group);
         
         if ($request->isMethod("POST")) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                $restaurant = new Restaurant();
+                $restaurant->setName($group->getName());
+                $restaurant->setGroup($group);
+                
                 $em = $this->getDoctrine()->getManager();
+                $em->persist($group);
                 $em->persist($restaurant);
                 $em->flush();
 
                 $session = $this->container->get('session');
-                $session->getFlashBag()->add('success', sprintf('Le restaurant "%s" a bien été ajouté.', $restaurant->getName()));
+                $session->getFlashBag()->add('success', sprintf('Le restaurant "%s" a bien été ajouté.', $group->getName()));
 
                 return $this->redirect($this->generateUrl('admin_restaurant_index'));
             }

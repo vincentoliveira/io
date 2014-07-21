@@ -28,9 +28,17 @@ class User extends BaseUser
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\RestaurantBundle\Entity\Restaurant")
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=true)
      */
     private $restaurant;
+    
+    /**
+     * @var string
+     *
+     * @ORM\ManyToOne(targetEntity="IO\RestaurantBundle\Entity\RestaurantGroup")
+     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=true)
+     */
+    private $restaurantGroup;
     
 
     /**
@@ -64,5 +72,28 @@ class User extends BaseUser
     public function getRestaurant()
     {
         return $this->restaurant;
+    }
+
+    /**
+     * Set restaurantGroup
+     *
+     * @param \IO\RestaurantBundle\Entity\RestaurantGroup $restaurantGroup
+     * @return User
+     */
+    public function setRestaurantGroup(\IO\RestaurantBundle\Entity\RestaurantGroup $restaurantGroup = null)
+    {
+        $this->restaurantGroup = $restaurantGroup;
+    
+        return $this;
+    }
+
+    /**
+     * Get restaurantGroup
+     *
+     * @return \IO\RestaurantBundle\Entity\RestaurantGroup 
+     */
+    public function getRestaurantGroup()
+    {
+        return $this->restaurantGroup;
     }
 }

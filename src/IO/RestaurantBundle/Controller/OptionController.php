@@ -48,7 +48,7 @@ class OptionController extends CarteItemController
     {
         
         $entity = new CarteItem();
-        $entity->setRestaurant($this->userSv->getUserRestaurant());
+        $entity->setRestaurant($this->userSv->getCurrentRestaurant());
         $entity->setItemType(ItemTypeEnum::TYPE_OPTION);
         $entity->setVisible(true);
         
@@ -78,7 +78,7 @@ class OptionController extends CarteItemController
     public function createAction(Request $request)
     {
         $entity = new CarteItem();
-        $entity->setRestaurant($this->userSv->getUserRestaurant());
+        $entity->setRestaurant($this->userSv->getCurrentRestaurant());
         $entity->setItemType(ItemTypeEnum::TYPE_OPTION);
 
         $form = $this->createForm(new OptionType(), $entity);

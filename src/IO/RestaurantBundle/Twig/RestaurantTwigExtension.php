@@ -63,7 +63,7 @@ class RestaurantTwigExtension extends \Twig_Extension
      * @return array
      */
     public function restaurantCategoriesFunction() {
-        $restaurant = $this->userSv->getUserRestaurant();
+        $restaurant = $this->userSv->getCurrentRestaurant();
         $repositorty = $this->entityManger->getRepository('IORestaurantBundle:CarteItem');
         
         return $repositorty->getRestaurantMainCategory($restaurant->getId());

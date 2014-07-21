@@ -44,7 +44,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $restaurant = $this->userSv->getUserRestaurant();
+        $restaurant = $this->userSv->getCurrentRestaurant();
         $orders = $this->orderSv->getCurrentOrders($restaurant);
         return array(
             'orders' => $orders,
@@ -182,7 +182,7 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('IOOrderBundle:OrderData')->find($id);
-        if (!$entity || $entity->getRestaurant()->getId() !== $this->userSv->getUserRestaurant()->getId()) {
+        if (!$entity || $entity->getRestaurant()->getId() !== $this->userSv->getCurrentRestaurant()->getId()) {
             throw $this->createNotFoundException('Unable to find Order entity.');
         }
         

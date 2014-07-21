@@ -42,7 +42,7 @@ class ApiController extends Controller
      */
     public function getCarteAction()
     {
-        $restaurant = $this->userSv->getUserRestaurant(); 
+        $restaurant = $this->userSv->getCurrentRestaurant(); 
         $carte = $this->carteItemSv->getCarte($restaurant);
         return new JsonResponse(array('carte' => $carte));
     }

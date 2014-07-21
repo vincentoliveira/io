@@ -15,7 +15,7 @@ use IO\RestaurantBundle\Enum\ItemTypeEnum;
 /**
  * CarteItem controller.
  *
- * @Route("/cat")
+ * @Route("/category")
  */
 class CategoryController extends CarteItemController
 {
@@ -44,6 +44,7 @@ class CategoryController extends CarteItemController
      */
     public $session;
 
+        
     /**
      * Displays a form to create a new CarteItem entity.
      *
@@ -54,9 +55,8 @@ class CategoryController extends CarteItemController
      */
     public function newAction(Request $request)
     {
-        
         $entity = new CarteItem();
-        $entity->setRestaurant($this->userSv->getUserRestaurant());
+        $entity->setRestaurant($this->userSv->getCurrentRestaurant());
         $entity->setItemType(ItemTypeEnum::TYPE_CATEGORY);
         
         $parentId = $request->query->get('parent', null);
@@ -85,7 +85,7 @@ class CategoryController extends CarteItemController
     public function createAction(Request $request)
     {
         $entity = new CarteItem();
-        $entity->setRestaurant($this->userSv->getUserRestaurant());
+        $entity->setRestaurant($this->userSv->getCurrentRestaurant());
         $entity->setItemType(ItemTypeEnum::TYPE_CATEGORY);
 
         $form = $this->createForm(new CategoryType(), $entity);

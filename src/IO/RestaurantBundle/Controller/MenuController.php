@@ -50,7 +50,7 @@ class MenuController extends CarteItemController
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('IORestaurantBundle:CarteItem');
         $menus = $repo->findBy(array(
-            'restaurant' => $this->userSv->getUserRestaurant(),
+            'restaurant' => $this->userSv->getCurrentRestaurant(),
             'itemType' => ItemTypeEnum::TYPE_MENU,
         ));
         
@@ -71,7 +71,7 @@ class MenuController extends CarteItemController
     public function newAction(Request $request)
     {
         $entity = new CarteItem();
-        $entity->setRestaurant($this->userSv->getUserRestaurant());
+        $entity->setRestaurant($this->userSv->getCurrentRestaurant());
         $entity->setItemType(ItemTypeEnum::TYPE_MENU);
         $entity->setVisible(true);
         
@@ -95,7 +95,7 @@ class MenuController extends CarteItemController
     public function createAction(Request $request)
     {
         $entity = new CarteItem();
-        $entity->setRestaurant($this->userSv->getUserRestaurant());
+        $entity->setRestaurant($this->userSv->getCurrentRestaurant());
         $entity->setItemType(ItemTypeEnum::TYPE_MENU);
         $entity->setVisible(true);
 

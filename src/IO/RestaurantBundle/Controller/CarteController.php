@@ -11,10 +11,18 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 /**
  * Carte Controller.
  *
- * @Route("/carte/restaurant")
+ * @Route("/carte")
  */
 class CarteController extends Controller
 {
+
+    /**
+     * User Service
+     * 
+     * @Inject("io.user_service")
+     * @var \IO\UserBundle\Service\UserService
+     */
+    public $userSv;
     
     /**
      * CarteItem Service
@@ -25,9 +33,35 @@ class CarteController extends Controller
     public $carteItemSv;
     
     /**
+     * Displays all categories
+     *
+     * @Route("/", name="carte_edit")
+     * @Secure("ROLE_MANAGER")
+     * @Template()
+     */
+    public function editAction()
+    {
+        $restaurant = $this->userSv->getCurrentRestaurant();
+        
+        $criteria = array(
+            'restaurant' => $restaurant,
+            'parent' => null,
+            'itemType' => \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_CATEGORY,
+        );
+        $orderBy = array('position' => 'ASC');
+        $em = $this->getDoctrine()->getManager();
+        $carte = $em->getRepository('IORestaurantBundle:CarteItem')->findBy($criteria, $orderBy);
+        
+        return array(
+            'restaurant' => $restaurant,
+            'carte' => $carte,
+        );
+    }
+    
+    /**
      * Displays carte
      *
-     * @Route("/{name}", name="carte_index")
+     * @Route("/restaurant/{name}", name="carte_index")
      * @Template()
      */
     public function indexAction($name)

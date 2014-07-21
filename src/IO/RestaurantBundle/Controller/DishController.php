@@ -56,7 +56,7 @@ class DishController extends CarteItemController {
     public function newAction(Request $request) {
 
         $entity = new CarteItem();
-        $entity->setRestaurant($this->userSv->getUserRestaurant());
+        $entity->setRestaurant($this->userSv->getCurrentRestaurant());
         $entity->setItemType(ItemTypeEnum::TYPE_DISH);
         $entity->setVat(10.0);
         $entity->setVisible(true);
@@ -88,7 +88,7 @@ class DishController extends CarteItemController {
      */
     public function createAction(Request $request) {
         $entity = new CarteItem();
-        $entity->setRestaurant($this->userSv->getUserRestaurant());
+        $entity->setRestaurant($this->userSv->getCurrentRestaurant());
         $entity->setItemType(ItemTypeEnum::TYPE_DISH);
 
         $form = $this->createForm(new DishType(), $entity);
@@ -202,7 +202,7 @@ class DishController extends CarteItemController {
         $dishOption = new DishOptionList();
         $dishOption->setDish($dish);
 
-        $formType = new DishOptionListType($this->userSv->getUserRestaurant());
+        $formType = new DishOptionListType($this->userSv->getCurrentRestaurant());
         $form = $this->createForm($formType, $dishOption);
 
         if ($request->isMethod("POST")) {

@@ -48,7 +48,7 @@ class HistoryController extends Controller
      */
     public function indexAction()
     {
-        $restaurant = $this->userSv->getUserRestaurant();
+        $restaurant = $this->userSv->getCurrentRestaurant();
         $history = $this->historySv->getOrderHistoryPerDay($restaurant);
         
         return array(
@@ -65,7 +65,7 @@ class HistoryController extends Controller
     public function dayAction($dateStr) 
     {
         $date = \DateTime::createFromFormat("d-m-Y", $dateStr);
-        $restaurant = $this->userSv->getUserRestaurant();
+        $restaurant = $this->userSv->getCurrentRestaurant();
         $history = $this->historySv->getDayHistory($date, $restaurant);
         
         return array(
@@ -82,7 +82,7 @@ class HistoryController extends Controller
      */
     public function paymentAction(Request $request) 
     {
-        $restaurant = $this->userSv->getUserRestaurant();
+        $restaurant = $this->userSv->getCurrentRestaurant();
         $payments = $this->paymentHistorySv->getPayments($restaurant, $request->query->all());
         
         return array(

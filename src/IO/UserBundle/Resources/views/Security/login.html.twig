@@ -3,47 +3,28 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 {% block body %}
-    <section id="login-container">
-
-        <div class="row">
-            <div class="col-md-3" id="login-wrapper">
-                <div class="panel panel-primary animated flipInY">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">     
-                           InnovOrder
-                        </h3>      
-                    </div>
-                    <div class="panel-body">
-                        {% if error %}
-                            <p class="error">{{ error|trans }}</p>
-                        {% else %}
-                            <p> Authentifiez-vous pour accéder à votre compte.</p>
-                        {% endif %}
-                        <form class="form-horizontal" role="form" action="{{ path("fos_user_security_check") }}" method="POST">
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <input type="text" class="form-control" id="email" name="_username" placeholder="Login">
-                                    <i class="fa fa-user"></i>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                               <div class="col-md-12">
-                                    <input type="password" class="form-control" id="password" name="_password" placeholder="Mot de passe">
-                                    <i class="fa fa-lock"></i>
-                                    <a href="javascript:void(0)" class="help-block">Mot de passe oublié ?</a>
-                                </div>
-                            </div>
-                            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-                            <div class="form-group">
-                               <div class="col-md-12">
-                                    <button id="_submit" class="btn btn-primary btn-block">Connexion</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+<div class="container">
+    <form class="form-signin" role="form" action="{{ path("fos_user_security_check") }}" method="POST">
+        <h1>InnovOrder</h1>
+        <h3 class="form-signin-heading">Authentifiez-vous pour accéder à votre compte.</h3>
+        {% if error %}
+        <p class="error">{{ error|trans }}</p>
+        {% endif %}
+        <div class="input-group">
+            <span class="input-group-addon"> <i class="fa fa-user"></i></span>
+            <input type="text" class="form-control" name="_username" placeholder="Login" required autofocus>
         </div>
-
-    </section>
+        <div class="input-group">
+            <span class="input-group-addon"> <i class="fa fa-lock"></i></span>
+            <input type="password" class="form-control" name="_password" placeholder="Password" required>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="_remember_me" value="remember-me"> Se souvenir de moi
+            </label>
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Connexion</button>
+    </form>
+</div>
 {% endblock body %}
