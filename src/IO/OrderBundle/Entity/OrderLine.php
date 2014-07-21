@@ -57,7 +57,7 @@ class OrderLine
      *
      * @ORM\Column(name="item_vat", type="decimal", precision=7, scale=2, nullable=true)
      */
-    private $setItemVat;
+    private $itemVat;
 
     /**
      * @var string
@@ -190,29 +190,6 @@ class OrderLine
     public function getItem()
     {
         return $this->item;
-    }
-
-    /**
-     * Set setItemVat
-     *
-     * @param string $setItemVat
-     * @return OrderLine
-     */
-    public function setSetItemVat($setItemVat)
-    {
-        $this->setItemVat = $setItemVat;
-    
-        return $this;
-    }
-
-    /**
-     * Get setItemVat
-     *
-     * @return string 
-     */
-    public function getSetItemVat()
-    {
-        return $this->setItemVat;
     }
 
     /**

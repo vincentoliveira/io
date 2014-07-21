@@ -27,19 +27,34 @@ class OrderData
     private $id;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="ref", type="string", nullable=true)
+     */
+    private $ref;
+
+    /**
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\RestaurantBundle\Entity\Restaurant")
      * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
      */
     private $restaurant;
+    
+    /**
+     * @var string
+     *
+     * @ORM\ManyToOne(targetEntity="IO\OrderBundle\Entity\Customer")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     */
+    private $customer;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="table_name", type="string", nullable=true)
+     * @ORM\Column(name="comment", type="string", nullable=true)
      */
-    private $tableName;
+    private $comment;
 
     /**
      * @var \DateTime
@@ -99,6 +114,19 @@ class OrderData
         }
         return $price;
     }
+    /**
+     * Get no taxe total price
+     *
+     * @return integer 
+     */
+    public function getNoTaxeTotalPrice()
+    {
+        $price = 0;
+        foreach ($this->orderLines as $line) {
+            $price += $line->getItemPrice() / (1 + $line->getItemVat() / 100);
+        }
+        return $price;
+    }
     
     /**
      * Get lasty status name
@@ -149,29 +177,6 @@ class OrderData
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set tableName
-     *
-     * @param string $tableName
-     * @return OrderData
-     */
-    public function setTableName($tableName)
-    {
-        $this->tableName = $tableName;
-    
-        return $this;
-    }
-
-    /**
-     * Get tableName
-     *
-     * @return string 
-     */
-    public function getTableName()
-    {
-        return $this->tableName;
     }
 
     /**
@@ -282,9 +287,9 @@ class OrderData
      * @param \IO\OrderBundle\Entity\OrderStatus $orderStatuses
      * @return OrderData
      */
-    public function addOrderStatuse(\IO\OrderBundle\Entity\OrderStatus $orderStatuses)
+    public function addOrderStatus(\IO\OrderBundle\Entity\OrderStatus $orderStatus)
     {
-        $this->orderStatuses[] = $orderStatuses;
+        $this->orderStatuses[] = $orderStatus;
     
         return $this;
     }
@@ -294,9 +299,9 @@ class OrderData
      *
      * @param \IO\OrderBundle\Entity\OrderStatus $orderStatuses
      */
-    public function removeOrderStatuse(\IO\OrderBundle\Entity\OrderStatus $orderStatuses)
+    public function removeOrderStatus(\IO\OrderBundle\Entity\OrderStatus $orderStatus)
     {
-        $this->orderStatuses->removeElement($orderStatuses);
+        $this->orderStatuses->removeElement($orderStatus);
     }
 
     /**
@@ -340,5 +345,97 @@ class OrderData
     public function getOrderPayments()
     {
         return $this->orderPayments;
+    }
+
+    /**
+     * Set customer
+     *
+     * @param \IO\OrderBundle\Entity\Customer $customer
+     * @return OrderData
+     */
+    public function setCustomer(\IO\OrderBundle\Entity\Customer $customer = null)
+    {
+        $this->customer = $customer;
+    
+        return $this;
+    }
+
+    /**
+     * Get customer
+     *
+     * @return \IO\OrderBundle\Entity\Customer 
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * Add orderStatuses
+     *
+     * @param \IO\OrderBundle\Entity\OrderStatus $orderStatuses
+     * @return OrderData
+     */
+    public function addOrderStatuse(\IO\OrderBundle\Entity\OrderStatus $orderStatuses)
+    {
+        $this->orderStatuses[] = $orderStatuses;
+    
+        return $this;
+    }
+
+    /**
+     * Remove orderStatuses
+     *
+     * @param \IO\OrderBundle\Entity\OrderStatus $orderStatuses
+     */
+    public function removeOrderStatuse(\IO\OrderBundle\Entity\OrderStatus $orderStatuses)
+    {
+        $this->orderStatuses->removeElement($orderStatuses);
+    }
+
+    /**
+     * Set comment
+     *
+     * @param string $comment
+     * @return OrderData
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+    
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string 
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * Set ref
+     *
+     * @param string $ref
+     * @return OrderData
+     */
+    public function setRef($ref)
+    {
+        $this->ref = $ref;
+    
+        return $this;
+    }
+
+    /**
+     * Get ref
+     *
+     * @return string 
+     */
+    public function getRef()
+    {
+        return $this->ref;
     }
 }
