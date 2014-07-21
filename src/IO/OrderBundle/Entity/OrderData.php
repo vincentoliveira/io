@@ -27,6 +27,13 @@ class OrderData
     private $id;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="ref", type="string", nullable=true)
+     */
+    private $ref;
+
+    /**
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\RestaurantBundle\Entity\Restaurant")
@@ -407,5 +414,28 @@ class OrderData
     public function getComment()
     {
         return $this->comment;
+    }
+
+    /**
+     * Set ref
+     *
+     * @param string $ref
+     * @return OrderData
+     */
+    public function setRef($ref)
+    {
+        $this->ref = $ref;
+    
+        return $this;
+    }
+
+    /**
+     * Get ref
+     *
+     * @return string 
+     */
+    public function getRef()
+    {
+        return $this->ref;
     }
 }

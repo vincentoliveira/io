@@ -38,7 +38,7 @@ class RemoteController extends Controller
      * @Route("/{name}", name="remote_order_index")
      * @Template()
      */
-    public function indexAction($name)
+    public function indexAction(Request $request, $name)
     {
         $restaurant = $this->getRestaurant($name);
         
@@ -47,6 +47,30 @@ class RemoteController extends Controller
         }
         
         $draftOrder = $this->remoteOrderSv->getCurrentDraftOrder($restaurant);
+        $needToPersist = false;
+        $ref = $request->query->get('ref', false);
+        if ($ref !== false) {
+            $needToPersist = true;
+        }
+        
+        $noDevis = $request->query->get('nodevis', false);
+        if ($noDevis !== false) {
+            $draftOrder->setRef($noDevis);
+            $needToPersist = true;
+        }
+        
+        if ($draftOrder->getStartDate() === null) {
+            $draftOrder->setStartDate(new \DateTime());
+            $draftOrder->setOrderDate(new \DateTime());
+            $needToPersist = true;
+        }
+        
+        if ($needToPersist) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($draftOrder);
+            $em->flush();
+            $this->remoteOrderSv->setCurrentDraftOrder($draftOrder);
+        }
         
         $carte = $this->carteItemSv->getCarte($restaurant);
         return array(
