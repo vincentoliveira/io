@@ -30,6 +30,9 @@ class CarteItemType extends AbstractType
                     'attr' => array('class' => 'form-control'),
                     'required' => false,
                 ))
+                ->add('media', new MediaType(), array(
+                    'label' => false,
+                ))
                 ->add('price', 'number', array(
                     'label' => 'Prix TTC (€)',
                     'precision' => 2,

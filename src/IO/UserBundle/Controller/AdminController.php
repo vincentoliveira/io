@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
-use IO\UserBundle\Form\UserType;
+use IO\UserBundle\Form\EmployeeType;
 use IO\UserBundle\Entity\User;
 
 /**
@@ -42,13 +42,17 @@ class AdminController extends Controller
     public function newAction(Request $request)
     {
         $user = new User();
-        $form = $this->createForm(new UserType(), $user);
+        $form = $this->createForm(new EmployeeType(), $user);
         
         if ($request->isMethod("POST")) {
             $form->handleRequest($request);
             
             if ($form->isValid()) {
                 $user->setEnabled(true);
+                if ($user->hasRole("ROLE_CHIEF")) {
+                    $user->setRestaurantGroup($user->getRestaurant()->getGroup());
+                    $user->setRestaurant();
+                }
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);

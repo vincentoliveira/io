@@ -1,53 +1,87 @@
 {% extends "IODefaultBundle::layout.html.twig" %}
 
 {% block content %}
+
 <div class="row">
     <div class="col-sm-3 col-md-2 sidebar sidebar-categories">
         <ul class="nav nav-sidebar">
             {% for category in carte %}
-                <li{% if loop.first %} class="active"{% endif %}><a href="#c{{ category.id }}"> {{ category.name }}</a></li>
+            <li{% if loop.first %} class="active"{% endif %}><a href="#c{{ category.id }}"> {{ category.name }}</a></li>
             {% endfor %}
-        </ul>
-        <ul class="nav nav-sidebar">
-            <li><a href="{{ path('category_new') }}"><i class="fa fa-plus"></i> Ajouter une categorie</a></li>
+            <li>
+                <a data-toggle="modal" href="{{ path('category_new') }}" data-target="#newCategoryModal"><i class="fa fa-plus"></i> Ajouter une categorie</a></a>
+            </li>
         </ul>
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main categories" data-spy="scroll" data-target=".sidebar-categories">
         <h1 class="page-header">La carte</h1>
         {% for category in carte %}
-        <div id="c{{ category.id }}">
-            <h3>{{ category.name }}</h3>
-            {% if category.visible %}{% set visibility = 0 %}{% else %}{% set visibility = 1 %}{% endif %}
-            <a class="btn {% if category.visible %}btn-info{% else %}btn-warning{% endif %}" href="{{ path('category_visibility', {id:category.id, visibility: visibility}) }}" title="Modifier la visibilité {{ category.name|raw }}">
-                <i class="fa {% if category.visible %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
-            </a>
-
-            <a class="btn btn-primary" href="{{ path('category_edit', {id:category.id}) }}" title="Modifier {{ category.name|raw }}"><i class="fa fa-edit"></i> </a>
-            <a class="btn btn-danger confirm-delete" href="{{ path('category_delete', {id:category.id}) }}" title="Supprimer {{ category.name|raw }}"><i class="fa fa-trash-o"></i> </a>
+        <div id="c{{ category.id }}" class="category">
+            <div class="info">
+                
+            {% if category.visible %}{% set visibility = 0 %}{% else %}{% set visibility = 1 %}{% endif %}            
+                <a class="btn btn-danger confirm-delete" href="{{ path('category_delete', {id:category.id}) }}" title="Supprimer {{ category.name|raw }}"><i class="fa fa-trash-o"></i> </a>
+                <a class="btn btn-primary" href="{{ path('category_edit', {id:category.id}) }}" title="Modifier {{ category.name|raw }}"><i class="fa fa-edit"></i> </a>
+                <a class="btn {% if category.visible %}btn-info{% else %}btn-warning{% endif %}" href="{{ path('category_visibility', {id:category.id, visibility: visibility}) }}" title="Modifier la visibilité {{ category.name|raw }}">
+                    <i class="fa {% if category.visible %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
+                </a>
+            {% if category.media %}
+                <img class="img-rounded" src="{{ asset(category.media|media) }}" alt="" />
+            {% endif %}
+                <strong>{{ category.name }}</strong>
+                <span>{{ category.description|raw }}</span>
+                <div class="clearfix"></div>
+            </div>
 
             {% for child in category.children %}
-                <div class="dish">
-                    <a class="btn btn-danger confirm-delete" href="{{ path('dish_delete', {id:child.id}) }}" title="Supprimer {{ child.name|raw }}">
-                        <i class="fa fa-trash-o"></i>
-                    </a>
-                    <a class="btn btn-primary" href="{{ path('dish_edit', {id:child.id}) }}" title="Modifier {{ child.name|raw }}">
-                        <i class="fa fa-edit"></i>
-                    </a>
+            <div class="dish">
+                <a class="btn btn-danger confirm-delete" href="{{ path('dish_delete', {id:child.id}) }}" title="Supprimer {{ child.name|raw }}">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+                <a class="btn btn-primary" href="{{ path('dish_edit', {id:child.id}) }}" title="Modifier {{ child.name|raw }}">
+                    <i class="fa fa-edit"></i>
+                </a>
                     {% if child.visible %}{% set visibility = 0 %}{% else %}{% set visibility = 1 %}{% endif %}
-                    <a class="btn {% if child.visible %}btn-info{% else %}btn-warning{% endif %}" href="{{ path('dish_visibility', {id:child.id, visibility: visibility}) }}" title="Modifier la visibilité {{ child.name|raw }}">
-                        <i class="fa {% if child.visible %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
-                    </a>
+                <a class="btn {% if child.visible %}btn-info{% else %}btn-warning{% endif %}" href="{{ path('dish_visibility', {id:child.id, visibility: visibility}) }}" title="Modifier la visibilité {{ child.name|raw }}">
+                    <i class="fa {% if child.visible %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
+                </a>
                     {% if child.media %}
-                    <img class="img-rounded" src="{{ asset(child.media|media) }}" alt="" />
+                <img class="img-rounded" src="{{ asset(child.media|media) }}" alt="" />
                     {% endif %}
-                    <strong>{{ child.name }}</strong>
-                    <em>Prix: {{ child.price }}€ (TVA: {{ child.vat }})</em>
-                    <span>{{ child.description|raw }}</span>
-                </div>
+                <strong>{{ child.name }}</strong>
+                <em>Prix: {{ child.price }}€ (TVA: {{ child.vat }}%)</em>
+                <span>{{ child.description|raw }}</span>
+                <div class="clearfix"></div>
+            </div>
             {% endfor %}
+            <div class="add-dish">
+                <a href="{{ path('dish_new', {parent:category.id}) }}" role="button" title="Ajouter un plat"><i class="fa fa-plus"></i> Ajouter un plat dans <i>{{ category.name }}</i></a>
+            </div>
+            <div class="clearfix"></div>
         </div>
         {% endfor %}
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="newCategoryModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                 <h4 class="modal-title">Ajouter une catégorie</h4>
+
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary">Ajouter</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 {% endblock %}

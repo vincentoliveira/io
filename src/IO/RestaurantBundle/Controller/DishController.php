@@ -95,7 +95,7 @@ class DishController extends CarteItemController {
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $this->mediaSv->handleMedia($entity);
+            $this->mediaSv->handleItemMedia($entity);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
@@ -141,7 +141,7 @@ class DishController extends CarteItemController {
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $media = $this->mediaSv->handleMedia($entity);
+            $media = $this->mediaSv->handleItemMedia($entity);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);

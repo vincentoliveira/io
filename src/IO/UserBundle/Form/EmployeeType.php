@@ -8,10 +8,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * UserType
+ * EmployeeType
  *
  */
-class UserType extends AbstractType
+class EmployeeType extends AbstractType
 {
 
     /**
@@ -35,6 +35,27 @@ class UserType extends AbstractType
                 ->add('plainPassword', 'password', array(
                     'label' => 'Password',
                     'attr' => array('class' => 'form-control'),
+                ))
+                ->add('roles', 'choice', array(
+                    'label' => 'Role',
+                    'attr' => array('class' => 'form-control'),
+                    'choices' => array(
+                        'ROLE_TABLET' => 'Tablette',
+                        'ROLE_CUISINIER' => 'Cuisinier',
+                        'ROLE_SERVEUR' => 'Serveur',
+                        'ROLE_MANAGER' => 'Manager',
+                        'ROLE_CHIEF' => 'Patron',
+                    ),
+                    'multiple' => true,
+                    'expanded' => false,
+                    'required' => false,
+                ))
+                ->add('restaurant', 'entity', array(
+                    'label' => 'Restaurant',
+                    'class' => 'IORestaurantBundle:Restaurant',
+                    'property' => 'name',
+                    'attr' => array('class' => 'form-control'),
+                    'required' => false,
                 ));
     }
 

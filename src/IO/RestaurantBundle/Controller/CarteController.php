@@ -36,7 +36,7 @@ class CarteController extends Controller
      * Displays all categories
      *
      * @Route("/", name="carte_edit")
-     * @Secure("ROLE_MANAGER")
+     * @Secure(roles="ROLE_MANAGER")
      * @Template()
      */
     public function editAction()

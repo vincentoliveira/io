@@ -25,21 +25,21 @@ class MediaServiceTest extends IOTestCase
     public function testHandleNoMedia()
     {
         $item = new \IO\RestaurantBundle\Entity\CarteItem();
-        $result = $this->service->handleMedia($item);
+        $result = $this->service->handleItemMedia($item);
         $this->assertNull($result);
     }
 
     public function testHandleEmpty()
     {
         $item = $this->generateItem(null);
-        $result = $this->service->handleMedia($item);
+        $result = $this->service->handleItemMedia($item);
         $this->assertNull($result);
     }
 
     public function testImportFromFileBadExtension()
     {
         $item = $this->generateItem(__DIR__ . '/../Fixtures/test_empty');
-        $result = $this->service->handleMedia($item);
+        $result = $this->service->handleItemMedia($item);
         $this->assertNull($result);
     }
 
@@ -47,7 +47,7 @@ class MediaServiceTest extends IOTestCase
     {
         $testFilePath = __DIR__ . '/../Fixtures/test.gif';
         $item = $this->generateItem($testFilePath);
-        $result = $this->service->handleMedia($item);
+        $result = $this->service->handleItemMedia($item);
 
         $this->assertInstanceOf('\IO\RestaurantBundle\Entity\Media', $result);
         $this->assertFileEquals($testFilePath, $this->service->getAbsolutePath($result));

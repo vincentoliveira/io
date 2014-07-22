@@ -42,22 +42,46 @@ class MediaService
     public $kernel;
     
     /**
-     * Get loggued user
+     * Handle carte item media entity
      *
-     * @return \IO\UserBundle\Entity\User|null
+     * @return Media
      */
-    public function handleMedia(CarteItem $item)
+    public function handleItemMedia(CarteItem $item)
     {
-        if ($item->getMedia() === null || !$this->fileIsValid($item->getMedia()->getFile())) {
+        $media = $this->handleMedia($item->getMedia());
+        if ($media === null) {
             if ($item->getMedia() !== null && !$item->getMedia()->getId()) {
                 $item->setMedia(null);
             }
-            
+        }
+
+        return $media;
+    }
+    
+    /**
+     * Handle uload file
+     *
+     * @return Media
+     */
+    public function handleUploadFile(UploadedFile $uploadFile)
+    {
+        $media = new Media();
+        $media->setFile($uploadFile);
+
+        return $this->handleMedia($media);
+    }
+    
+    /**
+     * Handle uload file
+     *
+     * @return Media
+     */
+    public function handleMedia(Media $media)
+    {
+        $file = $media->getFile();
+        if ($media === null || !$this->fileIsValid($file)) {
             return null;
         }
-        
-        $media = $item->getMedia();
-        $file = $media->getFile();
         
         // copy to upload dir with unique filename
         $uploadDir = $this->getUploadDir();

@@ -1,17 +1,17 @@
 {% extends "IODefaultBundle::layout.html.twig" %}
 
 {% block content %}
-    <div class="content-header">
-        <h3>Utilisateurs</h3>
-        <span class="actionbar">
-            <a class="btn btn-primary" href="{{ path('admin_user_new') }}" title="Ajouter un utilisateur"><i class="fa fa-plus"></i> </a>
-        </span>
-        <div class="clearfix"></div>
-    </div>
+<div class="container">
+    <span class="actionbar">
+        <a class="btn btn-primary" href="{{ path('admin_user_new') }}" title="Ajouter un utilisateur"><i class="fa fa-plus"></i> Ajouter un utilisateur</a>
+    </span>
+    <h1>Utilisateurs</h1>
+    <div class="clearfix"></div>
 
     <ul class="list-group">
     {% for user in users %}
-            <li class="list-group-item">{{ user.username }} <em>{{ user.restaurant.name|default() }}</em></li>
+        <li class="list-group-item">{{ user.username }} <em>{% if user.restaurant %}{{ user.restaurant.name|default() }}{% else %}{{ user.restaurantGroup.name|default() }}{% endif %}</em></li>
     {% endfor %}
     </ul>
+</div>
 {% endblock %}

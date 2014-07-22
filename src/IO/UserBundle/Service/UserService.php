@@ -66,6 +66,10 @@ class UserService
         
         $session = $this->session;
         $id = $session->get("user.restaurant");
+        if ($id === null) {
+            return null;
+        }
+        
         return $this->em->getRepository('IORestaurantBundle:Restaurant')->find($id);
     }
     

@@ -65,7 +65,9 @@ class CategoryController extends CarteItemController
             $entity->setParent($parent);
         }
         
-        $form = $this->createForm(new CategoryType(), $entity);
+        $form = $this->createForm(new CategoryType(), $entity, array(
+            'em' => $this->getDoctrine()->getManager(),
+        ));
 
         return array(
             'entity' => $entity,
@@ -88,18 +90,20 @@ class CategoryController extends CarteItemController
         $entity->setRestaurant($this->userSv->getCurrentRestaurant());
         $entity->setItemType(ItemTypeEnum::TYPE_CATEGORY);
 
-        $form = $this->createForm(new CategoryType(), $entity);
+        $form = $this->createForm(new CategoryType(), $entity, array(
+            'em' => $this->getDoctrine()->getManager(),
+        ));
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $this->mediaSv->handleMedia($entity);
+            $this->mediaSv->handleItemMedia($entity);
             
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 
             $this->session->getFlashBag()->add('success', sprintf('La categorie "%s" a bien été ajoutée', $entity->getName()));
-            return $this->redirect($this->generateUrl('category_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('carte_edit') . "#c" . $entity->getId());
         }
 
         return array(
@@ -160,7 +164,7 @@ class CategoryController extends CarteItemController
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $media = $this->mediaSv->handleMedia($entity);
+            $media = $this->mediaSv->handleItemMedia($entity);
             
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);

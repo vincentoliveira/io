@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
-use IO\RestaurantBundle\Form\RestaurantGroupType;
+use IO\RestaurantBundle\Form\RestaurantAndChiefType;
 use IO\RestaurantBundle\Entity\Restaurant;
 use IO\RestaurantBundle\Entity\RestaurantGroup;
 
@@ -43,19 +43,26 @@ class AdminController extends Controller
      */
     public function newAction(Request $request)
     {
-        $group = new RestaurantGroup();
-        $form = $this->createForm(new RestaurantGroupType(), $group);
+        $form = $this->createForm(new RestaurantAndChiefType());
         
         if ($request->isMethod("POST")) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $restaurant = new Restaurant();
-                $restaurant->setName($group->getName());
+                $data = $form->getData();
+                $restaurant = $data["restaurant"];
+                
+                $group = new RestaurantGroup();
+                $group->setName($restaurant->getName());
                 $restaurant->setGroup($group);
+                
+                $chief = $data["chief"];
+                $chief->setRestaurantGroup($group);
+                $chief->addRole("ROLE_CHIEF");
                 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($group);
                 $em->persist($restaurant);
+                $em->persist($chief);
                 $em->flush();
 
                 $session = $this->container->get('session');

@@ -99,12 +99,97 @@ body {
   margin-top: 0;
 }
 
-.actionbar { isplay: inline-block; float: right; margin-top: 22px; }
 
-#header .brand { background: #1abc9c url('../img/logo.png') no-repeat 25px 23px; }
-#header .toggle-datetime.toggle-left { margin: 32px 0 0 20px; display: inline-block; }
-#header .logo { padding: 23px 0 0 56px; }
-#header .user-nav { display: inline-block; }
+.actionbar { display: inline-block; float: right; margin-top: 22px; }
+
+/*
+ * Carte
+ */
+.category {
+    margin-bottom: 30px;
+}
+.category .info {
+    border: 1px solid black;
+    padding: 0 4px 10px 0;
+    margin-bottom: 10px;
+}
+.category img { 
+    float: left;
+    width: 80px; 
+    height: 80px; 
+}
+.category .info img {
+    width: 40px; 
+    height: 40px;
+    margin: 5px 20px;
+}
+.category .btn {
+    float: right;
+    margin: 5px 1px;
+}
+.category strong, .category em, .category span {
+    margin-left: 100px;
+    display: block;
+}
+.category .info strong {
+    font-size: 20px;
+}
+.dish, .add-dish {
+    clear: both;
+}
+.dish {
+    padding: 0 4px 0 0px;
+    margin-bottom: 10px;
+}
+.dish:hover {
+    background: #eee;
+}
+.add-dish a {
+    padding: 10px;
+    display: block;
+    background-color: #428bca;
+    color: #FFFFFF;
+}
+
+/*
+ * Carte forms
+ */
+.modal-body {
+    background: #fff;
+}
+.menu-form {
+    min-height: 200px;
+}
+.menu-form .photo {
+    border:2px dotted #428bca;
+    width:200px;
+    height: 200px;
+    color:#92AAB0;
+    padding:10px;
+    float: left;
+}
+.menu-form .photo img {
+    display: block;
+    width: 150px;
+    height: 150px;
+    margin: 0 12px;
+}
+.menu-form .photo strong, .menu-form .photo em {
+    width: 100%;
+    display: block;
+    text-align: center;
+}
+.menu-form .info {
+    margin-left: 220px;
+}
+.menu-form textarea {
+    resize: vertical;
+}
+
+img[src="#"] {
+    display: none;
+}
+
 
 .error { color: #a94442; font-weight: bold;}
 strong.red { color: #ff0000; }
@@ -113,16 +198,6 @@ a.btn-danger { color: #fff; }
 .content-header h3 { display: inline-block; }
 .content-header { border-bottom: 1px solid #293949; margin-bottom: 20px; }
 
-.menu-form { padding: 10px; }
-.menu-form .btn { margin: 20px 0 0; }
-
-
-.dish, .category { clear: both; padding: 10px 2px; height: 100px; }
-.dish:hover, .category:hover { background-color:#ddd; }
-.dish img, .category img { float: left; width: 80px; height: 80px; }
-.dish a, .category a { float: right; vertical-align: middle; }
-.dish strong, .dish em, .dish span, .category strong, .category span, .category em { margin: 0 150px; display: block; }
-.dish span, .category span { margin: 10px 150px 0; }
 
 .btn-dish { width: 140px; }
 .btn-dish img { margin: 0px 5px; width: 100px; height: 100px; display: block; }

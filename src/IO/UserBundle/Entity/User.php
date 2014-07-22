@@ -36,7 +36,7 @@ class User extends BaseUser
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\RestaurantBundle\Entity\RestaurantGroup")
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="restaurant_group_id", referencedColumnName="id", nullable=true)
      */
     private $restaurantGroup;
     

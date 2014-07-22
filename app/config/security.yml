@@ -5,6 +5,8 @@ security:
           iterations: 742
 
     role_hierarchy:
+        ROLE_MANAGER:       ROLE_EMPLOYEE
+        ROLE_CHIEF:         ROLE_MANAGER
         ROLE_ADMIN:         ROLE_CHIEF
         ROLE_SUPER_ADMIN:   ROLE_ADMIN
 

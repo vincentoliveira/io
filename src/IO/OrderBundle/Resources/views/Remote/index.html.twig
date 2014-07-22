@@ -4,14 +4,6 @@
         <title>{{ restaurant.name }}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta property="og:title" content="{{ restaurant.name }} - Menu du jour" />
-        <meta property="og:site_name" content="InnovOrder - {{ restaurant.name }}" />
-        <meta property="og:type" content="article">
-        <meta property="og:description" content="Découvre la carte du jour du NUMA Café grâce à InnovOrder  http://www.f6s.com/innovorder" />
-        <meta property="og:url" content="{{ url('carte_index', {name:restaurant.name}) }}" />
-        {% if restaurant.background is not null %}
-        <meta property="og:image" content="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ asset(restaurant.background|media) }}" />
-        {% endif %}
         
         {% stylesheets 
             'bundles/iodefault/css/bootstrap.css'

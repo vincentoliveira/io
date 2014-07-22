@@ -2,15 +2,14 @@
 
 {% block content %}
 
-    <div class="content-header">
-        <h3>Commandes</h3>
-        <span class="actionbar">
-            <a class="btn btn-primary" href="#" title="Nouvelle commande"><i class="fa fa-plus"></i> </a>
-        </span>
-        <div class="clearfix"></div>
-    </div>
+<div class="container">
+    {#<span class="actionbar">
+        <a class="btn btn-primary" href="#" title="Nouvelle commande"><i class="fa fa-plus"></i> Nouvelle commande</a>
+    </span>#}
+    <h1>Commandes</h1>
+</div>
 
-<div class="order-list" data-url="{{ path('order_refresh') }}" data-content="{{ app.user.restaurant.id }}">
+<div class="order-list" data-url="{{ path('order_refresh') }}" data-content="{{ current_restaurant().id }}">
     {% include 'IOOrderBundle:Default:order_list.html.twig' with {orders:orders} %}
 </div>
 
