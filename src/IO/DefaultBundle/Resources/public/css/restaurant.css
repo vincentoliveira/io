@@ -18,6 +18,21 @@ h3 { color: #e31b7c; }
 .menu p { font-style: italic; }
 .menu > .category { margin: 0px 0px 50px; }
 
+.product {
+    float: left;
+    max-width: 200px;
+}
+
+.product img {
+    display: block;
+    width: 180px;
+    height: 180px;
+    margin: 5px;
+}
+.product .btn {
+    display: block;
+}
+
 .receipt { width: 300px; float: right; border: 1px solid black; padding: 0 5px 5px; }
 .receipt .main-order { list-style-type: none; margin-top: 5px; padding: 0; }
 .receipt .category-order { list-style-type: none; padding-left: 5px; }
