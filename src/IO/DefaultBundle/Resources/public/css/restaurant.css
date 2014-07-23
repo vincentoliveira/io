@@ -21,6 +21,15 @@ h3 { color: #e31b7c; }
 .product {
     float: left;
     max-width: 200px;
+    margin: 0 10px 10px 0;
+}
+
+.product em {
+    float: right;
+}
+
+.product p {
+    height: 40px;
 }
 
 .product img {
