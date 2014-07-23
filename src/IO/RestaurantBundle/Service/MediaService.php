@@ -101,6 +101,17 @@ class MediaService
         return 'media/' . $media->getPath();
     }
     
+    /**
+     * Get web path of a media
+     * 
+     * @param string $path
+     * @return string
+     */
+    public function getWebPathFromStr($path)
+    {
+        return 'media/' . $path;
+    }
+    
     protected function getUploadDir()
     {
         return $this->kernel->getRootDir() . '/../web/media/';
