@@ -86,9 +86,9 @@ class RestaurantTwigExtension extends \Twig_Extension
      * 
      * @return array
      */
-    public function mediaWebPathFilter(Media $media)
+    public function mediaWebPathFilter($path)
     {
-        return $this->mediaSv->getWebPathFromStr($media);
+        return $this->mediaSv->getWebPathFromStr($path);
     }
     
     /**
