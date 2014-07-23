@@ -1,0 +1,22 @@
+<form action="{{ path('media_upload') }}" method="POST" enctype="multipart/form-data" class="hidden">
+    <input type="file" name="media" />
+</form>
+<form class="menu-form" action="{{ action }}" method="POST" enctype="multipart/form-data">
+    <div id="filehandler" class="photo">
+        <a href="#" class="open-file-link">
+            {{ form_widget(form.media) }}
+            <img src="{% if category and category.media %}{{ asset(category.media|media) }}{% else %}{{ asset('bundles/iodefault/img/no_image_available.png') }}{% endif %}" alt="" />
+            <strong>Glisser l'image ou cliquer ici</strong>
+            <em></em>
+        </a>
+    </div>
+    <div class="info">
+        <div class="form-group">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.description) }}
+        </div>
+        {{ form_rest(form) }}
+    </div>
+</form>

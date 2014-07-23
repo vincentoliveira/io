@@ -1,0 +1,81 @@
+<script>
+    $('.modal-submit').click(function(e) {
+        e.preventDefault();
+
+        var formId = $(this).attr("data-form");
+        var success = true;
+
+        $(formId).find('input[required]').each(function() {
+            if (!$(this).val()) {
+                $(this).css('border', '2px solid #ff0000');
+                success = false;
+            }
+        });
+
+        if (success) {
+            $(formId).submit();
+            $('.modal').modal('hide');
+        }
+    });
+
+    $('.open-file-link').click(function(e) {
+        e.preventDefault();
+        $('input[name="media"]').click();
+    });
+    $('input[name="media"]').change(function() {
+        var fd = new FormData();
+        fd.append('media', $(this).prop('files')[0]);
+
+        sendFileToServer(fd);
+    });
+
+    var obj = $("#filehandler");
+    obj.on('dragenter', function(e)
+    {
+        e.stopPropagation();
+        e.preventDefault();
+        $(this).css('border', '2px solid #5bc0de');
+    });
+    obj.on('dragover', function(e)
+    {
+        e.stopPropagation();
+        e.preventDefault();
+    });
+    obj.on('drop', function(e)
+    {
+        $(this).css('border', '2px dotted #5bc0de');
+        e.preventDefault();
+        var files = e.originalEvent.dataTransfer.files;
+
+        //We need to send dropped files to Server
+        handleFileUpload(files, obj);
+    });
+    function handleFileUpload(files, obj)
+    {
+        var fd = new FormData();
+
+        fd.append('media', files[0]);
+        sendFileToServer(fd);
+    }
+    function sendFileToServer(formData)
+    {
+        var uploadURL = "{{ path('media_upload') }}"; //Upload URL
+        $.ajax({
+            url: uploadURL,
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: formData,
+            success: function(data) {
+                if (data.error === "undefined") {
+                    obj.find('em').text("Une erreur s'est produite")
+                } else {
+                    obj.find("input.media-id").val(data.media.id);
+                    obj.find('img').attr("src", "{{ app.request.getBaseURL() }}/" + data.media.path)
+                }
+                console.log(data);
+            }
+        });
+    }
+</script>
