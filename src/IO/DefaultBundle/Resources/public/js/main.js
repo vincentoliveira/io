@@ -20,9 +20,8 @@ $(document).ready(function() {
         e.preventDefault();
         var url = $(this).attr('href');
         var modalId = $(this).attr('data-target');
-        console.log(modalId +': '+url);
         $.get(url, function(data) {
-            $(modalId).find('.modal-content').html(data).modal();
+            $(modalId).find('.modal-content').html(data);
         });
     });
 
