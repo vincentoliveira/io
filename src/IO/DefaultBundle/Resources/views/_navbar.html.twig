@@ -19,12 +19,7 @@
             {% endif %}
             {% if is_granted("ROLE_CHIEF") and not is_granted('ROLE_ADMIN') %}
             <ul class="nav navbar-nav">
-                <li class="sub-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-lock"></i> Mes restaurants <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#" title="TODO">TODO</a></li>
-                    </ul>
-                </li>
+                <li><a href="{{ path('restaurant_list') }}"><i class="fa fa-lock"></i> Mes restaurants</a></li>
             </ul>
             {% endif %}
             {% if is_granted("ROLE_ADMIN") %}

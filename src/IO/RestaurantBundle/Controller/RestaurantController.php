@@ -32,11 +32,26 @@ class RestaurantController extends Controller
      * Admin restaurant index
      * 
      * @return type
-     * @Route("/current/{restaurantId}", name="restaurant_set_current")
+     * @Route("/mes-restaurants", name="restaurant_list")
      * @Secure(roles="ROLE_CHIEF")
      * @Template()
      */
-    public function setCurentRestaurantAction(Request $request, $restaurantId) {
+    public function listAction()
+    {
+        $restaurantGroup = $this->userSv->getUser()->getRestaurantGroup();
+        
+        return array('restaurants' => $restaurantGroup->getRestaurants());
+    }
+    
+    /**
+     * Se current restaurant action
+     * 
+     * @return type
+     * @Route("/current/{restaurantId}", name="restaurant_set_current")
+     * @Secure(roles="ROLE_CHIEF")
+     */
+    public function setCurentRestaurantAction(Request $request, $restaurantId)
+    {
         $repo = $this->getDoctrine()->getRepository('IORestaurantBundle:Restaurant');
         $restaurant = $repo->find($restaurantId);
         if ($this->userSv->getUser()->getRestaurantGroup() === $restaurant->getGroup()) {
