@@ -56,6 +56,7 @@ class AdminController extends Controller
                 $restaurant->setGroup($group);
                 
                 $chief = $data["chief"];
+                $chief->setEnabled(true);
                 $chief->setRestaurantGroup($group);
                 $chief->addRole("ROLE_CHIEF");
                 
