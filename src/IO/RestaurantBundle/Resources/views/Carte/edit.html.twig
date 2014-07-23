@@ -9,7 +9,7 @@
             <li{% if loop.first %} class="active"{% endif %}><a href="#c{{ category.id }}"> {{ category.name }}</a></li>
             {% endfor %}
             <li>
-                <a data-toggle="modal" href="{{ path('category_new') }}" data-target="#newCategoryModal"><i class="fa fa-plus"></i> Ajouter une categorie</a></a>
+                <a href="{{ path('category_new') }}" data-toggle="modal" data-target="#newModal"><i class="fa fa-plus"></i> Ajouter une categorie</a></a>
             </li>
         </ul>
     </div>
@@ -20,8 +20,8 @@
             <div class="info">
                 
             {% if category.visible %}{% set visibility = 0 %}{% else %}{% set visibility = 1 %}{% endif %}            
-                <a class="btn btn-danger confirm-delete" href="{{ path('category_delete', {id:category.id}) }}" title="Supprimer {{ category.name|raw }}"><i class="fa fa-trash-o"></i> </a>
-                <a class="btn btn-primary" href="{{ path('category_edit', {id:category.id}) }}" title="Modifier {{ category.name|raw }}"><i class="fa fa-edit"></i> </a>
+                <a class="btn btn-danger confirm-delete" href="{{ path('category_delete', {id:category.id}) }}" title="Supprimer {{ category.name|raw }}"><i class="fa fa-trash-o"></i> </a>                
+                <a class="btn btn-primary" data-toggle="modal" href="{{ path('category_edit', {id:category.id}) }}" data-target="#newModal" title="Modifier {{ category.name|raw }}"><i class="fa fa-edit"></i> </a>
                 <a class="btn {% if category.visible %}btn-info{% else %}btn-warning{% endif %}" href="{{ path('category_visibility', {id:category.id, visibility: visibility}) }}" title="Modifier la visibilité {{ category.name|raw }}">
                     <i class="fa {% if category.visible %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
                 </a>
@@ -64,18 +64,16 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="newCategoryModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                 <h4 class="modal-title">Ajouter une catégorie</h4>
-
+                 <h4 class="modal-title">-</h4>
             </div>
             <div class="modal-body"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary">Ajouter</button>
             </div>
         </div>
         <!-- /.modal-content -->

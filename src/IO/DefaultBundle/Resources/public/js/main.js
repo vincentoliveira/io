@@ -14,6 +14,17 @@ $(document).ready(function() {
     if ($(".order-list").length) {
         window.setInterval(autorefreshOrderList, 10000);
     }
+    
+    // Open modal
+    $('[data-toggle="modal"]').click(function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        var modalId = $(this).attr('data-target');
+        console.log(modalId +': '+url);
+        $.get(url, function(data) {
+            $(modalId).find('.modal-content').html(data).modal();
+        });
+    });
 
     $(document).on('dragenter', function(e)
     {
@@ -24,7 +35,6 @@ $(document).ready(function() {
     {
         e.stopPropagation();
         e.preventDefault();
-        obj.css('border', '2px dotted #0B85A1');
     });
     $(document).on('drop', function(e)
     {

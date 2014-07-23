@@ -6,6 +6,17 @@ body {
   padding-top: 50px;
 }
 
+/*
+ * Alertes
+ */
+.alert {
+    float: right;
+    width: 250px;
+}
+.alert button.close{
+    margin-left: 5px;
+}
+
 /* 
  * Sign in form
  */

@@ -114,24 +114,6 @@ class CategoryController extends CarteItemController
 
 
     /**
-     * Finds and displays a CarteItem entity.
-     *
-     * @Route("/{id}", name="category_show")
-     * @Secure("ROLE_MANAGER")
-     * @Method("GET")
-     * @Template()
-     */
-    public function showAction($id)
-    {
-        $entity = $this->getEntity($id);
-
-        return array(
-            'entity' => $entity,
-        );
-    }
-
-
-    /**
      * Displays a form to edit an existing CarteItem entity.
      *
      * @Route("/{id}/edit", name="category_edit")
@@ -141,7 +123,9 @@ class CategoryController extends CarteItemController
     public function editAction($id)
     {
         $entity = $this->getEntity($id);
-        $editForm = $this->createForm(new CategoryType(), $entity);
+        $editForm = $this->createForm(new CategoryType(), $entity, array(
+            'em' => $this->getDoctrine()->getManager(),
+        ));
 
         return array(
             'entity' => $entity,
@@ -160,7 +144,9 @@ class CategoryController extends CarteItemController
     public function updateAction(Request $request, $id)
     {
         $entity = $this->getEntity($id);
-        $editForm = $this->createForm(new CategoryType(), $entity);
+        $editForm = $this->createForm(new CategoryType(), $entity, array(
+            'em' => $this->getDoctrine()->getManager(),
+        ));
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
@@ -171,7 +157,7 @@ class CategoryController extends CarteItemController
             $em->flush();
             
             $this->session->getFlashBag()->add('success', sprintf('La categorie "%s" a bien été modifiée', $entity->getName()));
-            return $this->redirect($this->generateUrl('category_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('carte_edit') . "#c" . $entity->getId());
         }
 
         return array(
@@ -195,7 +181,7 @@ class CategoryController extends CarteItemController
         $em->flush();
         $this->session->getFlashBag()->add('success', sprintf('La categorie "%s" a bien été supprimée', $entity->getName()));
 
-        return $this->redirect($this->generateUrl('homepage'));
+        return $this->redirect($this->generateUrl('carte_edit'));
     }
 
     /**
@@ -213,7 +199,7 @@ class CategoryController extends CarteItemController
         $em->persist($entity);
         $em->flush();
         
-        return $this->redirect($this->generateUrl('category_show', array('id' => $entity->getId())));
+        return $this->redirect($this->generateUrl('carte_edit') . "#c" . $entity->getId());
     }
 
 }
