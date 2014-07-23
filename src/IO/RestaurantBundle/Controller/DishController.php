@@ -102,7 +102,7 @@ class DishController extends CarteItemController {
             $em->flush();
 
             $this->session->getFlashBag()->add('success', sprintf('Le plat "%s" a bien été ajouté', $entity->getName()));
-            return $this->redirect($this->generateUrl('category_show', array('id' => $entity->getParent()->getId())));
+            return $this->redirect($this->generateUrl('carte_edit') . "#c" . $entity->getParent()->getId());
         }
 
         return array(
@@ -148,7 +148,7 @@ class DishController extends CarteItemController {
             $em->flush();
 
             $this->session->getFlashBag()->add('success', sprintf('Le plat "%s" a bien été modifié', $entity->getName()));
-            return $this->redirect($this->generateUrl('category_show', array('id' => $entity->getParent()->getId())));
+            return $this->redirect($this->generateUrl('carte_edit') . "#c" . $entity->getParent()->getId());
         }
 
         return array(
@@ -165,12 +165,14 @@ class DishController extends CarteItemController {
     public function deleteAction($id) {
         $entity = $this->getEntity($id);
 
+        $parent = $entity->getParent();
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
         $em->flush();
         $this->session->getFlashBag()->add('success', sprintf('Le plat "%s" a bien été supprimé', $entity->getName()));
 
-        return $this->redirect($this->generateUrl('homepage'));
+        return $this->redirect($this->generateUrl('carte_edit') . "#c" . $parent->getId());
     }
 
     /**
@@ -187,7 +189,7 @@ class DishController extends CarteItemController {
         $em->persist($entity);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('category_show', array('id' => $entity->getParent()->getId())));
+        return $this->redirect($this->generateUrl('carte_edit') . "#c" . $entity->getParent()->getId());
     }
 
     /**
