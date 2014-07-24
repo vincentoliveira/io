@@ -1,0 +1,54 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">TVA</h4>
+
+</div>
+<div class="modal-body vat-body">
+{% include 'IORestaurantBundle:ValueAddedTax:_form.html.twig' with {formList:formList} %}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+</div>
+<script>
+    $('.btn-add-vat').click(function(e) {
+        e.preventDefault();
+        var success = true;
+        $('.add-vat').find('input[required]').each(function() {
+            if (!$(this).val()) {
+                $(this).css('border', '2px solid #ff0000');
+                success = false;
+            }
+        });
+
+        if (!success) {
+            return;
+        }
+        
+        $('.add-vat').find('input[required]').css('border', '1px solid #ccc');
+        var url = $(this).closest('form').attr("action");
+        var data = $(this).closest('form').serialize();
+        $.post(url, data, function(data){
+            $('.vat-body').parent().html(data);
+        });
+    });
+    
+    
+    $('.update-vat input').change(function() {
+        var url = $(this).closest('form').attr("action");
+        var data = $(this).closest('form').serialize();
+        $.post(url, data, function(data){
+            $('.vat-body').parent().html(data);
+        });
+    });
+    
+
+    $('.confirm-delete').click(function(e) {
+        e.preventDefault();
+        if (confirm('Etes-vous sûr de vouloir supprimer cet élément ?')) {
+            var url = $(this).attr("href");
+            $.post(url, function(data){
+                $('.vat-body').parent().html(data);
+            });
+        }
+    });
+</script>

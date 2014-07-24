@@ -1,0 +1,24 @@
+{% for vatForm in formList %}
+<div class="vat {% if loop.last %}add-vat{% else %}update-vat{% endif %}">
+    <form action="{% if loop.last %}{{ path('vat_create') }}{% else %}{{ path('vat_update', {id:vatForm.vars.value.id}) }}{% endif %}" method="POST">
+        {% if loop.last %}
+        {{ form_errors(vatForm) }}
+        {% else %}
+        <a class="btn btn-danger btn-delete confirm-delete" href="{{ path('vat_delete', {id:vatForm.vars.value.id}) }}"><i class="fa fa-trash-o"></i> </a>
+        {% endif %}
+        <div class="form-small">
+            {{ form_widget(vatForm.name) }}
+        </div>
+        <div class="form-small">
+            <div class="input-group">
+                {{ form_widget(vatForm.value) }}
+                <div class="input-group-addon">%</div>
+            </div>
+        </div>
+        {{ form_rest(vatForm) }}
+        {% if loop.last %}
+        <button class="btn btn-primary btn-add-vat"><i class="fa fa-plus"></i> Ajouter</button>
+        {% endif %}
+    </form>
+</div>
+{% endfor %}

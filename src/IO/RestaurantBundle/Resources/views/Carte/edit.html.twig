@@ -9,10 +9,14 @@
             <li{% if loop.first %} class="active"{% endif %}><a href="#c{{ category.id }}"> {{ category.name }}</a></li>
             {% endfor %}
             <li>
-                <a href="{{ path('category_new') }}" data-toggle="modal" data-target="#newModal"><i class="fa fa-plus"></i> Ajouter une categorie</a></a>
+                <a href="{{ path('category_new') }}" data-toggle="modal" data-target="#newModal"><i class="fa fa-plus"></i> Ajouter une categorie</a>
             </li>
-            <li><a href="{{ path('option_list_index') }}"><i class="fa fa-list"></i> Options</a></li>
-            <li><a href="#"><i class="fa fa-sliders"></i> TVA</a></li>
+            <li>
+                <a href="{{ path('option_list_index') }}"><i class="fa fa-list"></i> Options</a>
+            </li>
+            <li>
+                <a href="{{ path('vat_index') }}" data-toggle="modal" data-target="#newModal"><i class="fa fa-sliders"></i> TVA</a>
+            </li>
         </ul>
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main categories" data-spy="scroll" data-target=".sidebar-categories">

@@ -201,6 +201,23 @@ img[src="#"] {
     display: none;
 }
 
+.form-small {
+    display: inline-block;
+    width: 200px;
+    margin-bottom: -12px;
+}
+.vat {
+    margin-bottom: 5px;
+}
+.vat .btn-delete {
+    padding: 1px 6px;
+}
+.add-vat {
+    border-top: 1px dashed black;
+    margin-top: 10px;
+    padding: 5px 0 0 30px;
+}
+
 
 .error { color: #a94442; font-weight: bold;}
 strong.red { color: #ff0000; }

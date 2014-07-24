@@ -37,7 +37,7 @@ class CarteItem implements CarteItemElement
     private $visible;
     
     /**
-     * @var string
+     * @var CarteItem
      *
      * @ORM\ManyToOne(targetEntity="IO\RestaurantBundle\Entity\CarteItem", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
@@ -96,9 +96,10 @@ class CarteItem implements CarteItemElement
     private $price;
     
     /**
-     * @var integer
+     * @var Taxe
      *
-     * @ORM\Column(name="vat", type="decimal", precision=7, scale=2, nullable=true)
+     * @ORM\ManyToOne(targetEntity="IO\RestaurantBundle\Entity\ValueAddedTax")
+     * @ORM\JoinColumn(name="vat_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $vat;
     
