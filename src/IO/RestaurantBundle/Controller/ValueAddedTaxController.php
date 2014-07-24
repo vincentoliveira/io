@@ -56,6 +56,10 @@ class ValueAddedTaxController extends Controller
         $vat = new ValueAddedTax();
         $vat->setRestaurant($restaurant);
         $form = $this->handleForm($request, $vat);
+        
+        if ($form->isValid()) {
+            $form = null;
+        }
 
         return $this->generateFormList($form);
     }
