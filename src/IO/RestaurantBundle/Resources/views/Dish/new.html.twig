@@ -1,18 +1,14 @@
-{% extends "IODefaultBundle::layout.html.twig" %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Ajouter un plat ({{ category.name}})</h4>
 
-{% block content %}
-    <div class="content-header">
-        <h3>Ajouter une plat</h3>
-        <div class="clearfix"></div>
-    </div>
+</div>
+<div class="modal-body">
+{% include 'IORestaurantBundle:Dish:_form.html.twig' with {form:form, action:path('dish_create', {parent:category.id}), dish:null} %}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+    <button type="button" class="btn btn-primary modal-submit" data-form=".menu-form">Ajouter</button>
+</div>
+{% include 'IORestaurantBundle:Category:_js.html.twig' %}
 
-    <form class="menu-form" action="{{ path('dish_create') }}" method="POST" {{ form_enctype(form) }}>
-        {{ form_rest(form) }}
-        <div class="clearfix"></div>
-        
-        <div>
-            <button class="btn btn-primary">Ajouter</button>
-        </div>
-    </form>
-
-{% endblock %}

@@ -19,7 +19,8 @@ use IO\RestaurantBundle\Entity\DishOptionList;
  *
  * @Route("/dish")
  */
-class DishController extends CarteItemController {
+class DishController extends CarteItemController
+{
 
     /**
      * User Service
@@ -53,27 +54,34 @@ class DishController extends CarteItemController {
      * @Method("GET")
      * @Template()
      */
-    public function newAction(Request $request) {
-
+    public function newAction(Request $request)
+    {
+        $restaurant = $this->userSv->getCurrentRestaurant();
+        
         $entity = new CarteItem();
-        $entity->setRestaurant($this->userSv->getCurrentRestaurant());
+        $entity->setRestaurant($restaurant);
         $entity->setItemType(ItemTypeEnum::TYPE_DISH);
         $entity->setVat(10.0);
         $entity->setVisible(true);
 
         $parentId = $request->query->get('parent', null);
         if ($parentId !== null) {
-            $parent = $this->getEntity($parentId);
-            $entity->setParent($parent);
-            if ($parent->getVat() !== null) {
-                $entity->setVat($parent->getVat());
-            }
+            $category = $this->getEntity($parentId);
+            $entity->setParent($category);
+        }
+        
+        if ($category === null) {
+            throw $this->createNotFoundException("No parent category");
         }
 
-        $form = $this->createForm(new DishType(), $entity);
+        $form = $this->createForm(new DishType(), $entity, array(
+            'em' => $this->getDoctrine()->getManager(),
+            'restaurant' => $restaurant,
+        ));
 
         return array(
             'entity' => $entity,
+            'category' => $category,
             'form' => $form->createView(),
         );
     }
@@ -86,17 +94,32 @@ class DishController extends CarteItemController {
      * @Method("POST")
      * @Template("IORestaurantBundle:Dish:new.html.twig")
      */
-    public function createAction(Request $request) {
+    public function createAction(Request $request)
+    {
+        $restaurant = $this->userSv->getCurrentRestaurant();
+        
         $entity = new CarteItem();
-        $entity->setRestaurant($this->userSv->getCurrentRestaurant());
+        $entity->setRestaurant($restaurant);
         $entity->setItemType(ItemTypeEnum::TYPE_DISH);
 
-        $form = $this->createForm(new DishType(), $entity);
+        $form = $this->createForm(new DishType(), $entity, array(
+            'em' => $this->getDoctrine()->getManager(),
+            'restaurant' => $restaurant,
+        ));
         $form->handleRequest($request);
+        
+        $category = $entity->getParent();
+        $parentId = $request->query->get('parent', null);
+        if ($parentId !== null) {
+            $category = $this->getEntity($parentId);
+            $entity->setParent($category);
+        }
+        
+        if ($entity->getParent() === null) {
+            throw $this->createNotFoundException("No parent category");
+        }
 
         if ($form->isValid()) {
-            $this->mediaSv->handleItemMedia($entity);
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -118,7 +141,8 @@ class DishController extends CarteItemController {
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id) {
+    public function editAction($id)
+    {
         $entity = $this->getEntity($id);
         $editForm = $this->createForm(new DishType(), $entity);
 
@@ -135,7 +159,8 @@ class DishController extends CarteItemController {
      * @Method("POST")
      * @Template("IORestaurantBundle:Dish:edit.html.twig")
      */
-    public function updateAction(Request $request, $id) {
+    public function updateAction(Request $request, $id)
+    {
         $entity = $this->getEntity($id);
         $editForm = $this->createForm(new DishType(), $entity);
         $editForm->handleRequest($request);
@@ -162,11 +187,12 @@ class DishController extends CarteItemController {
      *
      * @Route("/{id}/delete", name="dish_delete")
      */
-    public function deleteAction($id) {
+    public function deleteAction($id)
+    {
         $entity = $this->getEntity($id);
 
         $parent = $entity->getParent();
-        
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
         $em->flush();
@@ -181,7 +207,8 @@ class DishController extends CarteItemController {
      * @Route("/{id}/visibility/{visibility}", name="dish_visibility")
      * @Template()
      */
-    public function visibilityAction($id, $visibility) {
+    public function visibilityAction($id, $visibility)
+    {
         $entity = $this->getEntity($id);
 
         $em = $this->getDoctrine()->getManager();
@@ -198,7 +225,8 @@ class DishController extends CarteItemController {
      * @Route("/{id}/option/add", name="dish_add_option")
      * @Template()
      */
-    public function addOptionAction(Request $request, $id) {
+    public function addOptionAction(Request $request, $id)
+    {
         $dish = $this->getEntity($id);
 
         $dishOption = new DishOptionList();
@@ -209,7 +237,7 @@ class DishController extends CarteItemController {
 
         if ($request->isMethod("POST")) {
             $form->submit($request);
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($dishOption);
             $em->flush();
@@ -229,7 +257,8 @@ class DishController extends CarteItemController {
      * @Route("/option/delete/{id}", name="dish_delete_option")
      * @Template()
      */
-    public function deleteOptionAction($id) {
+    public function deleteOptionAction($id)
+    {
         $entity = $this->getEntity($id, 'IORestaurantBundle:DishOptionList');
         $dish = $entity->getDish();
 

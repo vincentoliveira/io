@@ -62,14 +62,14 @@ class CarteItem implements CarteItemElement
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=63, nullable=false)
+     * @ORM\Column(name="name", type="string", length=31, nullable=false)
      */
     private $name;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="short_name", type="string", length=15, nullable=true)
+     * @ORM\Column(name="short_name", type="string", length=31, nullable=true)
      */
     private $shortName;
     

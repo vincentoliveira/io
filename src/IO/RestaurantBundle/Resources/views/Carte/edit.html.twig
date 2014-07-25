@@ -55,13 +55,13 @@
                 <img class="img-rounded" src="{{ asset(child.media|media) }}" alt="" />
                     {% endif %}
                 <strong>{{ child.name }}</strong>
-                <em>Prix: {{ child.price }}€ (TVA: {{ child.vat }}%)</em>
+                <em>Prix: {{ child.price }}€ (TVA: {{ child.vat.value|default('') }}%)</em>
                 <span>{{ child.description|raw }}</span>
                 <div class="clearfix"></div>
             </div>
             {% endfor %}
             <div class="add-dish">
-                <a href="{{ path('dish_new', {parent:category.id}) }}" role="button" title="Ajouter un plat"><i class="fa fa-plus"></i> Ajouter un plat dans <i>{{ category.name }}</i></a>
+                <a href="{{ path('dish_new', {parent:category.id}) }}" data-toggle="modal" data-target="#newModal"><i class="fa fa-plus"></i> Ajouter un plat dans <i>{{ category.name }}</i></a>
             </div>
             <div class="clearfix"></div>
         </div>
