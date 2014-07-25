@@ -144,8 +144,13 @@ class DishController extends CarteItemController
     public function editAction($id)
     {
         $entity = $this->getEntity($id);
-        $editForm = $this->createForm(new DishType(), $entity);
-
+        
+        $restaurant = $this->userSv->getCurrentRestaurant();
+        $editForm = $this->createForm(new DishType(), $entity, array(
+            'em' => $this->getDoctrine()->getManager(),
+            'restaurant' => $restaurant,
+        ));
+        
         return array(
             'entity' => $entity,
             'edit_form' => $editForm->createView(),
@@ -162,12 +167,15 @@ class DishController extends CarteItemController
     public function updateAction(Request $request, $id)
     {
         $entity = $this->getEntity($id);
-        $editForm = $this->createForm(new DishType(), $entity);
+        
+        $restaurant = $this->userSv->getCurrentRestaurant();
+        $editForm = $this->createForm(new DishType(), $entity, array(
+            'em' => $this->getDoctrine()->getManager(),
+            'restaurant' => $restaurant,
+        ));
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $media = $this->mediaSv->handleItemMedia($entity);
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();

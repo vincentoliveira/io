@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ValueAddedTax
 {
+
     /**
      * @var integer
      *
@@ -28,20 +29,25 @@ class ValueAddedTax
      * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
      */
     private $restaurant;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=31, nullable=false)
      */
     private $name;
-    
+
     /**
      * @var integer
      *
      * @ORM\Column(name="value", type="decimal", precision=7, scale=2, nullable=true)
      */
     private $value;
+
+    public function getNameAndValue()
+    {
+        return $this->getName() . ' (' . $this->getValue() . '%)';
+    }
 
     /**
      * Get id
@@ -62,7 +68,7 @@ class ValueAddedTax
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
@@ -85,7 +91,7 @@ class ValueAddedTax
     public function setValue($value)
     {
         $this->value = $value;
-    
+
         return $this;
     }
 
@@ -108,7 +114,7 @@ class ValueAddedTax
     public function setRestaurant(\IO\RestaurantBundle\Entity\Restaurant $restaurant)
     {
         $this->restaurant = $restaurant;
-    
+
         return $this;
     }
 
@@ -121,4 +127,5 @@ class ValueAddedTax
     {
         return $this->restaurant;
     }
+
 }

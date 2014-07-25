@@ -1,7 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h4 class="modal-title">Ajouter un plat ({{ category.name}})</h4>
-
 </div>
 <div class="modal-body">
 {% include 'IORestaurantBundle:Dish:_form.html.twig' with {form:form, action:path('dish_create', {parent:category.id}), dish:null} %}

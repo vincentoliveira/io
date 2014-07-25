@@ -72,13 +72,13 @@ class DishType extends AbstractType
                         ->where('vat.restaurant = :restaurant')
                         ->setParameter(':restaurant', $restaurant);
             },
-                    'property' => 'name',
+                    'property' => 'nameAndValue',
                     'attr' => array('class' => 'form-control'),
                     'required' => true,
-                ))
-                ->add('visible', 'checkbox', array(
-                    'label' => 'Le produit est disponible',
-                    'required' => false,
+//                ))
+//                ->add('visible', 'checkbox', array(
+//                    'label' => 'Le produit est disponible',
+//                    'required' => false,
         ));
     }
 

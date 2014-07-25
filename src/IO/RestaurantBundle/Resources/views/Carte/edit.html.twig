@@ -44,7 +44,7 @@
                 <a class="btn btn-danger confirm-delete" href="{{ path('dish_delete', {id:child.id}) }}" title="Supprimer {{ child.name|raw }}">
                     <i class="fa fa-trash-o"></i>
                 </a>
-                <a class="btn btn-primary" href="{{ path('dish_edit', {id:child.id}) }}" title="Modifier {{ child.name|raw }}">
+                <a class="btn btn-primary" href="{{ path('dish_edit', {id:child.id}) }}" title="Modifier {{ child.name|raw }}" data-toggle="modal" data-target="#newModal">
                     <i class="fa fa-edit"></i>
                 </a>
                     {% if child.visible %}{% set visibility = 0 %}{% else %}{% set visibility = 1 %}{% endif %}
@@ -55,7 +55,7 @@
                 <img class="img-rounded" src="{{ asset(child.media|media) }}" alt="" />
                     {% endif %}
                 <strong>{{ child.name }}</strong>
-                <em>Prix: {{ child.price }}€ (TVA: {{ child.vat.value|default('') }}%)</em>
+                <em>Prix: {{ child.price }}€ {% if child.vat %}(TVA: {{ child.vat.name }}, {{ child.vat.value}}%){% endif %}</em>
                 <span>{{ child.description|raw }}</span>
                 <div class="clearfix"></div>
             </div>
