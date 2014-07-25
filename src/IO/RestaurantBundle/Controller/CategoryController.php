@@ -96,8 +96,6 @@ class CategoryController extends CarteItemController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $this->mediaSv->handleItemMedia($entity);
-            
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -150,8 +148,6 @@ class CategoryController extends CarteItemController
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $media = $this->mediaSv->handleItemMedia($entity);
-            
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
