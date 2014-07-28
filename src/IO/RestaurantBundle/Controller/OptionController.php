@@ -52,7 +52,7 @@ class OptionController extends CarteItemController
         $repo = $em->getRepository('IORestaurantBundle:CarteItem');
         $lists = $repo->findBy(array(
             'restaurant' => $this->userSv->getCurrentRestaurant(),
-            'itemType' => ItemTypeEnum::TYPE_OPTION_LIST,
+            'itemType' => ItemTypeEnum::TYPE_OPTION,
         ));
         
         return array(
@@ -73,11 +73,11 @@ class OptionController extends CarteItemController
     {
         $entity = new CarteItem();
         $entity->setRestaurant($this->userSv->getCurrentRestaurant());
-        $entity->setItemType(ItemTypeEnum::TYPE_OPTION_LIST);
+        $entity->setItemType(ItemTypeEnum::TYPE_OPTION);
         $entity->setVisible(true);
         
         $option = new CarteItem();
-        $option->setItemType(ItemTypeEnum::TYPE_OPTION);
+        $option->setItemType(ItemTypeEnum::TYPE_OPTION_CHOICE);
         $option->setVisible(true);
         $entity->addChild($option);
         
@@ -107,7 +107,7 @@ class OptionController extends CarteItemController
         
         $entity = new CarteItem();
         $entity->setRestaurant($restaurant);
-        $entity->setItemType(ItemTypeEnum::TYPE_OPTION_LIST);
+        $entity->setItemType(ItemTypeEnum::TYPE_OPTION);
         $entity->setVisible(true);
 
         $em = $this->getDoctrine()->getManager();

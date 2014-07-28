@@ -43,7 +43,7 @@ class CarteItemRepository extends EntityRepository
                 ->where('item.restaurant = :restaurant')
                 ->andWhere('item.itemType = :type')
                 ->setParameter(':restaurant', $restaurantId)
-                ->setParameter(':type', ItemTypeEnum::TYPE_OPTION_LIST)
+                ->setParameter(':type', ItemTypeEnum::TYPE_OPTION)
                 ->addOrderBy('item.parent', 'ASC')
                 ->addOrderBy('item.position', 'ASC');
 

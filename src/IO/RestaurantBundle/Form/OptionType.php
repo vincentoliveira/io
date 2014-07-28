@@ -22,7 +22,7 @@ class OptionType extends AbstractType
         
         $builder
                 ->add('itemType', 'hidden', array(
-                    'data' => ItemTypeEnum::TYPE_OPTION_LIST,
+                    'data' => ItemTypeEnum::TYPE_OPTION,
                 ))
                 ->add('name', 'text', array(
                     'label' => 'Nom de la liste d\'options*',

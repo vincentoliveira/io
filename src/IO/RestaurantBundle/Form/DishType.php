@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
+use IO\RestaurantBundle\Enum\ItemTypeEnum;
 
 class DishType extends AbstractType
 {
@@ -75,14 +76,25 @@ class DishType extends AbstractType
                     'property' => 'nameAndValue',
                     'attr' => array('class' => 'form-control'),
                     'required' => true,
-//                ))
-//                ->add('visible', 'checkbox', array(
-//                    'label' => 'Le produit est disponible',
-//                    'required' => false,
+                ))
+                ->add('dishOptions', 'entity', array(
+                    'label' => 'Options',
+                    'attr' => array('class' => 'checkbox'),
+                    'class' => 'IORestaurantBundle:CarteItem',
+                    'query_builder' => function(EntityRepository $er) use ($restaurant) {
+                return $er->createQueryBuilder('option')
+                        ->select('option')
+                        ->where('option.restaurant = :restaurant')
+                        ->andWhere('option.itemType = :optionType')
+                        ->setParameter(':restaurant', $restaurant)
+                        ->setParameter(':optionType', ItemTypeEnum::TYPE_OPTION);
+            },
+                    'property' => 'name',
+                    'multiple' => true,
+                    'expanded' => true,
         ));
     }
 
-    
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(

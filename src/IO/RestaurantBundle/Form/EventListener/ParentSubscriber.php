@@ -36,7 +36,7 @@ class ParentSubscriber implements EventSubscriberInterface {
             return;
         }
 
-        if ($data->getItemType() === ItemTypeEnum::TYPE_OPTION) {
+        if ($data->getItemType() === ItemTypeEnum::TYPE_OPTION_CHOICE) {
             $form->add('parent', 'entity', array(
                 'label' => 'Liste d\'option',
                 'class' => 'IORestaurantBundle:CarteItem',

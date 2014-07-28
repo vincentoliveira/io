@@ -33,6 +33,21 @@
         <div class="form-group">
             {{ form_row(form.shortName) }}
         </div>
+        <div>
+            {{ form_label(form.dishOptions) }}
+            {% for children in form.dishOptions.vars.form.children %}
+            <div class="checkbox">
+                <label>
+                    {{ form_widget(children) }}
+                    {% if children.vars.label is defined %}
+                      {{ children.vars.label|trans }}
+                    {% else %}
+                      {{ children.vars.value|capitalize|trans }}
+                    {% endif %}
+                </label>
+            </div>
+            {% endfor %}
+        </div>
         {{ form_rest(form) }}
     </div>
 </form>

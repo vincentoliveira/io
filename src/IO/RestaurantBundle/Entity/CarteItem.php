@@ -111,9 +111,11 @@ class CarteItem implements CarteItemElement
     private $position;
     
     /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="IO\RestaurantBundle\Entity\DishOptionList", mappedBy="dish", cascade={"remove", "persist"})
+     * @ORM\ManyToMany(targetEntity="CarteItem")
+     * @ORM\JoinTable(name="dish_options",
+     *      joinColumns={@ORM\JoinColumn(name="dish_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="option_id", referencedColumnName="id")}
+     * )
      */
     private $dishOptions;
 
@@ -128,9 +130,9 @@ class CarteItem implements CarteItemElement
             return $visitor->visitCategory($this);
         } elseif ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_DISH) {
             return $visitor->visitDish($this);
-        } elseif ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_OPTION_LIST) {
-            return $visitor->visitOptionList($this);
         } elseif ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_OPTION) {
+            return $visitor->visitOptionList($this);
+        } elseif ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_OPTION_CHOICE) {
             return $visitor->visitOption($this);
         }
     }
@@ -457,26 +459,26 @@ class CarteItem implements CarteItemElement
     }
 
     /**
-     * Add options
+     * Add option
      *
-     * @param \IO\RestaurantBundle\Entity\DishOptionList $options
+     * @param CarteItem $option
      * @return CarteItem
      */
-    public function addDishOption(\IO\RestaurantBundle\Entity\DishOptionList $options)
+    public function addDishOption(CarteItem $option)
     {
-        $this->dishOptions[] = $options;
+        $this->dishOptions[] = $option;
     
         return $this;
     }
 
     /**
-     * Remove options
+     * Remove option
      *
-     * @param \IO\RestaurantBundle\Entity\DishOptionList $options
+     * @param CarteItem $option
      */
-    public function removeDishOption(\IO\RestaurantBundle\Entity\DishOptionList $options)
+    public function removeDishOption(CarteItem $option)
     {
-        $this->dishOptions->removeElement($options);
+        $this->dishOptions->removeElement($option);
     }
 
     /**
