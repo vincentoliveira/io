@@ -8,7 +8,6 @@
         {% stylesheets 
             'bundles/iodefault/css/bootstrap.css'
             'bundles/iodefault/css/font-awesome.min.css'
-            'bundles/iodefault/css/animate.css'
             'bundles/iodefault/css/restaurant.css'
             filter='yui_css,cssrewrite' 
             output='css/restaurant.css' %}
@@ -19,8 +18,15 @@
     </head>
     <body>
         <div class="mainContainer">
-            <h1><a href="{{ restaurant.website|default("#") }}">{% if restaurant.logo is not null %}<img src="{{ asset(restaurant.logo|media) }}" alt="{{ restaurant.name }}"/>{% else %}{{ restaurant.name }}{% endif %}</a></h1>
-            
+            <h1>
+                <a href="{{ restaurant.group.website|default("#") }}">
+                {% if restaurant.group.visualIdentity and restaurant.group.visualIdentity.logo is not null %}
+                    <img src="{{ asset(restaurant.group.visualIdentity.logo|media) }}" alt="{{ restaurant.name }}"/>
+                {% else %}
+                    {{ restaurant.name }}
+                {% endif %}
+                </a>
+            </h1>            
             <div class="message">
                 <p>Vous êtes sur le point de valider votre commande.</p>
             </div>
@@ -53,11 +59,7 @@
         
         {% javascripts 
             '@IODefaultBundle/Resources/public/js/jquery.js'
-            '@IODefaultBundle/Resources/public/plugins/nanoScroller/jquery.nanoscroller.min.js'
             '@IODefaultBundle/Resources/public/js/bootstrap.js'
-            '@IODefaultBundle/Resources/public/js/respond.min.js'
-            '@IODefaultBundle/Resources/public/js/html5shiv.js'
-            '@IODefaultBundle/Resources/public/js/restaurant.js'
             filter='yui_js'
             output='js/base.js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>

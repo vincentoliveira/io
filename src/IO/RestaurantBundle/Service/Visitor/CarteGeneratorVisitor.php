@@ -44,16 +44,10 @@ class CarteGeneratorVisitor implements CarteItemVisitor
             return;
         }
         
-        $vat = $dish->getVat();
-        $parent = $dish->getParent();
-        while (empty($vat) && $parent !== null) {
-            $vat = $parent->getVat();
-            $parent = $parent->getParent();
-        }
-        
+        $vat = $dish->getVat()->getValue();
         if ($vat === null) {
             // default VAT
-            $vat = 10.0;
+            $vat = 20.0;
         }
         
         $result = array(

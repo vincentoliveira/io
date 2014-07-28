@@ -108,7 +108,7 @@ class OrderService
                 $orderLine = new OrderLine();
                 $orderLine->setItem($item);
                 $orderLine->setItemPrice($item->getPrice());
-                $orderLine->setItemVat($item->getVat());
+                $orderLine->setItemVat($item->getVat()->getValue());
                 $orderLine->setItemShortName($item->getShortName());
                 $orderLine->setOrder($order);
                 

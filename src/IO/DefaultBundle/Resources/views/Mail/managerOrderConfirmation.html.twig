@@ -179,7 +179,11 @@
                                                                                             <tbody>
                                                                                                 <tr>
                                                                                                     <td class="kmImageContent" valign="top" style="border-collapse: collapse; mso-table-lspace: 0; mso-table-rspace: 0; padding: 0; padding:0;">
-                                                                                                        <img align="left" alt="" class="kmImage" src="{{ baseurl ~ asset(order.restaurant.logo|media) }}" style="border: 0; height: 150px; line-height: 100%; outline: none; text-decoration: none; padding-bottom: 0; display: inline; vertical-align: bottom; margin-right: 0; padding:10px;" />
+                                                                                                        {% if order.restaurant.group.visualIdentity and order.restaurant.group.visualIdentity.logo is not null %}
+                                                                                                            <img align="left" alt="" class="kmImage" src="{{ baseurl ~ asset(order.restaurant.group.visualIdentity.logo|media) }}" style="border: 0; height: 150px; line-height: 100%; outline: none; text-decoration: none; padding-bottom: 0; display: inline; vertical-align: bottom; margin-right: 0; padding:10px;" />
+                                                                                                        {% else %}
+                                                                                                            {{ order.restaurant.name }}
+                                                                                                        {% endif %}
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             </tbody>

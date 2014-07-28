@@ -100,7 +100,7 @@ class RemoteOrderService {
         $orderLine->setItem($product);
         $orderLine->setItemShortName($product->getShortName());
         $orderLine->setItemPrice($product->getPrice());
-        $orderLine->setItemVat($product->getVat());
+        $orderLine->setItemVat($product->getVat()->getValue());
         $this->em->persist($orderLine);
 
         $draftOrder->addOrderLine($orderLine);

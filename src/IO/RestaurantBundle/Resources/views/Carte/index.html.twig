@@ -16,7 +16,6 @@
         {% stylesheets 
             'bundles/iodefault/css/bootstrap.css'
             'bundles/iodefault/css/font-awesome.min.css'
-            'bundles/iodefault/css/animate.css'
             'bundles/iodefault/css/restaurant.css'
             filter='yui_css,cssrewrite' 
             output='css/restaurant.css' %}
@@ -37,24 +36,30 @@
                 </a>
             </h1>
             
+            
             <div class="fb-share-button" data-href="{{ path('carte_index', {name:restaurant.name}) }}" data-type="button"></div>
             <div class="twitter-button">
                 <a href="https://twitter.com/share?text=Découvrer%20la%20carte%20du%20jour%20du%20NUMA%20Cafe%20grâce%20à%20@InnovOrder" data-url="http://app.innovorder.fr/carte/restaurant/Café%20NUMA" class="twitter-share-button" data-lang="fr" data-count="none">Tweet</a>
             </div>
-            
-            <div class="message">
-                <p>Soutenez la candidature InnovOrder pour le Camping saison 6 :)  <a href="http://www.f6s.com/innovorder">f6s.com/innovorder</a></p>
-            </div>
-            
-            <div>
+                        
+            <p class="message">Bienvenue sur la carte de "{{ restaurant.name }}"</p>
+
+            <div class="menu">
             {% for item in carte %}
-                <h3>{{ item.name|upper }}</h3>
-                {% for child in item.children %}
-                <div>
-                    <strong>{{ child.name }}</strong>
-                    <em>{{ child.price }}€</em>
+                <div class="category">
+                    <h3>{{ item.name|upper }}</h3>
+                    {% for child in item.children %}
+                    <div class="product">
+                        <img class="img-rounded" src="{{ asset(child.media.path|mediaWebPath) }}" alt="" />
+                        <strong>{{ child.name }}</strong>
+                        <em>{{ child.price|number_format(2, '.', ',') }}€</em>
+                        <p>
+                            {{ child.description|default("")|nl2br }}
+                        </p>
+                    </div>
+                    {% endfor %}
+                    <div class="clearfix"></div>
                 </div>
-                {% endfor %}
             {% endfor %}
             </div>
                 
@@ -67,10 +72,7 @@
         
         {% javascripts 
             '@IODefaultBundle/Resources/public/js/jquery.js'
-            '@IODefaultBundle/Resources/public/plugins/nanoScroller/jquery.nanoscroller.min.js'
             '@IODefaultBundle/Resources/public/js/bootstrap.js'
-            '@IODefaultBundle/Resources/public/js/respond.min.js'
-            '@IODefaultBundle/Resources/public/js/html5shiv.js'
             filter='yui_js'
             output='js/base.js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>

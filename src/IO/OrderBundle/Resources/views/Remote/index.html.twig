@@ -8,7 +8,6 @@
         {% stylesheets 
             'bundles/iodefault/css/bootstrap.css'
             'bundles/iodefault/css/font-awesome.min.css'
-            'bundles/iodefault/css/animate.css'
             'bundles/iodefault/css/restaurant.css'
             filter='yui_css,cssrewrite' 
             output='css/restaurant.css' %}
@@ -64,10 +63,7 @@
         
         {% javascripts 
             '@IODefaultBundle/Resources/public/js/jquery.js'
-            '@IODefaultBundle/Resources/public/plugins/nanoScroller/jquery.nanoscroller.min.js'
             '@IODefaultBundle/Resources/public/js/bootstrap.js'
-            '@IODefaultBundle/Resources/public/js/respond.min.js'
-            '@IODefaultBundle/Resources/public/js/html5shiv.js'
             filter='yui_js'
             output='js/base.js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
