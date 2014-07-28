@@ -20,7 +20,10 @@
         </ul>
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main categories" data-spy="scroll" data-target=".sidebar-categories">
-        <h1 class="page-header">La carte</h1>
+        <h1 class="page-header">
+            La carte
+            <a class="small" href="{{ path('carte_index', {'name':current_restaurant().name}) }}" target="_blank">Voir la carte</a>
+        </h1>
         {% for category in carte %}
         <div id="c{{ category.id }}" class="category">
             <div class="info">
