@@ -222,6 +222,13 @@ img[src="#"] {
     padding: 5px 0 0 30px;
 }
 
+.options { 
+    margin-top: 10px;
+}
+.options .form-small {
+    width: 250px;
+    margin-bottom: -12px;
+}
 
 .error { color: #a94442; font-weight: bold;}
 strong.red { color: #ff0000; }

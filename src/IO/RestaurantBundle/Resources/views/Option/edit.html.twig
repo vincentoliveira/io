@@ -1,21 +1,12 @@
-{% extends "IODefaultBundle::layout.html.twig" %}
-
-{% block content %}
-    <div class="content-header">
-        <h3>{{ entity.name|raw }}</h3>
-        <span class="actionbar">
-            <a class="btn btn-danger confirm-delete" href="{{ path('option_delete', {id:entity.id}) }}" title="Supprimer {{ entity.name|raw }}"><i class="fa fa-trash-o"></i> </a>
-        </span>
-        <div class="clearfix"></div>
-    </div>
-
-    <form class="menu-form" action="{{ path('option_update', {id: entity.id }) }}" method="POST" {{ form_enctype(edit_form) }}>
-        {{ form_rest(edit_form) }}
-        <div class="clearfix"></div>
-        
-        <div>
-            <button class="btn btn-primary">Valider</button>
-        </div>
-    </form>
-
-{% endblock %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Modifier {{ entity.name }}</h4>
+</div>
+<div class="modal-body">
+    {% include 'IORestaurantBundle:Option:_form.html.twig' with {form:edit_form, action_path:path('option_update', {id:entity.id}), option:entity} %}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+    <button type="button" class="btn btn-primary modal-submit" data-form=".menu-form">Valider</button>
+</div>
+{% include 'IORestaurantBundle:Category:_jsModalSubmit.html.twig' %}

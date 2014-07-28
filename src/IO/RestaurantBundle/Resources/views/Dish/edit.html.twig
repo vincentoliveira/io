@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4 class="modal-title">{{ entity.name }} ({{ entity.parent.name}})</h4>
+    <h4 class="modal-title">Modifier {{ entity.name }} ({{ entity.parent.name}})</h4>
 </div>
 <div class="modal-body">
 {% include 'IORestaurantBundle:Dish:_form.html.twig' with {form:edit_form, action:path('dish_update', {id: entity.id }), dish:entity} %}
@@ -9,4 +9,5 @@
     <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
     <button type="button" class="btn btn-primary modal-submit" data-form=".menu-form">Valider</button>
 </div>
-{% include 'IORestaurantBundle:Category:_js.html.twig' %}
+{% include 'IORestaurantBundle:Category:_jsModalSubmit.html.twig' %}
+{% include 'IORestaurantBundle:Category:_jsHandleMedia.html.twig' %}

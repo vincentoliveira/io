@@ -2,52 +2,56 @@
 
 namespace IO\RestaurantBundle\Form;
 
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use IO\RestaurantBundle\Enum\ItemTypeEnum;
 
-class OptionType extends AbstractType
-{
+class OptionChoiceType extends AbstractType {
 
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    public function buildForm(FormBuilderInterface $builder, array $options) {
         parent::buildForm($builder, $options);
         
-        $em = $options['em'];
+        // cela suppose que le gestionnaire d'entité a été passé en option
+        $entityManager = $options['em'];
+        $transformer = new DataTransformer\MediaToNumberTransformer($entityManager);
         
         $builder
                 ->add('itemType', 'hidden', array(
-                    'data' => ItemTypeEnum::TYPE_OPTION_LIST,
+                    'data' => ItemTypeEnum::TYPE_OPTION,
                 ))
                 ->add('name', 'text', array(
-                    'label' => 'Nom de la liste d\'options*',
+                    'label' => 'Nom de l\'option*',
                     'attr' => array(
                         'class' => 'form-control',
-                        'placeholder' => 'Nom de la liste d\'option',
+                        'placeholder' => 'Nom de l\'option',
                     ),
                     'constraints' => new \Symfony\Component\Validator\Constraints\NotBlank(array(
                         'message' => 'Veuillez renseigner un nom',
                             )),
                     'required' => true,
                 ))
-                ->add('children', 'collection', array(
-                    'label' => false,
-                    'type' => new OptionChoiceType(),
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                    'options' => array('em' => $em),
-        ));
+                ->add($builder->create('media', 'hidden', array(
+                            'attr' => array('class' => 'media-id'),
+                        ))
+                        ->addModelTransformer($transformer)
+                )
+                ->add('price', 'number', array(
+                    'label' => 'Prix TTC (€)*',
+                    'precision' => 2,
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Prix (supplément)',
+                    ),
+                    'required' => true,
+                ));
     }
-
-    /**
-     * {@inheritdoc}
-     */
+    
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
@@ -66,8 +70,7 @@ class OptionType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return 'dish';
     }
 

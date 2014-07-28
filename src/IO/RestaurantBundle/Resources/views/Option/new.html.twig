@@ -1,18 +1,12 @@
-{% extends "IODefaultBundle::layout.html.twig" %}
-
-{% block content %}
-    <div class="content-header">
-        <h3>Ajouter une option</h3>
-        <div class="clearfix"></div>
-    </div>
-
-    <form class="menu-form" action="{{ path('option_create') }}" method="POST" {{ form_enctype(form) }}>
-        {{ form_rest(form) }}
-        <div class="clearfix"></div>
-        
-        <div>
-            <button class="btn btn-primary">Ajouter</button>
-        </div>
-    </form>
-
-{% endblock %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Créer une option</h4>
+</div>
+<div class="modal-body">
+    {% include 'IORestaurantBundle:Option:_form.html.twig' with {form:form, action_path:path('option_create'), option:form.vars.value} %}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+    <button type="button" class="btn btn-primary modal-submit" data-form=".menu-form">Ajouter</button>
+</div>
+{% include 'IORestaurantBundle:Category:_jsModalSubmit.html.twig' %}

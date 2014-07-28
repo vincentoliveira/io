@@ -8,12 +8,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use Doctrine\Common\Collections\ArrayCollection;
 use IO\RestaurantBundle\Form\OptionType;
 use IO\RestaurantBundle\Entity\CarteItem;
 use IO\RestaurantBundle\Enum\ItemTypeEnum;
 
 /**
- * Option (CarteItem) controller.
+ * Option List (CarteItem) controller.
  *
  * @Route("/option")
  */
@@ -36,6 +37,30 @@ class OptionController extends CarteItemController
      */
     public $session;
 
+    
+    /**
+     * Displays all .
+     *
+     * @Route("/", name="option_index")
+     * @Secure("ROLE_MANAGER")
+     * @Method("GET")
+     * @Template()
+     */
+    public function indexAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('IORestaurantBundle:CarteItem');
+        $lists = $repo->findBy(array(
+            'restaurant' => $this->userSv->getCurrentRestaurant(),
+            'itemType' => ItemTypeEnum::TYPE_OPTION_LIST,
+        ));
+        
+        return array(
+            'opt_lists' => $lists,
+        );
+    }
+    
+    
     /**
      * Displays a form to create a new CarteItem entity.
      *
@@ -44,21 +69,22 @@ class OptionController extends CarteItemController
      * @Method("GET")
      * @Template()
      */
-    public function newAction(Request $request)
+    public function newAction()
     {
-        
         $entity = new CarteItem();
         $entity->setRestaurant($this->userSv->getCurrentRestaurant());
-        $entity->setItemType(ItemTypeEnum::TYPE_OPTION);
+        $entity->setItemType(ItemTypeEnum::TYPE_OPTION_LIST);
         $entity->setVisible(true);
         
-        $parentId = $request->query->get('parent', null);
-        if ($parentId !== null) {
-            $parent = $this->getEntity($parentId);
-            $entity->setParent($parent);
-        }
+        $option = new CarteItem();
+        $option->setItemType(ItemTypeEnum::TYPE_OPTION);
+        $option->setVisible(true);
+        $entity->addChild($option);
         
-        $form = $this->createForm(new OptionType(), $entity);
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new OptionType(), $entity, array(
+            'em' => $em,
+        ));
 
         return array(
             'entity' => $entity,
@@ -77,20 +103,32 @@ class OptionController extends CarteItemController
      */
     public function createAction(Request $request)
     {
+        $restaurant = $this->userSv->getCurrentRestaurant();
+        
         $entity = new CarteItem();
-        $entity->setRestaurant($this->userSv->getCurrentRestaurant());
-        $entity->setItemType(ItemTypeEnum::TYPE_OPTION);
+        $entity->setRestaurant($restaurant);
+        $entity->setItemType(ItemTypeEnum::TYPE_OPTION_LIST);
+        $entity->setVisible(true);
 
-        $form = $this->createForm(new OptionType(), $entity);
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new OptionType(), $entity, array(
+            'em' => $em,
+        ));
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            foreach ($entity->getChildren() as $option) {
+                $option->setVisible(true);
+                $option->setParent($entity);
+                $option->setRestaurant($restaurant);
+                $em->persist($option);
+            }
+            
             $em->persist($entity);
             $em->flush();
 
             $this->session->getFlashBag()->add('success', sprintf('L\'option "%s" a bien été ajoutée', $entity->getName()));
-            return $this->redirect($this->generateUrl('option_list_index'));
+            return $this->redirect($this->generateUrl('option_index'));
         }
 
         return array(
@@ -110,7 +148,11 @@ class OptionController extends CarteItemController
     public function editAction($id)
     {
         $entity = $this->getEntity($id);
-        $editForm = $this->createForm(new OptionType(), $entity);
+        
+        $em = $this->getDoctrine()->getManager();
+        $editForm = $this->createForm(new OptionType(), $entity, array(
+            'em' => $em,
+        ));
 
         return array(
             'entity' => $entity,
@@ -129,16 +171,44 @@ class OptionController extends CarteItemController
     public function updateAction(Request $request, $id)
     {
         $entity = $this->getEntity($id);
-        $editForm = $this->createForm(new OptionType(), $entity);
+        
+        $em = $this->getDoctrine()->getManager();
+        $editForm = $this->createForm(new OptionType(), $entity, array(
+            'em' => $em,
+        ));
+        
+        // Crée un tableau contenant les objets Tag courants de la
+        // base de données
+        $originalChoice = new ArrayCollection();
+        foreach ($entity->getChildren() as $choice) {
+            $originalChoice->add($choice);
+        }
+        
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+
+            // supprime la relation entre le tag et la « Task »
+            foreach ($originalChoice as $choice) {
+                if ($entity->getChildren()->contains($choice) === false) {
+                    $em->remove($choice);
+                }
+            }
+            
+            $restaurant = $this->userSv->getCurrentRestaurant();
+            foreach ($entity->getChildren() as $option) {
+                $option->setVisible(true);
+                $option->setParent($entity);
+                $option->setRestaurant($restaurant);
+                $em->persist($option);
+            }
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
             
             $this->session->getFlashBag()->add('success', sprintf('L\'option "%s" a bien été modifiée', $entity->getName()));
-            return $this->redirect($this->generateUrl('option_list_index'));
+            return $this->redirect($this->generateUrl('option_index'));
         }
 
         return array(
@@ -160,27 +230,8 @@ class OptionController extends CarteItemController
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
         $em->flush();
-        $this->session->getFlashBag()->add('success', sprintf('L\'option "%s" a bien été supprimée', $entity->getName()));
+        $this->session->getFlashBag()->add('success', sprintf('L\'option a bien été supprimée', $entity->getName()));
 
-        return $this->redirect($this->generateUrl('homepage'));
+        return $this->redirect($this->generateUrl('option_index'));
     }
-
-    /**
-     * Change visibility
-     *
-     * @Route("/{id}/visibility/{visibility}", name="option_visibility")
-     * @Template()
-     */
-    public function visibilityAction($id, $visibility)
-    {
-        $entity = $this->getEntity($id);
-        
-        $em = $this->getDoctrine()->getManager();
-        $entity->setVisible($visibility);
-        $em->persist($entity);
-        $em->flush();
-        
-        return $this->redirect($this->generateUrl('option_list_index'));
-    }
-
 }

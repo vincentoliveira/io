@@ -1,23 +1,4 @@
 <script>
-    $('.modal-submit').click(function(e) {
-        e.preventDefault();
-
-        var formId = $(this).attr("data-form");
-        var success = true;
-
-        $(formId).find('input[required]').each(function() {
-            if (!$(this).val()) {
-                $(this).css('border', '2px solid #ff0000');
-                success = false;
-            }
-        });
-
-        if (success) {
-            $(formId).submit();
-            $('.modal').modal('hide');
-        }
-    });
-
     $('.open-file-link').click(function(e) {
         e.preventDefault();
         $('input[name="media"]').click();
@@ -74,7 +55,6 @@
                     obj.find("input.media-id").val(data.media.id);
                     obj.find('img').attr("src", "{{ app.request.getBaseURL() }}/" + data.media.path)
                 }
-                console.log(data);
             }
         });
     }

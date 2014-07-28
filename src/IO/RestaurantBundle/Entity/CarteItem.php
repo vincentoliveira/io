@@ -373,9 +373,9 @@ class CarteItem implements CarteItemElement
      * @param \IO\RestaurantBundle\Entity\CarteItem $children
      * @return CarteItem
      */
-    public function addChildren(\IO\RestaurantBundle\Entity\CarteItem $children)
+    public function addChild(\IO\RestaurantBundle\Entity\CarteItem $child)
     {
-        $this->children[] = $children;
+        $this->children[] = $child;
     
         return $this;
     }
@@ -385,9 +385,9 @@ class CarteItem implements CarteItemElement
      *
      * @param \IO\RestaurantBundle\Entity\CarteItem $children
      */
-    public function removeChildren(\IO\RestaurantBundle\Entity\CarteItem $children)
+    public function removeChild(\IO\RestaurantBundle\Entity\CarteItem $child)
     {
-        $this->children->removeElement($children);
+        $this->children->removeElement($child);
     }
 
     /**

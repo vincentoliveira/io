@@ -1,0 +1,55 @@
+{% extends "IODefaultBundle::layout.html.twig" %}
+
+{% block content %}
+<div class="container">    
+    <span class="actionbar">
+        <a href="{{ path('option_new') }}" role="button" class="btn btn-primary" title="Ajouter une liste d'options" data-toggle="modal" data-target="#optionModal">
+            <i class="fa fa-plus"></i> Ajouter une option
+        </a>
+    </span>
+    <h1>
+        <a href="{{ path('carte_edit') }}" class="btn-back" title="Retour à la carte"><i class="fa fa-angle-left"></i></a>
+        Options
+    </h1>
+    <div class="children list-group">
+    {% for opt_list in opt_lists %}
+        <div class="option-list">
+            <a data-toggle="modal" data-target="#optionModal" href="{{ path('option_edit', {id:opt_list.id}) }}" title="Modifier {{ opt_list.name|raw }}">
+                <i class="fa fa-edit"></i>
+            </a>
+            <a class="confirm-delete" href="{{ path('option_delete', {id:opt_list.id}) }}" title="Supprimer {{ opt_list.name|raw }}">
+                <i class="fa fa-trash-o"></i>
+            </a>
+            <strong>{{ opt_list.name }}</strong>
+            <em>{{ opt_list.description }}</em>
+
+            <ul>
+                {% for opt in opt_list.children %}
+                <li>
+                    {{ opt.name }}, <em>{{ opt.price }}€</em>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="optionModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">-</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+{% endblock %}
