@@ -7,10 +7,10 @@
         <meta property="og:title" content="{{ restaurant.name }} - Menu du jour" />
         <meta property="og:site_name" content="InnovOrder - {{ restaurant.name }}" />
         <meta property="og:type" content="article">
-        <meta property="og:description" content="Découvre la carte du jour du NUMA Café grâce à InnovOrder  http://www.f6s.com/innovorder" />
+        <meta property="og:description" content="Découvre la carte de {{ restaurant.name }} grâce à InnovOrder" />
         <meta property="og:url" content="{{ url('carte_index', {name:restaurant.name}) }}" />
-        {% if restaurant.background is not null %}
-        <meta property="og:image" content="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ asset(restaurant.background|media) }}" />
+        {% if restaurant.group.visualIdentity and restaurant.group.visualIdentity.background %}
+        <meta property="og:image" content="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ asset(restaurant.group.visualIdentity.background|media) }}" />
         {% endif %}
         
         {% stylesheets 
@@ -27,7 +27,15 @@
     </head>
     <body>
         <div class="mainContainer">
-            <h1><a href="{{ restaurant.website|default("#") }}">{% if restaurant.logo is not null %}<img src="{{ asset(restaurant.logo|media) }}" alt="{{ restaurant.name }}"/>{% else %}{{ restaurant.name }}{% endif %}</a></h1>
+            <h1>
+                <a href="{{ restaurant.group.website|default("#") }}">
+                {% if restaurant.group.visualIdentity and restaurant.group.visualIdentity.logo is not null %}
+                    <img src="{{ asset(restaurant.group.visualIdentity.logo|media) }}" alt="{{ restaurant.name }}"/>
+                {% else %}
+                    {{ restaurant.name }}
+                {% endif %}
+                </a>
+            </h1>
             
             <div class="fb-share-button" data-href="{{ path('carte_index', {name:restaurant.name}) }}" data-type="button"></div>
             <div class="twitter-button">

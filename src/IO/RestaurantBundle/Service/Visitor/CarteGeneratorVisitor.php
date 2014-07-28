@@ -75,35 +75,33 @@ class CarteGeneratorVisitor implements CarteItemVisitor
         
         $result['options'] = array();
         foreach ($dish->getDishOptions() as $dishOption) {
-            $result['options'][] = $dishOption->getOptionList()->accept($this);
+            $result['options'][] = $dishOption->accept($this);
         }
         
         return $result;
     }
     
-    public function visitOptionList(CarteItem $optionList) {
+    public function visitOption(CarteItem $option) {
         
         $listResult = array();
-        foreach ($optionList->getChildren() as $option) {
+        foreach ($option->getChildren() as $option) {
             $listResult[] = $option->accept($this);
         }
         
         $result = array(
-            'id' => $optionList->getId(),
-            'name' => $optionList->getName(),
-            'description' => $optionList->getDescription(),
+            'id' => $option->getId(),
+            'name' => $option->getName(),
             'list' => $listResult,
         );
         
         return $result;
     }
     
-    public function visitOption(CarteItem $option) {
+    public function visitOptionChoice(CarteItem $optionChoice) {
         $result = array(
-            'id' => $option->getId(),
-            'name' => $option->getName(),
-            'description' => $option->getDescription(),
-            'price' => $option->getPrice(),
+            'id' => $optionChoice->getId(),
+            'name' => $optionChoice->getName(),
+            'price' => $optionChoice->getPrice(),
         );
         
         return $result;

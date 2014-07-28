@@ -131,9 +131,9 @@ class CarteItem implements CarteItemElement
         } elseif ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_DISH) {
             return $visitor->visitDish($this);
         } elseif ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_OPTION) {
-            return $visitor->visitOptionList($this);
-        } elseif ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_OPTION_CHOICE) {
             return $visitor->visitOption($this);
+        } elseif ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_OPTION_CHOICE) {
+            return $visitor->visitOptionChoice($this);
         }
     }
     

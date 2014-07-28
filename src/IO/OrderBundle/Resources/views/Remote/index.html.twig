@@ -19,7 +19,15 @@
     </head>
     <body>
         <div class="mainContainer">
-            <h1><a href="{{ restaurant.website|default("#") }}">{% if restaurant.logo is not null %}<img src="{{ asset(restaurant.logo|media) }}" alt="{{ restaurant.name }}"/>{% else %}{{ restaurant.name }}{% endif %}</a></h1>
+            <h1>
+                <a href="{{ restaurant.group.website|default("#") }}">
+                {% if restaurant.group.visualIdentity and restaurant.group.visualIdentity.logo is not null %}
+                    <img src="{{ asset(restaurant.group.visualIdentity.logo|media) }}" alt="{{ restaurant.name }}"/>
+                {% else %}
+                    {{ restaurant.name }}
+                {% endif %}
+                </a>
+            </h1>
             
             <div class="message">
                 <p>Bienvenue sur la commande en ligne du restaurant : {{ restaurant.name }}</p>
