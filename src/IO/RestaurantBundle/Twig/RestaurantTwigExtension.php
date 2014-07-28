@@ -54,6 +54,7 @@ class RestaurantTwigExtension extends \Twig_Extension
     public function getFilters() {
         return array(
             'media' => new \Twig_SimpleFilter('media', array($this, 'mediaFilter')),
+            'mediaWebPath' => new \Twig_SimpleFilter('mediaWebPath', array($this, 'mediaWebPathFilter')),
         );
     }
     
@@ -78,6 +79,16 @@ class RestaurantTwigExtension extends \Twig_Extension
     public function mediaFilter(Media $media)
     {
         return $this->mediaSv->getWebPath($media);
+    }
+    
+    /**
+     * Return web path of media
+     * 
+     * @return array
+     */
+    public function mediaWebPathFilter($path)
+    {
+        return $this->mediaSv->getWebPathFromStr($path);
     }
     
     /**

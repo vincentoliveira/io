@@ -39,14 +39,16 @@
                     <h3>{{ item.name|upper }}</h3>
                     {% for child in item.children %}
                     <div class="product">
+                        <img class="img-rounded" src="{{ asset(child.media.path|mediaWebPath) }}" alt="" />
                         <strong>{{ child.name }}</strong>
                         <em>{{ child.price|number_format(2, '.', ',') }}€</em>
-                        <a href="{{ path('remote_order_add_product',  {name:restaurant.name, id:child.id}) }}">Ajouter</a>
                         <p>
                             {{ child.description|default("")|nl2br }}
                         </p>
+                        <a class="btn btn-primary" href="{{ path('remote_order_add_product',  {name:restaurant.name, id:child.id}) }}">Ajouter</a>
                     </div>
                     {% endfor %}
+                    <div class="clearfix"></div>
                 </div>
             {% endfor %}
             </div>
