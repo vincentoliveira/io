@@ -1,9 +1,9 @@
 <?php
 
-namespace IO\APIBundle;
+namespace IO\ApiBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class IOAPIBundle extends Bundle
+class IOApiBundle extends Bundle
 {
 }

@@ -1,3 +1,0 @@
-#ioapi_homepage:
-#    path:     /hello/{name}
-#    defaults: { _controller: IOAPIBundle:Default:index }

@@ -82,9 +82,21 @@ fos_user:
     firewall_name: main
     user_class: IO\UserBundle\Entity\User
 
+# FOS OAuth Server
+fos_oauth_server:
+    db_driver: orm
+    client_class:        IO\ApiBundle\Entity\Client
+    access_token_class:  IO\ApiBundle\Entity\AccessToken
+    refresh_token_class: IO\ApiBundle\Entity\RefreshToken
+    auth_code_class:     IO\ApiBundle\Entity\AuthCode
+    service:
+        user_provider: fos_user.user_manager
+        options:
+            supported_scopes: user
 
 # JSM DI
 jms_di_extra:
     locations:
         all_bundles: true
         directories: ["%kernel.root_dir%/../src"]
+

@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  */
 class APIController extends Controller
 {
+
     /**
      * Get user salt
      * WSSE : <strong>OFF</strong>
@@ -30,18 +31,17 @@ class APIController extends Controller
         if ($username === null) {
             return new JsonResponse(array('salt' => null));
         }
-        
+
         $user = $this->getDoctrine()
                 ->getRepository('IOUserBundle:User')
                 ->findOneByUsername($username);
         if ($user === null) {
             return new JsonResponse(array('salt' => null));
         }
-        
+
         return new JsonResponse(array('salt' => $user->getSalt()));
     }
-    
-    
+
     /**
      * Check login
      * WSSE : <strong>ON</strong>
@@ -55,12 +55,13 @@ class APIController extends Controller
         if ($token === null) {
             return new JsonResponse(array('login' => false, 'reason' => 'No token'));
         }
-        
+
         $user = $token->getUser();
         if ($user === null || !$user instanceof \IO\UserBundle\Entity\User) {
             return new JsonResponse(array('login' => false, 'reason' => 'Bad token'));
         }
-        
+
         return new JsonResponse(array('login' => true));
     }
+
 }

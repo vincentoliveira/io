@@ -1,5 +1,6 @@
 io_api:
-    resource: "@IOAPIBundle/Resources/config/routing.yml"
+    resource: "@IOApiBundle/Controller/"
+    type:     annotation
     prefix:   /api
 
 io_order:
@@ -28,4 +29,10 @@ fos_user_security:
 fos_user_profile:
     resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
     prefix: /profile
+
+fos_oauth_server_token:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+
+fos_oauth_server_authorize:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
 

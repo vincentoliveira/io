@@ -21,7 +21,7 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new FOS\UserBundle\FOSUserBundle(),
-            //new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
+            new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             
             new Ob\HighchartsBundle\ObHighchartsBundle(),
             
@@ -29,7 +29,7 @@ class AppKernel extends Kernel
             new IO\RestaurantBundle\IORestaurantBundle(),
             new IO\DefaultBundle\IODefaultBundle(),
             new IO\OrderBundle\IOOrderBundle(),
-            new IO\APIBundle\IOAPIBundle(),
+            new IO\ApiBundle\IOApiBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
