@@ -40,6 +40,22 @@ class User extends BaseUser
      */
     private $restaurantGroup;
     
+    /**
+     * Serializes the user to array.
+     *
+     * @return array
+     */
+    public function getArray()
+    {
+        if ($this->isEnabled() === false) {
+            return array();
+        }
+        
+        return array(
+            'id' => $this->id,
+            'username' => $this->username,
+        );
+    }
 
     /**
      * Get id

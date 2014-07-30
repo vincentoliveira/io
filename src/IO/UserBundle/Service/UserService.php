@@ -73,6 +73,40 @@ class UserService
         return $this->em->getRepository('IORestaurantBundle:Restaurant')->find($id);
     }
     
+    
+    /**
+     * Create a user from array
+     * 
+     * @param array $data
+     * @return \IO\RestaurantBundle\Entity\User|null
+     */
+    public function createUser(array $data)
+    {
+        $user = new User();
+        if (!isset($data['username']) || !isset($data['email']) || !isset($data['plainPassword'])) {
+            return null;
+        }
+        
+        $user->setUsername($data['username']);
+        $user->setEmail($data['email']);
+        $user->setPlainPassword($data['plainPassword']);
+        $user->setEnabled(true);
+        
+        if (isset($data['roles'])) {
+            $user->setRoles($data['roles']);
+        }
+        
+        try {
+            $this->em->persist($user);
+            $this->em->flush();
+        } catch (\Exception $ex) {
+            return null;
+        }
+        
+        return $user;
+    }
+    
+    
     /**
      * Set current user restaurant
      * 

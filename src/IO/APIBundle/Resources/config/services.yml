@@ -1,5 +1,5 @@
 parameters:
-#    ioapi.example.class: IO\APIBundle\Example
+#    ioapi.example.class: IO\ApiBundle\Example
 
 services:
 #    ioapi.example:

@@ -111,9 +111,20 @@ class MediaService
      */
     public function getAbsolutePath(Media $media)
     {
-        return $this->getUploadDir() . $media->getPath();
+        return $this->getAbsolutePathFromStr($media->getPath());
     }
     
+    
+    /**
+     * Get absolute path of a media
+     * 
+     * @param \FJ\MainBundle\Entity\Media $media
+     * @return string
+     */
+    public function getAbsolutePathFromStr($path)
+    {
+        return $this->getUploadDir() . $path;
+    }
     /**
      * Get web path of a media
      * 

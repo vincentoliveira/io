@@ -77,15 +77,17 @@ class CarteGeneratorVisitor implements CarteItemVisitor
     
     public function visitOption(CarteItem $option) {
         
-        $listResult = array();
-        foreach ($option->getChildren() as $option) {
-            $listResult[] = $option->accept($this);
+        $choices = array();
+        foreach ($option->getChildren() as $optionChoice) {
+            $choices[] = $optionChoice->accept($this);
         }
         
         $result = array(
             'id' => $option->getId(),
             'name' => $option->getName(),
-            'list' => $listResult,
+            'min_choice' => 1,
+            'max_choice' => 1,
+            'choices' => $choices,
         );
         
         return $result;
