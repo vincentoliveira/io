@@ -25,6 +25,7 @@
         
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "friendsofsymfony/user-bundle": "dev-master",
+        "friendsofsymfony/oauth-server-bundle": "dev-master",
         
         "behat/behat": "*@stable",
         "behat/symfony2-extension": "*@stable",

@@ -1,3 +1,7 @@
+io_api:
+    resource: "@IOAPIBundle/Resources/config/routing.yml"
+    prefix:   /api
+
 io_order:
     resource: "@IOOrderBundle/Controller/"
     type:     annotation
