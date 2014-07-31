@@ -3,6 +3,8 @@
 namespace IO\RestaurantBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use IO\ApiBundle\Utils\ApiElement;
+use IO\ApiBundle\Utils\ApiElementVisitorInterface;
 
 /**
  * Restaurant
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="restaurant")
  * @ORM\Entity()
  */
-class Restaurant
+class Restaurant implements ApiElement
 {
     /**
      * @var integer
@@ -35,6 +37,12 @@ class Restaurant
      * @ORM\JoinColumn(name="group_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $group;
+    
+    
+    public function accept(ApiElementVisitorInterface $visitor)
+    {
+        return $visitor->visitRestaurant($this);
+    }
 
 
     /**
