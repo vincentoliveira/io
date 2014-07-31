@@ -76,14 +76,11 @@ class UserService
     /**
      * Authentification user
      *
-     * @return \IO\UserBundle\Entity\User|null
+     * @return \IO\ApiBundle\Entity\UserToken
      */
     public function authUser(array $data)
     {
-        $token = $this->container->get('security.context')->getToken();
-        $user = $token !== null ? $token->getUser() : null;
-
-        return $user instanceof User ? $user : null;
+        return null;
     }
     
     

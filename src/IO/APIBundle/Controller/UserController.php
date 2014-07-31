@@ -53,6 +53,13 @@ class UserController extends DefaultController
     }
     
     
+    /**
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("/auth.json", name="api_user_auth")
+     * @Method("POST")
+     */
     public function authAction(Request $request)
     {
         $jsonData = $request->getContent();
@@ -61,12 +68,13 @@ class UserController extends DefaultController
             return $this->errorResponse(self::EMPTY_PARAMETER);
         }
         
-        $user = $this->userSv->authUser($data);
-        if ($user === null) {
+        $userToken = $this->userSv->authUser($data);
+        if ($userToken === null) {
             return $this->errorResponse(self::BAD_PARAMETER);
         }
         
-        return new JsonResponse(array('user' => $user->getArray()));
+        $apiVisistor = new ApiElementVisitor();
+        return new JsonResponse(array('auth' => $apiVisistor->visitUserToken($userToken)));
     }
 
 }

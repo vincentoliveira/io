@@ -12,6 +12,9 @@ use IO\ApiBundle\Entity\UserToken;
  */
 class ApiElementVisitor implements ApiElementVisitorInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function visitUser(User $user)
     {
         if ($user->isEnabled() === false) {
@@ -25,6 +28,9 @@ class ApiElementVisitor implements ApiElementVisitorInterface
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function visitUserToken(UserToken $token)
     {
         return array(
