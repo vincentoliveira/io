@@ -9,7 +9,7 @@ use IO\ApiBundle\Utils\ApiElement;
  * UserToken Entity
  *
  * @ORM\Table(name="user_token")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="IO\ApiBundle\Repository\UserTokenRepository")
  */
 class UserToken implements ApiElement
 {

@@ -43,10 +43,10 @@ class UserControllerTest extends IOTestCase
     {
         return array(
             array(array(), 400, array('error' => 1, 'message' => 'Empty parameter.')),
-            array(array('username' => 'userTest1'), 400, array('error' => 2, 'message' => 'Bad parameter.')),
+            array(array('username' => 'usertest'), 400, array('error' => 2, 'message' => 'Bad parameter.')),
             array(array('username' => 'usertest2', 'plainPassword' => 'usertest2', 'email' => 'email@test.fr'), 400, array('error' => 2, 'message' => 'Bad parameter.')),
-            array(array('username' => 'usertest1', 'plainPassword' => 'usertest1', 'email' => 'usertest2@io.fr'), 400, array('error' => 2, 'message' => 'Bad parameter.')),
-            array(array('username' => 'userTest1', 'plainPassword' => 'userTest1', 'email' => 'email@test.fr'), 200, array('user' => array('id' => 2, 'username' => 'userTest1', 'email' => 'email@test.fr'))),
+            array(array('username' => 'usertest', 'plainPassword' => 'usertest', 'email' => 'usertest2@io.fr'), 400, array('error' => 2, 'message' => 'Bad parameter.')),
+            array(array('username' => 'usertest', 'plainPassword' => 'usertest', 'email' => 'email@test.fr'), 200, array('user' => array('id' => 2, 'username' => 'usertest', 'email' => 'email@test.fr'))),
         );
     }
     
@@ -77,8 +77,8 @@ class UserControllerTest extends IOTestCase
     {
         return array(
             array(array(), 403),
-            array(array('username' => 'userTest', 'password' => 'badpwd'), 403),
-            array(array('username' => 'userTest', 'password' => 'userTest'), 200),
+            array(array('email' => 'usertest@io.fr', 'plainPassword' => 'badpwd'), 403),
+            array(array('email' => 'usertest@io.fr', 'plainPassword' => 'usertest'), 200),
         );
     }
 

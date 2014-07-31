@@ -38,6 +38,22 @@ class UserService
      * @var \Doctrine\ORM\EntityManager
      */
     public $em;
+
+    /**
+     * Fos User Manager
+     * 
+     * @Inject("fos_user.user_manager")
+     * @var \FOS\UserBundle\Model\UserManager
+     */
+    public $userManager;
+
+    /**
+     * User token service
+     * 
+     * @Inject("io.user_token_service")
+     * @var \IO\ApiBundle\Service\UserTokenService
+     */
+    public $userTokenSv;
     
     /**
      * Get loggued user
@@ -80,7 +96,24 @@ class UserService
      */
     public function authUser(array $data)
     {
-        return null;
+        if (!isset($data['email']) || !isset($data['plainPassword'])) {
+            return null;
+        }
+        
+        $repo = $this->em->getRepository('IOUserBundle:User');
+        $user = $repo->findOneByEmail($data['email']);
+        if ($user === null || !$user->isEnabled()) {
+            return null;
+        }
+        
+        $hashPwd = $user->getPassword();
+        $user->setPlainPassword($data['plainPassword']);
+        $this->userManager->updatePassword($user);
+        if ($hashPwd !== $user->getPassword()) {
+            return null;
+        }
+        
+        return $this->userTokenSv->createToken($user);
     }
     
     

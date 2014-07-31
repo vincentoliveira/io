@@ -123,9 +123,9 @@ class IOTestCase extends WebTestCase
         if ($user === null) {
             $user = new User();
             $user->setUsername($username);
-            $user->setEmail($username . '@io.fr');
-            $user->setPlainPassword($username);
         }
+        $user->setEmail($username . '@io.fr');
+        $user->setPlainPassword($username);
         
         if ($restaurantName != null) {
             $restaurant = $this->em->getRepository('IORestaurantBundle:Restaurant')->findOneByName($restaurantName);

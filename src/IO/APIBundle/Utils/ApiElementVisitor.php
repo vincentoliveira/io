@@ -34,7 +34,7 @@ class ApiElementVisitor implements ApiElementVisitorInterface
     public function visitUserToken(UserToken $token)
     {
         return array(
-            'user' => $token->getUser->accept($this),
+            'user' => $token->getUser()->accept($this),
             'token' => $token->getToken(),
             'expires_at' => $token->getExpiresAt(),
         );

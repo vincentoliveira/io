@@ -53,6 +53,9 @@ class UserController extends DefaultController
     }
 
     /**
+     * POST /user/auth.json
+     * 
+     * Authentificate a user and return auth token
      * 
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
