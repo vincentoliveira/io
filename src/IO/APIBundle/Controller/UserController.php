@@ -47,12 +47,11 @@ class UserController extends DefaultController
         if ($user === null) {
             return $this->errorResponse(self::BAD_PARAMETER);
         }
-        
+
         $apiVisistor = new ApiElementVisitor();
         return new JsonResponse(array('user' => $apiVisistor->visitUser($user)));
     }
-    
-    
+
     /**
      * 
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -65,14 +64,14 @@ class UserController extends DefaultController
         $jsonData = $request->getContent();
         $data = json_decode($jsonData, true);
         if ($data === null || empty($data)) {
-            return $this->errorResponse(self::EMPTY_PARAMETER);
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
-        
+
         $userToken = $this->userSv->authUser($data);
         if ($userToken === null) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
-        
+
         $apiVisistor = new ApiElementVisitor();
         return new JsonResponse(array('auth' => $apiVisistor->visitUserToken($userToken)));
     }

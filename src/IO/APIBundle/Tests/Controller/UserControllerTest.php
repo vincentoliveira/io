@@ -66,8 +66,6 @@ class UserControllerTest extends IOTestCase
 
         $response = $this->client->getResponse();
         $this->assertEquals($statusCode, $response->getStatusCode());
-        $result = json_decode($response->getContent(), true);
-        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -78,8 +76,9 @@ class UserControllerTest extends IOTestCase
     public function authUserDataProvider()
     {
         return array(
-            array(array(), 400, array('error' => 1, 'message' => 'Empty parameter.')),
-            array(array('username' => 'userTest'), 403, array('error' => 3, 'message' => 'Bad authentification.')),
+            array(array(), 403),
+            array(array('username' => 'userTest', 'password' => 'badpwd'), 403),
+            array(array('username' => 'userTest', 'password' => 'userTest'), 200),
         );
     }
 
