@@ -53,7 +53,7 @@ class UserControllerTest extends IOTestCase
     /**
      * @dataProvider authUserDataProvider
      */
-    public function testAuthUser($data, $statusCode, $expected)
+    public function testAuthUser($data, $statusCode)
     {
         $this->userExists('usertest');
 
