@@ -70,7 +70,7 @@ class UserController extends DefaultController
         
         $userToken = $this->userSv->authUser($data);
         if ($userToken === null) {
-            return $this->errorResponse(self::BAD_PARAMETER);
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
         
         $apiVisistor = new ApiElementVisitor();

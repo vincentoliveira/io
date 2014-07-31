@@ -79,7 +79,7 @@ class UserControllerTest extends IOTestCase
     {
         return array(
             array(array(), 400, array('error' => 1, 'message' => 'Empty parameter.')),
-            array(array('username' => 'userTest'), 400, array('error' => 2, 'message' => 'Bad parameter.')),
+            array(array('username' => 'userTest'), 403, array('error' => 3, 'message' => 'Bad authentification.')),
         );
     }
 
