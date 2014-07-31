@@ -43,10 +43,10 @@ class UserControllerTest extends IOTestCase
     {
         return array(
             array(array(), 400, array('error' => 1, 'message' => 'Empty parameter.')),
-            array(array('username' => 'userTest1'), 400, array('error' => 1, 'message' => 'Bad parameter.')),
-            array(array('username' => 'userTest1', 'plainPassword' => 'userTest1', 'email' => 'email@test.fr'), 200, array('user' => array('id' => 2, 'username' => 'userTest1'))),
-            array(array('username' => 'usertest2', 'plainPassword' => 'usertest2', 'email' => 'email@test.fr'), 400, array('error' => 1, 'message' => 'Bad parameter.')),
-            array(array('username' => 'usertest1', 'plainPassword' => 'usertest1', 'email' => 'usertest2@io.fr'), 400, array('error' => 1, 'message' => 'Bad parameter.')),
+            array(array('username' => 'userTest1'), 400, array('error' => 2, 'message' => 'Bad parameter.')),
+            array(array('username' => 'usertest2', 'plainPassword' => 'usertest2', 'email' => 'email@test.fr'), 400, array('error' => 2, 'message' => 'Bad parameter.')),
+            array(array('username' => 'usertest1', 'plainPassword' => 'usertest1', 'email' => 'usertest2@io.fr'), 400, array('error' => 2, 'message' => 'Bad parameter.')),
+            array(array('username' => 'userTest1', 'plainPassword' => 'userTest1', 'email' => 'email@test.fr'), 200, array('user' => array('id' => 2, 'username' => 'userTest1', 'email' => 'email@test.fr'))),
         );
     }
 

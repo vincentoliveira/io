@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use JMS\DiExtraBundle\Annotation\Inject;
+use IO\ApiBundle\Utils\ApiElementVisitor;
 
 /**
  * User API Controller
@@ -43,6 +44,24 @@ class UserController extends DefaultController
         }
 
         $user = $this->userSv->createUser($data);
+        if ($user === null) {
+            return $this->errorResponse(self::BAD_PARAMETER);
+        }
+        
+        $apiVisistor = new ApiElementVisitor();
+        return new JsonResponse(array('user' => $apiVisistor->visitUser($user)));
+    }
+    
+    
+    public function authAction(Request $request)
+    {
+        $jsonData = $request->getContent();
+        $data = json_decode($jsonData, true);
+        if ($data === null || empty($data)) {
+            return $this->errorResponse(self::EMPTY_PARAMETER);
+        }
+        
+        $user = $this->userSv->authUser($data);
         if ($user === null) {
             return $this->errorResponse(self::BAD_PARAMETER);
         }

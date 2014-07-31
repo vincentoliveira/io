@@ -73,6 +73,19 @@ class UserService
         return $this->em->getRepository('IORestaurantBundle:Restaurant')->find($id);
     }
     
+    /**
+     * Authentification user
+     *
+     * @return \IO\UserBundle\Entity\User|null
+     */
+    public function authUser(array $data)
+    {
+        $token = $this->container->get('security.context')->getToken();
+        $user = $token !== null ? $token->getUser() : null;
+
+        return $user instanceof User ? $user : null;
+    }
+    
     
     /**
      * Create a user from array

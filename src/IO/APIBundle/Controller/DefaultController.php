@@ -13,6 +13,7 @@ class DefaultController extends Controller
     const UNKNOWN_ERROR = "UNKNOWN_ERROR";
     const EMPTY_PARAMETER = "EMPTY_PARAMETER";
     const BAD_PARAMETER = "BAD_PARAMETER";
+    const BAD_AUTHENTIFICATION = "BAD_AUTHENTIFICATION";
 
     static private $error_data = array(
         self::UNKNOWN_ERROR => array(
@@ -28,7 +29,12 @@ class DefaultController extends Controller
         self::BAD_PARAMETER => array(
             'error_code' => 400,
             'message' => "Bad parameter.",
-            'err_no' => 1,
+            'err_no' => 2,
+        ),
+        self::BAD_AUTHENTIFICATION => array(
+            'error_code' => 403,
+            'message' => "Bad authentification.",
+            'err_no' => 3,
         ),
     );
 

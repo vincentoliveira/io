@@ -4,6 +4,7 @@ namespace IO\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
+use IO\ApiBundle\Utils\ApiElement;
 
 /**
  * User entity (extends fosuser)
@@ -11,7 +12,7 @@ use FOS\UserBundle\Model\User as BaseUser;
  * @ORM\Entity()
  * @ORM\Table(name="fos_user")
  */
-class User extends BaseUser
+class User extends BaseUser implements ApiElement
 {
     /**
      * @var integer $id
@@ -40,23 +41,11 @@ class User extends BaseUser
      */
     private $restaurantGroup;
     
-    /**
-     * Serializes the user to array.
-     *
-     * @return array
-     */
-    public function getArray()
+    public function accept(\IO\ApiBundle\Utils\ApiElementVisitorInterface $visitor)
     {
-        if ($this->isEnabled() === false) {
-            return array();
-        }
-        
-        return array(
-            'id' => $this->id,
-            'username' => $this->username,
-        );
+        return $visitor->visitUser($this);
     }
-
+    
     /**
      * Get id
      *
