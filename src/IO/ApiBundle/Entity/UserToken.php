@@ -33,7 +33,7 @@ class UserToken implements ApiElement
     /**
      * @var string
      *
-     * @ORM\Column(name="expires_at", type="datetime", nullable=false)
+     * @ORM\Column(name="expires_at", type="datetime", nullable=true)
      */
     private $expiresAt;
     
@@ -125,6 +125,16 @@ class UserToken implements ApiElement
     {
         return $this->expiresAt;
     }
+    
+    /**
+     * Token has expired ?
+     * 
+     * @return boolean
+     */
+    public function hasExpired()
+    {
+        return $this->expiresAt === null || $now->$this->expiresAt >= new \DateTime();
+    }
 
     /**
      * Set user
@@ -180,6 +190,19 @@ class UserToken implements ApiElement
     public function getRestrictedRestaurants()
     {
         return $this->restrictedRestaurants;
+    }
+
+    /**
+     * Get restaurant
+     *
+     * @return \IO\RestaurantBundle\Entity\Restaurant|null
+     */
+    public function getRestaurant()
+    {
+        if ($this->restrictedRestaurants->count() === 1) {
+            return $this->restrictedRestaurants->first();
+        }
+        return null;
     }
 
 }

@@ -3,6 +3,9 @@
 namespace IO\RestaurantBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use IO\RestaurantBundle\Enum\ItemTypeEnum;
+use IO\ApiBundle\Utils\ApiElement;
+use IO\ApiBundle\Utils\ApiElementVisitorInterface;
 
 /**
  * CarteItem
@@ -10,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="carte_item")
  * @ORM\Entity(repositoryClass="IO\RestaurantBundle\Repository\CarteItemRepository")
  */
-class CarteItem implements CarteItemElement
+class CarteItem implements ApiElement
 {
     /**
      * @var integer
@@ -32,7 +35,7 @@ class CarteItem implements CarteItemElement
     /**
      * @var integer
      *
-     * @ORM\Column(name="visible", type="boolean", nullable=true)
+     * @ORM\Column(name="visible", type="boolean", nullable=false)
      */
     private $visible;
     
@@ -120,19 +123,19 @@ class CarteItem implements CarteItemElement
     private $dishOptions;
 
     /**
-     * Accept Carte Item Visitor
+     * Accept Api Element Visitor
      * 
-     * @param \IO\RestaurantBundle\Service\Visitor\CarteItemVisitor $visitor
+     * @param ApiElementVisitorInterface $visitor
      */
-    public function accept(\IO\RestaurantBundle\Service\Visitor\CarteItemVisitor $visitor)
+    public function accept(ApiElementVisitorInterface $visitor)
     {
-        if ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_CATEGORY) {
+        if ($this->itemType === ItemTypeEnum::TYPE_CATEGORY) {
             return $visitor->visitCategory($this);
-        } elseif ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_DISH) {
+        } elseif ($this->itemType === ItemTypeEnum::TYPE_DISH) {
             return $visitor->visitDish($this);
-        } elseif ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_OPTION) {
+        } elseif ($this->itemType === ItemTypeEnum::TYPE_OPTION) {
             return $visitor->visitOption($this);
-        } elseif ($this->itemType === \IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_OPTION_CHOICE) {
+        } elseif ($this->itemType === ItemTypeEnum::TYPE_OPTION_CHOICE) {
             return $visitor->visitOptionChoice($this);
         }
     }

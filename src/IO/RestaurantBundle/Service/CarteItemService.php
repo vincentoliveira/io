@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use IO\RestaurantBundle\Entity\CarteItem;
 use IO\RestaurantBundle\Entity\Restaurant;
+use IO\ApiBundle\Utils\ApiElementVisitor;
 
 /**
  * Carte Item Service
@@ -42,9 +43,9 @@ class CarteItemService
         $categories = $this->em->getRepository('IORestaurantBundle:CarteItem')->findBy($criteria, $orderBy);
         
         $carte = array();
-        $visitor = new Visitor\CarteGeneratorVisitor();
+        $apiVisistor = new ApiElementVisitor();
         foreach ($categories as $category) {
-            $item = $category->accept($visitor);
+            $item = $category->accept($apiVisistor);
             if ($item !== null) {
                 $carte[] = $item;
             }

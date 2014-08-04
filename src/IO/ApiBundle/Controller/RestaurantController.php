@@ -49,4 +49,30 @@ class RestaurantController extends DefaultController
         return new JsonResponse(array('carte' => $carte));
     }
     
+    /**
+     * GET /restaurant/menu/token/:token.json
+     * 
+     * Returns a restaurant menu, specified by the <strong>id</strong> 
+     * parameter.
+     * 
+     * Parameters:
+     * - <strong>id</strong> The numerical ID of the desired restaurant.
+     * 
+     * 
+     * @return JsonResponse
+     * @Route("/menu/token/:token.json", name="api_restaurant_get_menu_by_token")
+     */
+    public function getCarteByTokenAction($token)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository("IOApiBundletBundle:UserToken");
+        $userToken = $repo->findByToken($token);
+        if ($userToken === null || $userToken->hasExpired() || $userToken->getRestaurant() === null) {
+            return $this->errorResponse(self::BAD_PARAMETER);
+        }
+        
+        $carte = $this->carteItemSv->getCarte($userToken->getRestaurant());
+        return new JsonResponse(array('carte' => $carte));
+    }
+    
 }

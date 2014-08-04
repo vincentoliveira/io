@@ -3,6 +3,8 @@
 namespace IO\RestaurantBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use IO\ApiBundle\Utils\ApiElement;
+use IO\ApiBundle\Utils\ApiElementVisitorInterface;
 
 /**
  * Content
@@ -11,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
  */
-class Media implements CarteItemElement
+class Media implements ApiElement
 {
     /**
      * @var integer
@@ -43,11 +45,11 @@ class Media implements CarteItemElement
     private $file;
 
     /**
-     * Accept Carte Item Visitor
+     * Accept Api Element Visitor
      * 
-     * @param \IO\RestaurantBundle\Service\Visitor\CarteItemVisitor $visitor
+     * @param ApiElementVisitorInterface $visitor
      */
-    public function accept(\IO\RestaurantBundle\Service\Visitor\CarteItemVisitor $visitor)
+    public function accept(ApiElementVisitorInterface $visitor)
     {
         return $visitor->visitMedia($this);
     }

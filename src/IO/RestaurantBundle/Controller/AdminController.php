@@ -181,7 +181,7 @@ class AdminController extends Controller
         );
         foreach ($defaultProduct as &$productValue) {
             $product = new CarteItem();
-            $product->setItemType(ItemTypeEnum::TYPE_CATEGORY);
+            $product->setItemType(ItemTypeEnum::TYPE_DISH);
             $product->setName($productValue['name']);
             $product->setDescription($productValue['description']);
             $product->setPrice($productValue['price']);
