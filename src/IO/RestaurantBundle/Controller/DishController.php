@@ -11,8 +11,6 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 use IO\RestaurantBundle\Form\DishType;
 use IO\RestaurantBundle\Entity\CarteItem;
 use IO\RestaurantBundle\Enum\ItemTypeEnum;
-use IO\RestaurantBundle\Form\DishOptionListType;
-use IO\RestaurantBundle\Entity\DishOptionList;
 
 /**
  * CarteItem controller.
@@ -225,38 +223,6 @@ class DishController extends CarteItemController
         $em->flush();
 
         return $this->redirect($this->generateUrl('carte_edit') . "#c" . $entity->getParent()->getId());
-    }
-
-    /**
-     * Displays a form to edit an existing CarteItem entity.
-     *
-     * @Route("/{id}/option/add", name="dish_add_option")
-     * @Template()
-     */
-    public function addOptionAction(Request $request, $id)
-    {
-        $dish = $this->getEntity($id);
-
-        $dishOption = new DishOptionList();
-        $dishOption->setDish($dish);
-
-        $formType = new DishOptionListType($this->userSv->getCurrentRestaurant());
-        $form = $this->createForm($formType, $dishOption);
-
-        if ($request->isMethod("POST")) {
-            $form->submit($request);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($dishOption);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('dish_edit', array('id' => $dish->getId())));
-        }
-
-        return array(
-            'entity' => $dish,
-            'form' => $form->createView(),
-        );
     }
 
     /**

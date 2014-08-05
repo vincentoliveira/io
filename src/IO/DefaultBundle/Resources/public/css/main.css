@@ -256,6 +256,7 @@ a.btn-danger { color: #fff; }
 .order .main-order { list-style-type: none; margin-top: 5px; min-height: 200px; padding: 0; }
 .order .category-order { list-style-type: none; padding-left: 5px; }
 .order em { float: right; }
+.category-order span { display: block; font-style: italic; font-size: 0.9em; }
 .order .total { font-weight: bold; }
 .order .payment { padding-left:5px; }
 

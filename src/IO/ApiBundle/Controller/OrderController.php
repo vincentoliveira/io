@@ -76,6 +76,11 @@ class OrderController extends DefaultController
         }
         
         $cart = $this->orderSv->createOrder($restaurant, $authToken);
+        if ($request->request->has('product_id')) {
+            $productId = $request->request->get('product_id');
+            $options = $request->request->get('options');
+            $cart = $this->orderSv->addProductToOrder($cart, $productId, $options);
+        }
         
         $apiVisistor = new ApiElementVisitor();
         return new JsonResponse(array('cart' => $apiVisistor->visitOrderData($cart)));

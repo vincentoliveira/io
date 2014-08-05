@@ -7,8 +7,8 @@
             <li>
                 <strong>{{ itemReceipt.count }}</strong>x 
                 <strong>{{ itemReceipt.item.itemShortName }}</strong>
-                <span>{{ itemReceipt.item.extra }}</span>
                 <em>{{ itemReceipt.count * itemReceipt.item.itemPrice }}€</em>
+                <span>{{ itemReceipt.item.extra }}</span>
             </li>
             {% endfor %}
         </ul>
