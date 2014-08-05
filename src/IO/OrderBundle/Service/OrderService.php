@@ -31,6 +31,23 @@ class OrderService
      * @var \Doctrine\ORM\EntityManager
      */
     public $em;
+    
+    /**
+     * Is order data locked
+     * 
+     * @param \IO\OrderBundle\Entity\OrderData $order
+     * @return boolean
+     */
+    public function isLocked(OrderData $order)
+    {
+        $lockStatus = array(
+            OrderStatusEnum::STATUS_IN_PROGRESS,
+            OrderStatusEnum::STATUS_READY,
+            OrderStatusEnum::STATUS_CANCELED,
+            OrderStatusEnum::STATUS_CLOSED,
+        );
+        return in_array($order->getLastStatus(), $lockStatus);
+    }
 
     /**
      * Create an order

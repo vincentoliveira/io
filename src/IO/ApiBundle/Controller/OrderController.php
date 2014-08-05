@@ -85,4 +85,68 @@ class OrderController extends DefaultController
         $apiVisistor = new ApiElementVisitor();
         return new JsonResponse(array('cart' => $apiVisistor->visitOrderData($cart)));
     }
+    
+    
+    /**
+     * POST /order/cart/add_product.json
+     * 
+     * Add product to a desired cart and return new cart
+     * 
+     * Parameters:
+     * - <strong>token</strong>         The alphanumerical token of the 
+     *                                  user/platform.
+     * - <strong>cart_id</strong>       The numerical id of the desired 
+     *                                  cart (optionnal)
+     * - <strong>product_id</strong>    The numerical id of the desired product
+     *                                  (optionnal). If not set, cart will be 
+     *                                  created as empty.
+     * - <strong>options</strong>       An array of the ids of the desired 
+     *                                  options if necessary (optionnal)
+     * 
+     * @return JsonResponse
+     * @Route("/cart/add_product.json", name="api_order_add_product_to_cart")
+     * @Method("POST")
+     */
+    public function addProductToCartAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        // check token
+        $token = $request->request->get('token', null);
+        if ($token === null) {
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
+        }
+        
+        $authTokenRepo = $em->getRepository("IOApiBundle:AuthToken");
+        $authToken = $authTokenRepo->findOneByToken($token);
+        if ($authToken === null || $authToken->hasExpired()) {
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
+        }
+        
+        // get cart
+        $cartId = $request->request->get('cart_id', null);
+        if ($cartId !== null) {
+            $orderRepo = $em->getRepository("IOOrderBundle:OrderData");
+            $cart = $orderRepo->find($cartId);
+        }
+        
+        if ($cart === null || !$authToken->getRestrictedRestaurants()->contains($cart->getRestaurant())) {
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
+        }
+        
+        if ($this->orderSv->isLocked($cart)) {
+            return $this->errorResponse(self::ORDER_LOCKED);
+        }
+        
+        if (!$request->request->has('product_id')) {
+            return $this->errorResponse(self::BAD_PARAMETER);
+        }
+        
+        $productId = $request->request->get('product_id');
+        $options = $request->request->get('options');
+        $cart = $this->orderSv->addProductToOrder($cart, $productId, $options);
+        
+        $apiVisistor = new ApiElementVisitor();
+        return new JsonResponse(array('cart' => $apiVisistor->visitOrderData($cart)));
+    }
 }

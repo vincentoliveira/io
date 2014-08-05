@@ -14,6 +14,7 @@ abstract class DefaultController extends Controller
     const EMPTY_PARAMETER = "EMPTY_PARAMETER";
     const BAD_PARAMETER = "BAD_PARAMETER";
     const BAD_AUTHENTIFICATION = "BAD_AUTHENTIFICATION";
+    const ORDER_LOCKED = "ORDER_LOCKED";
 
     static private $error_data = array(
         self::UNKNOWN_ERROR => array(
@@ -35,6 +36,11 @@ abstract class DefaultController extends Controller
             'error_code' => 403,
             'message' => "Bad authentification.",
             'err_no' => 3,
+        ),
+        self::ORDER_LOCKED => array(
+            'error_code' => 400,
+            'message' => "This order is locked.",
+            'err_no' => 4,
         ),
     );
 
