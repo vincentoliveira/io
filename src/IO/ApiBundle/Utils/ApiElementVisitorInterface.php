@@ -8,6 +8,9 @@ use IO\RestaurantBundle\Entity\Restaurant;
 use IO\RestaurantBundle\Entity\CarteItem;
 use IO\RestaurantBundle\Entity\Media;
 use IO\OrderBundle\Entity\OrderData;
+use IO\OrderBundle\Entity\OrderLine;
+use IO\OrderBundle\Entity\OrderPayment;
+use IO\OrderBundle\Entity\Customer;
 
 /**
  * Api Visitor Interface
@@ -25,4 +28,7 @@ interface ApiElementVisitorInterface
     public function visitOptionChoice(CarteItem $optionChoice);
     public function visitMedia(Media $media);
     public function visitOrderData(OrderData $orderData);
+    public function visitOrderLine(OrderLine $orderLine);
+    public function visitOrderPayment(OrderPayment $orderPayment);
+    public function visitCustomer(Customer $customer);
 }

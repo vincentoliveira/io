@@ -22,11 +22,7 @@ class UserControllerTest extends IOTestCase
         $this->userExists('usertest2');
 
         $url = $this->container->get('router')->generate('api_user_create');
-        $serveur = array(
-            'CONTENT_TYPE' => 'application/json',
-            'HTTP_X-Requested-With' => 'XMLHttpRequest'
-        );
-        $this->client->request('POST', $url, [], [], $serveur, json_encode($data));
+        $this->client->request('POST', $url, $data);
 
         $response = $this->client->getResponse();
         $this->assertEquals($statusCode, $response->getStatusCode());
@@ -58,11 +54,7 @@ class UserControllerTest extends IOTestCase
         $this->userExists('usertest');
 
         $url = $this->container->get('router')->generate('api_user_auth');
-        $serveur = array(
-            'CONTENT_TYPE' => 'application/json',
-            'HTTP_X-Requested-With' => 'XMLHttpRequest'
-        );
-        $this->client->request('POST', $url, [], [], $serveur, json_encode($data));
+        $this->client->request('POST', $url, $data);
 
         $response = $this->client->getResponse();
         $this->assertEquals($statusCode, $response->getStatusCode());

@@ -172,6 +172,7 @@ class AdminController extends Controller
         $defaultProduct = array(
             array(
                 'name' => 'Salade César',
+                'shortName' => 'césar',
                 'description' => 'Salade de poulet accompagnée de parmesan',
                 'price' => 6.5,
                 'vat' => 0,
@@ -183,6 +184,7 @@ class AdminController extends Controller
             $product = new CarteItem();
             $product->setItemType(ItemTypeEnum::TYPE_DISH);
             $product->setName($productValue['name']);
+            $product->setShortName($productValue['shortName']);
             $product->setDescription($productValue['description']);
             $product->setPrice($productValue['price']);
             $product->setVat($defaultVatList[$productValue['vat']]['entity']);

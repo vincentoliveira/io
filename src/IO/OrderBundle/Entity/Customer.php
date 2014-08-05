@@ -3,6 +3,8 @@
 namespace IO\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use IO\ApiBundle\Utils\ApiElement;
+use IO\ApiBundle\Utils\ApiElementVisitorInterface;
 
 /**
  * Customer
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="customer")
  * @ORM\Entity()
  */
-class Customer
+class Customer implements ApiElement
 {
 
     /**
@@ -25,6 +27,20 @@ class Customer
     /**
      * @var string
      *
+     * @ORM\Column(name="firstname", type="string", nullable=true)
+     */
+    private $firstname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lastname", type="string", nullable=true)
+     */
+    private $lastname;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="email", type="string", nullable=true)
      */
     private $email;
@@ -32,16 +48,18 @@ class Customer
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", nullable=true)
-     */
-    private $name;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="phone", type="string", nullable=true)
      */
     private $phone;
+
+    /**
+     * 
+     * @param \IO\ApiBundle\Utils\ApiElementVisitorInterface $visitor
+     */
+    public function accept(ApiElementVisitorInterface $visitor)
+    {
+        return $visitor->visitCustomer($this);
+    }
 
     /**
      * Get id
@@ -77,29 +95,6 @@ class Customer
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return Customer
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
      * Set phone
      *
      * @param string $phone
@@ -120,5 +115,51 @@ class Customer
     public function getPhone()
     {
         return $this->phone;
+    }
+
+    /**
+     * Set firstname
+     *
+     * @param string $firstname
+     * @return Customer
+     */
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+    
+        return $this;
+    }
+
+    /**
+     * Get firstname
+     *
+     * @return string 
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * Set lastname
+     *
+     * @param string $lastname
+     * @return Customer
+     */
+    public function setLastname($lastname)
+    {
+        $this->lastname = $lastname;
+    
+        return $this;
+    }
+
+    /**
+     * Get lastname
+     *
+     * @return string 
+     */
+    public function getLastname()
+    {
+        return $this->lastname;
     }
 }

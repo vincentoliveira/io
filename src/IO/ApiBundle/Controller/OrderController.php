@@ -26,13 +26,57 @@ class OrderController extends DefaultController
      */
     public $orderSv;
     
+    
+    /**
+     * GET /order/cart/:id.json
+     * 
+     * Add product to a desired cart and return new cart
+     * 
+     * Parameters:
+     * - <strong>token</strong>         The alphanumeric token of the 
+     *                                  user/platform.
+     * - <strong>cart_id</strong>       The numerical id of the desired 
+     *                                  cart
+     * 
+     * @return JsonResponse
+     * @Route("/cart/{cartId}.json", name="api_order_get_cart")
+     * @Method("GET")
+     */
+    public function getCartAction(Request $request, $cartId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        // check token
+        $token = $request->query->get('token', null);
+        if ($token === null) {
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
+        }
+        
+        $authTokenRepo = $em->getRepository("IOApiBundle:AuthToken");
+        $authToken = $authTokenRepo->findOneByToken($token);
+        if ($authToken === null || $authToken->hasExpired()) {
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
+        }
+        
+        // get cart
+        $orderRepo = $em->getRepository("IOOrderBundle:OrderData");
+        $cart = $orderRepo->find($cartId);
+        if ($cart === null || !$authToken->getRestrictedRestaurants()->contains($cart->getRestaurant())) {
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
+        }
+        
+        $apiVisistor = new ApiElementVisitor();
+        return new JsonResponse(array('cart' => $cart->accept($apiVisistor)));
+    }
+    
+    
     /**
      * POST /order/cart/create.json
      * 
      * Create a cart and return it.
      * 
      * Parameters:
-     * - <strong>token</strong>         The alphanumerical token of the 
+     * - <strong>token</strong>         The alphanumeric token of the 
      *                                  user/platform.
      * - <strong>restaurant_id</strong>  The numerical id of the desired 
      *                                  restaurant (optionnal)
@@ -83,7 +127,7 @@ class OrderController extends DefaultController
         }
         
         $apiVisistor = new ApiElementVisitor();
-        return new JsonResponse(array('cart' => $apiVisistor->visitOrderData($cart)));
+        return new JsonResponse(array('cart' => $cart->accept($apiVisistor)));
     }
     
     
@@ -93,10 +137,10 @@ class OrderController extends DefaultController
      * Add product to a desired cart and return new cart
      * 
      * Parameters:
-     * - <strong>token</strong>         The alphanumerical token of the 
+     * - <strong>token</strong>         The alphanumeric token of the 
      *                                  user/platform.
      * - <strong>cart_id</strong>       The numerical id of the desired 
-     *                                  cart (optionnal)
+     *                                  cart
      * - <strong>product_id</strong>    The numerical id of the desired product
      *                                  (optionnal). If not set, cart will be 
      *                                  created as empty.
@@ -147,6 +191,6 @@ class OrderController extends DefaultController
         $cart = $this->orderSv->addProductToOrder($cart, $productId, $options);
         
         $apiVisistor = new ApiElementVisitor();
-        return new JsonResponse(array('cart' => $apiVisistor->visitOrderData($cart)));
+        return new JsonResponse(array('cart' => $cart->accept($apiVisistor)));
     }
 }

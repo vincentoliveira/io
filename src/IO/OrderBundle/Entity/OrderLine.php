@@ -3,6 +3,8 @@
 namespace IO\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use IO\ApiBundle\Utils\ApiElement;
+use IO\ApiBundle\Utils\ApiElementVisitorInterface;
 
 /**
  * CarteItem
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="order_line")
  * @ORM\Entity(repositoryClass="IO\OrderBundle\Repository\OrderLineRepository")
  */
-class OrderLine
+class OrderLine implements ApiElement
 {
 
     /**
@@ -41,6 +43,13 @@ class OrderLine
     /**
      * @var string
      *
+     * @ORM\Column(name="item_name", type="string", nullable=true)
+     */
+    private $itemName;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="item_short_name", type="string", nullable=true)
      */
     private $itemShortName;
@@ -66,6 +75,15 @@ class OrderLine
      */
     private $extra;
 
+    /**
+     * 
+     * @param \IO\ApiBundle\Utils\ApiElementVisitorInterface $visitor
+     */
+    public function accept(ApiElementVisitorInterface $visitor)
+    {
+        return $visitor->visitOrderLine($this);
+    }
+
 
     /**
      * Get id
@@ -75,6 +93,29 @@ class OrderLine
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set itemName
+     *
+     * @param string $itemName
+     * @return OrderLine
+     */
+    public function setItemName($itemName)
+    {
+        $this->itemName = $itemName;
+    
+        return $this;
+    }
+
+    /**
+     * Get itemName
+     *
+     * @return string 
+     */
+    public function getItemName()
+    {
+        return $this->itemName;
     }
 
     /**

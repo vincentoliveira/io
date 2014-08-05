@@ -31,7 +31,7 @@ class OrderService
      * @var \Doctrine\ORM\EntityManager
      */
     public $em;
-    
+
     /**
      * Is order data locked
      * 
@@ -70,12 +70,12 @@ class OrderService
         $status->setNewStatus(OrderStatusEnum::STATUS_DRAFT);
 
         $cart->addOrderStatus($status);
-        
+
         $this->em->persist($status);
         $this->em->persist($cart);
-        
+
         $this->em->flush();
-        
+
         return $cart;
     }
 
@@ -91,35 +91,36 @@ class OrderService
     {
         $repo = $this->em->getRepository('IORestaurantBundle:CarteItem');
         $product = $repo->find($productId);
-        if ($product === null || 
-                $product->getItemType() !== ItemTypeEnum::TYPE_DISH || 
+        if ($product === null ||
+                $product->getItemType() !== ItemTypeEnum::TYPE_DISH ||
                 $product->getRestaurant() !== $order->getRestaurant()) {
             return $order;
         }
-        
+
         $orderLine = new OrderLine();
         $orderLine->setItem($product);
         $orderLine->setItemPrice($product->getPrice());
         $orderLine->setItemVat($product->getVat()->getValue());
+        $orderLine->setItemName($product->getName());
         $orderLine->setItemShortName($product->getShortName());
         $orderLine->setOrder($order);
-        
+
         if ($options !== null) {
             foreach ($options as $optionId) {
                 $orderLine = $this->addOptionToOrderLine($orderLine, $optionId);
             }
         }
-        
+
         $order->addOrderLine($orderLine);
-        
+
         $this->em->persist($orderLine);
         $this->em->persist($order);
-        
+
         $this->em->flush();
-        
+
         return $order;
     }
-    
+
     /**
      * Add option to order line
      * 
@@ -130,11 +131,11 @@ class OrderService
     protected function addOptionToOrderLine(OrderLine $orderLine, $optionId)
     {
         $product = $orderLine->getItem();
-        
+
         $repo = $this->em->getRepository('IORestaurantBundle:CarteItem');
         $option = $repo->find($optionId);
-        if ($option !== null && 
-                $option->getItemType() === ItemTypeEnum::TYPE_OPTION_CHOICE && 
+        if ($option !== null &&
+                $option->getItemType() === ItemTypeEnum::TYPE_OPTION_CHOICE &&
                 $product->getDishOptions()->contains($option->getParent())) {
 
             $extra = $orderLine->getExtra();
@@ -145,14 +146,14 @@ class OrderService
             }
 
             $price = $orderLine->getItemPrice() + $option->getPrice();
-            
+
             $orderLine->setExtra($extra);
             $orderLine->setItemPrice($price);
         }
-        
+
         return $orderLine;
     }
-    
+
     /**
      * process order from data
      * 

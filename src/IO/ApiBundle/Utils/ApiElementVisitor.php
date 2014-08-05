@@ -8,6 +8,9 @@ use IO\RestaurantBundle\Entity\Restaurant;
 use IO\RestaurantBundle\Entity\CarteItem;
 use IO\RestaurantBundle\Entity\Media;
 use IO\OrderBundle\Entity\OrderData;
+use IO\OrderBundle\Entity\OrderLine;
+use IO\OrderBundle\Entity\OrderPayment;
+use IO\OrderBundle\Entity\Customer;
 
 /**
  * Description of ApiVisitor
@@ -200,17 +203,56 @@ class ApiElementVisitor implements ApiElementVisitorInterface
         );
         
         if ($orderData->getCustomer()) {
-            //$result['customer'] = $orderData->getCustomer()->accept($this);
+            $result['customer'] = $orderData->getCustomer()->accept($this);
         }
         
         foreach ($orderData->getOrderLines() as $orderLine) {
-            //$result['products'] = $orderLine->accept($this);
+            $result['products'][] = $orderLine->accept($this);
         }
         
         foreach ($orderData->getOrderPayments() as $payments) {
-            //$result['payments'] = $payments->accept($this);
+            $result['payments'][] = $payments->accept($this);
         }
         
         return $result;
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function visitOrderLine(OrderLine $orderLine)
+    {
+        return array(
+            'product_id' => $orderLine->getItem() !== null ? $orderLine->getItem()->getId() : null,
+            'name' => $orderLine->getItemName(),
+            'short_name' => $orderLine->getItemShortName(),
+            'extra' => $orderLine->getExtra(),
+            'vat' => $orderLine->getItemVat(),
+            'price' => $orderLine->getItemPrice(),
+        );
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function visitOrderPayment(OrderPayment $orderPayment)
+    {
+        return array(
+            'id' => $orderPayment->getId(),
+            'date' => $orderPayment->getDate(),
+            'status' => $orderPayment->getStatus(),
+            'amount' => $orderPayment->getAmount(),
+        );
+    }
+    
+    public function visitCustomer(Customer $customer)
+    {
+        return array(
+            'firstname' => $customer->getFirstname(),
+            'lastname' => $customer->getLastname(),
+            'email' => $customer->getEmail(),
+            'phone' => $customer->getPhone(),
+        );
+    }
+
 }

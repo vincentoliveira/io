@@ -37,8 +37,7 @@ class UserController extends DefaultController
      */
     public function createAction(Request $request)
     {
-        $jsonData = $request->getContent();
-        $data = json_decode($jsonData, true);
+        $data = $request->request->all();
         if ($data === null || empty($data)) {
             return $this->errorResponse(self::EMPTY_PARAMETER);
         }
@@ -64,8 +63,7 @@ class UserController extends DefaultController
      */
     public function authAction(Request $request)
     {
-        $jsonData = $request->getContent();
-        $data = json_decode($jsonData, true);
+        $data = $request->request->all();
         if ($data === null || empty($data)) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }

@@ -3,6 +3,8 @@
 namespace IO\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use IO\ApiBundle\Utils\ApiElement;
+use IO\ApiBundle\Utils\ApiElementVisitorInterface;
 
 /**
  * CarteItem
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="order_payment")
  * @ORM\Entity(repositoryClass="IO\OrderBundle\Repository\OrderLineRepository")
  */
-class OrderPayment
+class OrderPayment implements ApiElement
 {
 
     /**
@@ -71,6 +73,16 @@ class OrderPayment
      * @ORM\Column(name="comments", type="string", nullable=true)
      */
     private $comments;
+
+    /**
+     * 
+     * @param \IO\ApiBundle\Utils\ApiElementVisitorInterface $visitor
+     */
+    public function accept(ApiElementVisitorInterface $visitor)
+    {
+        return $visitor->visitOrderPayment($this);
+    }
+
 
     /**
      * Get id

@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use IO\OrderBundle\Enum\OrderStatusEnum;
 use IO\OrderBundle\Enum\PaymentStatusEnum;
+use IO\ApiBundle\Utils\ApiElement;
+use IO\ApiBundle\Utils\ApiElementVisitorInterface;
 
 /**
  * Order
@@ -14,7 +16,7 @@ use IO\OrderBundle\Enum\PaymentStatusEnum;
  * @ORM\Entity(repositoryClass="IO\OrderBundle\Repository\OrderRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class OrderData
+class OrderData implements ApiElement
 {
 
     /**
@@ -91,6 +93,15 @@ class OrderData
      * @ORM\OneToMany(targetEntity="IO\OrderBundle\Entity\OrderPayment", mappedBy="order", cascade={"remove", "persist"})
      */
     private $orderPayments;
+
+    /**
+     * 
+     * @param \IO\ApiBundle\Utils\ApiElementVisitorInterface $visitor
+     */
+    public function accept(ApiElementVisitorInterface $visitor)
+    {
+        return $visitor->visitOrderData($this);
+    }
 
     /**
      * Constructor
@@ -416,4 +427,5 @@ class OrderData
     {
         return $this->token;
     }
+
 }
