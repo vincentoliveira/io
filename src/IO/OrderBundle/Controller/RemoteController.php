@@ -55,7 +55,7 @@ class RemoteController extends Controller
         
         $noDevis = $request->query->get('nodevis', false);
         if ($noDevis !== false) {
-            $draftOrder->setRef($noDevis);
+            //$draftOrder->setRef($noDevis);
             $needToPersist = true;
         }
         

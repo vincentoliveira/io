@@ -56,19 +56,20 @@ class RestaurantController extends DefaultController
      * parameter.
      * 
      * Parameters:
-     * - <strong>id</strong> The numerical ID of the desired restaurant.
+     * - <strong>token</strong> The alphanumeric token of the user who wants to
+     *                          access his restaurant.
      * 
      * 
      * @return JsonResponse
-     * @Route("/menu/token/:token.json", name="api_restaurant_get_menu_by_token")
+     * @Route("/menu/token/{token}.json", name="api_restaurant_get_menu_by_token")
      */
     public function getCarteByTokenAction($token)
     {
         $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository("IOApiBundletBundle:UserToken");
-        $userToken = $repo->findByToken($token);
+        $repo = $em->getRepository("IOApiBundle:AuthToken");
+        $userToken = $repo->findOneByToken($token);
         if ($userToken === null || $userToken->hasExpired() || $userToken->getRestaurant() === null) {
-            return $this->errorResponse(self::BAD_PARAMETER);
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
         
         $carte = $this->carteItemSv->getCarte($userToken->getRestaurant());

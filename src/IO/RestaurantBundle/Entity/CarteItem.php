@@ -37,7 +37,7 @@ class CarteItem implements ApiElement
      *
      * @ORM\Column(name="visible", type="boolean", nullable=false)
      */
-    private $visible;
+    private $visible = true;
     
     /**
      * @var CarteItem

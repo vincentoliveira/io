@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use IO\ApiBundle\Utils\ApiElement;
 
 /**
- * UserToken Entity
+ * AuthToken Entity
  *
- * @ORM\Table(name="user_token")
- * @ORM\Entity(repositoryClass="IO\ApiBundle\Repository\UserTokenRepository")
+ * @ORM\Table(name="auth_token")
+ * @ORM\Entity(repositoryClass="IO\ApiBundle\Repository\AuthTokenRepository")
  */
-class UserToken implements ApiElement
+class AuthToken implements ApiElement
 {
     /**
      * @var integer
@@ -25,10 +25,16 @@ class UserToken implements ApiElement
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=15, nullable=false)
+     * @ORM\Column(name="plateform_name", type="string", length=15, nullable=true)
+     */
+    private $platformName;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="token", type="string", length=15, nullable=false)
      */
     private $token;
-    
     
     /**
      * @var string
@@ -59,7 +65,7 @@ class UserToken implements ApiElement
 
     public function accept(\IO\ApiBundle\Utils\ApiElementVisitorInterface $visitor)
     {
-        return $visitor->visitUserToken($this);
+        return $visitor->visitAuthToken($this);
     }
 
     /**
@@ -84,7 +90,7 @@ class UserToken implements ApiElement
      * Set token
      *
      * @param string $token
-     * @return UserToken
+     * @return AuthToken
      */
     public function setToken($token)
     {
@@ -107,7 +113,7 @@ class UserToken implements ApiElement
      * Set expiresAt
      *
      * @param \DateTime $expiresAt
-     * @return UserToken
+     * @return AuthToken
      */
     public function setExpireAt($expiresAt)
     {
@@ -133,14 +139,14 @@ class UserToken implements ApiElement
      */
     public function hasExpired()
     {
-        return $this->expiresAt === null || $now->$this->expiresAt >= new \DateTime();
+        return $this->expiresAt !== null && $this->expiresAt < new \DateTime();
     }
 
     /**
      * Set user
      *
      * @param \IO\UserBundle\Entity\User $user
-     * @return UserToken
+     * @return AuthToken
      */
     public function setUser(\IO\UserBundle\Entity\User $user)
     {
@@ -163,7 +169,7 @@ class UserToken implements ApiElement
      * Add restrictedRestaurants
      *
      * @param \IO\RestaurantBundle\Entity\Restaurant $restrictedRestaurants
-     * @return UserToken
+     * @return AuthToken
      */
     public function addRestrictedRestaurant(\IO\RestaurantBundle\Entity\Restaurant $restrictedRestaurants)
     {

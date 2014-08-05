@@ -27,19 +27,20 @@ class OrderData
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="ref", type="string", nullable=true)
-     */
-    private $ref;
-
-    /**
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="IO\RestaurantBundle\Entity\Restaurant")
      * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
      */
     private $restaurant;
+    
+    /**
+     * @var string
+     *
+     * @ORM\ManyToOne(targetEntity="IO\ApiBundle\Entity\AuthToken")
+     * @ORM\JoinColumn(name="token_id", referencedColumnName="id")
+     */
+    private $token;
     
     /**
      * @var string
@@ -66,7 +67,7 @@ class OrderData
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="order_date", type="datetime", nullable=false)
+     * @ORM\Column(name="order_date", type="datetime", nullable=true)
      */
     private $orderDate;
 
@@ -129,7 +130,7 @@ class OrderData
     }
     
     /**
-     * Get lasty status name
+     * Get last status name
      * 
      * @return string
      */
@@ -371,29 +372,6 @@ class OrderData
     }
 
     /**
-     * Add orderStatuses
-     *
-     * @param \IO\OrderBundle\Entity\OrderStatus $orderStatuses
-     * @return OrderData
-     */
-    public function addOrderStatuse(\IO\OrderBundle\Entity\OrderStatus $orderStatuses)
-    {
-        $this->orderStatuses[] = $orderStatuses;
-    
-        return $this;
-    }
-
-    /**
-     * Remove orderStatuses
-     *
-     * @param \IO\OrderBundle\Entity\OrderStatus $orderStatuses
-     */
-    public function removeOrderStatuse(\IO\OrderBundle\Entity\OrderStatus $orderStatuses)
-    {
-        $this->orderStatuses->removeElement($orderStatuses);
-    }
-
-    /**
      * Set comment
      *
      * @param string $comment
@@ -417,25 +395,25 @@ class OrderData
     }
 
     /**
-     * Set ref
+     * Set token
      *
-     * @param string $ref
+     * @param \IO\ApiBundle\Entity\AuthToken $token
      * @return OrderData
      */
-    public function setRef($ref)
+    public function setToken(\IO\ApiBundle\Entity\AuthToken $token = null)
     {
-        $this->ref = $ref;
+        $this->token = $token;
     
         return $this;
     }
 
     /**
-     * Get ref
+     * Get token
      *
-     * @return string 
+     * @return \IO\ApiBundle\Entity\AuthToken 
      */
-    public function getRef()
+    public function getToken()
     {
-        return $this->ref;
+        return $this->token;
     }
 }

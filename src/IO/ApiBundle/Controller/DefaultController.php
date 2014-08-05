@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * API default Controller
  */
-class DefaultController extends Controller
+abstract class DefaultController extends Controller
 {
     const UNKNOWN_ERROR = "UNKNOWN_ERROR";
     const EMPTY_PARAMETER = "EMPTY_PARAMETER";

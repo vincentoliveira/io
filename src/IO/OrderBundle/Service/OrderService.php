@@ -13,6 +13,7 @@ use IO\OrderBundle\Enum\OrderStatusEnum;
 use IO\OrderBundle\Enum\PaymentTypeEnum;
 use IO\OrderBundle\Enum\PaymentStatusEnum;
 use IO\OrderBundle\Entity\Customer;
+use IO\ApiBundle\Entity\AuthToken;
 
 /**
  * Order Service
@@ -29,6 +30,29 @@ class OrderService
      * @var \Doctrine\ORM\EntityManager
      */
     public $em;
+
+    public function createOrder(Restaurant $restaurant, AuthToken $token = null)
+    {
+        $cart = new OrderData();
+        $cart->setRestaurant($restaurant);
+        $cart->setToken($token);
+        $cart->setStartDate(new \DateTime());
+
+        $status = new OrderStatus();
+        $status->setOrder($cart);
+        $status->setDate(new \DateTime());
+        $status->setOldStatus(OrderStatusEnum::STATUS_INIT);
+        $status->setNewStatus(OrderStatusEnum::STATUS_DRAFT);
+
+        $cart->addOrderStatus($status);
+        
+        $this->em->persist($status);
+        $this->em->persist($cart);
+        
+        //$this->em->flush();
+        
+        return $cart;
+    }
 
     /**
      * process order from data
@@ -56,7 +80,6 @@ class OrderService
         return $orders;
     }
 
-
     /**
      * process order from data
      * 
@@ -83,12 +106,12 @@ class OrderService
         if (isset($data['name'])) {
             $name = $data['name'];
             $customer = $this->em->getRepository('IOOrderBundle:Customer')->findOneByName($name);
-            
+
             if ($customer === null) {
                 $customer = new Customer();
                 $customer->setName($name);
             }
-            
+
             $order->setCustomer($customer);
         }
 
@@ -111,14 +134,14 @@ class OrderService
                 $orderLine->setItemVat($item->getVat()->getValue());
                 $orderLine->setItemShortName($item->getShortName());
                 $orderLine->setOrder($order);
-                
+
                 if (isset($itemData['extra'])) {
                     $orderLine->setExtra($itemData['extra']);
                 }
                 if (isset($itemData['price'])) {
                     $orderLine->setItemPrice(floatval($itemData['price']));
                 }
-                
+
                 $this->em->persist($orderLine);
 
                 $order->addOrderLine($orderLine);
@@ -130,7 +153,6 @@ class OrderService
 
         return $order;
     }
-
 
     /**
      * process payment from data
@@ -149,7 +171,7 @@ class OrderService
         $comments = isset($data['comments']) ? base64_decode($data['comments']) : '';
         $amount = isset($data['amount']) ? floatval($data['amount']) : null;
         $transactionId = isset($data['transaction_id']) ? $data['transaction_id'] : null;
-            
+
         if ($amount < 0) {
             $status = PaymentStatusEnum::PAYMENT_ERROR;
             $comments .= "NO AMOUNT;";
@@ -158,7 +180,7 @@ class OrderService
         } else {
             $status = PaymentStatusEnum::PAYMENT_ERROR;
         }
-        
+
         if (isset($data['type']) && in_array($data['type'], PaymentTypeEnum::$allowedType)) {
             $type = $data['type'];
         } else {
@@ -166,7 +188,7 @@ class OrderService
             $type = PaymentTypeEnum::PAYMENT_UNKNOWN;
             $comments .= "NO PAYMENT TYPE;";
         }
-        
+
 
         $payment = new OrderPayment();
         $payment->setOrder($order);
@@ -182,7 +204,6 @@ class OrderService
         $this->em->persist($payment);
         $this->em->flush();
     }
-
 
     /**
      * Generate Receipt
@@ -215,12 +236,11 @@ class OrderService
                     'item' => $line,
                 );
             } else {
-                $receipt[$parent][$name]['count']++;
+                $receipt[$parent][$name]['count'] ++;
             }
         }
 
         return $receipt;
     }
-
 
 }

@@ -5,9 +5,9 @@ namespace IO\ApiBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * UserToken Repository
+ * AuthToken Repository
  */
-class UserTokenRepository extends EntityRepository
+class AuthTokenRepository extends EntityRepository
 {
 
     /**

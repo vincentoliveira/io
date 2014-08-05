@@ -76,7 +76,7 @@ class UserController extends DefaultController
         }
 
         $apiVisistor = new ApiElementVisitor();
-        return new JsonResponse(array('auth' => $apiVisistor->visitUserToken($userToken)));
+        return new JsonResponse(array('auth' => $apiVisistor->visitAuthToken($userToken)));
     }
 
 }

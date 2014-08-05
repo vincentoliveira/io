@@ -119,7 +119,7 @@ class AdminController extends Controller
                 'choices' => array(
                     array(
                         'name' => 'Vinaigrette maison',
-                        'description' => 'Huile d\'olive, vinaigre de vin rouge, moutarcde, sel, poivre',
+                        'description' => 'Huile d\'olive, vinaigre de vin rouge, moutarde, sel, poivre',
                         'price' => 0,
                     ),
                     array(

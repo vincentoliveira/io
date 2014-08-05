@@ -50,8 +50,8 @@ class UserService
     /**
      * User token service
      * 
-     * @Inject("io.user_token_service")
-     * @var \IO\ApiBundle\Service\UserTokenService
+     * @Inject("io.auth_token_service")
+     * @var \IO\ApiBundle\Service\AuthTokenService
      */
     public $userTokenSv;
     
@@ -92,7 +92,7 @@ class UserService
     /**
      * Authentification user
      *
-     * @return \IO\ApiBundle\Entity\UserToken
+     * @return \IO\ApiBundle\Entity\AuthToken
      */
     public function authUser(array $data)
     {

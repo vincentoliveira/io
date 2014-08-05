@@ -3,10 +3,12 @@
 namespace IO\ApiBundle\Utils;
 
 use IO\UserBundle\Entity\User;
-use IO\ApiBundle\Entity\UserToken;
+use IO\ApiBundle\Entity\AuthToken;
 use IO\RestaurantBundle\Entity\Restaurant;
 use IO\RestaurantBundle\Entity\CarteItem;
 use IO\RestaurantBundle\Entity\Media;
+use IO\OrderBundle\Entity\OrderData;
+
 /**
  * Description of ApiVisitor
  *
@@ -33,7 +35,7 @@ class ApiElementVisitor implements ApiElementVisitorInterface
     /**
      * {@inheritdoc}
      */
-    public function visitUserToken(UserToken $token)
+    public function visitAuthToken(AuthToken $token)
     {
         $userToken = array(
             'token' => $token->getToken(),
@@ -181,4 +183,34 @@ class ApiElementVisitor implements ApiElementVisitorInterface
         return $result;
     }
     
+    /**
+     * {@inheritdoc}
+     */
+    public function visitOrderData(OrderData $orderData)
+    {
+        $result = array(
+            'id' => $orderData->getId(),
+            'delevery_date' => $orderData->getOrderDate(),
+            'status' => $orderData->getLastStatus(),
+            'customer' => null,
+            'products' => array(),
+            'payments' => array(),
+            'total' => $orderData->getTotalPrice(),
+            'total_unpayed' => $orderData->getTotalPrice() - $orderData->getPayedAmount(),
+        );
+        
+        if ($orderData->getCustomer()) {
+            //$result['customer'] = $orderData->getCustomer()->accept($this);
+        }
+        
+        foreach ($orderData->getOrderLines() as $orderLine) {
+            //$result['products'] = $orderLine->accept($this);
+        }
+        
+        foreach ($orderData->getOrderPayments() as $payments) {
+            //$result['payments'] = $payments->accept($this);
+        }
+        
+        return $result;
+    }
 }

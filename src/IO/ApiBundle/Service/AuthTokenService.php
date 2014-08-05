@@ -5,16 +5,15 @@ namespace IO\ApiBundle\Service;
 use JMS\DiExtraBundle\Annotation\Service;
 use JMS\DiExtraBundle\Annotation\Inject;
 use Symfony\Component\DependencyInjection\Container;
-use IO\ApiBundle\Entity\UserToken;
+use IO\ApiBundle\Entity\AuthToken;
 use IO\UserBundle\Entity\User;
-use IO\RestaurantBundle\Entity\Restaurant;
 
 /**
  * User Service
  * 
- * @Service("io.user_token_service")
+ * @Service("io.auth_token_service")
  */
-class UserTokenService
+class AuthTokenService
 {
 
     static $validityTime = 86400; // 24 * 60 * 60
@@ -31,14 +30,14 @@ class UserTokenService
      * Create token
      * 
      * @param \IO\UserBundle\Entity\User $user
-     * @return \IO\ApiBundle\Entity\UserToken
+     * @return \IO\ApiBundle\Entity\AuthToken
      */
     public function createToken(User $user)
     {
         $expirationDate = new \DateTime();
         $expirationDate->add(new \DateInterval('PT' . self::$validityTime . 'S'));
 
-        $userToken = new UserToken();
+        $userToken = new AuthToken();
         $userToken->setToken($this->generateToken());
         $userToken->setUser($user);
         $userToken->setExpireAt($expirationDate);
@@ -60,7 +59,7 @@ class UserTokenService
 
     protected function generateToken()
     {
-        $repo = $this->em->getRepository("IOApiBundle:UserToken");
+        $repo = $this->em->getRepository("IOApiBundle:AuthToken");
         $token = $this->getToken(16);
         for ($i = 0; $i < 15; $i++) {
             if ($repo->isUniqueToken($token)) {
