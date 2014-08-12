@@ -48,20 +48,9 @@ class OrderController extends DefaultController
         
         // check token
         $token = $request->query->get('token', null);
-        if ($token === null) {
-            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
-        }
-        
-        $authTokenRepo = $em->getRepository("IOApiBundle:AuthToken");
-        $authToken = $authTokenRepo->findOneByToken($token);
-        if ($authToken === null || $authToken->hasExpired()) {
-            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
-        }
-        
-        // get cart
         $orderRepo = $em->getRepository("IOOrderBundle:OrderData");
         $cart = $orderRepo->find($cartId);
-        if ($cart === null || !$authToken->getRestrictedRestaurants()->contains($cart->getRestaurant())) {
+        if ($cart === null || !$this->checkToken($token, $cart->getRestaurant())) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
         

@@ -15,6 +15,7 @@ class OrderControllerTest extends IOTestCase
         parent::setUp();
 
         $this->truncate('IOOrderBundle:OrderData');
+        $this->truncate('IOOrderBundle:OrderLine');
         $this->truncate('IORestaurantBundle:CarteItem');
 
         $restaurant = $this->getRestaurant('test');
@@ -22,11 +23,39 @@ class OrderControllerTest extends IOTestCase
         $token = $this->getTokenForRestaurant($restaurant);
         $token2 = $this->getTokenForRestaurant($restaurant2);
         $product = $this->productExistInCategoryForRestaurant('product', 'category', $restaurant);
+        
         $this->data['restaurant'] = $restaurant->getId();
         $this->data['restaurant2'] = $restaurant2->getId();
         $this->data['token'] = $token->getToken();
         $this->data['token2'] = $token2->getToken();
         $this->data['product'] = $product->getId();
+        
+        $this->data['entity_restaurant'] = $restaurant;
+        $this->data['entity_restaurant2'] = $restaurant2;
+        $this->data['entity_token'] = $token;
+        $this->data['entity_token2'] = $token2;
+        $this->data['entity_product'] = $product;
+    }
+    
+    /**
+     * @dataProvider getCartDataProvider
+     */
+    public function testGetCart($data, $statusCode, $expected)
+    {
+        foreach ($data as $key => $value) {
+            if (isset($this->data[$value])) {
+                $data[$key] = $this->data[$value];
+            }
+        }
+
+        $cart = $this->createCart($this->data['entity_restaurant'], $this->data['entity_token']);
+        $url = $this->container->get('router')->generate('api_order_get_cart', array('cartId' => $cart->getId()));
+        $this->client->request('GET', $url, $data);
+
+        $response = $this->client->getResponse();
+        $this->assertEquals($statusCode, $response->getStatusCode());
+        $result = json_decode($response->getContent(), true);
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -47,6 +76,76 @@ class OrderControllerTest extends IOTestCase
         $this->assertEquals($statusCode, $response->getStatusCode());
         $result = json_decode($response->getContent(), true);
         $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @dataProvider addProductToCartDataProvider
+     */
+    public function testAddProductToCart($data, $statusCode, $expected)
+    {
+        foreach ($data as $key => $value) {
+            if (isset($this->data[$value])) {
+                $data[$key] = $this->data[$value];
+            }
+        }
+
+        $cart = $this->createCart($this->data['entity_restaurant'], $this->data['entity_token']);
+        $data['cart_id'] = $cart->getId();
+
+        $url = $this->container->get('router')->generate('api_order_add_product_to_cart');
+        $this->client->request('POST', $url, $data);
+
+        $response = $this->client->getResponse();
+        $this->assertEquals($statusCode, $response->getStatusCode());
+        $result = json_decode($response->getContent(), true);
+        $this->assertEquals($expected, $result);
+    }
+    
+    /**
+     * Data provider for test get cart
+     * 
+     * @return array
+     */
+    public function getCartDataProvider()
+    {
+        return array(
+            array(
+                array(),
+                403,
+                array(
+                    'error' => 3,
+                    'message' => 'Bad authentification.',
+                ),
+            ),
+            array(
+                array(
+                    'token' => 'token2',
+                ),
+                403,
+                array(
+                    'error' => 3,
+                    'message' => 'Bad authentification.',
+                ),
+            ),
+            array(
+                array(
+                    'token' => 'token',
+                ),
+                200,
+                array(
+                    'cart' => array(
+                        'id' => 1,
+                        "delevery_date" => null,
+                        "status" => "DRAFT",
+                        "customer" => null,
+                        "products" => array(),
+                        "payments" => array(),
+                        "total" => 0,
+                        "total_unpayed" => 0,
+                    ),
+                ),
+            ),
+        );
     }
 
     /**
@@ -98,7 +197,94 @@ class OrderControllerTest extends IOTestCase
             array(
                 array(
                     'token' => 'token',
+                ),
+                200,
+                array(
+                    'cart' => array(
+                        'id' => 1,
+                        "delevery_date" => null,
+                        "status" => "DRAFT",
+                        "customer" => null,
+                        "products" => array(),
+                        "payments" => array(),
+                        "total" => 0,
+                        "total_unpayed" => 0,
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    'token' => 'token',
                     'restaurant_id' => 'restaurant',
+                    'product_id' => 'product',
+                ),
+                200,
+                array(
+                    'cart' => array(
+                        'id' => 1,
+                        "delevery_date" => null,
+                        "status" => "DRAFT",
+                        "customer" => null,
+                        "products" => array(
+                            array(
+                                "product_id" => 2,
+                                "name" => "product",
+                                "short_name" => "product",
+                                "extra" => "",
+                                "vat" => "20.00",
+                                "price" => 1,
+                            ),
+                        ),
+                        "payments" => array(),
+                        "total" => 1,
+                        "total_unpayed" => 1,
+                    ),
+                ),
+            ),
+        );
+    }
+
+    /**
+     * Data provider for add product to cart
+     * 
+     * @return array
+     */
+    public function addProductToCartDataProvider()
+    {
+        return array(
+            array(
+                array(),
+                403,
+                array(
+                    'error' => 3,
+                    'message' => 'Bad authentification.',
+                ),
+            ),
+            array(
+                array(
+                    'token' => 'token2',
+                    'restaurant_id' => 'restaurant',
+                ),
+                403,
+                array(
+                    'error' => 3,
+                    'message' => 'Bad authentification.',
+                ),
+            ),
+            array(
+                array(
+                    'token' => 'token',
+                    'restaurant_id' => 'restaurant',
+                ),
+                400,
+                array(
+                    'error' => 2,
+                    'message' => 'Bad parameter.',
+                ),
+            ),
+            array(
+                array(
+                    'token' => 'token',
                     'product_id' => 'product',
                 ),
                 200,

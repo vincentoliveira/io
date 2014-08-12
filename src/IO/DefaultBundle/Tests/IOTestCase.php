@@ -160,7 +160,18 @@ class IOTestCase extends WebTestCase
         return $product;
     }
 
-
+    /**
+     * Create empty cart
+     * 
+     * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
+     * @param \IO\ApiBundle\Entity\AuthToken $token
+     * @return \IO\OrderBundle\Entity\OrderData
+     */
+    protected function createCart(Restaurant $restaurant, AuthToken $token)
+    {
+        $orderService = $this->container->get('io.order_service');
+        return $orderService->createOrder($restaurant, $token);
+    }
 
     /**
      * Remove all occurence of $entityName
