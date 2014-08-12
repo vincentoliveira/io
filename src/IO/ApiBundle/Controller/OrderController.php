@@ -93,6 +93,7 @@ class OrderController extends DefaultController
     public function createCartAction(Request $request)
     {
         // get restaurant
+        $restaurant = null;
         $restaurantId = $request->request->get('restaurant_id', null);
         if ($restaurantId !== null) {
             $em = $this->getDoctrine()->getManager();
@@ -104,6 +105,10 @@ class OrderController extends DefaultController
         $token = $request->request->get('token', null);
         if (!$this->checkToken($token, $restaurant)) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
+        }
+        
+        if ($restaurant === null) {
+            $restaurant = $this->authToken->getRestaurant();
         }
         
         $cart = $this->orderSv->createOrder($restaurant, $this->authToken);

@@ -4,6 +4,7 @@ namespace IO\ApiBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use IO\RestaurantBundle\Entity\Restaurant;
 
 /**
  * API default Controller
@@ -73,13 +74,13 @@ abstract class DefaultController extends Controller
      */
     protected function checkToken($token, Restaurant $restaurant = null)
     {
-        if ($token === null) {
+        if (empty($token)) {
             return false;
         }
         
         $em = $this->getDoctrine()->getManager();
         $authTokenRepo = $em->getRepository("IOApiBundle:AuthToken");
-        $this->authToken = $authTokenRepo->findOneByToken($token);
+        $this->authToken = $authTokenRepo->findOneByToken($token);        
         
         return $this->authToken !== null && !$this->authToken->hasExpired() &&
                 ($restaurant === null || $this->authToken->getRestrictedRestaurants()->contains($restaurant));

@@ -100,7 +100,11 @@ class OrderService
         $orderLine = new OrderLine();
         $orderLine->setItem($product);
         $orderLine->setItemPrice($product->getPrice());
-        $orderLine->setItemVat($product->getVat()->getValue());
+        if ($product->getVat()) {
+            $orderLine->setItemVat($product->getVat()->getValue());
+        } else {
+            $orderLine->setItemVat(20);
+        }
         $orderLine->setItemName($product->getName());
         $orderLine->setItemShortName($product->getShortName());
         $orderLine->setOrder($order);

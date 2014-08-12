@@ -9,8 +9,10 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 use IO\UserBundle\Entity\User;
 use IO\RestaurantBundle\Entity\Restaurant;
+use IO\RestaurantBundle\Entity\RestaurantGroup;
 use IO\RestaurantBundle\Entity\CarteItem;
 use IO\RestaurantBundle\Entity\Media;
+use IO\ApiBundle\Entity\AuthToken;
 
 /**
  * Description of IOTestCase
@@ -71,22 +73,94 @@ class IOTestCase extends WebTestCase
     /**
      * Get restaurant
      * 
-     * @return \IO\CarteBundle\Entity\Restaurant
+     * @return Restaurant
      */
     protected function getRestaurant($restaurantName = 'phpunittest')
     {
-        $repo = $this->em->getRepository('IOCarteBundle:Restaurant');
+        $repo = $this->em->getRepository('IORestaurantBundle:Restaurant');
 
         $restaurant = $repo->findOneBy(array('name' => $restaurantName));
         if ($restaurant === null) {
-            $restaurant = new \IO\CarteBundle\Entity\Restaurant();
+            $restaurantGroup = new RestaurantGroup();
+            $restaurantGroup->setName($restaurantName);
+            
+            $restaurant = new Restaurant();
             $restaurant->setName($restaurantName);
+            $restaurant->setGroup($restaurantGroup);
+            
             $this->em->persist($restaurant);
+            $this->em->persist($restaurantGroup);
             $this->em->flush();
         }
 
         return $restaurant;
     }
+    
+    /**
+     * Get or generate token for restaurant
+     * 
+     * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
+     * @return \IO\ApiBundle\Entity\AuthToken
+     */
+    protected function getTokenForRestaurant(Restaurant $restaurant)
+    {
+        $tokenTok = 'token-' . $restaurant->getId();
+        
+        $repo = $this->em->getRepository('IOApiBundle:AuthToken');
+        $token = $repo->findOneByToken($tokenTok);
+        if ($token === null) {
+            $token = new AuthToken();
+            $token->setExpireAt(null);
+            $token->setToken($tokenTok);
+            $token->addRestrictedRestaurant($restaurant);
+            $this->em->persist($token);
+            $this->em->flush();
+        }
+        
+        return $token;
+    }
+    
+    /**
+     * Return product
+     * 
+     * @param type $productName
+     * @param type $categoryName
+     * @param type $restaurant
+     * @return \IO\RestaurantBundle\Entity\CarteItem
+     */
+    protected function productExistInCategoryForRestaurant($productName, $categoryName, $restaurant)
+    {
+        $repo = $this->em->getRepository('IORestaurantBundle:CarteItem');
+        $product = $repo->findOneByName($productName);
+        if ($product === null) {
+            $product = new CarteItem();
+            $product->setItemType(\IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_DISH);
+            $product->setRestaurant($restaurant);
+            $product->setName($productName);
+            $product->setShortName($productName);
+            $product->setPrice(1.0);
+            $product->setVisible(true);
+        }
+                
+        $category = $repo->findOneByName($categoryName);
+        if ($category === null) {
+            $category = new CarteItem();
+            $category->setItemType(\IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_CATEGORY);
+            $category->setRestaurant($restaurant);
+            $category->setName($categoryName);
+            $category->setShortName($categoryName);
+            $product->setVisible(true);
+            $this->em->persist($category);
+        }
+        
+        $product->setParent($category);
+        $this->em->persist($product);
+        $this->em->flush();
+        
+        return $product;
+    }
+
+
 
     /**
      * Remove all occurence of $entityName
@@ -109,6 +183,7 @@ class IOTestCase extends WebTestCase
             $connection->rollback();
         }
     }
+    
 
     /**
      * Find or create user and its restaurant
