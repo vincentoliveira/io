@@ -32,7 +32,7 @@ class AuthToken implements ApiElement
     /**
      * @var string
      *
-     * @ORM\Column(name="token", type="string", length=15, nullable=false)
+     * @ORM\Column(name="token", type="string", length=31, nullable=false)
      */
     private $token;
     

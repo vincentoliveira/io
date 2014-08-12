@@ -15,6 +15,11 @@ abstract class DefaultController extends Controller
     const BAD_PARAMETER = "BAD_PARAMETER";
     const BAD_AUTHENTIFICATION = "BAD_AUTHENTIFICATION";
     const ORDER_LOCKED = "ORDER_LOCKED";
+    
+    /**
+     * @var \IO\ApiBundle\Entity\AuthToken 
+     */
+    protected $authToken = null;
 
     static private $error_data = array(
         self::UNKNOWN_ERROR => array(
@@ -59,4 +64,24 @@ abstract class DefaultController extends Controller
         ), $error_data['error_code']);
     }
 
+    /**
+     * Check authentification token for restaurant
+     * 
+     * @param string $token
+     * @param Restaurant $restaurant
+     * @return boolean
+     */
+    protected function checkToken($token, Restaurant $restaurant = null)
+    {
+        if ($token === null) {
+            return false;
+        }
+        
+        $em = $this->getDoctrine()->getManager();
+        $authTokenRepo = $em->getRepository("IOApiBundle:AuthToken");
+        $this->authToken = $authTokenRepo->findOneByToken($token);
+        
+        return $this->authToken !== null && !$this->authToken->hasExpired() &&
+                ($restaurant === null || $this->authToken->getRestrictedRestaurants()->contains($restaurant));
+    }
 }

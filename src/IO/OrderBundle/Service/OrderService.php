@@ -153,6 +153,32 @@ class OrderService
 
         return $orderLine;
     }
+    
+
+    /**
+     * Remove a product from its id from an existing order
+     * 
+     * @param \IO\OrderBundle\Entity\OrderData $order
+     * @param integer $productId
+     * @param array $options
+     * @return \IO\OrderBundle\Entity\OrderData
+     */
+    public function removeProductFromOrder(OrderData $order, $productId, array $extra = null)
+    {
+        foreach ($order->getOrderLines() as $orderLine) {
+            $product = $orderLine->getItem();
+            if ($product->getId() === $productId && $product->getExtra() === $extra) {
+                $order->removeOrderLine($orderLine);
+                $this->em->remove($orderLine);
+                $this->em->persist($orderLine);
+                $this->em->persist($order);
+                $this->em->flush();
+                break;
+            }
+        }
+        
+        return $order;
+    }
 
     /**
      * process order from data
