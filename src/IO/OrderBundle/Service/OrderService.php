@@ -171,7 +171,7 @@ class OrderService
     {
         foreach ($order->getOrderLines() as $orderLine) {
             $product = $orderLine->getItem();
-            if ($product->getId() === $productId && $product->getExtra() === $extra) {
+            if ($product->getId() === $productId && $orderLine->getExtra() === $extra) {
                 $order->removeOrderLine($orderLine);
                 $this->em->remove($orderLine);
                 $this->em->persist($orderLine);

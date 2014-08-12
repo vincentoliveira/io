@@ -13,6 +13,8 @@ use IO\RestaurantBundle\Entity\RestaurantGroup;
 use IO\RestaurantBundle\Entity\CarteItem;
 use IO\RestaurantBundle\Entity\Media;
 use IO\ApiBundle\Entity\AuthToken;
+use IO\OrderBundle\Entity\OrderData;
+use IO\OrderBundle\Entity\OrderLine;
 
 /**
  * Description of IOTestCase
@@ -171,6 +173,20 @@ class IOTestCase extends WebTestCase
     {
         $orderService = $this->container->get('io.order_service');
         return $orderService->createOrder($restaurant, $token);
+    }
+    
+    /**
+     * Return new chart
+     * 
+     * @param \IO\RestaurantBundle\Entity\CarteItem $product
+     * @param \IO\OrderBundle\Entity\OrderData $cart
+     * @return \IO\OrderBundle\Entity\OrderData
+     */
+    protected function addProductToCart(CarteItem $product, OrderData $cart)
+    {
+        $orderService = $this->container->get('io.order_service');
+        $cart = $orderService->addProductToOrder($cart, $product->getId());
+        return $cart;
     }
 
     /**
