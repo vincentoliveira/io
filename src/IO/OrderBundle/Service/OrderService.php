@@ -174,7 +174,6 @@ class OrderService
             if ($product->getId() === $productId && $orderLine->getExtra() === $extra) {
                 $order->removeOrderLine($orderLine);
                 $this->em->remove($orderLine);
-                $this->em->persist($orderLine);
                 $this->em->persist($order);
                 $this->em->flush();
                 break;
