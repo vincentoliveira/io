@@ -206,8 +206,8 @@ class OrderController extends DefaultController
             return $this->errorResponse(self::BAD_PARAMETER);
         }
         
-        $productId = $request->request->get('product_id');
-        $extra = $request->request->get('extra');
+        $productId = intval($request->request->get('product_id'));
+        $extra = $request->request->get('extra', null);
         $cart = $this->orderSv->removeProductFromOrder($cart, $productId, $extra);
         
         $apiVisistor = new ApiElementVisitor();

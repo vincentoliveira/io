@@ -117,6 +117,7 @@ class OrderControllerTest extends IOTestCase
 
         $cart = $this->createCart($this->data['entity_restaurant'], $this->data['entity_token']);
         $this->addProductToCart($this->data['entity_product'], $cart);
+        $this->addProductToCart($this->data['entity_product'], $cart);
         $data['cart_id'] = $cart->getId();
 
         $url = $this->container->get('router')->generate('api_order_remove_product_from_cart');
@@ -390,10 +391,19 @@ class OrderControllerTest extends IOTestCase
                         "delevery_date" => null,
                         "status" => "DRAFT",
                         "customer" => null,
-                        "products" => array(),
+                        "products" => array(
+                            array(
+                                "product_id" => 2,
+                                "name" => "product",
+                                "short_name" => "product",
+                                "extra" => "",
+                                "vat" => "20.00",
+                                "price" => 1,
+                            ),
+                        ),
                         "payments" => array(),
-                        "total" => 0,
-                        "total_unpayed" => 0,
+                        "total" => 1,
+                        "total_unpayed" => 1,
                     ),
                 ),
             ),
@@ -417,10 +427,19 @@ class OrderControllerTest extends IOTestCase
                                 "extra" => "",
                                 "vat" => "20.00",
                                 "price" => 1,
-                            ),),
+                            ),
+                            array(
+                                "product_id" => 2,
+                                "name" => "product",
+                                "short_name" => "product",
+                                "extra" => "",
+                                "vat" => "20.00",
+                                "price" => 1,
+                            ),
+                        ),
                         "payments" => array(),
-                        "total" => 1,
-                        "total_unpayed" => 1,
+                        "total" => 2,
+                        "total_unpayed" => 2,
                     ),
                 ),
             ),
