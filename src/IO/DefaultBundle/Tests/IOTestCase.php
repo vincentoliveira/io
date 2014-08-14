@@ -151,7 +151,7 @@ class IOTestCase extends WebTestCase
             $category->setRestaurant($restaurant);
             $category->setName($categoryName);
             $category->setShortName($categoryName);
-            $product->setVisible(true);
+            $category->setVisible(true);
             $this->em->persist($category);
         }
         
@@ -188,6 +188,49 @@ class IOTestCase extends WebTestCase
         $cart = $orderService->addProductToOrder($cart, $product->getId());
         return $cart;
     }
+    
+    /**
+     * 
+     * @param type $optionName
+     * @param array $choices
+     * @param \IO\RestaurantBundle\Entity\CarteItem $product
+     */
+    protected function createOptionForProduct($optionName, array $choices, CarteItem $product)
+    {
+        $repo = $this->em->getRepository('IORestaurantBundle:CarteItem');
+        $option = $repo->findOneByName($optionName);
+        if ($option === null) {
+            $option = new CarteItem();
+            $option->setItemType(\IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_OPTION);
+            $option->setRestaurant($product->getRestaurant());
+            $option->setName($optionName);
+            $option->setShortName($optionName);
+            $option->setVisible(true);
+            
+            foreach ($choices as $choiceName) {
+                $choice = new CarteItem();
+                $choice->setItemType(\IO\RestaurantBundle\Enum\ItemTypeEnum::TYPE_OPTION_CHOICE);
+                $choice->setRestaurant($product->getRestaurant());
+                $choice->setParent($option);
+                $choice->setName($choiceName);
+                $choice->setShortName($choiceName);
+                $choice->setVisible(true);
+                $choice->setPrice(0);
+                
+                $option->addChild($choice);
+                $this->em->persist($choice);
+            }
+        }
+        
+        if (!$product->getDishOptions()->contains($option)) {
+            $product->addDishOption($option);
+        }
+        
+        $this->em->persist($option);
+        $this->em->flush();
+        
+        return $option;
+    }
 
     /**
      * Remove all occurence of $entityName
@@ -200,10 +243,21 @@ class IOTestCase extends WebTestCase
         $connection = $this->em->getConnection();
         $dbPlatform = $connection->getDatabasePlatform();
         $connection->beginTransaction();
+        
+        $tables = array($cmd->getTableName());
+        foreach ($cmd->getAssociationMappings() as $associationMapping) {
+            if (isset($associationMapping['joinTable']) && 
+                    isset($associationMapping['joinTable']['name'])) {
+                $tables[] = $associationMapping['joinTable']['name'];
+            }
+        }
+        
         try {
             $connection->query('SET FOREIGN_KEY_CHECKS=0');
-            $q = $dbPlatform->getTruncateTableSql($cmd->getTableName());
-            $connection->executeUpdate($q);
+            foreach ($tables as $table) {
+                $q = $dbPlatform->getTruncateTableSql($table);
+                $connection->executeUpdate($q);
+            }
             $connection->query('SET FOREIGN_KEY_CHECKS=1');
             $connection->commit();
         } catch (\Exception $e) {

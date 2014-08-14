@@ -114,10 +114,10 @@ class CarteItem implements ApiElement
     private $position;
     
     /**
-     * @ORM\ManyToMany(targetEntity="CarteItem")
+     * @ORM\ManyToMany(targetEntity="CarteItem", cascade={"remove", "persist"})
      * @ORM\JoinTable(name="dish_options",
-     *      joinColumns={@ORM\JoinColumn(name="dish_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="option_id", referencedColumnName="id")}
+     *      joinColumns={@ORM\JoinColumn(name="dish_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="option_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
     private $dishOptions;

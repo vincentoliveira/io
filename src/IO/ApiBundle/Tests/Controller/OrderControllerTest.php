@@ -24,6 +24,8 @@ class OrderControllerTest extends IOTestCase
         $token2 = $this->getTokenForRestaurant($restaurant2);
         $product = $this->productExistInCategoryForRestaurant('product', 'category', $restaurant);
         $product2 = $this->productExistInCategoryForRestaurant('product2', 'category', $restaurant);
+        $option = $this->createOptionForProduct('option', array('choice1', 'choice2'), $product);
+        
         
         $this->data['restaurant'] = $restaurant->getId();
         $this->data['restaurant2'] = $restaurant2->getId();
@@ -31,6 +33,7 @@ class OrderControllerTest extends IOTestCase
         $this->data['token2'] = $token2->getToken();
         $this->data['product'] = $product->getId();
         $this->data['product2'] = $product2->getId();
+        $this->data['options'] = array($option->getChildren()->first()->getId());
         
         $this->data['entity_restaurant'] = $restaurant;
         $this->data['entity_restaurant2'] = $restaurant2;
@@ -259,7 +262,7 @@ class OrderControllerTest extends IOTestCase
                                 "name" => "product",
                                 "short_name" => "product",
                                 "extra" => "",
-                                "vat" => "20.00",
+                                "vat" => 20.00,
                                 "price" => 1,
                             ),
                         ),
@@ -328,7 +331,36 @@ class OrderControllerTest extends IOTestCase
                                 "name" => "product",
                                 "short_name" => "product",
                                 "extra" => "",
-                                "vat" => "20.00",
+                                "vat" => 20.00,
+                                "price" => 1,
+                            ),
+                        ),
+                        "payments" => array(),
+                        "total" => 1,
+                        "total_unpayed" => 1,
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    'token' => 'token',
+                    'product_id' => 'product',
+                    'options' => 'options',
+                ),
+                200,
+                array(
+                    'cart' => array(
+                        'id' => 1,
+                        "delevery_date" => null,
+                        "status" => "DRAFT",
+                        "customer" => null,
+                        "products" => array(
+                            array(
+                                "product_id" => 2,
+                                "name" => "product",
+                                "short_name" => "product",
+                                "extra" => "choice1",
+                                "vat" => 20.00,
                                 "price" => 1,
                             ),
                         ),
@@ -397,7 +429,7 @@ class OrderControllerTest extends IOTestCase
                                 "name" => "product",
                                 "short_name" => "product",
                                 "extra" => "",
-                                "vat" => "20.00",
+                                "vat" => 20.00,
                                 "price" => 1,
                             ),
                         ),
@@ -425,7 +457,7 @@ class OrderControllerTest extends IOTestCase
                                 "name" => "product",
                                 "short_name" => "product",
                                 "extra" => "",
-                                "vat" => "20.00",
+                                "vat" => 20.00,
                                 "price" => 1,
                             ),
                             array(
@@ -433,7 +465,7 @@ class OrderControllerTest extends IOTestCase
                                 "name" => "product",
                                 "short_name" => "product",
                                 "extra" => "",
-                                "vat" => "20.00",
+                                "vat" => 20.00,
                                 "price" => 1,
                             ),
                         ),
