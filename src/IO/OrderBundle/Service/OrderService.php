@@ -167,7 +167,7 @@ class OrderService
      * @param array $options
      * @return \IO\OrderBundle\Entity\OrderData
      */
-    public function removeProductFromOrder(OrderData $order, $productId, array $extra = null)
+    public function removeProductFromOrder(OrderData $order, $productId, $extra = null)
     {
         foreach ($order->getOrderLines() as $orderLine) {
             $product = $orderLine->getItem();
