@@ -6,7 +6,12 @@ use JMS\DiExtraBundle\Annotation\Service;
 use JMS\DiExtraBundle\Annotation\Inject;
 use Symfony\Component\DependencyInjection\Container;
 use IO\UserBundle\Entity\User;
+use IO\UserBundle\Entity\UserIdentity;
+use IO\UserBundle\Entity\PhoneNumber;
+use IO\UserBundle\Entity\Address;
+use IO\UserBundle\Enum\GenderEnum;
 use IO\RestaurantBundle\Entity\Restaurant;
+use IO\ApiBundle\Utils\BadParameterException;
 /**
  * User Service
  * 
@@ -121,34 +126,147 @@ class UserService
      * Create a user from array
      * 
      * @param array $data
-     * @return \IO\RestaurantBundle\Entity\User|null
+     * @return \IO\UserBundle\Entity\User
+     * @throws BadParameterException
      */
     public function createUser(array $data)
     {
         $user = new User();
-        if (!isset($data['username']) || !isset($data['email']) || !isset($data['plainPassword'])) {
-            return null;
+        
+        $requiredFields = array('username', 'email', 'plainPassword');
+        $missingFields = array();
+        foreach ($requiredFields as $field) {
+            if (!isset($data[$field]) || empty($data[$field])) {
+                $missingFields[] = $field;
+            } else {
+                $setter = 'set' . ucfirst($field);
+                $user->{$setter}($data[$field]);
+            }
         }
         
-        $user->setUsername($data['username']);
-        $user->setEmail($data['email']);
-        $user->setPlainPassword($data['plainPassword']);
+        if (!empty($missingFields)) {
+            throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
+        }
         $user->setEnabled(true);
         
         if (isset($data['roles'])) {
             $user->setRoles($data['roles']);
-        }
-        
-        try {
-            $this->em->persist($user);
-            $this->em->flush();
-        } catch (\Exception $ex) {
-            return null;
+        } else {
+            $user->addRole('ROLE_CLIENT');
         }
         
         return $user;
     }
     
+    /**
+     * Create a user identity from array
+     * 
+     * @param array $data
+     * @return \IO\UserBundle\Entity\UserIdentity
+     * @throws BadParameterException
+     */
+    public function createUserIdentity(array $data)
+    {
+        $requiredFields = array('gender', 'lastname', 'firstname', 'email', 'birthdate');
+        $missingFields = array();
+        foreach ($requiredFields as $field) {
+            if (!isset($data[$field]) || empty($data[$field])) {
+                $missingFields[] = $field;
+            }
+        }
+        
+        if (!empty($missingFields)) {
+            throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
+        }
+        
+        if (!isset(GenderEnum::$genders[$data['gender']])) {
+            throw new BadParameterException('Bad parameter: gender');
+        }
+        
+        $birthdate = \DateTime::createFromFormat('Y-m-d', $data['birthdate']);
+        if ($birthdate === false) {
+            throw new BadParameterException('Bad parameter: birthdate');
+        }
+        
+        $userIdentity = new UserIdentity();
+        $userIdentity->setGender(GenderEnum::$genders[$data['gender']]);
+        $userIdentity->setLastname($data['lastname']);
+        $userIdentity->setFirstname($data['firstname']);
+        $userIdentity->setEmail($data['email']);
+        $userIdentity->setBirthdate($birthdate);
+        
+        return $userIdentity;
+    }
+    
+    /**
+     * Create a user identity from array
+     * 
+     * @param array $data
+     * @return \IO\UserBundle\Entity\PhoneNumber
+     * @throws BadParameterException
+     */
+    public function createPhoneNumber(array $data)
+    {
+        $requiredFields = array('prefix', 'number');
+        $missingFields = array();
+        foreach ($requiredFields as $field) {
+            if (!isset($data[$field]) || empty($data[$field])) {
+                $missingFields[] = $field;
+            }
+        }
+        
+        if (!isset(GenderEnum::$genders[$data['gender']])) {
+            throw new BadParameterException('Bad parameter: gender');
+        }
+        
+        $number = preg_replace('/(\W*)/', '', $data['number']);
+        
+        $phoneNumber = new PhoneNumber();
+        $phoneNumber->setPrefix($data['prefix']);
+        $phoneNumber->setNumber($number);
+        
+        return $phoneNumber;
+    }
+    
+    /**
+     * Create a user identity from array
+     * 
+     * @param array $data
+     * @return \IO\UserBundle\Entity\PhoneNumber
+     * @throws BadParameterException
+     */
+    public function createAddress(array $data)
+    {
+        $address = new Address();
+        
+        $requiredFields = array('number', 'street', 'postcode', 'city', 'country');
+        $missingFields = array();
+        foreach ($requiredFields as $field) {
+            if (!isset($data[$field]) || empty($data[$field])) {
+                $missingFields[] = $field;
+            } else {
+                $setter = 'set' . ucfirst($field);
+                $address->{$setter}($data[$field]);
+            }
+        }
+        
+        if (!isset(GenderEnum::$genders[$data['gender']])) {
+            throw new BadParameterException('Bad parameter: gender');
+        }
+        
+        $mandatoryFields = array('name', 'building', 'staircase', 'stairs', 'digicode', 'intercom', 'comment');
+        foreach ($mandatoryFields as $field) {
+            if (isset($data[$field]) && !empty($data[$field])) {
+                $setter = 'set' . ucfirst($field);
+                $address->{$setter}($data[$field]);
+            }
+        }
+        
+        
+        
+        
+        return $address;
+    }
     
     /**
      * Set current user restaurant

@@ -282,6 +282,7 @@ class IOTestCase extends WebTestCase
         }
         $user->setEmail($username . '@io.fr');
         $user->setPlainPassword($username);
+        $user->setEnabled(true);
         
         if ($restaurantName != null) {
             $restaurant = $this->em->getRepository('IORestaurantBundle:Restaurant')->findOneByName($restaurantName);

@@ -3,9 +3,11 @@
 namespace IO\ApiBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use JMS\DiExtraBundle\Annotation\Inject;
+use IO\ApiBundle\Utils\ApiElementVisitor;
 
 /**
  * Restaurant API Controller
@@ -22,6 +24,14 @@ class RestaurantController extends DefaultController
      * @var \IO\RestaurantBundle\Service\CarteItemService
      */
     public $carteItemSv;
+    
+    /**
+     * User Service
+     * 
+     * @Inject("io.user_service")
+     * @var \IO\UserBundle\Service\UserService
+     */
+    public $userSv;
     
     /**
      * GET /restaurant/menu/:id.json
@@ -76,4 +86,36 @@ class RestaurantController extends DefaultController
         return new JsonResponse(array('carte' => $carte));
     }
     
+    /**
+     * POST /restaurant/auth.json
+     * 
+     * Authentificate a restaurant from his manager login/paasword.
+     * Return auth token
+     * 
+     * Parameters:
+     * - <strong>email</strong> Email of the user you want to authenticate 
+     *                          (string)
+     * - <stroong>plainPassword</strong> Plain password of the user you want to 
+     *                                   authenticate (string)
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("/auth.json", name="api_restaurant_auth")
+     * @Method("POST")
+     */
+    public function authAction(Request $request)
+    {
+        $data = $request->request->all();
+        if ($data === null || empty($data)) {
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
+        }
+
+        $userToken = $this->userSv->authUser($data);
+        if ($userToken === null || $userToken->getUser()->getRestaurant() === null) {
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
+        }
+
+        $apiVisistor = new ApiElementVisitor();
+        return new JsonResponse(array('auth' => $apiVisistor->visitAuthToken($userToken)));
+    }
 }

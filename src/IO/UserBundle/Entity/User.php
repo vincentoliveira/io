@@ -23,10 +23,17 @@ class User extends BaseUser implements ApiElement
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    
 
     /**
-     * @var string
+     * @var UserIdentity
+     *
+     * @ORM\ManyToOne(targetEntity="IO\UserBundle\Entity\UserIdentity")
+     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=true)
+     */
+    private $identity;
+
+    /**
+     * @var \IO\RestaurantBundle\Entity\Restaurant
      *
      * @ORM\ManyToOne(targetEntity="IO\RestaurantBundle\Entity\Restaurant")
      * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=true)
@@ -34,13 +41,16 @@ class User extends BaseUser implements ApiElement
     private $restaurant;
     
     /**
-     * @var string
+     * @var \IO\RestaurantBundle\Entity\RestaurantGroup
      *
      * @ORM\ManyToOne(targetEntity="IO\RestaurantBundle\Entity\RestaurantGroup")
      * @ORM\JoinColumn(name="restaurant_group_id", referencedColumnName="id", nullable=true)
      */
     private $restaurantGroup;
     
+    /**
+     * {@inheritDoc}
+     */
     public function accept(\IO\ApiBundle\Utils\ApiElementVisitorInterface $visitor)
     {
         return $visitor->visitUser($this);
@@ -100,5 +110,28 @@ class User extends BaseUser implements ApiElement
     public function getRestaurantGroup()
     {
         return $this->restaurantGroup;
+    }
+
+    /**
+     * Set identity
+     *
+     * @param \IO\UserBundle\Entity\UserIdentity $identity
+     * @return User
+     */
+    public function setIdentity(\IO\UserBundle\Entity\UserIdentity $identity = null)
+    {
+        $this->identity = $identity;
+    
+        return $this;
+    }
+
+    /**
+     * Get identity
+     *
+     * @return \IO\UserBundle\Entity\UserIdentity 
+     */
+    public function getIdentity()
+    {
+        return $this->identity;
     }
 }

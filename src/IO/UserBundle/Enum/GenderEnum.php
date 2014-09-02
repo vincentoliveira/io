@@ -10,5 +10,8 @@ class GenderEnum
     const GENDER_MALE = 'MALE';
     const GENDER_FEMALE = 'FEMALE';
     
-    static $genders = array(self::GENDER_MALE, self::GENDER_FEMALE);
+    static $genders = array(
+        self::GENDER_MALE => self::GENDER_MALE, 
+        self::GENDER_FEMALE => self::GENDER_FEMALE,
+    );
 }

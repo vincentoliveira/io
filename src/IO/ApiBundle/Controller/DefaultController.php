@@ -12,6 +12,7 @@ use IO\RestaurantBundle\Entity\Restaurant;
 abstract class DefaultController extends Controller
 {
     const UNKNOWN_ERROR = "UNKNOWN_ERROR";
+    const INTERNAL_ERROR = "INTERNAL_ERROR";
     const EMPTY_PARAMETER = "EMPTY_PARAMETER";
     const BAD_PARAMETER = "BAD_PARAMETER";
     const BAD_AUTHENTIFICATION = "BAD_AUTHENTIFICATION";
@@ -25,6 +26,11 @@ abstract class DefaultController extends Controller
     static private $error_data = array(
         self::UNKNOWN_ERROR => array(
             'error_code' => 200,
+            'message' => "An unexpected error has occured.",
+            'err_no' => -1,
+        ),
+        self::INTERNAL_ERROR => array(
+            'error_code' => 500,
             'message' => "An unexpected error has occured.",
             'err_no' => 0,
         ),
@@ -51,7 +57,7 @@ abstract class DefaultController extends Controller
     );
 
 
-    protected function errorResponse($errorID = self::UNKNOWN_ERROR)
+    protected function errorResponse($errorID = self::UNKNOWN_ERROR, $msg = '')
     {
         if (isset(self::$error_data[$errorID])) {
             $error_data = self::$error_data[$errorID];
@@ -61,7 +67,7 @@ abstract class DefaultController extends Controller
         
         return new JsonResponse(array(
             'error' => $error_data['err_no'],
-            'message' => $error_data['message'],
+            'message' => empty($msg) ? $error_data['message'] : $msg,
         ), $error_data['error_code']);
     }
 

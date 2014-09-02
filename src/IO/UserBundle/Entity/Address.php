@@ -101,9 +101,9 @@ class Address
     /**
      * @var string
      *
-     * @ORM\Column(name="other_data", type="string", length=255, nullable=true)
+     * @ORM\Column(name="comment", type="string", length=255, nullable=true)
      */
-    private $otherData;
+    private $comment;
 
     /**
      * Get id
@@ -369,25 +369,25 @@ class Address
     }
 
     /**
-     * Set otherData
+     * Set comment
      *
-     * @param string $otherData
+     * @param string $comment
      * @return Address
      */
-    public function setOtherData($otherData)
+    public function setComment($comment)
     {
-        $this->otherData = $otherData;
+        $this->comment = $comment;
     
         return $this;
     }
 
     /**
-     * Get otherData
+     * Get comment
      *
      * @return string 
      */
-    public function getOtherData()
+    public function getComment()
     {
-        return $this->otherData;
+        return $this->comment;
     }
 }

@@ -60,7 +60,7 @@ class UserIdentity
      * @var Address
      *
      * @ORM\ManyToOne(targetEntity="IO\UserBundle\Entity\Address")
-     * @ORM\JoinColumn(name="address1_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="address1_id", referencedColumnName="id", nullable=true)
      */
     private $address1;
     
@@ -68,7 +68,7 @@ class UserIdentity
      * @var Address
      *
      * @ORM\ManyToOne(targetEntity="IO\UserBundle\Entity\Address")
-     * @ORM\JoinColumn(name="address2_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="address2_id", referencedColumnName="id", nullable=true)
      */
     private $address2;
     
@@ -76,7 +76,7 @@ class UserIdentity
      * @var Address
      *
      * @ORM\ManyToOne(targetEntity="IO\UserBundle\Entity\Address")
-     * @ORM\JoinColumn(name="address3_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="address3_id", referencedColumnName="id", nullable=true)
      */
     private $address3;
     
@@ -92,7 +92,7 @@ class UserIdentity
      * @var PhoneNumber
      *
      * @ORM\ManyToOne(targetEntity="IO\UserBundle\Entity\PhoneNumber")
-     * @ORM\JoinColumn(name="phone2_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="phone2_id", referencedColumnName="id", nullable=true)
      */
     private $phone2;
     
