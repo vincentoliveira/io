@@ -133,7 +133,7 @@ class UserService
     {
         $user = new User();
         
-        $requiredFields = array('username', 'email', 'plainPassword');
+        $requiredFields = array('email', 'plainPassword');
         $missingFields = array();
         foreach ($requiredFields as $field) {
             if (!isset($data[$field]) || empty($data[$field])) {
@@ -147,6 +147,7 @@ class UserService
         if (!empty($missingFields)) {
             throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
         }
+        $user->setUsername($data['email']);
         $user->setEnabled(true);
         
         if (isset($data['roles'])) {
@@ -183,7 +184,7 @@ class UserService
             throw new BadParameterException('Bad parameter: gender');
         }
         
-        $birthdate = \DateTime::createFromFormat('Y-m-d', $data['birthdate']);
+        $birthdate = \DateTime::createFromFormat('d/m/Y', $data['birthdate']);
         if ($birthdate === false) {
             throw new BadParameterException('Bad parameter: birthdate');
         }
@@ -215,8 +216,8 @@ class UserService
             }
         }
         
-        if (!isset(GenderEnum::$genders[$data['gender']])) {
-            throw new BadParameterException('Bad parameter: gender');
+        if (!empty($missingFields)) {
+            throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
         }
         
         $number = preg_replace('/(\W*)/', '', $data['number']);
@@ -250,8 +251,8 @@ class UserService
             }
         }
         
-        if (!isset(GenderEnum::$genders[$data['gender']])) {
-            throw new BadParameterException('Bad parameter: gender');
+        if (!empty($missingFields)) {
+            throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
         }
         
         $mandatoryFields = array('name', 'building', 'staircase', 'stairs', 'digicode', 'intercom', 'comment');
@@ -261,9 +262,6 @@ class UserService
                 $address->{$setter}($data[$field]);
             }
         }
-        
-        
-        
         
         return $address;
     }

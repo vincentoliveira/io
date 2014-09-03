@@ -89,7 +89,7 @@ class RestaurantController extends DefaultController
     /**
      * POST /restaurant/auth.json
      * 
-     * Authentificate a restaurant from his manager login/paasword.
+     * Authentificate a restaurant from its manager login/paasword.
      * Return auth token
      * 
      * Parameters:

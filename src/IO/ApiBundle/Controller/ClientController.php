@@ -80,6 +80,7 @@ class ClientController extends DefaultController
             $user = $this->userSv->createUser($data);
             $user->setIdentity($identity);
             $em->persist($user);
+            $em->flush();
         } catch (BadParameterException $e) {
             return $this->errorResponse(self::BAD_PARAMETER, $e->getMessage());
         } catch (\Exception $e) {

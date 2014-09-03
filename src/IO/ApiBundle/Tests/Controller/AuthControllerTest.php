@@ -13,9 +13,9 @@ class AuthControllerTest extends IOTestCase
     }
     
     /**
-     * @dataProvider authUserDataProvider
+     * @dataProvider authRestaurantDataProvider
      */
-    public function testAuthUser($data, $statusCode)
+    public function testAuthRestaurant($data, $statusCode)
     {
         $this->getRestaurant('restaurant');
         $this->userExists('usertest', 'restaurant');
@@ -33,7 +33,7 @@ class AuthControllerTest extends IOTestCase
      * 
      * @return array
      */
-    public function authUserDataProvider()
+    public function authRestaurantDataProvider()
     {
         return array(
             array(array(), 403),
