@@ -3,6 +3,7 @@
 namespace IO\ApiBundle\Utils;
 
 use IO\UserBundle\Entity\User;
+use IO\UserBundle\Entity\UserIdentity;
 use IO\ApiBundle\Entity\AuthToken;
 use IO\RestaurantBundle\Entity\Restaurant;
 use IO\RestaurantBundle\Entity\CarteItem;
@@ -28,10 +29,28 @@ class ApiElementVisitor implements ApiElementVisitorInterface
             return array();
         }
         
+        $identity = null;
+        if ($user->getIdentity()) {
+            $identity = $user->getIdentity()->accept($this);
+        }
+        
         return array(
             'id' => $user->getId(),
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
+            'identity' => $identity,
+        );
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function visitUserIdentity(UserIdentity $identity)
+    {
+        // TODO: show all data
+        return array(
+            'firstname' => $identity->getFirstname(),
+            'lastname' => $identity->getLastname(),
         );
     }
 

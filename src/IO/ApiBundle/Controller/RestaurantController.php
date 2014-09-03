@@ -110,12 +110,12 @@ class RestaurantController extends DefaultController
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
 
-        $userToken = $this->userSv->authUser($data);
+        $userToken = $this->userSv->authUserData($data);
         if ($userToken === null || $userToken->getUser()->getRestaurant() === null) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
 
         $apiVisistor = new ApiElementVisitor();
-        return new JsonResponse(array('auth' => $apiVisistor->visitAuthToken($userToken)));
+        return new JsonResponse(array('restaurant_token' => $userToken->accept($apiVisistor)));
     }
 }

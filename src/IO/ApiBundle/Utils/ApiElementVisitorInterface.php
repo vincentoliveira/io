@@ -3,6 +3,7 @@
 namespace IO\ApiBundle\Utils;
 
 use IO\UserBundle\Entity\User;
+use IO\UserBundle\Entity\UserIdentity;
 use IO\ApiBundle\Entity\AuthToken;
 use IO\RestaurantBundle\Entity\Restaurant;
 use IO\RestaurantBundle\Entity\CarteItem;
@@ -20,6 +21,7 @@ use IO\OrderBundle\Entity\Customer;
 interface ApiElementVisitorInterface
 {
     public function visitUser(User $user);
+    public function visitUserIdentity(UserIdentity $identity);
     public function visitAuthToken(AuthToken $token);
     public function visitRestaurant(Restaurant $restaurant);
     public function visitCategory(CarteItem $category);

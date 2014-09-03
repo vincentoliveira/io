@@ -20,6 +20,7 @@ class ClientControllerTest extends IOTestCase
      */
     public function testCreateClient($data, $statusCode)
     {
+        $this->truncate('IOApiBundle:AuthToken');
         $this->userDoesNotExists('vincent@io.fr');
         $this->userExists('usertest');
 

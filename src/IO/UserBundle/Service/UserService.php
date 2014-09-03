@@ -99,7 +99,7 @@ class UserService
      *
      * @return \IO\ApiBundle\Entity\AuthToken
      */
-    public function authUser(array $data)
+    public function authUserData(array $data)
     {
         if (!isset($data['email']) || !isset($data['plainPassword'])) {
             return null;

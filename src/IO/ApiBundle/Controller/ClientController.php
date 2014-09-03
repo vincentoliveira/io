@@ -27,6 +27,14 @@ class ClientController extends DefaultController
     public $userSv;
 
     /**
+     * User token service
+     * 
+     * @Inject("io.auth_token_service")
+     * @var \IO\ApiBundle\Service\AuthTokenService
+     */
+    public $userTokenSv;
+
+    /**
      * POST /client/create.json
      * 
      * Create a user from the json data post in the request
@@ -86,9 +94,11 @@ class ClientController extends DefaultController
         } catch (\Exception $e) {
             return $this->errorResponse(self::INTERNAL_ERROR, $e->getMessage());
         }
+        
+        $userToken = $this->userTokenSv->createToken($user);
 
         $apiVisistor = new ApiElementVisitor();
-        return new JsonResponse(array('user' => $apiVisistor->visitUser($user)));
+        return new JsonResponse(array('client_token' => $userToken->accept($apiVisistor)));
     }
 
 }
