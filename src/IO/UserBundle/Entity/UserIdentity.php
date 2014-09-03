@@ -84,7 +84,7 @@ class UserIdentity
      * @var PhoneNumber
      *
      * @ORM\ManyToOne(targetEntity="IO\UserBundle\Entity\PhoneNumber")
-     * @ORM\JoinColumn(name="phone1_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="phone1_id", referencedColumnName="id", nullable=true)
      */
     private $phone1;
     
