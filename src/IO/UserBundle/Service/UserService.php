@@ -255,7 +255,7 @@ class UserService
             throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
         }
         
-        $mandatoryFields = array('name', 'building', 'staircase', 'stairs', 'digicode', 'intercom', 'comment');
+        $mandatoryFields = array('name', 'building', 'staircase', 'floor', 'digicode', 'intercom', 'comment');
         foreach ($mandatoryFields as $field) {
             if (isset($data[$field]) && !empty($data[$field])) {
                 $setter = 'set' . ucfirst($field);

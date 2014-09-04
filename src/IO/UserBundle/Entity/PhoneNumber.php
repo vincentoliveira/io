@@ -3,6 +3,8 @@
 namespace IO\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use IO\ApiBundle\Utils\ApiElementVisitorInterface;
+use IO\ApiBundle\Utils\ApiElement;
 
 /**
  * PhoneNumber Entity
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="phone_number")
  * @ORM\Entity
  */
-class PhoneNumber
+class PhoneNumber implements ApiElement
 {
     /**
      * @var integer
@@ -34,6 +36,14 @@ class PhoneNumber
      * @ORM\Column(name="number", type="string", length=15, nullable=false)
      */
     private $number;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function accept(ApiElementVisitorInterface $visitor)
+    {
+        return $visitor->visitPhoneNumber($this);
+    }
 
     /**
      * Get id

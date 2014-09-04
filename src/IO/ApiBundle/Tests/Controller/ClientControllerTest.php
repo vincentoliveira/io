@@ -52,7 +52,14 @@ class ClientControllerTest extends IOTestCase
                         array(
                             'prefix' => '+33',
                             'number' => '123456789',
-                        )
+                        ),
+                    ),
+                    'address' => array(
+                        'number' => '39',
+                        'street' => 'rue du Caire',
+                        'postcode' => '75002',
+                        'city' => 'Paris',
+                        'country' => 'France',
                     ),
                 ),
                 200

@@ -3,6 +3,8 @@
 namespace IO\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use IO\ApiBundle\Utils\ApiElementVisitorInterface;
+use IO\ApiBundle\Utils\ApiElement;
 
 /**
  * Address Entity
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="address")
  * @ORM\Entity
  */
-class Address
+class Address implements ApiElement
 {
     /**
      * @var integer
@@ -57,9 +59,9 @@ class Address
     private $city;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="country", type="integer", nullable=false)
+     * @ORM\Column(name="country", type="string", length=31, nullable=false)
      */
     private $country;
 
@@ -80,9 +82,9 @@ class Address
     /**
      * @var string
      *
-     * @ORM\Column(name="stairs", type="string", length=15, nullable=true)
+     * @ORM\Column(name="floor", type="string", length=15, nullable=true)
      */
-    private $stairs;
+    private $floor;
     
     /**
      * @var string
@@ -104,6 +106,14 @@ class Address
      * @ORM\Column(name="comment", type="string", length=255, nullable=true)
      */
     private $comment;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function accept(ApiElementVisitorInterface $visitor)
+    {
+        return $visitor->visitAddress($this);
+    }
 
     /**
      * Get id
@@ -233,7 +243,7 @@ class Address
     /**
      * Set country
      *
-     * @param integer $country
+     * @param string $country
      * @return Address
      */
     public function setCountry($country)
@@ -246,7 +256,7 @@ class Address
     /**
      * Get country
      *
-     * @return integer 
+     * @return string 
      */
     public function getCountry()
     {
@@ -300,26 +310,26 @@ class Address
     }
 
     /**
-     * Set stairs
+     * Set floor
      *
-     * @param string $stairs
+     * @param string $floor
      * @return Address
      */
-    public function setStairs($stairs)
+    public function setFloor($floor)
     {
-        $this->stairs = $stairs;
+        $this->floor = $floor;
     
         return $this;
     }
 
     /**
-     * Get stairs
+     * Get floor
      *
      * @return string 
      */
-    public function getStairs()
+    public function getFloor()
     {
-        return $this->stairs;
+        return $this->floor;
     }
 
     /**

@@ -4,6 +4,8 @@ namespace IO\ApiBundle\Utils;
 
 use IO\UserBundle\Entity\User;
 use IO\UserBundle\Entity\UserIdentity;
+use IO\UserBundle\Entity\Address;
+use IO\UserBundle\Entity\PhoneNumber;
 use IO\ApiBundle\Entity\AuthToken;
 use IO\RestaurantBundle\Entity\Restaurant;
 use IO\RestaurantBundle\Entity\CarteItem;
@@ -47,10 +49,67 @@ class ApiElementVisitor implements ApiElementVisitorInterface
      */
     public function visitUserIdentity(UserIdentity $identity)
     {
-        // TODO: show all data
+        $address1 = $address2 = $address3 = $phone1 = $phone2 = null;
+        
+        if ($identity->getAddress1()) {
+            $address1 = $identity->getAddress1()->accept($this);
+        }
+        if ($identity->getAddress2()) {
+            $address2 = $identity->getAddress2()->accept($this);
+        }
+        if ($identity->getAddress3()) {
+            $address3 = $identity->getAddress3()->accept($this);
+        }
+        if ($identity->getPhone1()) {
+            $phone1 = $identity->getPhone1()->accept($this);
+        }
+        if ($identity->getPhone2()) {
+            $phone2 = $identity->getPhone2()->accept($this);
+        }
+        
         return array(
+            'gender' => $identity->getGender(),
             'firstname' => $identity->getFirstname(),
             'lastname' => $identity->getLastname(),
+            'birthdate' => $identity->getBirthdate(),
+            'email' => $identity->getEmail(),
+            'address1' => $address1,
+            'address2' => $address2,
+            'address3' => $address3,
+            'phone1' => $phone1,
+            'phone2' => $phone2,
+        );
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function visitAddress(Address $address)
+    {
+        return array(
+            'name' => $address->getName(),
+            'number' => $address->getNumber(),
+            'street' => $address->getStreet(),
+            'post_code' => $address->getPostCode(),
+            'city' => $address->getCity(),
+            'country' => $address->getCountry(),
+            'building' => $address->getBuilding(),
+            'staircase' => $address->getStaircase(),
+            'floor' => $address->getFloor(),
+            'digicode' => $address->getDigicode(),
+            'intercom' => $address->getIntercom(),
+            'comment' => $address->getComment(),
+        );
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function visitPhoneNumber(PhoneNumber $phone)
+    {
+        return array(
+            'prefix' => $phone->getPrefix(),
+            'number' => $phone->getNumber(),
         );
     }
 
