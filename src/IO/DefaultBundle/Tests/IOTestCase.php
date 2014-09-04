@@ -15,6 +15,7 @@ use IO\RestaurantBundle\Entity\Media;
 use IO\ApiBundle\Entity\AuthToken;
 use IO\OrderBundle\Entity\OrderData;
 use IO\OrderBundle\Entity\OrderLine;
+use IO\UserBundle\Entity\UserIdentity;
 
 /**
  * Description of IOTestCase
@@ -299,6 +300,25 @@ class IOTestCase extends WebTestCase
         }
         
         $this->em->persist($user);
+        $this->em->flush();
+        
+        return $user;
+    }
+    
+    public function clientExists($username)
+    {
+        $user = $this->userExists($username, null, "ROLE_CLIENT");
+        $userIdentity = new UserIdentity();
+        $userIdentity->setFirstname($username);
+        $userIdentity->setLastname($username);
+        $userIdentity->setGender(\IO\UserBundle\Enum\GenderEnum::GENDER_MALE);
+        $userIdentity->setBirthdate(new \DateTime());
+        $userIdentity->setEmail($user->getEmail());
+        
+        $user->setIdentity($userIdentity);
+        
+        $this->em->persist($user);
+        $this->em->persist($userIdentity);
         $this->em->flush();
         
         return $user;

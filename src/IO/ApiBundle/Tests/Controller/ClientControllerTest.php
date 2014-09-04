@@ -66,5 +66,33 @@ class ClientControllerTest extends IOTestCase
             ),
         );
     }
+    
+    /**
+     * @dataProvider authClientDataProvider
+     */
+    public function testAuthClient($data, $statusCode)
+    {
+        $this->clientExists('client');
+
+        $url = $this->container->get('router')->generate('api_client_auth');
+        $this->client->request('POST', $url, $data);
+
+        $response = $this->client->getResponse();
+        $this->assertEquals($statusCode, $response->getStatusCode());
+    }
+
+    /**
+     * Data provider for test auth user
+     * 
+     * @return array
+     */
+    public function authClientDataProvider()
+    {
+        return array(
+            array(array(), 403),
+            array(array('email' => 'client@io.fr', 'plainPassword' => 'WRONG-PWD'), 403),
+            array(array('email' => 'client@io.fr', 'plainPassword' => 'client'), 200),
+        );
+    }
 
 }

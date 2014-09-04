@@ -32,6 +32,14 @@ class RestaurantController extends DefaultController
      * @var \IO\UserBundle\Service\UserService
      */
     public $userSv;
+
+    /**
+     * User token service
+     * 
+     * @Inject("io.auth_token_service")
+     * @var \IO\ApiBundle\Service\AuthTokenService
+     */
+    public $userTokenSv;
     
     /**
      * GET /restaurant/menu/:id.json
@@ -110,9 +118,14 @@ class RestaurantController extends DefaultController
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
 
-        $userToken = $this->userSv->authUserData($data);
-        if ($userToken === null || $userToken->getUser()->getRestaurant() === null) {
+        $user = $this->userSv->authUserData($data);
+        if ($user === null || $user->getRestaurant() === null) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
+        }
+        
+        $userToken = $this->userTokenSv->createToken($user);
+        if ($userToken === null) {
+            return $this->errorResponse(self::INTERNAL_ERROR);
         }
 
         $apiVisistor = new ApiElementVisitor();

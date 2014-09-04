@@ -51,14 +51,6 @@ class UserService
      * @var \FOS\UserBundle\Model\UserManager
      */
     public $userManager;
-
-    /**
-     * User token service
-     * 
-     * @Inject("io.auth_token_service")
-     * @var \IO\ApiBundle\Service\AuthTokenService
-     */
-    public $userTokenSv;
     
     /**
      * Get loggued user
@@ -97,7 +89,7 @@ class UserService
     /**
      * Authentification user
      *
-     * @return \IO\ApiBundle\Entity\AuthToken
+     * @return User
      */
     public function authUserData(array $data)
     {
@@ -118,7 +110,7 @@ class UserService
             return null;
         }
         
-        return $this->userTokenSv->createToken($user);
+        return $user;
     }
     
     

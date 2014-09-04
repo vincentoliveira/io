@@ -28,7 +28,7 @@ class User extends BaseUser implements ApiElement
      * @var UserIdentity
      *
      * @ORM\ManyToOne(targetEntity="IO\UserBundle\Entity\UserIdentity")
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="identity_id", referencedColumnName="id", nullable=true)
      */
     private $identity;
 

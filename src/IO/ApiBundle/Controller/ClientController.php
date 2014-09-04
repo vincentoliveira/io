@@ -101,4 +101,42 @@ class ClientController extends DefaultController
         return new JsonResponse(array('client_token' => $userToken->accept($apiVisistor)));
     }
 
+    
+    /**
+     * POST /client/auth.json
+     * 
+     * Authenticate a client from its login/paasword.
+     * Return auth token
+     * 
+     * Parameters:
+     * - <strong>email</strong> Email of the user you want to authenticate 
+     *                          (string)
+     * - <stroong>plainPassword</strong> Plain password of the user you want to 
+     *                                   authenticate (string)
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("/auth.json", name="api_client_auth")
+     * @Method("POST")
+     */
+    public function authAction(Request $request)
+    {
+        $data = $request->request->all();
+        if ($data === null || empty($data)) {
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
+        }
+
+        $user = $this->userSv->authUserData($data);
+        if ($user === null || $user->getIdentity() === null) {
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
+        }
+        
+        $userToken = $this->userTokenSv->createToken($user);
+        if ($userToken === null) {
+            return $this->errorResponse(self::INTERNAL_ERROR);
+        }
+
+        $apiVisistor = new ApiElementVisitor();
+        return new JsonResponse(array('client_token' => $userToken->accept($apiVisistor)));
+    }
 }
