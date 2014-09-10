@@ -26,7 +26,7 @@ class UserIdentity implements ApiElement
     /**
      * @var string
      *
-     * @ORM\Column(name="gender", type="integer", nullable=false)
+     * @ORM\Column(name="gender", type="integer", nullable=true)
      */
     private $gender;
 

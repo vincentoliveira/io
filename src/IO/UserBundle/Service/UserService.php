@@ -160,7 +160,7 @@ class UserService
      */
     public function createUserIdentity(array $data)
     {
-        $requiredFields = array('gender', 'lastname', 'firstname', 'email', 'birthdate');
+        $requiredFields = array('lastname', 'firstname', 'email', 'birthdate');
         $missingFields = array();
         foreach ($requiredFields as $field) {
             if (!isset($data[$field]) || empty($data[$field])) {
@@ -172,21 +172,20 @@ class UserService
             throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
         }
         
-        if (!isset(GenderEnum::$genders[$data['gender']])) {
-            throw new BadParameterException('Bad parameter: gender');
-        }
-        
         $birthdate = \DateTime::createFromFormat('d/m/Y', $data['birthdate']);
         if ($birthdate === false) {
             throw new BadParameterException('Bad parameter: birthdate');
         }
         
         $userIdentity = new UserIdentity();
-        $userIdentity->setGender(GenderEnum::$genders[$data['gender']]);
         $userIdentity->setLastname($data['lastname']);
         $userIdentity->setFirstname($data['firstname']);
         $userIdentity->setEmail($data['email']);
         $userIdentity->setBirthdate($birthdate);
+        
+        if (isset($data['gender']) && isset(GenderEnum::$genders[$data['gender']])) {
+            $userIdentity->setGender(GenderEnum::$genders[$data['gender']]);
+        }
         
         return $userIdentity;
     }
