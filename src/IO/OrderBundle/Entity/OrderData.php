@@ -126,6 +126,7 @@ class OrderData implements ApiElement
         }
         return $price;
     }
+    
     /**
      * Get no taxe total price
      *
@@ -138,6 +139,20 @@ class OrderData implements ApiElement
             $price += $line->getItemPrice() / (1 + $line->getItemVat() / 100);
         }
         return $price;
+    }
+    
+    /**
+     * Get vat amount
+     *
+     * @return integer 
+     */
+    public function getVatAmount()
+    {
+        $vatAmount = 0;
+        foreach ($this->orderLines as $line) {
+            $vatAmount += $line->getItemPrice() - ($line->getItemPrice() / (1 + $line->getItemVat() / 100));
+        }
+        return $vatAmount;
     }
     
     /**

@@ -141,7 +141,7 @@ class IOTestCase extends WebTestCase
             $product->setRestaurant($restaurant);
             $product->setName($productName);
             $product->setShortName($productName);
-            $product->setPrice(1.0);
+            $product->setPrice(1.2);
             $product->setVisible(true);
         }
                 

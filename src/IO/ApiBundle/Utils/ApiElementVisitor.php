@@ -275,8 +275,10 @@ class ApiElementVisitor implements ApiElementVisitorInterface
             'status' => $orderData->getLastStatus(),
             'customer' => null,
             'products' => array(),
-            'payments' => array(),
+            'payments' => array(), 
             'total' => $orderData->getTotalPrice(),
+            'no_tax_total' => $orderData->getNoTaxeTotalPrice(),
+            'vat_amount' => $orderData->getVatAmount(),
             'total_unpayed' => $orderData->getTotalPrice() - $orderData->getPayedAmount(),
         );
         
