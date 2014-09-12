@@ -5,7 +5,7 @@ namespace IO\ApiBundle\Tests\Controller;
 use IO\DefaultBundle\Tests\IOTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class OrderControllerTest extends IOTestCase
+class CartControllerTest extends IOTestCase
 {
 
     protected $data = array();

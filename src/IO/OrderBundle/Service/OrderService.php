@@ -182,6 +182,31 @@ class OrderService
         
         return $order;
     }
+    
+    /**
+     * Validate cart
+     * 
+     * @param \IO\OrderBundle\Entity\OrderData $order
+     * @param \IO\ApiBundle\Entity\AuthToken $userToken
+     * @return \IO\OrderBundle\Entity\OrderData
+     */
+    public function validateCart(OrderData $order, AuthToken $userToken)
+    {
+        $orderStatus = new OrderStatus();
+        $status->setOrder($order);
+        $status->setDate(new \DateTime());
+        $status->setOldStatus($order->getLastStatus());
+        $status->setNewStatus(OrderStatusEnum::STATUS_INIT);
+        $this->em->persist($status);
+        
+        $order->addOrderStatus($orderStatus);
+        $order->setClient($userToken->getUser());
+        
+        $this->em->persist($order);
+        $this->em->flush();
+        
+        return $order;
+    }
 
     /**
      * process order from data
@@ -241,7 +266,7 @@ class OrderService
                 $customer->setName($name);
             }
 
-            $order->setCustomer($customer);
+//            $order->setCustomer($customer);
         }
 
         $date = null;

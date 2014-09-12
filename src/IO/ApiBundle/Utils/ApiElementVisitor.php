@@ -282,8 +282,8 @@ class ApiElementVisitor implements ApiElementVisitorInterface
             'total_unpayed' => $orderData->getTotalPrice() - $orderData->getPayedAmount(),
         );
         
-        if ($orderData->getCustomer()) {
-            $result['customer'] = $orderData->getCustomer()->accept($this);
+        if ($orderData->getClient()) {
+            $result['client'] = $orderData->getClient()->accept($this);
         }
         
         foreach ($orderData->getOrderLines() as $orderLine) {

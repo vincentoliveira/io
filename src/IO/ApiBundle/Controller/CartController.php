@@ -13,9 +13,9 @@ use IO\ApiBundle\Utils\ApiElementVisitor;
 /**
  * Order API Controller
  * 
- * @Route("/order")
+ * @Route("/order/cart")
  */
-class OrderController extends DefaultController
+class CartController extends DefaultController
 {
 
     /**
@@ -39,7 +39,7 @@ class OrderController extends DefaultController
      *                                  cart
      * 
      * @return JsonResponse
-     * @Route("/cart/{cartId}.json", name="api_order_get_cart")
+     * @Route("/{cartId}.json", name="api_order_get_cart")
      * @Method("GET")
      */
     public function getCartAction(Request $request, $cartId)
@@ -50,7 +50,7 @@ class OrderController extends DefaultController
         $token = $request->query->get('token', null);
         $orderRepo = $em->getRepository("IOOrderBundle:OrderData");
         $cart = $orderRepo->find($cartId);
-        if ($cart === null || !$this->checkToken($token, $cart->getRestaurant())) {
+        if ($cart === null || !$this->checkRestaurantToken($token, $cart->getRestaurant())) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
         
@@ -76,7 +76,7 @@ class OrderController extends DefaultController
      *                                  options if necessary (optionnal)
      * 
      * @return JsonResponse
-     * @Route("/cart/create.json", name="api_order_create_cart")
+     * @Route("/create.json", name="api_order_create_cart")
      * @Method("POST")
      */
     public function createCartAction(Request $request)
@@ -92,7 +92,7 @@ class OrderController extends DefaultController
         
         // check token
         $token = $request->request->get('token', null);
-        if (!$this->checkToken($token, $restaurant)) {
+        if (!$this->checkRestaurantToken($token, $restaurant)) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
         
@@ -128,7 +128,7 @@ class OrderController extends DefaultController
      *                                  options if necessary (optionnal)
      * 
      * @return JsonResponse
-     * @Route("/cart/add_product.json", name="api_order_add_product_to_cart")
+     * @Route("/add_product.json", name="api_order_add_product_to_cart")
      * @Method("POST")
      */
     public function addProductToCartAction(Request $request)
@@ -143,7 +143,7 @@ class OrderController extends DefaultController
         
         // check token
         $token = $request->request->get('token', null);
-        if ($cart === null || !$this->checkToken($token, $cart->getRestaurant())) {
+        if ($cart === null || !$this->checkRestaurantToken($token, $cart->getRestaurant())) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
         
@@ -179,7 +179,7 @@ class OrderController extends DefaultController
      * - <strong>extra</strong>         The desired product to be removed extra
      * 
      * @return JsonResponse
-     * @Route("/cart/remove_product.json", name="api_order_remove_product_from_cart")
+     * @Route("/remove_product.json", name="api_order_remove_product_from_cart")
      * @Method("DELETE")
      */
     public function removeProductToCartAction(Request $request)
@@ -194,7 +194,7 @@ class OrderController extends DefaultController
         
         // check token
         $token = $request->request->get('token', null);
-        if ($cart === null || !$this->checkToken($token, $cart->getRestaurant())) {
+        if ($cart === null || !$this->checkRestaurantToken($token, $cart->getRestaurant())) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
         
@@ -209,6 +209,49 @@ class OrderController extends DefaultController
         $productId = intval($request->request->get('product_id'));
         $extra = $request->request->get('extra', null);
         $cart = $this->orderSv->removeProductFromOrder($cart, $productId, $extra);
+        
+        $apiVisistor = new ApiElementVisitor();
+        return new JsonResponse(array('cart' => $cart->accept($apiVisistor)));
+    }
+    
+    /**
+     * POST /order/cart/create.json
+     * 
+     * Create a cart and return it.
+     * 
+     * Parameters:
+     * - <strong>restaurant_token</strong> The alphanumeric token of the 
+     *                                     restaurant.
+     * - <strong>user_token</strong>       The alphanumeric token of the 
+     *                                     user.
+     * @return JsonResponse
+     * @Route("/validate.json", name="api_order_validate_cart")
+     * @Method("POST")
+     */
+    public function validateCartAction(Request $request)
+    {
+        // get cart
+        $cartId = $request->request->get('cart_id', null);
+        if ($cartId !== null) {
+            $em = $this->getDoctrine()->getManager();
+            $orderRepo = $em->getRepository("IOOrderBundle:OrderData");
+            $cart = $orderRepo->find($cartId);
+        }
+        
+        // check restaurant token and user token
+        $restaurantToken = $request->request->get('restaurant_token', null);
+        $userToken = $request->request->get('user_token', null);
+        if ($cart === null || 
+                !$this->checkUserToken($userToken) || 
+                !$this->checkRestaurantToken($restaurantToken, $cart->getRestaurant())) {
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
+        }
+        
+        if ($this->orderSv->isLocked($cart)) {
+            return $this->errorResponse(self::ORDER_LOCKED);
+        }
+        
+        $cart = $this->orderSv->validateCart($cart, $userToken);
         
         $apiVisistor = new ApiElementVisitor();
         return new JsonResponse(array('cart' => $cart->accept($apiVisistor)));

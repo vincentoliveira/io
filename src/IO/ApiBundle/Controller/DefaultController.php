@@ -78,7 +78,7 @@ abstract class DefaultController extends Controller
      * @param Restaurant $restaurant
      * @return boolean
      */
-    protected function checkToken($token, Restaurant $restaurant = null)
+    protected function checkRestaurantToken($token, Restaurant $restaurant = null)
     {
         if (empty($token)) {
             return false;
@@ -90,5 +90,26 @@ abstract class DefaultController extends Controller
         
         return $this->authToken !== null && !$this->authToken->hasExpired() &&
                 ($restaurant === null || $this->authToken->getRestrictedRestaurants()->contains($restaurant));
+    }
+
+    /**
+     * Check authentification token for user
+     * 
+     * @param string $token
+     * @param Restaurant $restaurant
+     * @return boolean
+     */
+    protected function checkUserToken($token)
+    {
+        if (empty($token)) {
+            return false;
+        }
+        
+        $em = $this->getDoctrine()->getManager();
+        $authTokenRepo = $em->getRepository("IOApiBundle:AuthToken");
+        $this->authToken = $authTokenRepo->findOneByToken($token);        
+        
+        return $this->authToken !== null && !$this->authToken->hasExpired() &&
+                $this->authToken->getUser() && $this->authToken->getUser()->hasRole("ROLE_CLIENT");
     }
 }

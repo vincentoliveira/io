@@ -131,13 +131,13 @@ class RemoteController extends Controller
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 
-                $customer = $draftOrder->getCustomer();
-                $existingCustomer = $this->getDoctrine()->getRepository('IOOrderBundle:Customer')->findOneByEmail($customer->getEmail());
-                if ($existingCustomer !== null) {
-                    $draftOrder->setCustomer($existingCustomer);
-                } else {
-                    $em->persist($customer);
-                }
+                //$customer = $draftOrder->getCustomer();
+//                $existingCustomer = $this->getDoctrine()->getRepository('IOOrderBundle:Customer')->findOneByEmail($customer->getEmail());
+//                if ($existingCustomer !== null) {
+//                    $draftOrder->setCustomer($existingCustomer);
+//                } else {
+//                    $em->persist($customer);
+//                }
                 
                 $em->persist($draftOrder);
                 $em->flush();

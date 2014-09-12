@@ -186,16 +186,16 @@ class RemoteOrderService {
      * @param \IO\OrderBundle\Entity\OrderData $draftOrder
      */
     protected function sendOrderEmailToClient(OrderData $draftOrder) {
-        $templateContent = $this->twig->loadTemplate('IODefaultBundle:Mail:clientOrderConfirmation.html.twig');
-        $body = $templateContent->render(array('order' => $draftOrder));
-                
-        $message = \Swift_Message::newInstance()
-                ->setSubject('Confirmation de commande')
-                ->setFrom('no-reply@innovorder.com')
-                ->setTo($draftOrder->getCustomer()->getEmail())
-                ->setBody($body)
-        ;
-        $this->mailer->send($message);
+//        $templateContent = $this->twig->loadTemplate('IODefaultBundle:Mail:clientOrderConfirmation.html.twig');
+//        $body = $templateContent->render(array('order' => $draftOrder));
+//                
+//        $message = \Swift_Message::newInstance()
+//                ->setSubject('Confirmation de commande')
+//                ->setFrom('no-reply@innovorder.com')
+//                ->setTo($draftOrder->getCustomer()->getEmail())
+//                ->setBody($body)
+//        ;
+//        $this->mailer->send($message);
     }
 
     /**

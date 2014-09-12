@@ -47,10 +47,10 @@ class OrderData implements ApiElement
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="IO\OrderBundle\Entity\Customer")
-     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="IO\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="client_id", referencedColumnName="id")
      */
-    private $customer;
+    private $client;
 
     /**
      * @var string
@@ -375,29 +375,6 @@ class OrderData implements ApiElement
     }
 
     /**
-     * Set customer
-     *
-     * @param \IO\OrderBundle\Entity\Customer $customer
-     * @return OrderData
-     */
-    public function setCustomer(\IO\OrderBundle\Entity\Customer $customer = null)
-    {
-        $this->customer = $customer;
-    
-        return $this;
-    }
-
-    /**
-     * Get customer
-     *
-     * @return \IO\OrderBundle\Entity\Customer 
-     */
-    public function getCustomer()
-    {
-        return $this->customer;
-    }
-
-    /**
      * Set comment
      *
      * @param string $comment
@@ -443,4 +420,27 @@ class OrderData implements ApiElement
         return $this->token;
     }
 
+
+    /**
+     * Set client
+     *
+     * @param \IO\UserBundle\Entity\User $client
+     * @return OrderData
+     */
+    public function setClient(\IO\UserBundle\Entity\User $client = null)
+    {
+        $this->client = $client;
+    
+        return $this;
+    }
+
+    /**
+     * Get client
+     *
+     * @return \IO\UserBundle\Entity\User 
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
 }
