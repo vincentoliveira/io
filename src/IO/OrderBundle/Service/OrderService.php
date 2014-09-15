@@ -188,17 +188,27 @@ class OrderService
      * 
      * @param \IO\OrderBundle\Entity\OrderData $order
      * @param \IO\ApiBundle\Entity\AuthToken $userToken
+     * @param string $deliveryDateParam
      * @return \IO\OrderBundle\Entity\OrderData
      */
-    public function validateCart(OrderData $order, AuthToken $userToken)
+    public function validateCart(OrderData $order, AuthToken $userToken, $deliveryDateParam)
     {
-        $orderStatus = new OrderStatus();
-        $status->setOrder($order);
-        $status->setDate(new \DateTime());
-        $status->setOldStatus($order->getLastStatus());
-        $status->setNewStatus(OrderStatusEnum::STATUS_INIT);
-        $this->em->persist($status);
+        $deliveryDate = null;
+        if ($deliveryDateParam) {
+            $deliveryDate = \DateTime::createFromFormat('Y-m-d H:i:s', $deliveryDateParam);
+        }
+        if (!$deliveryDate) {
+            $deliveryDate = new \DateTime();
+        }
         
+        $orderStatus = new OrderStatus();
+        $orderStatus->setOrder($order);
+        $orderStatus->setDate(new \DateTime());
+        $orderStatus->setOldStatus($order->getLastStatus());
+        $orderStatus->setNewStatus(OrderStatusEnum::STATUS_INIT);
+        $this->em->persist($orderStatus);
+        
+        $order->setOrderDate($deliveryDate);
         $order->addOrderStatus($orderStatus);
         $order->setClient($userToken->getUser());
         

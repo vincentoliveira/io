@@ -215,7 +215,7 @@ class CartController extends DefaultController
     }
     
     /**
-     * POST /order/cart/create.json
+     * POST /order/cart/validate.json
      * 
      * Create a cart and return it.
      * 
@@ -240,7 +240,7 @@ class CartController extends DefaultController
         
         // check restaurant token and user token
         $restaurantToken = $request->request->get('restaurant_token', null);
-        $userToken = $request->request->get('user_token', null);
+        $userToken = $request->request->get('client_token', null);
         if ($cart === null || 
                 !$this->checkUserToken($userToken) || 
                 !$this->checkRestaurantToken($restaurantToken, $cart->getRestaurant())) {
@@ -251,7 +251,8 @@ class CartController extends DefaultController
             return $this->errorResponse(self::ORDER_LOCKED);
         }
         
-        $cart = $this->orderSv->validateCart($cart, $userToken);
+        $deliveryDateParam = $request->request->get('delivery_date', null);
+        $cart = $this->orderSv->validateCart($cart, $userToken, $deliveryDateParam);
         
         $apiVisistor = new ApiElementVisitor();
         return new JsonResponse(array('cart' => $cart->accept($apiVisistor)));

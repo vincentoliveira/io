@@ -166,7 +166,7 @@ class CartControllerTest extends IOTestCase
                 array(
                     'cart' => array(
                         'id' => 1,
-                        "delevery_date" => null,
+                        "delivery_date" => null,
                         "status" => "DRAFT",
                         "customer" => null,
                         "products" => array(),
@@ -217,7 +217,7 @@ class CartControllerTest extends IOTestCase
                 array(
                     'cart' => array(
                         'id' => 1,
-                        "delevery_date" => null,
+                        "delivery_date" => null,
                         "status" => "DRAFT",
                         "customer" => null,
                         "products" => array(),
@@ -237,7 +237,7 @@ class CartControllerTest extends IOTestCase
                 array(
                     'cart' => array(
                         'id' => 1,
-                        "delevery_date" => null,
+                        "delivery_date" => null,
                         "status" => "DRAFT",
                         "customer" => null,
                         "products" => array(),
@@ -259,7 +259,7 @@ class CartControllerTest extends IOTestCase
                 array(
                     'cart' => array(
                         'id' => 1,
-                        "delevery_date" => null,
+                        "delivery_date" => null,
                         "status" => "DRAFT",
                         "customer" => null,
                         "products" => array(
@@ -330,7 +330,7 @@ class CartControllerTest extends IOTestCase
                 array(
                     'cart' => array(
                         'id' => 1,
-                        "delevery_date" => null,
+                        "delivery_date" => null,
                         "status" => "DRAFT",
                         "customer" => null,
                         "products" => array(
@@ -361,7 +361,7 @@ class CartControllerTest extends IOTestCase
                 array(
                     'cart' => array(
                         'id' => 1,
-                        "delevery_date" => null,
+                        "delivery_date" => null,
                         "status" => "DRAFT",
                         "customer" => null,
                         "products" => array(
@@ -432,7 +432,7 @@ class CartControllerTest extends IOTestCase
                 array(
                     'cart' => array(
                         'id' => 1,
-                        "delevery_date" => null,
+                        "delivery_date" => null,
                         "status" => "DRAFT",
                         "customer" => null,
                         "products" => array(
@@ -462,7 +462,7 @@ class CartControllerTest extends IOTestCase
                 array(
                     'cart' => array(
                         'id' => 1,
-                        "delevery_date" => null,
+                        "delivery_date" => null,
                         "status" => "DRAFT",
                         "customer" => null,
                         "products" => array(
