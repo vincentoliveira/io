@@ -22,6 +22,10 @@ abstract class DefaultController extends Controller
      * @var \IO\ApiBundle\Entity\AuthToken 
      */
     protected $authToken = null;
+    /**
+     * @var \IO\ApiBundle\Entity\AuthToken 
+     */
+    protected $clientToken = null;
 
     static private $error_data = array(
         self::UNKNOWN_ERROR => array(
@@ -99,7 +103,7 @@ abstract class DefaultController extends Controller
      * @param Restaurant $restaurant
      * @return boolean
      */
-    protected function checkUserToken($token)
+    protected function checkClientToken($token)
     {
         if (empty($token)) {
             return false;
@@ -107,9 +111,9 @@ abstract class DefaultController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $authTokenRepo = $em->getRepository("IOApiBundle:AuthToken");
-        $this->authToken = $authTokenRepo->findOneByToken($token);        
+        $this->clientToken = $authTokenRepo->findOneByToken($token);        
         
-        return $this->authToken !== null && !$this->authToken->hasExpired() &&
-                $this->authToken->getUser() && $this->authToken->getUser()->hasRole("ROLE_CLIENT");
+        return $this->clientToken !== null && !$this->clientToken->hasExpired() &&
+                $this->clientToken->getUser() && $this->clientToken->getUser()->hasRole("ROLE_CLIENT");
     }
 }

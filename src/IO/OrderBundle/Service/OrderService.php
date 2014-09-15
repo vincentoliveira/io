@@ -184,7 +184,10 @@ class OrderService
     }
     
     /**
-     * Validate cart
+     * Validate cart :
+     *  - Set status visible for the ePOS
+     *  - A client
+     *  - Add delivery datetime
      * 
      * @param \IO\OrderBundle\Entity\OrderData $order
      * @param \IO\ApiBundle\Entity\AuthToken $userToken

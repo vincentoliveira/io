@@ -240,9 +240,9 @@ class CartController extends DefaultController
         
         // check restaurant token and user token
         $restaurantToken = $request->request->get('restaurant_token', null);
-        $userToken = $request->request->get('client_token', null);
+        $clientToken = $request->request->get('client_token', null);
         if ($cart === null || 
-                !$this->checkUserToken($userToken) || 
+                !$this->checkClientToken($clientToken) || 
                 !$this->checkRestaurantToken($restaurantToken, $cart->getRestaurant())) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
@@ -252,7 +252,7 @@ class CartController extends DefaultController
         }
         
         $deliveryDateParam = $request->request->get('delivery_date', null);
-        $cart = $this->orderSv->validateCart($cart, $userToken, $deliveryDateParam);
+        $cart = $this->orderSv->validateCart($cart, $this->clientToken, $deliveryDateParam);
         
         $apiVisistor = new ApiElementVisitor();
         return new JsonResponse(array('cart' => $cart->accept($apiVisistor)));
