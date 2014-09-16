@@ -4,6 +4,7 @@ namespace IO\ApiBundle\Utils;
 
 use IO\UserBundle\Entity\User;
 use IO\UserBundle\Entity\UserIdentity;
+use IO\UserBundle\Entity\UserWallet;
 use IO\UserBundle\Entity\Address;
 use IO\UserBundle\Entity\PhoneNumber;
 use IO\ApiBundle\Entity\AuthToken;
@@ -24,6 +25,7 @@ interface ApiElementVisitorInterface
 {
     public function visitUser(User $user);
     public function visitUserIdentity(UserIdentity $identity);
+    public function visitUserMangoWallet(UserWallet $identity);
     public function visitAddress(Address $address);
     public function visitPhoneNumber(PhoneNumber $phone);
     public function visitAuthToken(AuthToken $token);

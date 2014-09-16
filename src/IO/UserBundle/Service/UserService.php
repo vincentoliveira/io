@@ -172,7 +172,7 @@ class UserService
             throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
         }
         
-        $birthdate = \DateTime::createFromFormat('d/m/Y', $data['birthdate']);
+        $birthdate = \DateTime::createFromFormat('Y-m-d', $data['birthdate']);
         if ($birthdate === false) {
             throw new BadParameterException('Bad parameter: birthdate');
         }

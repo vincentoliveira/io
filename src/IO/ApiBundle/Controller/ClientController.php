@@ -6,9 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use JMS\DiExtraBundle\Annotation\Inject;
 use IO\ApiBundle\Utils\ApiElementVisitor;
 use IO\ApiBundle\Utils\BadParameterException;
+use IO\UserBundle\Entity\User;
 
 /**
  * User API Controller
@@ -37,10 +39,16 @@ class ClientController extends DefaultController
     /**
      * POST /client/create.json
      * 
-     * Create a user from the json data post in the request
+     * Create a user from the json data post in the request.
+     * Return auth token for the new user.
      * 
-     * @param Request $request
-     * @return JsonResponse
+     * Parameters:
+     * - <strong>email</strong> Email of the user (string)
+     * - <strong>plainPassword</strong> Plain password of the user (string)
+     * - <strong>firstname</strong> Firstname of the user (string)
+     * - <strong>lastname</strong> Lastname of the user (string)
+     * - <strong>birthdate</strong> Birthdate of the user [Y-m-d] (string)
+     * 
      * @Route("/create.json", name="api_client_create")
      * @Method("POST")
      */

@@ -4,6 +4,7 @@ namespace IO\ApiBundle\Utils;
 
 use IO\UserBundle\Entity\User;
 use IO\UserBundle\Entity\UserIdentity;
+use IO\UserBundle\Entity\UserWallet;
 use IO\UserBundle\Entity\Address;
 use IO\UserBundle\Entity\PhoneNumber;
 use IO\ApiBundle\Entity\AuthToken;
@@ -31,9 +32,12 @@ class ApiElementVisitor implements ApiElementVisitorInterface
             return array();
         }
         
-        $identity = null;
+        $identity = $wallet = null;
         if ($user->getIdentity()) {
             $identity = $user->getIdentity()->accept($this);
+        }
+        if ($user->getWallet()) {
+            $wallet = $user->getWallet()->accept($this);
         }
         
         return array(
@@ -41,6 +45,7 @@ class ApiElementVisitor implements ApiElementVisitorInterface
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
             'identity' => $identity,
+            'wallet' => $wallet,
         );
     }
     
@@ -78,6 +83,17 @@ class ApiElementVisitor implements ApiElementVisitorInterface
             'address3' => $address3,
             'phone1' => $phone1,
             'phone2' => $phone2,
+        );
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function visitUserMangoWallet(UserWallet $wallet)
+    {
+        return array(
+            'user_id' => $wallet->getUserId(),
+            'wallet_id' => $wallet->getWalletId(),
         );
     }
     

@@ -10,7 +10,7 @@ use IO\ApiBundle\Utils\ApiElement;
  * User entity (extends fosuser)
  * 
  * @ORM\Entity()
- * @ORM\Table(name="fos_user")
+ * @ORM\Table(name="user")
  */
 class User extends BaseUser implements ApiElement
 {
@@ -31,6 +31,14 @@ class User extends BaseUser implements ApiElement
      * @ORM\JoinColumn(name="identity_id", referencedColumnName="id", nullable=true)
      */
     private $identity;
+
+    /**
+     * @var UserIdentity
+     *
+     * @ORM\ManyToOne(targetEntity="IO\UserBundle\Entity\UserWallet")
+     * @ORM\JoinColumn(name="wallet_id", referencedColumnName="id", nullable=true)
+     */
+    private $wallet;
 
     /**
      * @var \IO\RestaurantBundle\Entity\Restaurant
@@ -133,5 +141,28 @@ class User extends BaseUser implements ApiElement
     public function getIdentity()
     {
         return $this->identity;
+    }
+
+    /**
+     * Set wallet
+     *
+     * @param \IO\UserBundle\Entity\UserWallet $wallet
+     * @return User
+     */
+    public function setWallet(\IO\UserBundle\Entity\UserWallet $wallet = null)
+    {
+        $this->wallet = $wallet;
+    
+        return $this;
+    }
+
+    /**
+     * Get wallet
+     *
+     * @return \IO\UserBundle\Entity\UserWallet 
+     */
+    public function getWallet()
+    {
+        return $this->wallet;
     }
 }
