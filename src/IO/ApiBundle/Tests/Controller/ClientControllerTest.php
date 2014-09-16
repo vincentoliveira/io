@@ -44,6 +44,16 @@ class ClientControllerTest extends IOTestCase
                 array(
                     'email' => 'vincent@io.fr',
                     'plainPassword' => 'test',
+                    'lastname' => 'Oliveira',
+                    'firstname' => 'Vincent',
+                    'birthdate' => '1990-06-10',
+                ),
+                200
+            ),
+            array(
+                array(
+                    'email' => 'vincent@io.fr',
+                    'plainPassword' => 'test',
                     'gender' => 'MALE',
                     'lastname' => 'Oliveira',
                     'firstname' => 'Vincent',
