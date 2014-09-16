@@ -47,7 +47,7 @@ class ClientControllerTest extends IOTestCase
                     'gender' => 'MALE',
                     'lastname' => 'Oliveira',
                     'firstname' => 'Vincent',
-                    'birthdate' => '06/10/1990',
+                    'birthdate' => '1990-06-10',
                     'phone' => array(
                         array(
                             'prefix' => '+33',
