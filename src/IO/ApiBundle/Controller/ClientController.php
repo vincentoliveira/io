@@ -60,12 +60,18 @@ class ClientController extends DefaultController
         }
 
         try {
-            $phone2 = $address = null;
-            if (isset($data['phone'][1])) {
-                $phone2 = $this->userSv->createPhoneNumber($data['phone'][1]);
+            $phone2 = $address1 = $address2 = $address3 = null;
+            if (isset($data['phones'][1])) {
+                $phone2 = $this->userSv->createPhoneNumber($data['phones'][1]);
             }
-            if (isset($data['address'])) {
-                $address = $this->userSv->createAddress($data['address']);
+            if (isset($data['addresses'][0])) {
+                $address1 = $this->userSv->createAddress($data['addresses'][0]);
+            }
+            if (isset($data['addresses'][1])) {
+                $address2 = $this->userSv->createAddress($data['addresses'][1]);
+            }
+            if (isset($data['addresses'][2])) {
+                $address3 = $this->userSv->createAddress($data['addresses'][2]);
             }
         } catch (\Exception $e) {
             // skip error
@@ -77,20 +83,26 @@ class ClientController extends DefaultController
             $identity = $this->userSv->createUserIdentity($data);
             $em->persist($identity);
             
-            if (isset($data['phone'][0])) {
-                $phone1 = $this->userSv->createPhoneNumber($data['phone'][0]);
+            if (isset($data['phones'][0])) {
+                $phone1 = $this->userSv->createPhoneNumber($data['phones'][0]);
                 $identity->setPhone1($phone1);
                 $em->persist($phone1);
             }
-            
             if ($phone2 !== null) {
                 $identity->setPhone2($phone2);
                 $em->persist($phone2);
             }
-            
-            if ($address !== null) {
-                $identity->setAddress1($address);
-                $em->persist($address);
+            if ($address1 !== null) {
+                $identity->setAddress1($address1);
+                $em->persist($address1);
+            }
+            if ($address2 !== null) {
+                $identity->setAddress2($address2);
+                $em->persist($address2);
+            }
+            if ($address3 !== null) {
+                $identity->setAddress3($address3);
+                $em->persist($address3);
             }
             
             $user = $this->userSv->createUser($data);

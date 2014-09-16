@@ -48,13 +48,13 @@ class ClientControllerTest extends IOTestCase
                     'lastname' => 'Oliveira',
                     'firstname' => 'Vincent',
                     'birthdate' => '1990-06-10',
-                    'phone' => array(
+                    'phones' => array(
                         array(
                             'prefix' => '+33',
                             'number' => '123456789',
                         ),
                     ),
-                    'address' => array(
+                    'addresses' => array(
                         'number' => '39',
                         'street' => 'rue du Caire',
                         'postcode' => '75002',
