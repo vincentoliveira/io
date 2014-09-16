@@ -55,11 +55,17 @@ class ClientControllerTest extends IOTestCase
                         ),
                     ),
                     'addresses' => array(
-                        'number' => '39',
-                        'street' => 'rue du Caire',
-                        'postcode' => '75002',
-                        'city' => 'Paris',
-                        'country' => 'France',
+                        array(
+                            'number' => '39',
+                            'street' => 'rue du Caire',
+                            'postcode' => '75002',
+                            'city' => 'Paris',
+                            'country' => 'France',
+                        ),
+                    ),
+                    'wallet' => array(
+                        'user_id' => 12345,
+                        'wallet_id' => 67890,
                     ),
                 ),
                 200

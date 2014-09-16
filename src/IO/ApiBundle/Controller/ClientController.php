@@ -60,7 +60,7 @@ class ClientController extends DefaultController
         }
 
         try {
-            $phone2 = $address1 = $address2 = $address3 = null;
+            $phone2 = $address1 = $address2 = $address3 = $wallet = null;
             if (isset($data['phones'][1])) {
                 $phone2 = $this->userSv->createPhoneNumber($data['phones'][1]);
             }
@@ -73,6 +73,9 @@ class ClientController extends DefaultController
             if (isset($data['addresses'][2])) {
                 $address3 = $this->userSv->createAddress($data['addresses'][2]);
             }
+            if (isset($data['wallet'])) {
+                $wallet = $this->userSv->createWallet($data['wallet']);
+            }
         } catch (\Exception $e) {
             // skip error
         }
@@ -80,8 +83,8 @@ class ClientController extends DefaultController
         try {
             $em = $this->getDoctrine()->getManager();
             
+            $user = $this->userSv->createUser($data);
             $identity = $this->userSv->createUserIdentity($data);
-            $em->persist($identity);
             
             if (isset($data['phones'][0])) {
                 $phone1 = $this->userSv->createPhoneNumber($data['phones'][0]);
@@ -104,9 +107,13 @@ class ClientController extends DefaultController
                 $identity->setAddress3($address3);
                 $em->persist($address3);
             }
+            if ($wallet !== null) {
+                $user->setWallet($wallet);
+                $em->persist($wallet);
+            }
             
-            $user = $this->userSv->createUser($data);
             $user->setIdentity($identity);
+            $em->persist($identity);
             $em->persist($user);
             $em->flush();
         } catch (BadParameterException $e) {

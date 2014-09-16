@@ -9,6 +9,7 @@ use IO\UserBundle\Entity\User;
 use IO\UserBundle\Entity\UserIdentity;
 use IO\UserBundle\Entity\PhoneNumber;
 use IO\UserBundle\Entity\Address;
+use IO\UserBundle\Entity\UserWallet;
 use IO\UserBundle\Enum\GenderEnum;
 use IO\RestaurantBundle\Entity\Restaurant;
 use IO\ApiBundle\Utils\BadParameterException;
@@ -218,6 +219,36 @@ class UserService
         $phoneNumber->setNumber($number);
         
         return $phoneNumber;
+    }
+    
+    /**
+     * Create a user identity from array
+     * 
+     * @param array $data
+     * @return \IO\UserBundle\Entity\PhoneNumber
+     * @throws BadParameterException
+     */
+    public function createWallet(array $data)
+    {
+        $wallet = new UserWallet();
+        
+        $missingFields = array();
+        if (isset($data['user_id']) && !empty($data['user_id'])) {
+            $wallet->setUserId($data['user_id']);
+        } else {
+            $missingFields[] = 'user_id';
+        }
+        if (isset($data['wallet_id']) && !empty($data['wallet_id'])) {
+            $wallet->setWalletId($data['wallet_id']);
+        } else {
+            $missingFields[] = 'wallet_id';
+        }
+        
+        if (!empty($missingFields)) {
+            throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
+        }
+        
+        return $wallet;
     }
     
     /**
