@@ -107,7 +107,7 @@ class ApiElementVisitor implements ApiElementVisitorInterface
             'name' => $address->getName(),
             'number' => $address->getNumber(),
             'street' => $address->getStreet(),
-            'post_code' => $address->getPostCode(),
+            'postcode' => $address->getPostCode(),
             'city' => $address->getCity(),
             'country' => $address->getCountry(),
             'building' => $address->getBuilding(),
