@@ -161,6 +161,19 @@ class UserService
      */
     public function createUserIdentity(array $data)
     {
+        return $this->editUserIdentity(new UserIdentity(), $data);
+    }
+    
+    /**
+     * Edit a user identity from array
+     * 
+     * @param UserIdentity $userIdentity
+     * @param array $data
+     * @return \IO\UserBundle\Entity\UserIdentity
+     * @throws BadParameterException
+     */
+    public function editUserIdentity(UserIdentity $userIdentity = null, array $data = array())
+    {
         $requiredFields = array('lastname', 'firstname', 'email', 'birthdate');
         $missingFields = array();
         foreach ($requiredFields as $field) {
@@ -178,7 +191,9 @@ class UserService
             throw new BadParameterException('Bad parameter: birthdate');
         }
         
-        $userIdentity = new UserIdentity();
+        if (!$userIdentity) {
+            $userIdentity = new UserIdentity();
+        }
         $userIdentity->setLastname($data['lastname']);
         $userIdentity->setFirstname($data['firstname']);
         $userIdentity->setEmail($data['email']);
@@ -192,13 +207,26 @@ class UserService
     }
     
     /**
-     * Create a user identity from array
+     * Create a phone number from array
      * 
      * @param array $data
      * @return \IO\UserBundle\Entity\PhoneNumber
      * @throws BadParameterException
      */
     public function createPhoneNumber(array $data)
+    {
+        return $this->editPhoneNumber(new PhoneNumber(), $data);
+    }
+    
+    /**
+     * Edit a phone number from array
+     * 
+     * @param PhoneNumber $phoneNumber 
+     * @param array $data
+     * @return \IO\UserBundle\Entity\PhoneNumber
+     * @throws BadParameterException
+     */
+    public function editPhoneNumber(PhoneNumber $phoneNumber = null, array $data = array())
     {
         $requiredFields = array('prefix', 'number');
         $missingFields = array();
@@ -214,15 +242,16 @@ class UserService
         
         $number = preg_replace('/(\W*)/', '', $data['number']);
         
-        $phoneNumber = new PhoneNumber();
+        if (!$phoneNumber) {
+            $phoneNumber = new PhoneNumber();
+        }
         $phoneNumber->setPrefix($data['prefix']);
         $phoneNumber->setNumber($number);
         
         return $phoneNumber;
     }
-    
     /**
-     * Create a user identity from array
+     * Create a user wallet from array
      * 
      * @param array $data
      * @return \IO\UserBundle\Entity\PhoneNumber
@@ -230,7 +259,21 @@ class UserService
      */
     public function createWallet(array $data)
     {
-        $wallet = new UserWallet();
+        return $this->editWallet(new UserWallet(), $data);
+    }
+    
+    /**
+     * Edit a user wallet from array
+     * 
+     * @param array $data
+     * @return \IO\UserBundle\Entity\PhoneNumber
+     * @throws BadParameterException
+     */
+    public function editWallet(UserWallet $wallet = null, array $data = array())
+    {
+        if (!$wallet) {
+            $wallet = new UserWallet();
+        }
         
         $missingFields = array();
         if (isset($data['user_id']) && !empty($data['user_id'])) {
@@ -252,7 +295,7 @@ class UserService
     }
     
     /**
-     * Create a user identity from array
+     * Create an address from array
      * 
      * @param array $data
      * @return \IO\UserBundle\Entity\PhoneNumber
@@ -260,7 +303,22 @@ class UserService
      */
     public function createAddress(array $data)
     {
-        $address = new Address();
+        return $this->editAddress(new Address(), $data);
+    }
+    
+    /**
+     * Edit an address from array
+     * 
+     * @param Address $address
+     * @param array $data
+     * @return \IO\UserBundle\Entity\PhoneNumber
+     * @throws BadParameterException
+     */
+    public function editAddress(Address $address = null, array $data = array())
+    {
+        if (!$address) {
+            $address = new Address();
+        }
         
         $requiredFields = array('number', 'street', 'postcode', 'city', 'country');
         $missingFields = array();

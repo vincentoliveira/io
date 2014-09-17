@@ -110,5 +110,62 @@ class ClientControllerTest extends IOTestCase
             array(array('email' => 'client@io.fr', 'plainPassword' => 'client'), 200),
         );
     }
+    
+    
+    /**
+     * @dataProvider editClientDataProvider
+     */
+    public function testEditClient($data, $statusCode)
+    {
+        $this->truncate('IOApiBundle:AuthToken');
+        $this->clientExists('client');
 
+        $user = $this->em->getRepository('IOUserBundle:User')->findOneByEmail('client@io.fr');
+        $url = $this->container->get('router')->generate('api_client_edit', array('id' => $user->getId()));
+        $this->client->request('PUT', $url, $data);
+
+        $response = $this->client->getResponse();
+        $this->assertEquals($statusCode, $response->getStatusCode());
+    }
+
+    /**
+     * Data provider for test auth user
+     * 
+     * @return array
+     */
+    public function editClientDataProvider()
+    {
+        return array(
+            array(array(), 400),
+            array(
+                array(
+                    'email' => 'vincent@io.fr',
+                    'plainPassword' => 'test',
+                    'lastname' => 'Oliveira',
+                    'firstname' => 'Vincent',
+                    'birthdate' => '1990-06-10',
+                    'phones' => array(
+                        array(
+                            'prefix' => '+33',
+                            'number' => '123456789',
+                        ),
+                    ),
+                    'addresses' => array(
+                        array(
+                            'number' => '39',
+                            'street' => 'rue du Caire',
+                            'postcode' => '75002',
+                            'city' => 'Paris',
+                            'country' => 'France',
+                        ),
+                    ),
+                    'wallet' => array(
+                        'user_id' => 12345,
+                        'wallet_id' => 67890,
+                    ),
+                ),
+                200
+            ),
+        );
+    }
 }

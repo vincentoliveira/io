@@ -60,69 +60,64 @@ class ClientController extends DefaultController
         }
 
         try {
-            $phone2 = $address1 = $address2 = $address3 = $wallet = null;
-            if (isset($data['phones'][1])) {
-                $phone2 = $this->userSv->createPhoneNumber($data['phones'][1]);
+            $phones = array('phone1' => null, 'phone2' => null);
+            $addresses = array('address1' => null, 'address2' => null, 'address3' => null);
+            $wallet = null;
+
+            $i = 0;
+            foreach ($phones as $key => $value) {
+                if (isset($data['phones'][$i])) {
+                    $phones[$key] = $this->userSv->createPhoneNumber($data['phones'][$i]);
+                }
+                $i++;
             }
-            if (isset($data['addresses'][0])) {
-                $address1 = $this->userSv->createAddress($data['addresses'][0]);
+            $i = 0;
+            foreach ($addresses as $key => $value) {
+                if (isset($data['addresses'][$i])) {
+                    $addresses[$key] = $this->userSv->createAddress($data['addresses'][$i]);
+                }
+                $i++;
             }
-            if (isset($data['addresses'][1])) {
-                $address2 = $this->userSv->createAddress($data['addresses'][1]);
-            }
-            if (isset($data['addresses'][2])) {
-                $address3 = $this->userSv->createAddress($data['addresses'][2]);
-            }
+                
             if (isset($data['wallet'])) {
                 $wallet = $this->userSv->createWallet($data['wallet']);
             }
         } catch (\Exception $e) {
+            print_r($e->getMessage());
             // skip error
         }
 
         try {
             $em = $this->getDoctrine()->getManager();
             
-            $user = $this->userSv->createUser($data);
+            $client = $this->userSv->createUser($data);
             $identity = $this->userSv->createUserIdentity($data);
             
-            if (isset($data['phones'][0])) {
-                $phone1 = $this->userSv->createPhoneNumber($data['phones'][0]);
-                $identity->setPhone1($phone1);
-                $em->persist($phone1);
-            }
-            if ($phone2 !== null) {
-                $identity->setPhone2($phone2);
-                $em->persist($phone2);
-            }
-            if ($address1 !== null) {
-                $identity->setAddress1($address1);
-                $em->persist($address1);
-            }
-            if ($address2 !== null) {
-                $identity->setAddress2($address2);
-                $em->persist($address2);
-            }
-            if ($address3 !== null) {
-                $identity->setAddress3($address3);
-                $em->persist($address3);
+            $idFields = array_merge($phones, $addresses);
+            foreach ($idFields as $field => $value) {
+                if ($value) {
+                    $setter = 'set' . ucfirst($field);
+                    $identity->{$setter}($value);
+                    $em->persist($value);
+                }
             }
             if ($wallet !== null) {
-                $user->setWallet($wallet);
+                $client->setWallet($wallet);
                 $em->persist($wallet);
             }
             
-            $user->setIdentity($identity);
+            $client->setIdentity($identity);
             $em->persist($identity);
-            $em->persist($user);
+            $em->persist($client);
             $em->flush();
         } catch (BadParameterException $e) {
             return $this->errorResponse(self::BAD_PARAMETER, $e->getMessage());
         } catch (\Exception $e) {
+            print_r($e->getMessage());
             return $this->errorResponse(self::INTERNAL_ERROR, $e->getMessage());
         }
         
-        $userToken = $this->userTokenSv->createToken($user);
+        $userToken = $this->userTokenSv->createToken($client);
 
         $apiVisistor = new ApiElementVisitor();
         return new JsonResponse(array('client_token' => $userToken->accept($apiVisistor)));
@@ -153,17 +148,100 @@ class ClientController extends DefaultController
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
 
-        $user = $this->userSv->authUserData($data);
-        if ($user === null || $user->getIdentity() === null) {
+        $client = $this->userSv->authUserData($data);
+        if ($client === null || $client->getIdentity() === null) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
         
-        $userToken = $this->userTokenSv->createToken($user);
+        $userToken = $this->userTokenSv->createToken($client);
         if ($userToken === null) {
             return $this->errorResponse(self::INTERNAL_ERROR);
         }
 
         $apiVisistor = new ApiElementVisitor();
         return new JsonResponse(array('client_token' => $userToken->accept($apiVisistor)));
+    }
+    
+    
+    /**
+     * POST /client/edit/{user-id}.json
+     * 
+     * Create a user from the json data post in the request.
+     * Return user data.
+     * 
+     * Parameters:
+     * - <strong>email</strong> Email of the user (string)
+     * - <strong>plainPassword</strong> Plain password of the user (string)
+     * - <strong>firstname</strong> Firstname of the user (string)
+     * - <strong>lastname</strong> Lastname of the user (string)
+     * - <strong>birthdate</strong> Birthdate of the user [Y-m-d] (string)
+     * 
+     * @Route("/edit/{id}.json", name="api_client_edit")
+     * @ParamConverter("user", class="IOUserBundle:User")
+     * @Method("PUT")
+     */
+    public function editAction(User $client, Request $request)
+    {
+        $data = $request->request->all();
+        if ($data === null || empty($data)) {
+            return $this->errorResponse(self::EMPTY_PARAMETER);
+        }
+
+        try {
+            $identity = $this->userSv->editUserIdentity($client->getIdentity(), $data);
+            $phones = array(
+                'phone1' => $identity->getPhone1(),
+                'phone2' => $identity->getPhone2(),
+            );
+            $addresses = array(
+                'address1' => $identity->getAddress1(),
+                'address2' => $identity->getAddress2(),
+                'address3' => $identity->getAddress3(),
+            );
+            
+            $i = 0;
+            foreach ($phones as $key => $value) {
+                if (isset($data['phones'][$i])) {
+                    $phones[$key] = $this->userSv->editPhoneNumber($value, $data['phones'][$i]);
+                }
+                $i++;
+            }
+            $i = 0;
+            foreach ($addresses as $key => $value) {
+                if (isset($data['addresses'][$i])) {
+                    $addresses[$key] = $this->userSv->editAddress($value, $data['addresses'][$i]);
+                }
+                $i++;
+            }
+            if (isset($data['wallet'])) {
+                $wallet = $this->userSv->editWallet($client->getWallet(), $data['wallet']);
+            }
+            
+            $em = $this->getDoctrine()->getManager();
+            $idFields = array_merge($phones, $addresses);
+            foreach ($idFields as $field => $value) {
+                if ($value) {
+                    $setter = 'set' . ucfirst($field);
+                    $identity->{$setter}($value);
+                    $em->persist($value);
+                }
+            }
+            if ($wallet !== null) {
+                $client->setWallet($wallet);
+                $em->persist($wallet);
+            }
+            
+            $client->setIdentity($identity);
+            $em->persist($identity);
+            $em->persist($client);
+            $em->flush();
+        } catch (BadParameterException $e) {
+            return $this->errorResponse(self::BAD_PARAMETER, $e->getMessage());
+        } catch (\Exception $e) {
+            return $this->errorResponse(self::INTERNAL_ERROR, $e->getMessage());
+        }
+        
+        $apiVisistor = new ApiElementVisitor();
+        return new JsonResponse(array('client' => $client->accept($apiVisistor)));
     }
 }
