@@ -5,6 +5,7 @@ namespace IO\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use IO\ApiBundle\Utils\ApiElementVisitorInterface;
 use IO\ApiBundle\Utils\ApiElement;
+use IO\UserBundle\Enum\CountryEnum;
 
 /**
  * Address Entity
