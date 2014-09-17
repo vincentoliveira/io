@@ -174,10 +174,15 @@ class UserService
      */
     public function editUserIdentity(UserIdentity $userIdentity = null, array $data = array())
     {
+        if (!$userIdentity) {
+            $userIdentity = new UserIdentity();
+        }
+        
         $requiredFields = array('lastname', 'firstname', 'email', 'birthdate');
         $missingFields = array();
         foreach ($requiredFields as $field) {
-            if (!isset($data[$field]) || empty($data[$field])) {
+            if (!$userIdentity->{'get' . ucfirst($field)}() &&
+                (!isset($data[$field]) || empty($data[$field]))) {
                 $missingFields[] = $field;
             }
         }
@@ -186,18 +191,21 @@ class UserService
             throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
         }
         
-        $birthdate = \DateTime::createFromFormat('Y-m-d', $data['birthdate']);
-        if ($birthdate === false) {
-            throw new BadParameterException('Bad parameter: birthdate');
+        if (isset($data[$field]) && !empty($data[$field])) {
+            $birthdate = \DateTime::createFromFormat('Y-m-d', $data['birthdate']);
+            if ($birthdate === false) {
+                throw new BadParameterException('Bad parameter: birthdate');
+            } else {
+                $data['birthdate'] = $birthdate;
+            }
         }
         
-        if (!$userIdentity) {
-            $userIdentity = new UserIdentity();
+        foreach ($requiredFields as $field) {
+            if (isset($data[$field]) && !empty($data[$field])) {
+                $setter = 'set' . ucfirst($field);
+                $userIdentity->{$setter}($data[$field]);
+            }
         }
-        $userIdentity->setLastname($data['lastname']);
-        $userIdentity->setFirstname($data['firstname']);
-        $userIdentity->setEmail($data['email']);
-        $userIdentity->setBirthdate($birthdate);
         
         if (isset($data['gender']) && isset(GenderEnum::$genders[$data['gender']])) {
             $userIdentity->setGender(GenderEnum::$genders[$data['gender']]);
@@ -228,10 +236,15 @@ class UserService
      */
     public function editPhoneNumber(PhoneNumber $phoneNumber = null, array $data = array())
     {
+        if (!$phoneNumber) {
+            $phoneNumber = new PhoneNumber();
+        }
+        
         $requiredFields = array('prefix', 'number');
         $missingFields = array();
         foreach ($requiredFields as $field) {
-            if (!isset($data[$field]) || empty($data[$field])) {
+            if (!$phoneNumber->{'get' . ucfirst($field)}() && 
+                (!isset($data[$field]) || empty($data[$field]))) {
                 $missingFields[] = $field;
             }
         }
@@ -240,13 +253,13 @@ class UserService
             throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
         }
         
-        $number = preg_replace('/(\W*)/', '', $data['number']);
-        
-        if (!$phoneNumber) {
-            $phoneNumber = new PhoneNumber();
+        if (isset($data['number']) && !empty($data['number'])) {
+            $number = preg_replace('/(\W*)/', '', $data['number']);
+            $phoneNumber->setNumber($number);
         }
-        $phoneNumber->setPrefix($data['prefix']);
-        $phoneNumber->setNumber($number);
+        if (isset($data['prefix']) && !empty($data['prefix'])) {
+            $phoneNumber->setPrefix($data['prefix']);
+        }
         
         return $phoneNumber;
     }
@@ -275,20 +288,11 @@ class UserService
             $wallet = new UserWallet();
         }
         
-        $missingFields = array();
         if (isset($data['user_id']) && !empty($data['user_id'])) {
             $wallet->setUserId($data['user_id']);
-        } else {
-            $missingFields[] = 'user_id';
         }
         if (isset($data['wallet_id']) && !empty($data['wallet_id'])) {
             $wallet->setWalletId($data['wallet_id']);
-        } else {
-            $missingFields[] = 'wallet_id';
-        }
-        
-        if (!empty($missingFields)) {
-            throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
         }
         
         return $wallet;
@@ -323,9 +327,10 @@ class UserService
         $requiredFields = array('number', 'street', 'postcode', 'city', 'country');
         $missingFields = array();
         foreach ($requiredFields as $field) {
-            if (!isset($data[$field]) || empty($data[$field])) {
+            if (!$address->{'get' . ucfirst($field)}() &&
+                (!isset($data[$field]) || empty($data[$field]))) {
                 $missingFields[] = $field;
-            } else {
+            } else if (isset($data[$field]) && !empty($data[$field])) {
                 $setter = 'set' . ucfirst($field);
                 $address->{$setter}($data[$field]);
             }

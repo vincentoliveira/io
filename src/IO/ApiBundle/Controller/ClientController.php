@@ -213,6 +213,8 @@ class ClientController extends DefaultController
                 }
                 $i++;
             }
+            
+            $wallet = null;
             if (isset($data['wallet'])) {
                 $wallet = $this->userSv->editWallet($client->getWallet(), $data['wallet']);
             }
@@ -238,6 +240,7 @@ class ClientController extends DefaultController
         } catch (BadParameterException $e) {
             return $this->errorResponse(self::BAD_PARAMETER, $e->getMessage());
         } catch (\Exception $e) {
+            echo $e->getMessage();
             return $this->errorResponse(self::INTERNAL_ERROR, $e->getMessage());
         }
         

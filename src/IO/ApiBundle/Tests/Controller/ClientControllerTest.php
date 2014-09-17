@@ -164,7 +164,14 @@ class ClientControllerTest extends IOTestCase
                         'wallet_id' => 67890,
                     ),
                 ),
-                200
+                200,
+            ),
+            array(
+                array(
+                    'lastname' => 'Oliveira',
+                    'firstname' => 'Vincent',
+                ),
+                200,
             ),
         );
     }
