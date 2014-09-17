@@ -5,6 +5,7 @@ namespace IO\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use IO\ApiBundle\Utils\ApiElementVisitorInterface;
 use IO\ApiBundle\Utils\ApiElement;
+use IO\UserBundle\Enum\CountryEnum;
 
 /**
  * UserIdentity Entity
@@ -57,6 +58,13 @@ class UserIdentity implements ApiElement
      * @ORM\Column(name="birthdate", type="date", nullable=false)
      */
     private $birthdate;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nationality", type="string", length=15, nullable=false)
+     */
+    private $nationality;
     
     /**
      * @var Address
@@ -345,5 +353,30 @@ class UserIdentity implements ApiElement
     public function getPhone2()
     {
         return $this->phone2;
+    }
+
+    /**
+     * Set nationality
+     *
+     * @param string $nationality
+     * @return UserIdentity
+     */
+    public function setNationality($nationality)
+    {
+        if (isset(CountryEnum::$countries[$nationality])) {
+            $this->nationality = $nationality;
+        }
+    
+        return $this;
+    }
+
+    /**
+     * Get nationality
+     *
+     * @return string 
+     */
+    public function getNationality()
+    {
+        return $this->nationality;
     }
 }

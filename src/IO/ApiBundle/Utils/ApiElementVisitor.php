@@ -78,6 +78,7 @@ class ApiElementVisitor implements ApiElementVisitorInterface
             'lastname' => $identity->getLastname(),
             'birthdate' => $identity->getBirthdate(),
             'email' => $identity->getEmail(),
+            'nationality' => $identity->getNationality(),
             'address1' => $address1,
             'address2' => $address2,
             'address3' => $address3,

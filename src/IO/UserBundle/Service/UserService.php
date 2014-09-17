@@ -210,6 +210,9 @@ class UserService
         if (isset($data['gender']) && isset(GenderEnum::$genders[$data['gender']])) {
             $userIdentity->setGender(GenderEnum::$genders[$data['gender']]);
         }
+        if (isset($data['nationality'])) {
+            $userIdentity->setNationality($data['nationality']);
+        }
         
         return $userIdentity;
     }

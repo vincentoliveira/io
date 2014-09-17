@@ -58,6 +58,7 @@ class ClientControllerTest extends IOTestCase
                     'lastname' => 'Oliveira',
                     'firstname' => 'Vincent',
                     'birthdate' => '1990-06-10',
+                    'nationality' => 'FR',
                     'phones' => array(
                         array(
                             'prefix' => '+33',
@@ -70,7 +71,7 @@ class ClientControllerTest extends IOTestCase
                             'street' => 'rue du Caire',
                             'postcode' => '75002',
                             'city' => 'Paris',
-                            'country' => 'France',
+                            'country' => 'FR',
                         ),
                     ),
                     'wallet' => array(
@@ -156,7 +157,7 @@ class ClientControllerTest extends IOTestCase
                             'street' => 'rue du Caire',
                             'postcode' => '75002',
                             'city' => 'Paris',
-                            'country' => 'France',
+                            'country' => 'FR',
                         ),
                     ),
                     'wallet' => array(

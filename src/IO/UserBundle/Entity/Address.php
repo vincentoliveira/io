@@ -61,7 +61,7 @@ class Address implements ApiElement
     /**
      * @var string
      *
-     * @ORM\Column(name="country", type="string", length=31, nullable=false)
+     * @ORM\Column(name="country", type="string", length=15, nullable=false)
      */
     private $country;
 
@@ -248,7 +248,9 @@ class Address implements ApiElement
      */
     public function setCountry($country)
     {
-        $this->country = $country;
+        if (isset(CountryEnum::$countries[$country])) {
+            $this->country = $country;
+        }
     
         return $this;
     }
