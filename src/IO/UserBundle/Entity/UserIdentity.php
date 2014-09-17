@@ -62,7 +62,7 @@ class UserIdentity implements ApiElement
     /**
      * @var string
      *
-     * @ORM\Column(name="nationality", type="string", length=15, nullable=false)
+     * @ORM\Column(name="nationality", type="string", length=15, nullable=true)
      */
     private $nationality;
     

@@ -34,7 +34,7 @@ class Address implements ApiElement
     /**
      * @var integer
      *
-     * @ORM\Column(name="number", type="integer", nullable=false)
+     * @ORM\Column(name="number", type="string", length=15, nullable=false)
      */
     private $number;
 

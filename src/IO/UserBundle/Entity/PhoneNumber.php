@@ -26,7 +26,7 @@ class PhoneNumber implements ApiElement
     /**
      * @var string
      *
-     * @ORM\Column(name="prefix", type="string", length=3, nullable=true)
+     * @ORM\Column(name="prefix", type="string", length=7, nullable=true)
      */
     private $prefix;
 
