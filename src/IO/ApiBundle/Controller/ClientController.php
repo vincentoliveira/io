@@ -83,7 +83,6 @@ class ClientController extends DefaultController
                 $wallet = $this->userSv->createWallet($data['wallet']);
             }
         } catch (\Exception $e) {
-            print_r($e->getMessage());
             // skip error
         }
 
@@ -202,14 +201,14 @@ class ClientController extends DefaultController
             $i = 0;
             foreach ($phones as $key => $value) {
                 if (isset($data['phones'][$i])) {
-                    $phones[$key] = $this->userSv->editPhoneNumber($value, $data['phones'][$i]);
+                    $phones[$key] = $this->userSv->editPhoneNumber($value, $data['phones'][$i], false);
                 }
                 $i++;
             }
             $i = 0;
             foreach ($addresses as $key => $value) {
                 if (isset($data['addresses'][$i])) {
-                    $addresses[$key] = $this->userSv->editAddress($value, $data['addresses'][$i]);
+                    $addresses[$key] = $this->userSv->editAddress($value, $data['addresses'][$i], false);
                 }
                 $i++;
             }
@@ -240,7 +239,6 @@ class ClientController extends DefaultController
         } catch (BadParameterException $e) {
             return $this->errorResponse(self::BAD_PARAMETER, $e->getMessage());
         } catch (\Exception $e) {
-            echo $e->getMessage();
             return $this->errorResponse(self::INTERNAL_ERROR, $e->getMessage());
         }
         

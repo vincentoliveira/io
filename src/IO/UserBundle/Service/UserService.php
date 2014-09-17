@@ -183,7 +183,7 @@ class UserService
         foreach ($requiredFields as $field) {
             if (!$userIdentity->{'get' . ucfirst($field)}() &&
                 (!isset($data[$field]) || empty($data[$field]))) {
-                $missingFields[] = $field;
+                $missingFields[] = 'identity:' . $field;
             }
         }
         
@@ -237,7 +237,7 @@ class UserService
      * @return \IO\UserBundle\Entity\PhoneNumber
      * @throws BadParameterException
      */
-    public function editPhoneNumber(PhoneNumber $phoneNumber = null, array $data = array())
+    public function editPhoneNumber(PhoneNumber $phoneNumber = null, array $data = array(), $sendException = true)
     {
         if (!$phoneNumber) {
             $phoneNumber = new PhoneNumber();
@@ -248,12 +248,16 @@ class UserService
         foreach ($requiredFields as $field) {
             if (!$phoneNumber->{'get' . ucfirst($field)}() && 
                 (!isset($data[$field]) || empty($data[$field]))) {
-                $missingFields[] = $field;
+                $missingFields[] = 'phone:' . $field;
             }
         }
         
         if (!empty($missingFields)) {
-            throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
+            if ($sendException) {
+                throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
+            } else {
+                return null;
+            }
         }
         
         if (isset($data['number']) && !empty($data['number'])) {
@@ -321,7 +325,7 @@ class UserService
      * @return \IO\UserBundle\Entity\PhoneNumber
      * @throws BadParameterException
      */
-    public function editAddress(Address $address = null, array $data = array())
+    public function editAddress(Address $address = null, array $data = array(), $sendException = true)
     {
         if (!$address) {
             $address = new Address();
@@ -332,7 +336,7 @@ class UserService
         foreach ($requiredFields as $field) {
             if (!$address->{'get' . ucfirst($field)}() &&
                 (!isset($data[$field]) || empty($data[$field]))) {
-                $missingFields[] = $field;
+                $missingFields[] = 'address:' . $field;
             } else if (isset($data[$field]) && !empty($data[$field])) {
                 $setter = 'set' . ucfirst($field);
                 $address->{$setter}($data[$field]);
@@ -340,7 +344,11 @@ class UserService
         }
         
         if (!empty($missingFields)) {
-            throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
+            if ($sendException) {
+                throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
+            } else {
+                return null;
+            }
         }
         
         $mandatoryFields = array('name', 'building', 'staircase', 'floor', 'digicode', 'intercom', 'comment');
