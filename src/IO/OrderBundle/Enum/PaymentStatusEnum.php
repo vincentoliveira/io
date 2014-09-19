@@ -9,15 +9,20 @@ class PaymentStatusEnum
 {
 
     const PAYMENT_CANCELED = 'CANCELED';
-    const PAYMENT_ERROR = 'ERROR';
+    const PAYMENT_FAILED = 'FAILED';
     const PAYMENT_PENDING = 'PENDING';
     const PAYMENT_SUCCESS = 'SUCCESS';
 
     static $allowedStatuses = array(
         self::PAYMENT_CANCELED,
-        self::PAYMENT_ERROR,
+        self::PAYMENT_FAILED,
+        self::PAYMENT_PENDING,
         self::PAYMENT_SUCCESS,
-        self::PAYMENT_PENDING
     );
+    
+    public static function isValidStatus($status)
+    {
+        return in_array($status, self::$allowedStatuses);
+    }
 
 }

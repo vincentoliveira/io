@@ -47,6 +47,13 @@ class OrderPayment implements ApiElement
     private $amount;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fees", type="decimal", precision=7, scale=2, nullable=false)
+     */
+    private $fees;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="type", type="string", nullable=false)
@@ -253,5 +260,28 @@ class OrderPayment implements ApiElement
     public function getOrder()
     {
         return $this->order;
+    }
+
+    /**
+     * Set fees
+     *
+     * @param string $fees
+     * @return OrderPayment
+     */
+    public function setFees($fees)
+    {
+        $this->fees = $fees;
+    
+        return $this;
+    }
+
+    /**
+     * Get fees
+     *
+     * @return string 
+     */
+    public function getFees()
+    {
+        return $this->fees;
     }
 }
