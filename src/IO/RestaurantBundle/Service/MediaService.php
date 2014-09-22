@@ -48,6 +48,10 @@ class MediaService
      */
     public function handleItemMedia(CarteItem $item)
     {
+        if ($item === null || $item->getMedia() === null) {
+            return null;
+        }
+        
         $media = $this->handleMedia($item->getMedia());
         if ($media === null) {
             if ($item->getMedia() !== null && !$item->getMedia()->getId()) {

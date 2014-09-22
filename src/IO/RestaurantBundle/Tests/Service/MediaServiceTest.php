@@ -3,6 +3,7 @@
 namespace IO\RestaurantBundle\Tests\Service;
 
 use IO\DefaultBundle\Tests\IOTestCase;
+use IO\RestaurantBundle\Entity\CarteItem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -24,7 +25,7 @@ class MediaServiceTest extends IOTestCase
 
     public function testHandleNoMedia()
     {
-        $item = new \IO\RestaurantBundle\Entity\CarteItem();
+        $item = new CarteItem();
         $result = $this->service->handleItemMedia($item);
         $this->assertNull($result);
     }
