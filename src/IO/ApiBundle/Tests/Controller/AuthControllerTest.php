@@ -18,7 +18,7 @@ class AuthControllerTest extends IOTestCase
     public function testAuthRestaurant($data, $statusCode)
     {
         $this->getRestaurant('restaurant');
-        $this->userExists('usertest', 'restaurant');
+        $this->userExists('usertest', 'restaurant', 'ROLE_MANAGER');
         $this->userExists('usertest2');
 
         $url = $this->container->get('router')->generate('api_restaurant_auth');

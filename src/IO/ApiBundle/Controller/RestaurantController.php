@@ -120,7 +120,8 @@ class RestaurantController extends DefaultController
         }
 
         $user = $this->userSv->authUserData($data['email'], $data['plainPassword']);
-        if ($user === null || $user->getRestaurant() === null) {
+        if ($user === null || 
+                !($user->hasRole("ROLE_CHIEF") || $user->hasRole("ROLE_MANAGER"))) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
         

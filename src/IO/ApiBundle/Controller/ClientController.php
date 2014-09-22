@@ -148,7 +148,7 @@ class ClientController extends DefaultController
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
 
-        $user = $this->userSv->authUserData($data['email'], $data['plainPassword']);
+        $client = $this->userSv->authUserData($data['email'], $data['plainPassword']);
         if ($client === null || $client->getIdentity() === null) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
