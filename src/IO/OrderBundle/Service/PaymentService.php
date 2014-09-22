@@ -8,6 +8,9 @@ use IO\OrderBundle\Entity\OrderData;
 use IO\OrderBundle\Entity\OrderPayment;
 use IO\OrderBundle\Enum\PaymentStatusEnum;
 
+use IO\ApiBundle\Utils\MissingParameterException;
+use IO\ApiBundle\Utils\BadParameterException;
+
 /**
  * Payment Service
  * 
@@ -42,13 +45,13 @@ class PaymentService
             }
         }
         if (!empty($missingFields)) {
-            throw new BadParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
+            throw new MissingParameterException(sprintf('Missing parameters: %s', implode(', ', $missingFields)));
         } elseif (!PaymentStatusEnum::isValidStatus($data['status'])) {
             throw new BadParameterException(sprintf('Bad parameters: status'));
         }
         
         $paymentDate = null;
-        if (isset($data['data'])) {
+        if (isset($data['date'])) {
             $paymentDate = \DateTime::createFromFormat("Y-m-d H:i:s", $data['date']);
         }
         if (!$paymentDate) {

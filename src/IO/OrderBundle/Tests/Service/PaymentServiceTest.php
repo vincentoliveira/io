@@ -27,6 +27,17 @@ class PaymentServiceTest extends IOTestCase
             $this->assertEquals($payment->{$getter}(), $field);
         }
     }
+    
+
+    /**
+     * @dataProvider handlePaymentDataMissingParamProvider
+     * @expectedException \IO\ApiBundle\Utils\MissingParameterException
+     */
+    public function testHandlePaymentMissingParam($input)
+    {
+        $paymentSv = $this->container->get('io.payment_service');
+        $paymentSv->handlePayment($input);
+    }
 
     /**
      * Data provider for test auth user
@@ -50,7 +61,97 @@ class PaymentServiceTest extends IOTestCase
                     'getStatus' => PaymentStatusEnum::PAYMENT_SUCCESS,
                 )
             ),
+            array(
+                array(
+                    'amount' => 10,
+                    'fees_amount' => 1,
+                    'type' => "TEST",
+                    'status' => PaymentStatusEnum::PAYMENT_FAILED,
+                    'date' => '2015-01-01 12:00:00',
+                    'transaction_id' => '123456',
+                    'comments' => 'This is a comment',
+                ),
+                array(
+                    'getAmount' => 10,
+                    'getFees' => 1,
+                    'getType' => "TEST",
+                    'getStatus' => PaymentStatusEnum::PAYMENT_FAILED,
+                    'getDate' => \DateTime::createFromFormat("Y-m-d H:i:s", '2015-01-01 12:00:00'),
+                    'getTransactionId' => 123456,
+                    'getComments' => 'This is a comment',
+                )
+            ),
         );
     }
 
+
+    /**
+     * Data provider for handle payment with missing param
+     * 
+     * @return array
+     */
+    public function handlePaymentDataMissingParamProvider()
+    {
+        return array(
+            array(
+                array(
+                    'fees_amount' => 1,
+                    'type' => "TEST",
+                    'status' => PaymentStatusEnum::PAYMENT_SUCCESS,
+                ),
+            ),
+            array(
+                array(
+                    'amount' => 10,
+                    'type' => "TEST",
+                    'status' => PaymentStatusEnum::PAYMENT_SUCCESS,
+                ),
+            ),
+            array(
+                array(
+                    'amount' => 10,
+                    'fees_amount' => 1,
+                    'status' => PaymentStatusEnum::PAYMENT_SUCCESS,
+                ),
+            ),
+            array(
+                array(
+                    'amount' => 10,
+                    'fees_amount' => 1,
+                    'type' => "TEST",
+                ),
+            ),
+        );
+    }
+    
+
+    /**
+     * @dataProvider handlePaymentDataBadParamProvider
+     * @expectedException \IO\ApiBundle\Utils\BadParameterException
+     */
+    public function testHandlePaymentBadParam($input)
+    {
+        $paymentSv = $this->container->get('io.payment_service');
+        $paymentSv->handlePayment($input);
+    }
+    
+
+    /**
+     * Data provider for handle payment with bad param
+     * 
+     * @return array
+     */
+    public function handlePaymentDataBadParamProvider()
+    {
+        return array(
+            array(
+                array(
+                    'amount' => 10,
+                    'fees_amount' => 1,
+                    'type' => "TEST",
+                    'status' => "THIS_STATUS_DOES_NOT_EXIST",
+                ),
+            ),
+        );
+    }
 }
