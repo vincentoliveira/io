@@ -59,7 +59,7 @@ class PaymentController extends DefaultController
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
         
-        $payment = $this->paymentSv->handlePayment($order, $request->request->all());
+        $payment = $this->paymentSv->handlePayment($request->request->all());
         if ($payment === null) {
             return $this->errorResponse(self::INTERNAL_ERROR);
         }
