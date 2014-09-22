@@ -18,7 +18,7 @@ class UserServiceTest extends IOTestCase
      */
     public function testAuthUserData($email, $plainPassword, $isExpected)
     {
-        $this->getRestaurant('restaurant');
+        $restaurant = $this->getRestaurant('restaurant');
         $userExpected = $this->userExists('restaurant', 'restaurant');
         
         $userSv = $this->container->get('io.user_service');
@@ -26,6 +26,7 @@ class UserServiceTest extends IOTestCase
 
         if ($isExpected) {
             $this->assertEquals($user, $userExpected);
+            $this->assertEquals($user->getRestaurant(), $restaurant);
         } else {
             $this->assertNull($user);
         }
