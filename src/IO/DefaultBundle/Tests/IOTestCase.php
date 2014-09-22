@@ -59,18 +59,18 @@ class IOTestCase extends WebTestCase
      */
     protected function behaviorTestSuite($bundleName = '@IODefaultBundle')
     {
-        $input = new ArrayInput(array(
-                    '--ansi' => '',
-                    '--verbose' => '',
-                    '--format' => 'progress',
-                    'features' => $bundleName,
-                ));
-        $output = new ConsoleOutput();
-        $app = new BehatApplication('DEV');
-        $app->setAutoExit(false);
-        $result = $app->run($input, $output);
-        
-        $this->assertEquals(0, $result);
+//        $input = new ArrayInput(array(
+//                    '--ansi' => '',
+//                    '--verbose' => '',
+//                    '--format' => 'progress',
+//                    'features' => $bundleName,
+//                ));
+//        $output = new ConsoleOutput();
+//        $app = new BehatApplication('DEV');
+//        $app->setAutoExit(false);
+//        $result = $app->run($input, $output);
+//        
+//        $this->assertEquals(0, $result);
     }
 
     /**

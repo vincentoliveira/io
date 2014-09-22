@@ -143,11 +143,12 @@ class ClientController extends DefaultController
     public function authAction(Request $request)
     {
         $data = $request->request->all();
-        if ($data === null || empty($data)) {
+        if ($data === null || empty($data) ||
+                !isset($data['email']) || !isset($data['plainPassword'])) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }
 
-        $client = $this->userSv->authUserData($data);
+        $user = $this->userSv->authUserData($data['email'], $data['plainPassword']);
         if ($client === null || $client->getIdentity() === null) {
             return $this->errorResponse(self::BAD_AUTHENTIFICATION);
         }

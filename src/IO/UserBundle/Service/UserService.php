@@ -90,22 +90,21 @@ class UserService
     /**
      * Authentification user
      *
+     * 
+     * @param type $email
+     * @param type $plainPassword
      * @return User
      */
-    public function authUserData(array $data)
+    public function authUserData($email, $plainPassword)
     {
-        if (!isset($data['email']) || !isset($data['plainPassword'])) {
-            return null;
-        }
-        
         $repo = $this->em->getRepository('IOUserBundle:User');
-        $user = $repo->findOneByEmail($data['email']);
+        $user = $repo->findOneByEmail($email);
         if ($user === null || !$user->isEnabled()) {
             return null;
         }
         
         $hashPwd = $user->getPassword();
-        $user->setPlainPassword($data['plainPassword']);
+        $user->setPlainPassword($plainPassword);
         $this->userManager->updatePassword($user);
         if ($hashPwd !== $user->getPassword()) {
             return null;

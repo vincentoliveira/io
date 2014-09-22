@@ -1,6 +1,6 @@
 <?php
 
-namespace IO\ApiBundle\Tests\Controller;
+namespace IO\RestaurantBundle\Tests\Controller;
 
 use IO\DefaultBundle\Tests\IOTestCase;
 use IO\OrderBundle\Entity\OrderData;
@@ -34,6 +34,17 @@ class PaymentServiceTest extends IOTestCase
      * @expectedException \IO\ApiBundle\Utils\MissingParameterException
      */
     public function testHandlePaymentMissingParam($input)
+    {
+        $paymentSv = $this->container->get('io.payment_service');
+        $paymentSv->handlePayment($input);
+    }
+    
+
+    /**
+     * @dataProvider handlePaymentDataBadParamProvider
+     * @expectedException \IO\ApiBundle\Utils\BadParameterException
+     */
+    public function testHandlePaymentBadParam($input)
     {
         $paymentSv = $this->container->get('io.payment_service');
         $paymentSv->handlePayment($input);
@@ -122,17 +133,6 @@ class PaymentServiceTest extends IOTestCase
                 ),
             ),
         );
-    }
-    
-
-    /**
-     * @dataProvider handlePaymentDataBadParamProvider
-     * @expectedException \IO\ApiBundle\Utils\BadParameterException
-     */
-    public function testHandlePaymentBadParam($input)
-    {
-        $paymentSv = $this->container->get('io.payment_service');
-        $paymentSv->handlePayment($input);
     }
     
 
