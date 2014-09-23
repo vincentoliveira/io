@@ -236,9 +236,11 @@ class OrderService
                 ->leftJoin('order_data.orderStatuses', 'order_status')
                 ->where('order_data.restaurant = :restaurant')
                 ->groupBy('order_data.id')
-                ->having('GROUP_CONCAT(order_status.newStatus) NOT LIKE :status_closed')
+                ->having('GROUP_CONCAT(order_status.newStatus) LIKE :status_init')
+                ->andHaving('GROUP_CONCAT(order_status.newStatus) NOT LIKE :status_closed')
                 ->andHaving('GROUP_CONCAT(order_status.newStatus) NOT LIKE :status_canceled')
                 ->setParameter(':restaurant', $restaurant)
+                ->setParameter(':status_init', '%' . OrderStatusEnum::STATUS_INIT . '%')
                 ->setParameter(':status_closed', '%' . OrderStatusEnum::STATUS_CLOSED . '%')
                 ->setParameter(':status_canceled', '%' . OrderStatusEnum::STATUS_CANCELED . '%');
 

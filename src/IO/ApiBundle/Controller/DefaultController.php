@@ -16,6 +16,7 @@ abstract class DefaultController extends Controller
     const EMPTY_PARAMETER = "EMPTY_PARAMETER";
     const BAD_PARAMETER = "BAD_PARAMETER";
     const BAD_AUTHENTIFICATION = "BAD_AUTHENTIFICATION";
+    const MISSING_PARAMETER = "MISSING_PARAMETER";
     const ORDER_LOCKED = "ORDER_LOCKED";
     
     /**
@@ -48,15 +49,20 @@ abstract class DefaultController extends Controller
             'message' => "Bad parameter.",
             'err_no' => 2,
         ),
+        self::MISSING_PARAMETER => array(
+            'error_code' => 400,
+            'message' => "Missing parameter.",
+            'err_no' => 3,
+        ),
         self::BAD_AUTHENTIFICATION => array(
             'error_code' => 403,
             'message' => "Bad authentification.",
-            'err_no' => 3,
+            'err_no' => 4,
         ),
         self::ORDER_LOCKED => array(
             'error_code' => 400,
             'message' => "This order is locked.",
-            'err_no' => 4,
+            'err_no' => 5,
         ),
     );
 
