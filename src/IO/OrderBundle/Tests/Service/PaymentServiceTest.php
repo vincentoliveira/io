@@ -24,7 +24,7 @@ class PaymentServiceTest extends IOTestCase
 
         $this->assertNotNull($payment);
         foreach ($output as $getter => $field) {
-            $this->assertEquals($payment->{$getter}(), $field);
+            $this->assertEquals($payment->{$getter}(), $field, $getter);
         }
     }
     
@@ -80,7 +80,7 @@ class PaymentServiceTest extends IOTestCase
                     'status' => PaymentStatusEnum::PAYMENT_FAILED,
                     'date' => '2015-01-01 12:00:00',
                     'transaction_id' => '123456',
-                    'comments' => base64_decode('This is a comment'),
+                    'comments' => base64_encode('This is a comment'),
                 ),
                 array(
                     'getAmount' => 10,
@@ -89,7 +89,7 @@ class PaymentServiceTest extends IOTestCase
                     'getStatus' => PaymentStatusEnum::PAYMENT_FAILED,
                     'getDate' => \DateTime::createFromFormat("Y-m-d H:i:s", '2015-01-01 12:00:00'),
                     'getTransactionId' => 123456,
-                    'getComments' => base64_decode('This is a comment'),
+                    'getComments' => 'This is a comment',
                 )
             ),
         );
