@@ -60,15 +60,15 @@ class PaymentService
 
         $payment->setDate($paymentDate);
         $payment->setStatus($data['status']);
-        $payment->setAmount($data['amount']);
-        $payment->setFees($data['fees_amount']);
+        $payment->setAmount(floatval($data['amount']));
+        $payment->setFees(floatval($data['fees_amount']));
         $payment->setType($data['type']);
         
         if (isset($data['transaction_id'])) {
             $payment->setTransactionId($data['transaction_id']);
         }
         if (isset($data['comments'])) {
-            $payment->setComments($data['comments']);
+            $payment->setComments(base64_decode($data['comments']));
         }
         
         $this->em->persist($payment);
