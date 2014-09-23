@@ -26,9 +26,9 @@ class OrderController extends DefaultController
     public $orderSv;
 
     /**
-     * GET /order/cart/:id.json
+     * GET /order/all.json
      * 
-     * Add product to a desired cart and return new cart
+     * Get all order of a restaurant
      * 
      * Parameters:
      * - <strong>token</strong>         The alphanumeric token of the 
@@ -71,7 +71,7 @@ class OrderController extends DefaultController
         }
         return new JsonResponse(array(
             'orders' => $orderResults,
-            'restaurant' => $restaurant,
+            'restaurant' => $restaurant->accept($apiVisistor),
         ));
     }
 
