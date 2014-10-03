@@ -215,8 +215,8 @@ class ApiElementVisitor implements ApiElementVisitorInterface
             'shortName' => $dish->getShortName(),
             'description' => $dish->getDescription(),
             'type' => $dish->getItemType(),
-            'price' => $dish->getPrice(),
-            'vat' => $vat,
+            'price' => floatval($dish->getPrice()),
+            'vat' => floatval($vat),
         );
         
         if ($dish->getMedia()) {
@@ -262,7 +262,7 @@ class ApiElementVisitor implements ApiElementVisitorInterface
         $result = array(
             'id' => $optionChoice->getId(),
             'name' => $optionChoice->getName(),
-            'price' => $optionChoice->getPrice(),
+            'price' => floatval($optionChoice->getPrice()),
         );
         
         return $result;
@@ -290,7 +290,6 @@ class ApiElementVisitor implements ApiElementVisitorInterface
             'id' => $orderData->getId(),
             'delivery_date' => $orderData->getOrderDate(),
             'status' => $orderData->getLastStatus(),
-            'customer' => null,
             'products' => array(),
             'payments' => array(), 
             'total' => $orderData->getTotalPrice(),
@@ -324,8 +323,8 @@ class ApiElementVisitor implements ApiElementVisitorInterface
             'name' => $orderLine->getItemName(),
             'short_name' => $orderLine->getItemShortName(),
             'extra' => $orderLine->getExtra(),
-            'vat' => $orderLine->getItemVat(),
-            'price' => $orderLine->getItemPrice(),
+            'vat' => floatval($orderLine->getItemVat()),
+            'price' => floatval($orderLine->getItemPrice()),
         );
     }
     
@@ -338,7 +337,7 @@ class ApiElementVisitor implements ApiElementVisitorInterface
             'id' => $orderPayment->getId(),
             'date' => $orderPayment->getDate(),
             'status' => $orderPayment->getStatus(),
-            'amount' => $orderPayment->getAmount(),
+            'amount' => float($orderPayment->getAmount()),
         );
     }
     

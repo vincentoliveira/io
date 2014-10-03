@@ -116,11 +116,11 @@ class OrderData implements ApiElement
     /**
      * Get total price
      *
-     * @return integer 
+     * @return float 
      */
     public function getTotalPrice()
     {
-        $price = 0;
+        $price = 0.0;
         foreach ($this->orderLines as $line) {
             $price += $line->getItemPrice();
         }
@@ -130,11 +130,11 @@ class OrderData implements ApiElement
     /**
      * Get no taxe total price
      *
-     * @return integer 
+     * @return float 
      */
     public function getNoTaxeTotalPrice()
     {
-        $price = 0;
+        $price = 0.0;
         foreach ($this->orderLines as $line) {
             $price += $line->getItemPrice() / (1 + $line->getItemVat() / 100);
         }
@@ -171,11 +171,11 @@ class OrderData implements ApiElement
     /**
      * Get Payed Amount
      *
-     * @return integer 
+     * @return float 
      */
     public function getPayedAmount()
     {
-        $totalPayed = 0;
+        $totalPayed = 0.0;
         foreach ($this->orderPayments as $payment) {
             if ($payment->getStatus() === PaymentStatusEnum::PAYMENT_SUCCESS) {
                 $totalPayed += $payment->getAmount();
@@ -187,7 +187,7 @@ class OrderData implements ApiElement
     /**
      * Is order payed
      *
-     * @return integer 
+     * @return boolean 
      */
     public function isPayed()
     {

@@ -26,7 +26,7 @@ class OrderController extends DefaultController
     public $orderSv;
 
     /**
-     * GET /order/all.json
+     * GET /order/current.json
      * 
      * Get all order of a restaurant
      * 
@@ -36,10 +36,10 @@ class OrderController extends DefaultController
      * - <strong>restaurant_id</strong> The numerical id of the restaurant
      * 
      * @return JsonResponse
-     * @Route("/all.json", name="api_order_get_all")
+     * @Route("/current.json", name="api_order_get_current")
      * @Method("GET")
      */
-    public function getOrderAction(Request $request)
+    public function getCurrentAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 

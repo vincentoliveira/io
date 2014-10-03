@@ -144,7 +144,7 @@ class CartControllerTest extends IOTestCase
                 array(),
                 403,
                 array(
-                    'error' => 3,
+                    'error' => 4,
                     'message' => 'Bad authentification.',
                 ),
             ),
@@ -154,7 +154,7 @@ class CartControllerTest extends IOTestCase
                 ),
                 403,
                 array(
-                    'error' => 3,
+                    'error' => 4,
                     'message' => 'Bad authentification.',
                 ),
             ),
@@ -168,13 +168,12 @@ class CartControllerTest extends IOTestCase
                         'id' => 1,
                         "delivery_date" => null,
                         "status" => "DRAFT",
-                        "customer" => null,
                         "products" => array(),
                         "payments" => array(),
-                        "total" => 0,
-                        "no_tax_total" => 0,
-                        "vat_amount" => 0,
-                        "total_unpayed" => 0,
+                        "total" => 0.0,
+                        "no_tax_total" => 0.0,
+                        "vat_amount" => 0.0,
+                        "total_unpayed" => 0.0,
                     ),
                 ),
             ),
@@ -193,7 +192,7 @@ class CartControllerTest extends IOTestCase
                 array(),
                 403,
                 array(
-                    'error' => 3,
+                    'error' => 4,
                     'message' => 'Bad authentification.',
                 ),
             ),
@@ -204,7 +203,7 @@ class CartControllerTest extends IOTestCase
                 ),
                 403,
                 array(
-                    'error' => 3,
+                    'error' => 4,
                     'message' => 'Bad authentification.',
                 ),
             ),
@@ -219,13 +218,12 @@ class CartControllerTest extends IOTestCase
                         'id' => 1,
                         "delivery_date" => null,
                         "status" => "DRAFT",
-                        "customer" => null,
                         "products" => array(),
                         "payments" => array(),
-                        "total" => 0,
-                        "no_tax_total" => 0,
-                        "vat_amount" => 0,
-                        "total_unpayed" => 0,
+                        "total" => 0.0,
+                        "no_tax_total" => 0.0,
+                        "vat_amount" => 0.0,
+                        "total_unpayed" => 0.0,
                     ),
                 ),
             ),
@@ -239,13 +237,12 @@ class CartControllerTest extends IOTestCase
                         'id' => 1,
                         "delivery_date" => null,
                         "status" => "DRAFT",
-                        "customer" => null,
                         "products" => array(),
                         "payments" => array(),
-                        "total" => 0,
-                        "no_tax_total" => 0,
-                        "vat_amount" => 0,
-                        "total_unpayed" => 0,
+                        "total" => 0.0,
+                        "no_tax_total" => 0.0,
+                        "vat_amount" => 0.0,
+                        "total_unpayed" => 0.0,
                     ),
                 ),
             ),
@@ -261,7 +258,6 @@ class CartControllerTest extends IOTestCase
                         'id' => 1,
                         "delivery_date" => null,
                         "status" => "DRAFT",
-                        "customer" => null,
                         "products" => array(
                             array(
                                 "product_id" => 2,
@@ -295,7 +291,7 @@ class CartControllerTest extends IOTestCase
                 array(),
                 403,
                 array(
-                    'error' => 3,
+                    'error' => 4,
                     'message' => 'Bad authentification.',
                 ),
             ),
@@ -306,7 +302,7 @@ class CartControllerTest extends IOTestCase
                 ),
                 403,
                 array(
-                    'error' => 3,
+                    'error' => 4,
                     'message' => 'Bad authentification.',
                 ),
             ),
@@ -332,7 +328,6 @@ class CartControllerTest extends IOTestCase
                         'id' => 1,
                         "delivery_date" => null,
                         "status" => "DRAFT",
-                        "customer" => null,
                         "products" => array(
                             array(
                                 "product_id" => 2,
@@ -363,7 +358,6 @@ class CartControllerTest extends IOTestCase
                         'id' => 1,
                         "delivery_date" => null,
                         "status" => "DRAFT",
-                        "customer" => null,
                         "products" => array(
                             array(
                                 "product_id" => 2,
@@ -397,7 +391,7 @@ class CartControllerTest extends IOTestCase
                 array(),
                 403,
                 array(
-                    'error' => 3,
+                    'error' => 4,
                     'message' => 'Bad authentification.',
                 ),
             ),
@@ -408,7 +402,7 @@ class CartControllerTest extends IOTestCase
                 ),
                 403,
                 array(
-                    'error' => 3,
+                    'error' => 4,
                     'message' => 'Bad authentification.',
                 ),
             ),
@@ -434,7 +428,6 @@ class CartControllerTest extends IOTestCase
                         'id' => 1,
                         "delivery_date" => null,
                         "status" => "DRAFT",
-                        "customer" => null,
                         "products" => array(
                             array(
                                 "product_id" => 2,
@@ -464,7 +457,6 @@ class CartControllerTest extends IOTestCase
                         'id' => 1,
                         "delivery_date" => null,
                         "status" => "DRAFT",
-                        "customer" => null,
                         "products" => array(
                             array(
                                 "product_id" => 2,
