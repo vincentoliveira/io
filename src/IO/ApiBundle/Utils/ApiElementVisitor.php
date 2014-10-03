@@ -337,7 +337,7 @@ class ApiElementVisitor implements ApiElementVisitorInterface
             'id' => $orderPayment->getId(),
             'date' => $orderPayment->getDate(),
             'status' => $orderPayment->getStatus(),
-            'amount' => float($orderPayment->getAmount()),
+            'amount' => floatval($orderPayment->getAmount()),
         );
     }
     
