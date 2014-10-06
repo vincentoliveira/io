@@ -248,8 +248,34 @@ class OrderService
 
         return $orders;
     }
-
+    
+    
     /**
+     * process order from data
+     * 
+     * @param array $data
+     * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
+     * @return \IO\OrderBundle\Entity\OrderData
+     */
+    public function cancelOrder(OrderData &$orderData)
+    {
+        $cancelStatus = new OrderStatus();
+        $cancelStatus->setDate(new \DateTime());
+        $cancelStatus->setOldStatus($orderData->getLastStatus());
+        $cancelStatus->setNewStatus(OrderStatusEnum::STATUS_CANCELED);
+        $cancelStatus->setOrder($orderData);
+        
+        $orderData->addOrderStatus($cancelStatus);
+        
+        $this->em->persist($cancelStatus);
+        $this->em->persist($orderData);
+        $this->em->flush();
+        
+        return $orderData;
+    }
+
+
+        /**
      * process order from data
      * 
      * @param array $data

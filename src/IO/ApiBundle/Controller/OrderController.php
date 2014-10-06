@@ -75,4 +75,62 @@ class OrderController extends DefaultController
         ));
     }
 
+    
+
+    /**
+     * PUT /order/{order-id}/cancel.json
+     * 
+     * Cancel an order
+     * 
+     * Parameters:
+     * - <strong>restaurant_token</strong>         The alphanumeric token of the 
+     *                                  manager/platform.
+     * - <strong>restaurant_id</strong> The numerical id of the restaurant
+     * 
+     * @return JsonResponse
+     * @Route("/{id}/cancel.json", name="api_order_cancel")
+     * @Method("PUT")
+     */
+    public function cancelAction(Request $request, $id)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        // check token
+        $token = $request->request->get('restaurant_token', null);
+        $restaurantId = $request->request->get('restaurant_id', null);
+        $restaurant = null;
+        if ($restaurantId) {
+            $restaurantRepo = $em->getRepository("IORestaurantBundle:Restaurant");
+            $restaurant = $restaurantRepo->find($restaurantId);
+        }
+        
+        if (!$this->checkRestaurantToken($token, $restaurant)) {
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
+        }
+        
+        if ($restaurant === null) {
+            $restaurant = $this->authToken->getRestaurant();
+            if ($restaurant === null) {
+                return $this->errorResponse(self::MISSING_PARAMETER, "Missing parameter: restaurant_id");
+            }
+        }
+        
+        $orderRepo = $em->getRepository("IOOrderBundle:OrderData");
+        $order = $orderRepo->findOneBy(array(
+            'id' => $id,
+            'restaurant' => $restaurant,
+        ));
+        
+        if ($order === null) {
+            return $this->errorResponse(self::UNKNOWN_ORDER);
+        }
+        
+        $this->orderSv->cancelOrder($order);
+        
+        $apiVisistor = new ApiElementVisitor();
+        return new JsonResponse(array(
+            'order' => $order->accept($apiVisistor),
+        ));
+    }
 }

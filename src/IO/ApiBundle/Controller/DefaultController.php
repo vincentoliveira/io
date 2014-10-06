@@ -18,6 +18,7 @@ abstract class DefaultController extends Controller
     const BAD_AUTHENTIFICATION = "BAD_AUTHENTIFICATION";
     const MISSING_PARAMETER = "MISSING_PARAMETER";
     const ORDER_LOCKED = "ORDER_LOCKED";
+    const UNKNOWN_ORDER = "UNKNOWN_ORDER";
     
     /**
      * @var \IO\ApiBundle\Entity\AuthToken 
@@ -63,6 +64,11 @@ abstract class DefaultController extends Controller
             'error_code' => 400,
             'message' => "This order is locked.",
             'err_no' => 5,
+        ),
+        self::UNKNOWN_ORDER => array(
+            'error_code' => 404,
+            'message' => "This order does not exist, or you are not allowed to get it.",
+            'err_no' => 6,
         ),
     );
 
