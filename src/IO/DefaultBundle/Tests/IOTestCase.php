@@ -175,6 +175,19 @@ class IOTestCase extends WebTestCase
         $orderService = $this->container->get('io.order_service');
         return $orderService->createOrder($restaurant, $token);
     }
+
+    /**
+     * Create empty cart
+     * 
+     * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
+     * @param \IO\ApiBundle\Entity\AuthToken $token
+     * @return \IO\OrderBundle\Entity\OrderData
+     */
+    protected function cancelOrder(OrderData $order)
+    {
+        $orderService = $this->container->get('io.order_service');
+        return $orderService->cancelOrder($order);
+    }
     
     /**
      * Return new chart

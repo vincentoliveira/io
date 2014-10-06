@@ -66,7 +66,7 @@ class OrderControllerTest extends IOTestCase
         $this->client->request('PUT', $url, $data);
         $response = $this->client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
-    } 
+    }
        
     public function testCancelKO404()
     { 
@@ -78,6 +78,74 @@ class OrderControllerTest extends IOTestCase
         $this->client->request('PUT', $url, $data);
         $response = $this->client->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
-        
     }
+       
+    public function testCancelKOClosed()
+    {
+        $this->cancelOrder($this->data['entity_order']);
+        $url = $this->container->get('router')->generate('api_order_cancel', array('id' => $this->data['order']));
+        $data = array(
+            'restaurant_id' => $this->data['restaurant'],
+            'restaurant_token' => $this->data['token'],
+        );
+        $this->client->request('PUT', $url, $data);
+        $response = $this->client->getResponse();
+        $this->assertEquals(400, $response->getStatusCode());
+    }
+
+
+    public function testNextStatusOK()
+    {
+        $url = $this->container->get('router')->generate('api_order_next_status', array('id' => $this->data['order']));
+        $data = array(
+            'restaurant_id' => $this->data['restaurant'],
+            'restaurant_token' => $this->data['token'],
+        );
+        $this->client->request('PUT', $url, $data);
+
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $result = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('order', $result);
+        $this->assertEquals($result['order']['status'], \IO\OrderBundle\Enum\OrderStatusEnum::STATUS_INIT);
+    }
+    
+    public function testNextStatusKO403()
+    {
+        $url = $this->container->get('router')->generate('api_order_next_status', array('id' => $this->data['order']));
+        $data = array(
+            'restaurant_id' => $this->data['restaurant2'],
+            'restaurant_token' => $this->data['token'],
+        );
+        $this->client->request('PUT', $url, $data);
+        $response = $this->client->getResponse();
+        $this->assertEquals(403, $response->getStatusCode());
+    }
+       
+    public function testNextStatusKO404()
+    { 
+        $url = $this->container->get('router')->generate('api_order_next_status', array('id' => $this->data['order2']));
+        $data = array(
+            'restaurant_id' => $this->data['restaurant'],
+            'restaurant_token' => $this->data['token'],
+        );
+        $this->client->request('PUT', $url, $data);
+        $response = $this->client->getResponse();
+        $this->assertEquals(404, $response->getStatusCode());
+    }
+       
+    public function testNextStatusClosed()
+    {
+        $this->cancelOrder($this->data['entity_order']);
+        $url = $this->container->get('router')->generate('api_order_next_status', array('id' => $this->data['order']));
+        $data = array(
+            'restaurant_id' => $this->data['restaurant'],
+            'restaurant_token' => $this->data['token'],
+        );
+        $this->client->request('PUT', $url, $data);
+        $response = $this->client->getResponse();
+        $this->assertEquals(400, $response->getStatusCode());
+    }
+    
+    
 }

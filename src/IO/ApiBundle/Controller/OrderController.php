@@ -75,7 +75,6 @@ class OrderController extends DefaultController
         ));
     }
 
-    
 
     /**
      * PUT /order/{order-id}/cancel.json
@@ -116,6 +115,7 @@ class OrderController extends DefaultController
             }
         }
         
+        // check order
         $orderRepo = $em->getRepository("IOOrderBundle:OrderData");
         $order = $orderRepo->findOneBy(array(
             'id' => $id,
@@ -126,7 +126,73 @@ class OrderController extends DefaultController
             return $this->errorResponse(self::UNKNOWN_ORDER);
         }
         
+        if ($this->orderSv->isClosed($order)) {
+            return $this->errorResponse(self::ORDER_LOCKED);
+        }
+        
         $this->orderSv->cancelOrder($order);
+        
+        $apiVisistor = new ApiElementVisitor();
+        return new JsonResponse(array(
+            'order' => $order->accept($apiVisistor),
+        ));
+    }
+    
+    
+    /**
+     * PUT /order/{order-id}/cancel.json
+     * 
+     * Set an order to its next status
+     * 
+     * Parameters:
+     * - <strong>restaurant_token</strong>         The alphanumeric token of the 
+     *                                  manager/platform.
+     * - <strong>restaurant_id</strong> The numerical id of the restaurant
+     * 
+     * @return JsonResponse
+     * @Route("/{id}/next_status.json", name="api_order_next_status")
+     * @Method("PUT")
+     */
+    public function nextStatusAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        // check token
+        $token = $request->request->get('restaurant_token', null);
+        $restaurantId = $request->request->get('restaurant_id', null);
+        $restaurant = null;
+        if ($restaurantId) {
+            $restaurantRepo = $em->getRepository("IORestaurantBundle:Restaurant");
+            $restaurant = $restaurantRepo->find($restaurantId);
+        }
+        
+        if (!$this->checkRestaurantToken($token, $restaurant)) {
+            return $this->errorResponse(self::BAD_AUTHENTIFICATION);
+        }
+        
+        if ($restaurant === null) {
+            $restaurant = $this->authToken->getRestaurant();
+            if ($restaurant === null) {
+                return $this->errorResponse(self::MISSING_PARAMETER, "Missing parameter: restaurant_id");
+            }
+        }
+        
+        // check order
+        $orderRepo = $em->getRepository("IOOrderBundle:OrderData");
+        $order = $orderRepo->findOneBy(array(
+            'id' => $id,
+            'restaurant' => $restaurant,
+        ));
+        
+        if ($order === null) {
+            return $this->errorResponse(self::UNKNOWN_ORDER);
+        }
+        
+        if ($this->orderSv->isClosed($order)) {
+            return $this->errorResponse(self::ORDER_LOCKED);
+        }
+        
+        $this->orderSv->setNextStatusToOrder($order);
         
         $apiVisistor = new ApiElementVisitor();
         return new JsonResponse(array(

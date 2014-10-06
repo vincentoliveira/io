@@ -50,6 +50,21 @@ class OrderService
     }
 
     /**
+     * Is order data locked
+     * 
+     * @param \IO\OrderBundle\Entity\OrderData $order
+     * @return boolean
+     */
+    public function isClosed(OrderData $order)
+    {
+        $lockStatus = array(
+            OrderStatusEnum::STATUS_CANCELED,
+            OrderStatusEnum::STATUS_CLOSED,
+        );
+        return in_array($order->getLastStatus(), $lockStatus);
+    }
+
+    /**
      * Create an order
      * 
      * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
@@ -251,10 +266,10 @@ class OrderService
     
     
     /**
-     * process order from data
+     * Cancel an order
      * 
-     * @param array $data
-     * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
+     * @param \IO\OrderBundle\Entity\OrderData $orderData
+     * @return \IO\OrderBundle\Entity\OrderData
      * @return \IO\OrderBundle\Entity\OrderData
      */
     public function cancelOrder(OrderData &$orderData)
@@ -273,9 +288,57 @@ class OrderService
         
         return $orderData;
     }
+    
+    /**
+     * Set next status to an order
+     * 
+     * @param \IO\OrderBundle\Entity\OrderData $orderData
+     * @return \IO\OrderBundle\Entity\OrderData
+     */
+    public function setNextStatusToOrder(OrderData &$orderData)
+    {
+        $cancelStatus = new OrderStatus();
+        $cancelStatus->setDate(new \DateTime());
+        $cancelStatus->setOldStatus($orderData->getLastStatus());
+        $cancelStatus->setNewStatus($this->nextStatusOf($orderData->getLastStatus()));
+        $cancelStatus->setOrder($orderData);
+        
+        $orderData->addOrderStatus($cancelStatus);
+        
+        $this->em->persist($cancelStatus);
+        $this->em->persist($orderData);
+        $this->em->flush();
+        
+        return $orderData;
+    }
+    
+    /**
+     * 
+     * @param type $status
+     */
+    protected function nextStatusOf($oldStatus)
+    {
+        switch ($oldStatus) {
+            case OrderStatusEnum::STATUS_INIT:
+                $status = OrderStatusEnum::STATUS_IN_PROGRESS;
+                break;
+            case OrderStatusEnum::STATUS_IN_PROGRESS:
+            case OrderStatusEnum::STATUS_READY:
+            case OrderStatusEnum::STATUS_CLOSED:
+                $status = OrderStatusEnum::STATUS_CLOSED;
+                break;
+            case OrderStatusEnum::STATUS_CANCELED:
+                $status = OrderStatusEnum::STATUS_CANCELED;
+                break;
+            default:
+                $status = OrderStatusEnum::STATUS_INIT;
+                break;
+        }
+        return $status;
+    }
 
 
-        /**
+    /**
      * process order from data
      * 
      * @param array $data
