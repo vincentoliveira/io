@@ -3,6 +3,7 @@
 namespace IO\ApiBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use IO\RestaurantBundle\Entity\Restaurant;
 
 /**
  * AuthToken Repository
@@ -30,4 +31,26 @@ class AuthTokenRepository extends EntityRepository
         return empty($result);
     }
 
+    /**
+     * Find token for restaurants
+     * 
+     * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
+     * @return type
+     */
+    public function findTokensForRestaurant(Restaurant $restaurant)
+    {
+        $restaurantRepo = $this->getEntityManager()->getRepository('IORestaurantBundle:Restaurant');
+        $managers = $restaurantRepo->findManagers($restaurant);
+                
+        $queryBuilder = $this->createQueryBuilder('userToken');
+        $queryBuilder->select('userToken')
+                ->where('userToken.user IN (:managers)')
+                ->andWhere('userToken.expiresAt IS NULL')
+                ->setParameter(':managers', $managers);
+
+        $result = $queryBuilder->getQuery()->getResult();
+        
+        return $result;
+    }
+    
 }

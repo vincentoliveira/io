@@ -32,21 +32,29 @@ class AuthTokenService
      * @param \IO\UserBundle\Entity\User $user
      * @return \IO\ApiBundle\Entity\AuthToken
      */
-    public function createToken(User $user)
+    public function createToken(User $user, array $restaurants = null, $expiresAt = false)
     {
-        $expirationDate = new \DateTime();
-        $expirationDate->add(new \DateInterval('PT' . self::$validityTime . 'S'));
+        if ($expiresAt === false) {
+            $expiresAt = new \DateTime();
+            $expiresAt->add(new \DateInterval('PT' . self::$validityTime . 'S'));
+        }
 
         $userToken = new AuthToken();
         $userToken->setToken($this->generateToken());
         $userToken->setUser($user);
-        $userToken->setExpireAt($expirationDate);
+        $userToken->setExpireAt($expiresAt);
 
-        if ($user->getRestaurant()) {
-            $userToken->addRestrictedRestaurant($user->getRestaurant());
-        }
-        if ($user->getRestaurantGroup()) {
-            foreach ($user->getRestaurantGroup()->getRestaurants() as $restaurant) {
+        if ($restaurants === null) {
+            if ($user->getRestaurant()) {
+                $userToken->addRestrictedRestaurant($user->getRestaurant());
+            }
+            if ($user->getRestaurantGroup()) {
+                foreach ($user->getRestaurantGroup()->getRestaurants() as $restaurant) {
+                    $userToken->addRestrictedRestaurant($restaurant);
+                }
+            }
+        } else {
+            foreach ($restaurants as $restaurant) {
                 $userToken->addRestrictedRestaurant($restaurant);
             }
         }

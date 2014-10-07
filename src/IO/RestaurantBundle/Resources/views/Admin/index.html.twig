@@ -10,10 +10,17 @@
     <ul class="list-group">
     {% for group in restaurants %}
         <li class="list-group-item">
+            <div>
             <strong>{{ group.name }}</strong>
             <ul>
                 {% for restaurant in group.restaurants %}
-                <li><a href="{{ path('restaurant_set_current', {restaurantId:restaurant.id}) }}">{{ restaurant.name }}</a></li>
+                <li>
+                    <a href="{{ path('restaurant_set_current', {restaurantId:restaurant.id}) }}">{{ restaurant.name }}</a>
+                    ({% for token in tokens[group.id][restaurant.id] %}
+                    {{ token.token }}, 
+                    {% endfor %}
+                    <a href="{{ path('admin_restaurant_create_token', {id:restaurant.id}) }}">Créer un token</a>)
+                </li>
                 {% endfor %}
             </ul>
         </li>

@@ -25,13 +25,6 @@ class AuthToken implements ApiElement
     /**
      * @var string
      *
-     * @ORM\Column(name="plateform_name", type="string", length=15, nullable=true)
-     */
-    private $platformName;
-    
-    /**
-     * @var string
-     *
      * @ORM\Column(name="token", type="string", length=31, nullable=false)
      */
     private $token;

@@ -10,7 +10,7 @@ use IO\ApiBundle\Utils\ApiElementVisitorInterface;
  * Restaurant
  *
  * @ORM\Table(name="restaurant")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="IO\RestaurantBundle\Repository\RestaurantRepository")
  */
 class Restaurant implements ApiElement
 {

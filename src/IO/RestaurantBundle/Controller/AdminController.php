@@ -6,7 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use JMS\DiExtraBundle\Annotation\Inject;
 use IO\RestaurantBundle\Form\RestaurantAndChiefType;
 use IO\RestaurantBundle\Entity\Restaurant;
 use IO\RestaurantBundle\Entity\RestaurantGroup;
@@ -21,6 +23,15 @@ use IO\RestaurantBundle\Enum\ItemTypeEnum;
  */
 class AdminController extends Controller
 {
+
+    /**
+     * User token service
+     * 
+     * @Inject("io.auth_token_service")
+     * @var \IO\ApiBundle\Service\AuthTokenService
+     */
+    public $userTokenSv;
+    
     /**
      * Admin restaurant index
      * 
@@ -31,8 +42,22 @@ class AdminController extends Controller
      */
     public function indexAction()
     {
-        $restaurants = $this->getDoctrine()->getRepository("IORestaurantBundle:RestaurantGroup")->findAll();
-        return array('restaurants' => $restaurants);
+        $em = $this->getDoctrine()->getManager();
+        $restaurantRepo = $em->getRepository("IORestaurantBundle:RestaurantGroup");
+        $tokenRepo = $em->getRepository("IOApiBundle:AuthToken");
+
+        $restaurants = $restaurantRepo->findAll();
+        $tokens = array();
+        foreach ($restaurants as $restaurantGroup) {
+            foreach($restaurantGroup->getRestaurants() as $restaurant) {
+                $tokens[$restaurantGroup->getId()][$restaurant->getId()] = $tokenRepo->findTokensForRestaurant($restaurant);
+            }
+        }
+        
+        return array(
+            'restaurants' => $restaurants,
+            'tokens' => $tokens,
+        );
     }
 
 
@@ -79,6 +104,31 @@ class AdminController extends Controller
         }
 
         return array('form' => $form->createView());
+    }
+    
+    
+    /**
+     * Create token for restaurant
+     * 
+     * @return type
+     * @Route("/{id}/create_token", name="admin_restaurant_create_token")
+     * @Secure(roles="ROLE_ADMIN")
+     * @ParamConverter("restaurant", class="IORestaurantBundle:Restaurant")
+     * @Template()
+     */
+    public function createTokenAction(Restaurant $restaurant)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $manager = $em->getRepository('IORestaurantBundle:Restaurant')->findFirstManager($restaurant);
+        if ($manager !== null) {
+            $this->userTokenSv->createToken($manager, array($restaurant), null);
+        } else {
+            $session = $this->container->get('session');
+            $session->getFlashBag()->add('error', sprintf('Le restaurant "%s" n\'a pas de manager.', $restaurant->getName()));
+        }
+        
+        return $this->redirect($this->generateUrl('admin_restaurant_index'));
     }
 
 
