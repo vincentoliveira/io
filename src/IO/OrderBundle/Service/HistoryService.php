@@ -57,19 +57,23 @@ class HistoryService {
     public function getOrderHistoryPerDay(Restaurant $restaurant, $maxResults = 20, $firstResult = 0) {
         $metadata = $this->em->getClassMetadata('IOOrderBundle:OrderData');
         $metadataOL = $this->em->getClassMetadata('IOOrderBundle:OrderLine');
-        $metadataStatus = $this->em->getClassMetadata('IOOrderBundle:OrderStatus');
+        $metadataPayment = $this->em->getClassMetadata('IOOrderBundle:OrderPayment');
+//        $metadataStatus = $this->em->getClassMetadata('IOOrderBundle:OrderStatus');
 
         $tableName = $metadata->getTableName();
         $orderLineTableName = $metadataOL->getTableName();
-        $orderStatusTableName = $metadataStatus->getTableName();
+        $orderPaymentTableName = $metadataPayment->getTableName();
+//        $orderStatusTableName = $metadataStatus->getTableName();
         
         $qb = new MySQLQueryBuilder();
         
         $sqlQuery = $qb->select(array(
+            sprintf('DATE(%s.%s)', $tableName, $metadata->getColumnName('orderDate')) => 'history_date',
             sprintf('COUNT(DISTINCT %s.%s)', $tableName, $metadata->getColumnName('id')) => 'count',
-            sprintf('DATE(%s.%s)', $tableName, $metadata->getColumnName('orderDate')) => 'date',
             sprintf('SUM(%s.%s)', $orderLineTableName, $metadataOL->getColumnName('itemPrice')) => 'total',
-            sprintf('AVG(TIMESTAMPDIFF(SECOND,%s.%s,%1$s.%s))', $tableName, $metadata->getColumnName('startDate'), $metadata->getColumnName('orderDate')) => 'avgOrderTime',
+            sprintf('COUNT(DISTINCT %s.%s)', $orderPaymentTableName, $metadataPayment->getSingleAssociationJoinColumnName('order')) => 'count_payed',
+            sprintf('SUM(%s.%s)', $orderPaymentTableName, $metadataPayment->getColumnName('amount')) => 'total_payed',
+//            sprintf('GROUP_CONCAT(%s.%s)', $orderStatusTableName, $metadataStatus->getColumnName('newStatus')) => 'status',
         ));
         $sqlQuery .= $qb->from($tableName);
         
@@ -77,6 +81,11 @@ class HistoryService {
         $orderLineOrderIdField = $orderLineTableName . '.' . $metadataOL->getSingleAssociationJoinColumnName('order');
         $orderIdField = $tableName . '.' . $metadata->getColumnName('id');
         $sqlQuery .= $qb->leftJoin($orderLineTableName, $orderLineOrderIdField, $orderIdField);
+        
+        // join order payments
+        $orderPaymentOrderIdField = $orderPaymentTableName . '.' . $metadataPayment->getSingleAssociationJoinColumnName('order');
+        $orderIdField = $tableName . '.' . $metadata->getColumnName('id');
+        $sqlQuery .= $qb->leftJoin($orderPaymentTableName, $orderPaymentOrderIdField, $orderIdField);
         
         // join order status
 //        $orderStatusOrderIdField = $orderStatusTableName . '.' . $metadataStatus->getSingleAssociationJoinColumnName('order');
@@ -86,8 +95,8 @@ class HistoryService {
         $whereRestaurant = sprintf('%s = %s', $metadata->getColumnName('restaurant_id'), $restaurant->getId());
         $sqlQuery .= $qb->where($whereRestaurant);
 
-        $sqlQuery .= $qb->groupBy(array('date'));
-        $sqlQuery .= $qb->orderBy(array('date' => 'DESC'));
+        $sqlQuery .= $qb->groupBy(array('history_date'));
+        $sqlQuery .= $qb->orderBy(array('history_date' => 'DESC'));
         
         $sqlQuery .= $qb->limit($firstResult, $maxResults);
         
@@ -95,12 +104,12 @@ class HistoryService {
         try {
             $stmt = $this->em->getConnection()->query($sqlQuery);
             while ($row = $stmt->fetch()) {
-                $row['date'] = \DateTime::createFromFormat("Y-m-d", $row['date']);
+                $row['date'] = \DateTime::createFromFormat("Y-m-d", $row['history_date']);
                 $result[] = $row;
             }
         } catch (\Exception $ex) {
         }
-
+        
         return $result;
     }
 }

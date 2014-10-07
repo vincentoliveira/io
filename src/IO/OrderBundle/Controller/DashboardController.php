@@ -42,14 +42,28 @@ class DashboardController extends Controller
             return $this->redirect($this->generateUrl('order_index'));
         }
         
-        $history = $history[0];
-        $avgOrderTime = intval($history['avgOrderTime'] / 60) . 'min' . intval($history['avgOrderTime'] % 60);
+        $dayHistory = $history[0];
+        $tiles = array();
+        $tiles[] = array(
+            'title' => 'Commandes',
+            'value' => sprintf('%s (%s€)', $dayHistory['count'], $dayHistory['total']),
+        );
+        $tiles[] = array(
+            'title' => 'En attente',
+            'value' => sprintf('%s (%s€)', $dayHistory['count'] - $dayHistory['count_payed'], $dayHistory['total'] - $dayHistory['total_payed']),
+        );
+        $tiles[] = array(
+            'title' => 'Encaissées',
+            'value' => sprintf('%s (%s€)', $dayHistory['count_payed'], $dayHistory['total_payed']),
+        );
+        $tiles[] = array(
+            'title' => 'Panier moyen',
+            'value' => sprintf('%s€', $dayHistory['total'] / $dayHistory['count']),
+        );
         
         return array(
-            'day' => $history['date'],
-            'dayCount' => $history['count'],
-            'dayTotal' => $history['total'],
-            'avgOrderTime' => $avgOrderTime,
+            'day' => $dayHistory['date'],
+            'tiles' => $tiles,
         );
     }
 }

@@ -1,5 +1,5 @@
 <div class="order {% if order.lastStatus == "WAITING" or order.lastStatus == "INIT" %}order-waiting{% endif %}">
-    <h3>{{ (order.client.identity.firstname ~ ' ' ~ order.client.identity.lastname)|default('-') }} #{{ order.id }}</h3>
+    <h3>{% if order.client and order.client.identity %}{{ order.client.identity.firstname|default('') }} {{ order.client.identity.lastname|default('') }} {% endif %}#{{ order.id }}</h3>
     <strong>{{ order.lastStatus|trans }}</strong>
     {% if order.isPayed %}
     <strong class="red">PAYEE</strong>

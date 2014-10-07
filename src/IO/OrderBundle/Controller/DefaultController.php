@@ -160,6 +160,7 @@ class DefaultController extends Controller
         $payment = new OrderPayment();
         $payment->setOrder($order);
         $payment->setDate(new \DateTime());
+        $payment->setFees(0);
         $payment->setAmount($order->getTotalPrice() - $order->getPayedAmount());
         $payment->setType(PaymentTypeEnum::PAYMENT_CASH);
         $payment->setStatus(PaymentStatusEnum::PAYMENT_SUCCESS);

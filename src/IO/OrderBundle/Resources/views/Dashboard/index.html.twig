@@ -23,37 +23,14 @@
         <h1 class="page-header">Tableau de bord ({{ day|date('d/m/Y') }})</h1>
 
         <div class="row">
+            {% for tile in tiles %}
             <div class="col-md-3 col-sm-6">
-                <div class="dashboard-tile detail tile-red">
-                    <div class="content">
-                        <h1 class="text-left">{{ dayCount }}</h1>
-                        <p>Commandes</p>
-                    </div>
-                    <div class="icon"><i class="fa fa-cutlery"></i>
-                    </div>
+                <div class="dashboard-tile">
+                    <h1 class="text-left">{{ tile.value }}</h1>
+                    <p>{{ tile.title }}</p>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="dashboard-tile detail tile-turquoise">
-                    <div class="content">
-                        <h1 class="text-left">{{ dayTotal }}</h1>
-                        <p>Chiffre d'affaire</p>
-                    </div>
-                    <div class="icon"><i class="fa fa-euro"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="dashboard-tile detail tile-blue">
-                    <div class="content">
-                        <h1 class="text-left">{{ avgOrderTime }}</h1>
-                        <p>Temps (commande)</p>
-                    </div>
-                    <div class="icon"><i class="fa fa-clock-o"></i>
-                    </div>
-                </div>
-            </div>
-
+            {% endfor %}
             <div class="clearfix"></div>
         </div>
     </div>

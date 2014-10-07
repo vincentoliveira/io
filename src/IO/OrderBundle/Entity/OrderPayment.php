@@ -49,7 +49,7 @@ class OrderPayment implements ApiElement
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fees", type="decimal", precision=7, scale=2, nullable=false)
+     * @ORM\Column(name="fees", type="decimal", precision=7, scale=2, nullable=true)
      */
     private $fees;
 
