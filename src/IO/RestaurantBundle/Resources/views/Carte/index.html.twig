@@ -48,13 +48,17 @@
             {% for item in carte %}
                 <div class="category">
                     <h3>{{ item.name|upper }}</h3>
-                    {% for child in item.children %}
+                    {% for product in item.products %}
                     <div class="product">
-                        <img class="img-rounded" src="{{ asset(child.media.path|mediaWebPath) }}" alt="" />
-                        <strong>{{ child.name }}</strong>
-                        <em>{{ child.price|number_format(2, '.', ',') }}€</em>
+                        {% if product.media is defined %}
+                        <img class="img-rounded" src="{{ asset(product.media.path|mediaWebPath) }}" alt="" />
+                        <strong>{{ product.name }}</strong>
+                        {% else %}
+                        <img class="img-rounded" src="{{ asset('bundles/iodefault/img/no_image_available.png') }}" alt="" />
+                        {% endif %}
+                        <em>{{ product.price|number_format(2, '.', ',') }}€</em>
                         <p>
-                            {{ child.description|default("")|nl2br }}
+                            {{ product.description|default("")|nl2br }}
                         </p>
                     </div>
                     {% endfor %}
@@ -85,12 +89,6 @@
           js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&appId=489218227845976&version=v2.0";
           fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));</script>
-        <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-            ga('create', 'UA-44614143-2', 'innovorder.fr');
-            ga('send', 'pageview');</script>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
     </body>
 </html>
