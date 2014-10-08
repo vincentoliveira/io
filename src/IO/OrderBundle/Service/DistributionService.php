@@ -4,11 +4,12 @@ namespace IO\OrderBundle\Service;
 
 use JMS\DiExtraBundle\Annotation\Service;
 use JMS\DiExtraBundle\Annotation\Inject;
-use IO\RestaurantBundle\Entity\CarteItem;
 use IO\RestaurantBundle\Entity\Restaurant;
 use IO\OrderBundle\Service\StatsCalculator\DistributionCalculator;
 use IO\OrderBundle\Service\StatsCalculator\TimeDistributionCalculator;
 use IO\OrderBundle\Service\StatsCalculator\PaymentDistributionCalculator;
+use IO\OrderBundle\Service\StatsCalculator\TurnoverEvolutionCalculator;
+use IO\OrderBundle\Service\ChartGenerator\LineChartGenerator;
 use IO\OrderBundle\Service\ChartGenerator\PieChartGenerator;
 use IO\OrderBundle\Service\ChartGenerator\BarChartGenerator;
 
@@ -26,6 +27,24 @@ class DistributionService {
      * @var \Doctrine\ORM\EntityManager
      */
     public $em;
+
+    /**
+     * Get Time Distribution
+     * 
+     * @param \IO\RestaurantBundle\Entity\Restaurant $restaurant
+     * @param type $id
+     * @return type
+     */
+    public function getTurnoverEvolution(array $filters = array(), $id = "turnover_evolution") {
+        $calculator = new TurnoverEvolutionCalculator();
+        $serie = $calculator->calculate($this->em, $filters);
+        
+        $chartGenerator = new LineChartGenerator();
+        $chartGenerator->setTitle("Evolution du chiffre d'affaire");
+        $chartGenerator->addSerie('Evolution', $serie);
+        
+        return $chartGenerator->generate($id);
+    }
 
     /**
      * Get Global Repartition

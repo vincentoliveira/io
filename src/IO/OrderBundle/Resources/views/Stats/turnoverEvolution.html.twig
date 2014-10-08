@@ -25,12 +25,20 @@
                 <div class="row">
                     <div class="col-md-12">
                         <button name="filter-action" class="btn btn-primary">Filtrer</button>
-                        <button name="export-action" class="btn btn-primary">Exporter</button>
                     </div>
                 </div>
                 <div class="clearfix"></div>
             </form>
         </div>
     </div>
+    
+    <div id="{{ chartId }}" style="min-width: 600px; height: 400px; margin: 0 auto"></div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        {{ chart(chart) }}
+    </script>
 {% endblock %}

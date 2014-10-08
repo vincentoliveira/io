@@ -15,6 +15,7 @@ use IO\OrderBundle\Form\StatFilterType;
  */
 class StatsController extends Controller
 {
+
     /**
      * User Service
      * 
@@ -22,7 +23,7 @@ class StatsController extends Controller
      * @var \IO\UserBundle\Service\UserService
      */
     public $userSv;
-    
+
     /**
      * CarteItem Service
      * 
@@ -30,7 +31,7 @@ class StatsController extends Controller
      * @var \IO\OrderBundle\Service\DistributionService
      */
     public $distribSv;
-    
+
     /**
      * @Route("/evolution/turnover", name="stats_turnover_evolution")
      * @Template()
@@ -41,21 +42,29 @@ class StatsController extends Controller
         $now = new \DateTime();
         $aMonthAgo = new \DateTime();
         $aMonthAgo->sub(new \DateInterval('P1M'));
-        $dates = array(
+        $filters = array(
             'start_date' => $aMonthAgo,
             'end_date' => $now,
         );
-        $filterForm = $this->createForm(new StatFilterType(), $dates);
+        $filterForm = $this->createForm(new StatFilterType(), $filters);
         if ($request->query->has('start_date') || $request->query->has('end_date')) {
             $filterForm->submit($request);
-            $dates = $filterForm->getData();
+            $filters = $filterForm->getData();
         }
+
+        $chartId = 'turnover_evolution';
+        $restaurant = $this->userSv->getCurrentRestaurant();
+        $filters['restaurant_id'] = $restaurant->getId();
+
+        $chart = $this->distribSv->getTurnoverEvolution($filters, $chartId);
         
         return array(
             'filters' => $filterForm->createView(),
+            'chartId' => $chartId,
+            'chart' => $chart,
         );
     }
-    
+
     /**
      * @Route("/distribution/item", name="stats_item_distribution")
      * @Template()
@@ -64,43 +73,42 @@ class StatsController extends Controller
     public function itemDistributionAction(Request $request)
     {
         $restaurant = $this->userSv->getCurrentRestaurant();
-        
+
         $filters = array();
         $filtersForm = $this->createForm(new StatFilterType(), $filters);
-        
+
         if ($request->isMethod('POST')) {
             $filtersForm->submit($request);
             $filters = $filtersForm->getData();
         }
         $filters['restaurant_id'] = $restaurant->getId();
-        
+
         $distributions = array();
         $distributions['Globale'] = array(
             'global_pie' => $this->distribSv->getGlobalDistribution($filters, "pie", 'global_pie'),
             'global_bar' => $this->distribSv->getGlobalDistribution($filters, "bar", 'global_bar'),
         );
-        
+
         $repositorty = $this->getDoctrine()->getRepository('IORestaurantBundle:CarteItem');
         $categories = $repositorty->getRestaurantMainCategory($restaurant->getId());
         foreach ($categories as $category) {
             $name = preg_replace("/[^A-Za-z0-9]/", '_', $category->getShortName());
             $pieId = $name . '_pie';
             $barId = $name . '_bar';
-            
+
             $filters['parent_id'] = $category->getId();
             $distributions[$name] = array(
                 $pieId => $this->distribSv->getCategoryDistribution($filters, "pie", $pieId, $category->getName()),
                 $barId => $this->distribSv->getCategoryDistribution($filters, "bar", $barId, $category->getName()),
             );
         }
-        
+
         return array(
             'filters' => $filtersForm->createView(),
             'distributions' => $distributions,
         );
     }
-    
-    
+
     /**
      * @Route("/distribution/time", name="stats_time_distribution")
      * @Template()
@@ -109,17 +117,16 @@ class StatsController extends Controller
     public function timeDistributionAction()
     {
         $restaurant = $this->userSv->getCurrentRestaurant();
-        
+
         $chartId = 'time_distribution';
-        $chart =$this->distribSv->getTimeDistribution($restaurant, $chartId);
+        $chart = $this->distribSv->getTimeDistribution($restaurant, $chartId);
 
         return array(
             'chart' => $chart,
             'chartId' => $chartId,
         );
     }
-    
-    
+
     /**
      * @Route("/distribution/payment", name="stats_payment_distribution")
      * @Template()
@@ -128,14 +135,14 @@ class StatsController extends Controller
     public function paymentDistributionAction()
     {
         $restaurant = $this->userSv->getCurrentRestaurant();
-        
+
         $chartId = 'payment_distribution';
-        $chart =$this->distribSv->getPaymentDistribution($restaurant, $chartId);
-        
-        
+        $chart = $this->distribSv->getPaymentDistribution($restaurant, $chartId);
+
+
         $chartId2 = 'payment_amount_distribution';
-        $chart2 =$this->distribSv->getPaymentAmountDistribution($restaurant, $chartId2);
-        
+        $chart2 = $this->distribSv->getPaymentAmountDistribution($restaurant, $chartId2);
+
         return array(
             'chart' => $chart,
             'chartId' => $chartId,
@@ -143,4 +150,5 @@ class StatsController extends Controller
             'chartId2' => $chartId2,
         );
     }
+
 }

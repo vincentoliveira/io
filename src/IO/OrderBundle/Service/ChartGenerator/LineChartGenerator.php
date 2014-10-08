@@ -5,9 +5,9 @@ namespace IO\OrderBundle\Service\ChartGenerator;
 use Ob\HighchartsBundle\Highcharts\Highchart;
 
 /**
- * Bar Chart Generator
+ * Line Chart Generator
  */
-class BarChartGenerator extends AbstractChartGenerator {
+class LineChartGenerator extends AbstractChartGenerator {
     
     protected $categories = array();
 
@@ -35,7 +35,7 @@ class BarChartGenerator extends AbstractChartGenerator {
     public function generate($id) {
         $ob = new Highchart();
         $ob->chart->renderTo($id);
-        $ob->chart->type('column');
+        $ob->chart->type('line');
         $ob->title->text($this->title);
         $ob->xAxis->title(array('text'  => $this->yAxisTitle));
         $ob->xAxis->categories($this->categories);
