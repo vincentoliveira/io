@@ -92,6 +92,11 @@ class DishType extends AbstractType
                     'property' => 'name',
                     'multiple' => true,
                     'expanded' => true,
+                ))
+                ->add('position', 'integer', array(
+                    'label' => 'Position',
+                    'attr' => array('class' => 'form-control'),
+                    'required' => false,
         ));
     }
 

@@ -38,6 +38,11 @@ class CategoryType extends AbstractType {
                     'attr' => array('class' => 'form-control', 'rows' => 2),
                     'required' => false,
                 ))
+                ->add('position', 'integer', array(
+                    'label' => 'Position',
+                    'attr' => array('class' => 'form-control'),
+                    'required' => false,
+                ))
                 ->add(
                         $builder->create('media', 'hidden', array(
                             'attr' => array('class' => 'media-id'),

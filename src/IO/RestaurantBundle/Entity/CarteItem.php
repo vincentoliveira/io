@@ -111,7 +111,7 @@ class CarteItem implements ApiElement
      *
      * @ORM\Column(name="position", type="integer", nullable=true)
      */
-    private $position;
+    private $position = 10;
     
     /**
      * @ORM\ManyToMany(targetEntity="CarteItem", cascade={"remove", "persist"})
