@@ -52,19 +52,19 @@ class DashboardController extends Controller
         $tiles = array();
         $tiles[] = array(
             'title' => 'Commandes',
-            'value' => sprintf('%s (%s€)', $dayHistory['count'], $dayHistory['total']),
+            'value' => sprintf('%d (%.2f€)', $dayHistory['count'], $dayHistory['total']),
         );
         $tiles[] = array(
             'title' => 'En attente',
-            'value' => sprintf('%s (%s€)', $dayHistory['count'] - $dayHistory['count_payed'], $dayHistory['total'] - $dayHistory['total_payed']),
+            'value' => sprintf('%d (%.2f€)', $dayHistory['count'] - $dayHistory['count_payed'], $dayHistory['total'] - $dayHistory['total_payed']),
         );
         $tiles[] = array(
             'title' => 'Encaissées',
-            'value' => sprintf('%s (%s€)', $dayHistory['count_payed'], $dayHistory['total_payed']),
+            'value' => sprintf('%d (%.2f€)', $dayHistory['count_payed'], $dayHistory['total_payed']),
         );
         $tiles[] = array(
             'title' => 'Panier moyen',
-            'value' => sprintf('%s€', $dayHistory['count'] != 0 ? $dayHistory['total'] / $dayHistory['count'] : 0),
+            'value' => sprintf('%.2f€', $dayHistory['count'] != 0 ? $dayHistory['total'] / $dayHistory['count'] : 0),
         );
         
         return array(
