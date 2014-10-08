@@ -41,7 +41,7 @@ class DistributionService {
         
         $chartGenerator = new LineChartGenerator();
         $chartGenerator->setTitle("Evolution du chiffre d'affaire");
-        $chartGenerator->addSerie('Evolution', $serie);
+        $chartGenerator->addSerie('Chiffre d\affaire', $serie);
         
         return $chartGenerator->generate($id);
     }

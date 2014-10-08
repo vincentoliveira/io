@@ -46,7 +46,7 @@ class TurnoverEvolutionCalculator implements StatsCalculatorInterface
         
         foreach ($countByDates as $coutByDate) {
             if (isset($coutByDate[1]) && isset($result[$coutByDate['orderDate']->format('d-m-Y')])) {
-                $result[$coutByDate['orderDate']->format('d-m-Y')][1] = intval($coutByDate[1]);
+                $result[$coutByDate['orderDate']->format('d-m-Y')][1] = floatval($coutByDate[1]);
             }
         }
         
