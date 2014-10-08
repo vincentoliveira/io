@@ -20,7 +20,7 @@ class TimeDistributionCalculator implements StatsCalculatorInterface {
         if (isset($filters['step'])) {
             $step = $filters['step'];
         } else {
-            $step = 600;
+            $step = 1800;
         }
         
         $repo = $em->getRepository('IOOrderBundle:OrderData');
@@ -48,7 +48,7 @@ class TimeDistributionCalculator implements StatsCalculatorInterface {
         
         $result = array();
         for ($t = $min; $t <= $max; $t++) {
-            $timeStr = intval(($t * $step) / 3600) . 'h' . intval(($t * $step / 60) % 60);
+            $timeStr = sprintf('%dh%02d', intval(($t * $step) / 3600), intval(($t * $step / 60) % 60));
             $nbAtThisTime = isset($timeResult[$t]) ? $timeResult[$t] : 0;
             $result[] = array($timeStr, $nbAtThisTime);
         }

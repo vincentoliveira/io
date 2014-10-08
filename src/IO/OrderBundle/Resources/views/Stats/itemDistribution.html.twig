@@ -1,33 +1,38 @@
 {% extends "IODefaultBundle::layout.html.twig" %}
 
 {% block content %}
-<div class="content-header">
-    <h3>Répartition (Plats)</h3>
-</div>
+<div class="row">
+    <div class="col-sm-3 col-md-2 sidebar">
+        {% include 'IOOrderBundle:Dashboard:_left_menu.html.twig' %}
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h1 class="page-header">Répartition (Plats)</h1>
 
-<div class="filters">
-    <form action="#" method="POST">
-        {{ form_row(filters.start_date) }}
-        {{ form_row(filters.end_date) }}
-        <button class="btn btn-primary">Filter</button>
-    </form>
-</div>
+        <div class="filters">
+            <form action="#" method="POST">
+                {{ form_row(filters.start_date) }}
+                {{ form_row(filters.end_date) }}
+                <button class="btn btn-primary">Filter</button>
+            </form>
+        </div>
 
-<div class="tab-wrapper tab-primary">
-    <ul class="nav nav-tabs">
-        {% for tabName,tabDistribution in distributions %}
-        <li {% if loop.first %}class="active"{% endif %}><a href="#{{ tabName }}" data-toggle="tab">{{ tabName }}</a>
-        </li>
-        {% endfor %}
-    </ul>
-    <div class="tab-content">
-        {% for tabName,tabDistribution in distributions %}
-            <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{ tabName }}">
-            {% for id,chart in tabDistribution %}
-                <div id="{{ id }}" style="min-width: 600px; height: 400px; margin: 0 auto"></div>
-            {% endfor %}
+        <div class="tab-wrapper tab-primary">
+            <ul class="nav nav-tabs">
+                {% for tabName,tabDistribution in distributions %}
+                <li {% if loop.first %}class="active"{% endif %}><a href="#{{ tabName }}" data-toggle="tab">{{ tabName }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="tab-content">
+                {% for tabName,tabDistribution in distributions %}
+                    <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{ tabName }}">
+                    {% for id,chart in tabDistribution %}
+                        <div id="{{ id }}" style="min-width: 600px; height: 400px; margin: 0 auto"></div>
+                    {% endfor %}
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock %}

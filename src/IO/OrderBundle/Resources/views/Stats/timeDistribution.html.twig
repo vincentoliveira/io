@@ -1,11 +1,16 @@
 {% extends "IODefaultBundle::layout.html.twig" %}
 
 {% block content %}
-<div class="content-header">
-    <h3>Répartition (Temps)</h3>
-</div>
+<div class="row">
+    <div class="col-sm-3 col-md-2 sidebar">
+        {% include 'IOOrderBundle:Dashboard:_left_menu.html.twig' %}
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h1 class="page-header">Répartition (Temps)</h1>
                 
-<div id="{{ chartId }}" style="min-width: 600px; height: 400px; margin: 0 auto"></div>
+        <div id="{{ chartId }}" style="min-width: 600px; height: 400px; margin: 0 auto"></div>
+    </div>
+</div>
 {% endblock %}
     
 {% block javascripts %}

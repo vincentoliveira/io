@@ -32,6 +32,31 @@ class StatsController extends Controller
     public $distribSv;
     
     /**
+     * @Route("/evolution/turnover", name="stats_turnover_evolution")
+     * @Template()
+     * @Secure("ROLE_MANAGER")
+     */
+    public function turnoverEvolutionAction(Request $request)
+    {
+        $now = new \DateTime();
+        $aMonthAgo = new \DateTime();
+        $aMonthAgo->sub(new \DateInterval('P1M'));
+        $dates = array(
+            'start_date' => $aMonthAgo,
+            'end_date' => $now,
+        );
+        $filterForm = $this->createForm(new StatFilterType(), $dates);
+        if ($request->query->has('start_date') || $request->query->has('end_date')) {
+            $filterForm->submit($request);
+            $dates = $filterForm->getData();
+        }
+        
+        return array(
+            'filters' => $filterForm->createView(),
+        );
+    }
+    
+    /**
      * @Route("/distribution/item", name="stats_item_distribution")
      * @Template()
      * @Secure("ROLE_MANAGER")
