@@ -46,10 +46,10 @@ class DistributionCalculator implements StatsCalculatorInterface {
         $sqlQuery .= $qb->where(sprintf('%s = %s', $restaurantFK, $filters['restaurant_id']));
         
         if (isset($filters['start_date'])) {
-            $sqlQuery .= $qb->andWhere(sprintf('DATE(%s.%s) >= "%s"', $orderTableName, $orderMetadata->getColumnName('orderDate'), $filters['start_date']));
+            $sqlQuery .= $qb->andWhere(sprintf('DATE(%s.%s) >= "%s"', $orderTableName, $orderMetadata->getColumnName('orderDate'), $filters['start_date']->format('Y-m-d')));
         }
         if (isset($filters['end_date'])) {
-            $sqlQuery .= $qb->andWhere(sprintf('DATE(%s.%s) <= "%s"', $orderTableName, $orderMetadata->getColumnName('orderDate'), $filters['end_date']));
+            $sqlQuery .= $qb->andWhere(sprintf('DATE(%s.%s) <= "%s"', $orderTableName, $orderMetadata->getColumnName('orderDate'), $filters['end_date']->format('Y-m-d')));
         }
                 
         if (isset($filters['parent_id'])) {
