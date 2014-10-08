@@ -33,12 +33,14 @@ class TimeDistributionCalculator implements StatsCalculatorInterface {
         
         $timeResult = array();
         foreach ($orderTimeResult as $order) {
-            $order['orderDate']->setTimezone(new \DateTimeZone('Europe/Paris'));
-            $time = intval((($order['orderDate']->getTimestamp() + 2 * 3600) % (3600 * 24)) / $step);
-            if (!isset($timeResult[$time])) {
-                $timeResult[$time] = 1;
-            } else {
-                $timeResult[$time]++;
+            if (isset($order['orderDate']) && $order['orderDate'] instanceof \DateTime) {
+                $order['orderDate']->setTimezone(new \DateTimeZone('Europe/Paris'));
+                $time = intval((($order['orderDate']->getTimestamp() + 2 * 3600) % (3600 * 24)) / $step);
+                if (!isset($timeResult[$time])) {
+                    $timeResult[$time] = 1;
+                } else {
+                    $timeResult[$time]++;
+                }
             }
         }
         
