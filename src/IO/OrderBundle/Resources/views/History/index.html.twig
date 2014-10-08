@@ -1,21 +1,44 @@
 {% extends "IODefaultBundle::layout.html.twig" %}
 
 {% block content %}
-
-    <div class="content-header">
-        <h3>Historique des commandes</h3>
+<div class="row">
+    <div class="col-sm-3 col-md-2 sidebar">
+        {% include 'IOOrderBundle:Dashboard:_left_menu.html.twig' %}
     </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h1 class="page-header">Historique des commandes</h1>
 
-<div class="history">
-    {% for dayHistory in history %}
-    <div class="period">
-        <a href="{{ path('history_day', {dateStr:dayHistory.date|date('d-m-Y')}) }}">
-            <h3>{{ dayHistory.date|date('d-m-Y') }}</h3>
-            <span>NB: <em>{{ dayHistory.count }}</em></span>
-            <span>CA: <em>{{ dayHistory.total }}€</em></span>
-        </a>
+        <div class=" v">
+            <h3>Filtres</h3>
+            <form action="{{ path('history_index') }}" method="GET">
+                <div class="row">
+                    <div class="col-md-6">
+                    {{ form_row(filters.start_date) }}
+                    </div>
+                    <div class="col-md-6">
+                    {{ form_row(filters.end_date) }}
+                    </div>
+                    <div class="clearfix"></div>
+                    {{ form_rest(filters) }}
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button name="filter-action" class="btn btn-primary">Filtrer</button>
+                            <button name="export-action" class="btn btn-primary">Exporter</button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+
+        {% for dayHistory in history %}
+        <div class="period">
+            <a href="{{ path('history_day', {dateStr:dayHistory.date|date('d-m-Y')}) }}">
+                <h3>{{ dayHistory.date|date('d-m-Y') }}</h3>
+                <span>NB: <em>{{ dayHistory.count }}</em></span>
+                <span>CA: <em>{{ dayHistory.total }}€</em></span>
+            </a>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
-
 {% endblock %}

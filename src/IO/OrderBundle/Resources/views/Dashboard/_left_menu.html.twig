@@ -1,0 +1,16 @@
+{% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+<h4>Tableau de bord</h4>
+<ul class="nav nav-sidebar">
+    <li{% if path('dashboard') in currentPath %} class="active"{% endif %}><a href="{{ path('dashboard') }}">Tableau de bord</a></li>
+</ul>
+<h4>Historique</h4>
+<ul class="nav nav-sidebar">
+    <li{% if path('history_index') in currentPath %} class="active"{% endif %}><a href="{{ path('history_index') }}">Commandes</a></li>
+    <li{% if path('history_payment') in currentPath %} class="active"{% endif %}><a href="{{ path('history_payment') }}">Paiements</a></li>
+</ul>
+<h4>Statistiques</h4>
+<ul class="nav nav-sidebar">
+    <li{% if path('stats_item_distribution') in currentPath %} class="active"{% endif %}><a href="{{ path('stats_item_distribution') }}">Répartitions (Plats)</a></li>
+    <li{% if path('stats_time_distribution') in currentPath %} class="active"{% endif %}><a href="{{ path('stats_time_distribution') }}">Répartitions (Temps)</a></li>
+    <li{% if path('stats_payment_distribution') in currentPath %} class="active"{% endif %}><a href="{{ path('stats_payment_distribution') }}">Répartitions (Mode de paiment)</a></li>
+</ul>

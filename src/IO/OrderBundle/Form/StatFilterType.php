@@ -23,14 +23,12 @@ class StatFilterType extends AbstractType
         $builder->add('start_date', 'date', array(
             'label' => 'Début',
             'widget' => 'single_text',
-            'input' => 'string',
             'format' => 'yyyy-MM-dd',
             'attr' => array('class' => 'form-control'),
             'required' => false,
         ))->add('end_date', 'date', array(
             'label' => 'Fin',
             'widget' => 'single_text',
-            'input' => 'string',
             'format' => 'yyyy-MM-dd',
             'attr' => array('class' => 'form-control'),
             'required' => false,

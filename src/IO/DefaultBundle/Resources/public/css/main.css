@@ -268,3 +268,5 @@ a.btn-danger { color: #fff; }
 
 .option-list .btn-info {color: #3498db !important; background-color: #eee !important;}
 .option-list .btn-warning {color: #f1c40f !important; background-color: #eee !important;}
+
+.filters { margin-bottom: 50px; }

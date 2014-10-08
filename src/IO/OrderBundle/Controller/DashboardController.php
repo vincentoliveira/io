@@ -37,12 +37,18 @@ class DashboardController extends Controller
     public function indexAction()
     {
         $restaurant = $this->userSv->getCurrentRestaurant();
-        $history = $this->historySv->getOrderHistoryPerDay($restaurant, 1);
+        $history = $this->historySv->getOrderHistoryPerDay($restaurant, array('end_date' => new \DateTime()));
         if (empty($history)) {
-            return $this->redirect($this->generateUrl('order_index'));
+            $dayHistory = array(
+                'count' => 0,
+                'total' => 0,
+                'count_payed' => 0,
+                'total_payed' => 0,
+            );
+        } else {
+            $dayHistory = $history[0];
         }
         
-        $dayHistory = $history[0];
         $tiles = array();
         $tiles[] = array(
             'title' => 'Commandes',
@@ -58,11 +64,10 @@ class DashboardController extends Controller
         );
         $tiles[] = array(
             'title' => 'Panier moyen',
-            'value' => sprintf('%s€', $dayHistory['total'] / $dayHistory['count']),
+            'value' => sprintf('%s€', $dayHistory['count'] != 0 ? $dayHistory['total'] / $dayHistory['count'] : 0),
         );
         
         return array(
-            'day' => $dayHistory['date'],
             'tiles' => $tiles,
         );
     }
