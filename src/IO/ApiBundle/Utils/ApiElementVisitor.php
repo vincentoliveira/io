@@ -289,6 +289,7 @@ class ApiElementVisitor implements ApiElementVisitorInterface
         $result = array(
             'id' => $orderData->getId(),
             'delivery_date' => $orderData->getOrderDate(),
+            'source' => $orderData->getSource(),
             'status' => $orderData->getLastStatus(),
             'products' => array(),
             'payments' => array(), 

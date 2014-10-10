@@ -68,7 +68,7 @@ class CartControllerTest extends IOTestCase
      * @dataProvider createCartDataProvider
      */
     public function testCreateCart($data, $statusCode, $expected)
-    {
+    { 
         foreach ($data as $key => $value) {
             if (isset($this->data[$value])) {
                 $data[$key] = $this->data[$value];
@@ -167,6 +167,7 @@ class CartControllerTest extends IOTestCase
                     'cart' => array(
                         'id' => 1,
                         "delivery_date" => null,
+                        "source" => "UNKNOWN",
                         "status" => "DRAFT",
                         "products" => array(),
                         "payments" => array(),
@@ -211,12 +212,14 @@ class CartControllerTest extends IOTestCase
                 array(
                     'token' => 'token',
                     'restaurant_id' => 'restaurant',
+                    'source' => 'ONLINE',
                 ),
                 200,
                 array(
                     'cart' => array(
                         'id' => 1,
                         "delivery_date" => null,
+                        "source" => "ONLINE",
                         "status" => "DRAFT",
                         "products" => array(),
                         "payments" => array(),
@@ -236,6 +239,7 @@ class CartControllerTest extends IOTestCase
                     'cart' => array(
                         'id' => 1,
                         "delivery_date" => null,
+                        "source" => "UNKNOWN",
                         "status" => "DRAFT",
                         "products" => array(),
                         "payments" => array(),
@@ -257,6 +261,7 @@ class CartControllerTest extends IOTestCase
                     'cart' => array(
                         'id' => 1,
                         "delivery_date" => null,
+                        "source" => "UNKNOWN",
                         "status" => "DRAFT",
                         "products" => array(
                             array(
@@ -327,6 +332,7 @@ class CartControllerTest extends IOTestCase
                     'cart' => array(
                         'id' => 1,
                         "delivery_date" => null,
+                        "source" => "UNKNOWN",
                         "status" => "DRAFT",
                         "products" => array(
                             array(
@@ -357,6 +363,7 @@ class CartControllerTest extends IOTestCase
                     'cart' => array(
                         'id' => 1,
                         "delivery_date" => null,
+                        "source" => "UNKNOWN",
                         "status" => "DRAFT",
                         "products" => array(
                             array(
@@ -427,6 +434,7 @@ class CartControllerTest extends IOTestCase
                     'cart' => array(
                         'id' => 1,
                         "delivery_date" => null,
+                        "source" => "UNKNOWN",
                         "status" => "DRAFT",
                         "products" => array(
                             array(
@@ -456,6 +464,7 @@ class CartControllerTest extends IOTestCase
                     'cart' => array(
                         'id' => 1,
                         "delivery_date" => null,
+                        "source" => "UNKNOWN",
                         "status" => "DRAFT",
                         "products" => array(
                             array(

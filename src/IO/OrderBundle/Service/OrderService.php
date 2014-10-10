@@ -71,12 +71,17 @@ class OrderService
      * @param \IO\ApiBundle\Entity\AuthToken $token
      * @return \IO\OrderBundle\Entity\OrderData
      */
-    public function createOrder(Restaurant $restaurant, AuthToken $token = null)
+    public function createOrder(Restaurant $restaurant, AuthToken $token = null, $source = null)
     {
         $cart = new OrderData();
         $cart->setRestaurant($restaurant);
         $cart->setToken($token);
         $cart->setStartDate(new \DateTime());
+        if ($source) {
+            $cart->setSource($source);
+        } else {
+            $cart->setSource('UNKNOWN');
+        }
 
         $status = new OrderStatus();
         $status->setOrder($cart);

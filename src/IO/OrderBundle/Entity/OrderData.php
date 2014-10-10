@@ -55,6 +55,13 @@ class OrderData implements ApiElement
     /**
      * @var string
      *
+     * @ORM\Column(name="source", type="string", nullable=true)
+     */
+    private $source;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="comment", type="string", nullable=true)
      */
     private $comment;
@@ -372,6 +379,29 @@ class OrderData implements ApiElement
     public function getOrderPayments()
     {
         return $this->orderPayments;
+    }
+
+    /**
+     * Set source
+     *
+     * @param string $source
+     * @return OrderData
+     */
+    public function setSource($source)
+    {
+        $this->source = $source;
+    
+        return $this;
+    }
+
+    /**
+     * Get source
+     *
+     * @return string 
+     */
+    public function getSource()
+    {
+        return $this->source;
     }
 
     /**

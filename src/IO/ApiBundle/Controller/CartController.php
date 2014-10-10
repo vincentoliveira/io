@@ -100,7 +100,8 @@ class CartController extends DefaultController
             $restaurant = $this->authToken->getRestaurant();
         }
         
-        $cart = $this->orderSv->createOrder($restaurant, $this->authToken);
+        $source = $request->request->get('source');
+        $cart = $this->orderSv->createOrder($restaurant, $this->authToken, $source);
         if ($request->request->has('product_id')) {
             $productId = $request->request->get('product_id');
             $options = $request->request->get('options');
