@@ -214,7 +214,7 @@ class OrderService
      * @param string $deliveryDateParam
      * @return \IO\OrderBundle\Entity\OrderData
      */
-    public function validateCart(OrderData $order, AuthToken $userToken, $deliveryDateParam)
+    public function validateCart(OrderData $order, AuthToken $userToken = null, $deliveryDateParam = null)
     {
         $deliveryDate = null;
         if ($deliveryDateParam) {
@@ -233,7 +233,9 @@ class OrderService
         
         $order->setOrderDate($deliveryDate);
         $order->addOrderStatus($orderStatus);
-        $order->setClient($userToken->getUser());
+        if ($userToken !== null) {
+            $order->setClient($userToken->getUser());
+        }
         
         $this->em->persist($order);
         $this->em->flush();
